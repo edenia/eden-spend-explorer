@@ -18,9 +18,9 @@ Expenses are then picked up automatically by the application by interpreting the
 
 The memo field must follow a specific format in order to :
 
-* **Identify** the token transfer as an Eden delegates expense.
-* **Categorize** the expense into one of several predefined categories.
-* **Describe** with additional information on the nature of the expense.
+- **Identify** the token transfer as an Eden delegates expense.
+- **Categorize** the expense into one of several predefined categories.
+- **Describe** with additional information on the nature of the expense.
 
 If a delegate chooses not to apply the memo format, their transactions will still be tracked but their reports will show all expenses as “uncategorized.”
 
@@ -30,11 +30,11 @@ Delegates may include any expense into the reporting system by using the followi
 
 **`eden_expense: <category>/<description>`**
 
-* **eden_expense** is a general prefix to identify this expense as related to Eden, it must be followed by a colon :
+- **eden_expense** is a general prefix to identify this expense as related to Eden, it must be followed by a colon :
 
-* **category** must be one of several predefined category keywords that best describes the nature of the expense. The category must then be followed by a forward slash /
+- **category** must be one of several predefined category keywords that best describes the nature of the expense. The category must then be followed by a forward slash /
 
-* **description** is a free-form short text that describes the use of Eden funds.
+- **description** is a free-form short text that describes the use of Eden funds.
 
 The following is an example EOS token transfer memo using the Eden expense tracking format:
 
@@ -46,30 +46,29 @@ Category names are limited to a single word so that they can be used as keywords
 
 We have provided the following initial list of categories and would like to ask the Eden Delegates for suggestions on new expense categories.
 
-|Category Name|Description|
-| --- | --- |
-|admin|General Administrative|
-|charity|​​Charitable Donations|
-|development|Software and Web Development|
-|dues|Dues and Subscriptions|
-|education|Educational Courses and Materials|
-|hardware|Computer hardware|
-|infrastructure|Web Hosting and Servers|
-|legal|Legal and Professional Fees|
-|marketing|Media and Outreach|
-|pomelo|Pomelo Projects Support|
-|salaries|Salaries and Payroll|
-|software|Software Licenses and Subscriptions|
-|travel|Travel Expenses|
+| Category Name  | Description                         |
+| -------------- | ----------------------------------- |
+| admin          | General Administrative              |
+| charity        | ​​Charitable Donations              |
+| development    | Software and Web Development        |
+| dues           | Dues and Subscriptions              |
+| education      | Educational Courses and Materials   |
+| hardware       | Computer hardware                   |
+| infrastructure | Web Hosting and Servers             |
+| legal          | Legal and Professional Fees         |
+| marketing      | Media and Outreach                  |
+| pomelo         | Pomelo Projects Support             |
+| salaries       | Salaries and Payroll                |
+| software       | Software Licenses and Subscriptions |
+| travel         | Travel Expenses                     |
 
-#### Example Trasaction 
-Follow this link to see an [Example Eden expense transaction memo](https://bloks.io/transaction/d0741b3361900c7d79e08bc9b2675fcb1779de4aa813f0418bed76d21678732f
-):
+#### Example Trasaction
+
+Follow this link to see an [Example Eden expense transaction memo](https://bloks.io/transaction/d0741b3361900c7d79e08bc9b2675fcb1779de4aa813f0418bed76d21678732f):
 
 <p align="center">
    <img src="./docs/images/example-eden-tx.png" width="480">
 </p>
-
 
 ## Eden Smart Contract Integration
 
@@ -89,17 +88,16 @@ When a token transfer includes the transaction memo format this will be parsed a
 
 The database will persist the following data for EOS token transfers that involve an Eden delegates account:
 
-|Field Name|Type|Description|
-| --- | --- | --- |
-|**txid**|SHA256|Token Transfer Transaction ID|
-|**date**|Date|Transaction Date|
-|**type**|text|Income or Expense|
-|**delegate**|EOS Account Name|Eden Delegate’s Account|
-|**amount**|Number|Transfer Amount in EOS|
-|**recipient**|EOS Account Name|Receiver of Funds|
-|**category**|Text|Expense Category|
-|**description**|Text|Transaction description|
-
+| Field Name      | Type             | Description                   |
+| --------------- | ---------------- | ----------------------------- |
+| **txid**        | SHA256           | Token Transfer Transaction ID |
+| **date**        | Date             | Transaction Date              |
+| **type**        | text             | Income or Expense             |
+| **delegate**    | EOS Account Name | Eden Delegate’s Account       |
+| **amount**      | Number           | Transfer Amount in EOS        |
+| **recipient**   | EOS Account Name | Receiver of Funds             |
+| **category**    | Text             | Expense Category              |
+| **description** | Text             | Transaction description       |
 
 Data can then be aggregated to be displayed on a web application with graphs and other data visualizations.
 
@@ -109,27 +107,26 @@ Some interesting data visualizations to be included in the dashboard could be :
 
 **Expenses by category pie chart**
 
-* Total Expenses By Category per Delegate
-* Total Expenses by Category for all delegates
-* Total Expenses by Category for all chief delegates
-* Total Expenses by Category for all level 1 delegates
+- Total Expenses By Category per Delegate
+- Total Expenses by Category for all delegates
+- Total Expenses by Category for all chief delegates
+- Total Expenses by Category for all level 1 delegates
 
 **Expenses over time line graph**
 
-* Expenses over time per Delegate
-* Expenses over time for all delegates
-* Expenses over time for all chief delegates
-* Expenses over time for all level 1 delegates
+- Expenses over time per Delegate
+- Expenses over time for all delegates
+- Expenses over time for all chief delegates
+- Expenses over time for all level 1 delegates
 
 **Total Expenses**
 
-* Total expenses reported by each delegate
-* The top 10 largest Eden expenses this election cycle
-* The top accounts receivers of Eden funds
-* Total number of expenses
-* Average number of expenses
-* Average expense size
-
+- Total expenses reported by each delegate
+- The top 10 largest Eden expenses this election cycle
+- The top accounts receivers of Eden funds
+- Total number of expenses
+- Average number of expenses
+- Average expense size
 
 ## Event Listener
 
@@ -248,12 +245,6 @@ cp .env.example .env
 3.  Run `make run` in order to start the project using docker compose.
 
 At this point you can navigate to `http://localhost:3000`.
-
-
-
-# License
-
-MIT © [Sistemas Edenia Internacional S.A.](https://edenia.com).
 
 # Contributing
 
