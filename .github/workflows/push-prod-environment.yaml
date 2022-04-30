@@ -54,7 +54,7 @@ jobs:
           # general
           NAMESPACE: eosreports
           INGRESS_HOST: eosreports.com
-          INGRESS_GRAPHQL_HOST: graphql-eosreports.com
+          INGRESS_GRAPHQL_HOST: graphql.eosreports.com
           # Postgres
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}

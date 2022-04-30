@@ -42,7 +42,7 @@ jobs:
           REACT_APP_UAL_API_HOST: 'eosreports.com'
           REACT_APP_UAL_API_PORT: '443'
           REACT_APP_UAL_CHAIN_ID: '2a02a0053e5a8cf73a56ba0fda11e4d92e0238a4a2aa74fccf46d5a910746840'
-          REACT_APP_HASURA_URL: 'https://graphql-eosreports.com/v1/graphql'
+          REACT_APP_HASURA_URL: 'https://graphql.eosreports.com/v1/graphql'
 
       - name: Build kubernetes files
         id: build_kubernetes_files
@@ -53,7 +53,7 @@ jobs:
           # general
           NAMESPACE: eosreports
           INGRESS_HOST: eosreports.com
-          INGRESS_GRAPHQL_HOST: graphql-eosreports.com
+          INGRESS_GRAPHQL_HOST: graphql.eosreports.com
           # Postgres
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
