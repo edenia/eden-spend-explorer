@@ -1,8 +1,8 @@
 {
-  "name": "eosioboilerplate",
+  "name": "eosreports",
   "version": "1.0.0",
   "description": "EOSIO Boilerplate WebApp",
-  "repository": "https://github.com/eoscostarica/eosioboilerplate.git",
+  "repository": "https://github.com/eoscostarica/eden-accounting-standard.git",
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",

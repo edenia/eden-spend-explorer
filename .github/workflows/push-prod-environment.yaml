@@ -34,7 +34,7 @@ jobs:
           PORT: 80
           REACT_APP_TAG: ${{ github.ref }}
           REACT_APP_VERSION: ${{ github.ref }}
-          REACT_APP_NAME: 'eoscr_boilerplate'
+          REACT_APP_NAME: 'eosreports'
           REACT_APP_TITLE: 'Full-Stack Boilerplate'
           REACT_APP_LOGO: 'https://raw.githubusercontent.com/eoscostarica/design-assets/master/logos/eosCR/fullColor-vertiall-transparent-white.png'
           REACT_APP_FOOTER_LINKS: '[]'
@@ -52,9 +52,9 @@ jobs:
             build-kubernetes
         env:
           # general
-          NAMESPACE: boilerplate
-          INGRESS_HOST: boilerplate.edenia.cloud
-          INGRESS_GRAPHQL_HOST: graphql-boilerplate.edenia.cloud
+          NAMESPACE: eosreports
+          INGRESS_HOST: eosreports.com
+          INGRESS_GRAPHQL_HOST: graphql-eosreports.com
           # Postgres
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
@@ -81,7 +81,7 @@ jobs:
         uses: steebchen/kubectl@v1.1.0
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-          NAMESPACE: boilerplate
+          NAMESPACE: eosreports
           K8S_BUILD_DIR: build_k8s
         with:
           args: version && make deploy-kubernetes
