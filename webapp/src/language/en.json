@@ -6,13 +6,13 @@
     "darkMode": "Dark Mode"
   },
   "routes": {
-    "/>title": "EOSIO Boilerplate",
+    "/>title": "Eden on EOS Accounting Standard",
     "/>sidebar": "Home",
     "/>heading": "Welcome",
-    "/about>title": "About | EOSIO Boilerplate",
+    "/about>title": "About | Eden on EOS Accounting Standard",
     "/about>sidebar": "About",
     "/about>heading": "About",
-    "/help>title": "Help | EOSIO Boilerplate",
+    "/help>title": "Help | Eden on EOS Accounting Standard",
     "/help>sidebar": "Help",
     "/help>heading": "Help",
     "docs": "Docs",
