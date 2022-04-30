@@ -57,7 +57,7 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "^4.0.3",
     "subscriptions-transport-ws": "^0.11.0",
-    "ual-anchor": "1.1.4",
+    "ual-anchor": "1.1.6",
     "ual-token-pocket": "^0.3.0"
   },
   "devDependencies": {
