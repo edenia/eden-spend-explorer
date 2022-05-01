@@ -29,12 +29,19 @@ ENV REACT_APP_UAL_CHAIN_ID $react_app_ual_chain_id
 ENV REACT_APP_HASURA_URL $react_app_hasura_url
 ENV TOOL_NODE_FLAGS --max_old_space_size=4096
 
-RUN mkdir -p $WORK_DIR
-WORKDIR $WORK_DIR
+WORKDIR /usr/src/app
 
-COPY ./ $WORK_DIR
+COPY package.json .
 
-RUN yarn install && yarn build
+COPY yarn*.lock .
+
+RUN yarn --frozen-lockfile
+
+COPY . .
+
+ENV GENERATE_SOURCEMAP false
+
+RUN yarn build
 
 FROM nginx:1.17.10-alpine as run-stage
 
