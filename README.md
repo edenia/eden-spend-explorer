@@ -130,6 +130,10 @@ Some interesting data visualizations to be included in the dashboard could be :
 - Average number of expenses
 - Average expense size
 
+**Expenses across eden rounds**
+
+- round 1 expenses vs round 2 expenses etc.
+
 ## Event Listener
 
 We are inspired by the [Demux Pattern](https://github.com/EOSIO/demux-js) to develop a backend service for sourcing blockchain events to deterministically update queryable datastores and trigger side effects.
