@@ -61,8 +61,9 @@ We have provided the following initial list of categories and would like to ask 
 | salaries       | Salaries and Payroll                |
 | software       | Software Licenses and Subscriptions |
 | travel         | Travel Expenses                     |
+| uncategorized  | Default for non reported expenses   |
 
-#### Example Trasaction
+#### Example Transaction
 
 Follow this link to see an [Example Eden expense transaction memo](https://bloks.io/transaction/d0741b3361900c7d79e08bc9b2675fcb1779de4aa813f0418bed76d21678732f):
 
@@ -94,6 +95,7 @@ The database will persist the following data for EOS token transfers that involv
 | **date**        | Date             | Transaction Date              |
 | **type**        | text             | Income or Expense             |
 | **delegate**    | EOS Account Name | Eden Delegate’s Account       |
+| **election**    | Integer          | Eden Election Round           |
 | **amount**      | Number           | Transfer Amount in EOS        |
 | **recipient**   | EOS Account Name | Receiver of Funds             |
 | **category**    | Text             | Expense Category              |
