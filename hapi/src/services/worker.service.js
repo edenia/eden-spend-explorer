@@ -1,6 +1,9 @@
 const { hasuraUtil } = require('../utils')
 
 const hyperionService = require('./hyperion')
+const edenDelegatesService = require('./eden-delegates.service')
+
+const MAX_TIMEOUT_MS = 2147483.647
 
 const sleep = seconds => {
   return new Promise(resolve => {
@@ -22,7 +25,18 @@ const run = async ({ name, action, interval }) => {
   }
 
   console.log(`${name} WORKER WILL RUN AGAIN IN ${interval / 60} MINUTES`)
-  await sleep(interval)
+
+  let partialInterval = interval
+
+  while (partialInterval > 0) {
+    const tempInterval =
+      partialInterval > MAX_TIMEOUT_MS ? MAX_TIMEOUT_MS : partialInterval
+
+    await sleep(tempInterval)
+
+    partialInterval -= tempInterval
+  }
+
   run({ name, action, interval })
 }
 
@@ -30,6 +44,7 @@ const init = async () => {
   await hasuraUtil.hasuraAssembled()
 
   run(hyperionService.syncWorker())
+  run(edenDelegatesService.updateEdenTableWorker())
 }
 
 module.exports = {
