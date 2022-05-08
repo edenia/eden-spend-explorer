@@ -42,6 +42,7 @@ services:
       HAPI_HASURA_ADMIN_SECRET: '${HAPI_HASURA_ADMIN_SECRET}'
       HAPI_HYPERION_API: '${HAPI_HYPERION_API}'
       HAPI_HYPERION_START_AT: '${HAPI_HYPERION_START_AT}'
+      HAPI_EDEN_ELECTION_INTERVAL: '${HAPI_EDEN_ELECTION_INTERVAL}'
   hasura:
     container_name: 'eosreports-hasura'
     image: hasura/graphql-engine:v2.6.0.cli-migrations-v3
