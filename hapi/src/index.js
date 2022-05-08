@@ -1,6 +1,7 @@
 const Hapi = require('@hapi/hapi')
 
 const { serverConfig } = require('./config')
+const { workerService } = require('./services')
 const routes = require('./routes')
 
 const init = async () => {
@@ -17,6 +18,7 @@ const init = async () => {
   await server.start()
   console.log(`🚀 Server ready at ${server.info.uri}`)
   server.table().forEach(route => console.log(`${route.method}\t${route.path}`))
+  workerService.init()
 }
 
 process.on('uncaughtException', (err, origin) => {
