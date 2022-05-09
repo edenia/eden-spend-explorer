@@ -1,0 +1,1 @@
+CREATE TABLE "public"."eden_delegates" ("account" varchar NOT NULL, "election_round" integer NOT NULL, "delegate_level" integer NOT NULL, PRIMARY KEY ("account") );COMMENT ON TABLE "public"."eden_delegates" IS E'elected delegates';
