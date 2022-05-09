@@ -16,7 +16,7 @@ const save = async payload => {
 const get = async (where, getMany = false) => {
   const query = `
     query ($where: eden_delegates_bool_exp) {
-      eden_delegates(where: $where) {
+      eden_delegates(order_by: {election_round: desc}, where: $where) {
         account
         election_round
         delegate_level
