@@ -71,6 +71,14 @@ Follow this link to see an [Example Eden expense transaction memo](https://bloks
    <img src="./docs/images/example-eden-tx.png" width="480">
 </p>
 
+#### UI Proposal
+
+The treasury page will present visual information based on the EDAS categories, this will help delegates and other eden members to easily understand what's being done with the funds. A new page with a simple token transfer form will help delegates transact and document their expenses without any added complexity.
+
+<p align="center">
+   <img src="./docs/images/edas-tools-02.png">
+</p>
+
 ## Eden Smart Contract Integration
 
 The expense tracking platform will source all active Eden delegate’s accounts from the [`genesis.eden`](https://eosauthority.com/account/genesis.eden?network=eos) smart contracts.
