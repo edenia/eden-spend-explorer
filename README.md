@@ -239,10 +239,13 @@ Within this repository you will find the following directories and files:
 
 Some things you need before getting started:
 
-- [git](https://git-scm.com/)
-- [node.js](https://nodejs.org/es/)
-- [docker](https://www.docker.com/)
-- [docker-compose](https://docs.docker.com/compose/)
+- [WSL and Ubuntu 18.04 LTS:](https://www.public-health.uiowa.edu/it/support/kb48549/) If you are using Windows operative system you will need to install **WSL** and **Ubuntu 18.04.5 LTS**. You can do it following this steps.
+- [Git:](https://git-scm.com/) You will need to use git to clone and colaborate in this repository.
+- [Docker Desktop:](https://www.docker.com/products/docker-desktop/) You will need docker and docker compose to run different images. When you have Docker Desktop installed you have to go to **settings** then **Resources** after that select **WSL Integration** and active the swich.
+- [Nodejs:](https://nodejs.org/es/) This installation also depents of the operative system.
+- [Yarn:](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable) You have to install first **npm** for then install **yarn**. The installation depents of the operative system.
+- [Hasura CLI:](https://hasura.io/docs/latest/getting-started/index/) You will need it to handle DB.
+
 
 ### First Time
 
