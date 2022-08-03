@@ -1,0 +1,15 @@
+table:
+  schema: public
+  name: eden_election
+object_relationships:
+  - name: eden_delegate
+    using:
+      foreign_key_constraint_on: id_delegate
+array_relationships:
+  - name: eden_transactions
+    using:
+      foreign_key_constraint_on:
+        column: id_election
+        table:
+          schema: public
+          name: eden_transactions
