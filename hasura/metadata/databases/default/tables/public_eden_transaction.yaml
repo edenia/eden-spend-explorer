@@ -1,0 +1,7 @@
+table:
+  schema: public
+  name: eden_transaction
+object_relationships:
+  - name: eden_election
+    using:
+      foreign_key_constraint_on: id_election

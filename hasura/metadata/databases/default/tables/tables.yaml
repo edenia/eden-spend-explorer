@@ -1,5 +1,4 @@
-- "!include public_eden_category.yaml"
 - "!include public_eden_delegates.yaml"
 - "!include public_eden_election.yaml"
-- "!include public_eden_transactions.yaml"
+- "!include public_eden_transaction.yaml"
 - "!include public_hyperion_state.yaml"
