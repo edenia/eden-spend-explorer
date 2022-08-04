@@ -1,6 +1,7 @@
 table:
   schema: public
   name: eden_category
+is_enum: true
 array_relationships:
   - name: eden_transactions
     using:
