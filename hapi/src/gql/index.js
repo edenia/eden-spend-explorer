@@ -1,5 +1,3 @@
-const { edenElectionInterval } = require('../config/eden.config');
-
 module.exports = {
   hyperionGql: require('./hyperion-state.gql'),
   edenTransactionGql: require('./eden-transaction.gql'),
