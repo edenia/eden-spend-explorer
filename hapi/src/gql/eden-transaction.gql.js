@@ -29,14 +29,14 @@ const get = async (where, getMany = false) => {
       }
     }
   `
-  const { eden_account: edenAccount } = await hasuraUtil.instance.request(
+  const { eden_transaction: edenTransaction } = await hasuraUtil.instance.request(
     query,
     {
       where
     }
   )
 
-  return getMany ? edenAccount : edenAccount[0]
+  return getMany ? edenTransaction : edenTransaction[0]
 }
 
 module.exports = {
