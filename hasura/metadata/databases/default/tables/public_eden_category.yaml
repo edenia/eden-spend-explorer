@@ -1,11 +1,12 @@
 table:
   schema: public
-  name: eden_delegates
+  name: eden_category
+is_enum: true
 array_relationships:
-  - name: eden_elections
+  - name: eden_transactions
     using:
       foreign_key_constraint_on:
-        column: id_delegate
+        column: category
         table:
           schema: public
-          name: eden_election
+          name: eden_transactions
