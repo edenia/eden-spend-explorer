@@ -17,9 +17,10 @@ const get = async (where, getMany = false) => {
   const query = `
     query ($where: eden_delegates_bool_exp) {
       eden_delegates(where: $where) {
+        id
         account
-        election_round
-        delegate_level
+        created_at
+        updated_at
       }
     }
   `

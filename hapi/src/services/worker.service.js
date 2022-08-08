@@ -2,6 +2,7 @@ const { hasuraUtil } = require('../utils')
 
 const hyperionService = require('./hyperion')
 const edenDelegatesService = require('./eden-delegates.service')
+const edenElectionService = require('./eden-election.service')
 
 const MAX_TIMEOUT_MS = 2147483.647
 
@@ -45,6 +46,7 @@ const init = async () => {
 
   run(hyperionService.syncWorker())
   run(edenDelegatesService.updateEdenTableWorker())
+  run(edenElectionService.updateEdenElection())
 }
 
 module.exports = {
