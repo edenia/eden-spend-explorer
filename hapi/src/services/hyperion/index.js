@@ -7,6 +7,8 @@ const hyperionStateService = require('../../gql/hyperion-state.gql')
 
 const updaters = require('./updaters')
 
+const { edenElectionGql } = require('../../gql')
+
 const TIME_BEFORE_IRREVERSIBILITY = 164
 
 const getLastSyncedAt = async () => {
@@ -92,6 +94,7 @@ const getActions = async params => {
 }
 
 const runUpdaters = async actions => {
+
   for (let index = 0; index < actions.length; index++) {
     const action = actions[index]
     const updater = updaters.find(
@@ -102,7 +105,11 @@ const runUpdaters = async actions => {
       continue
     }
 
-    await updater.apply(action)
+    const idEdenElection = await edenElectionGql.get({
+      eden_delegate: { account: { _eq: action.data.from } },
+    })
+    
+    if (idEdenElection) await updater.apply({ ...action, idElection: idEdenElection.id })
   }
 }
 
@@ -125,8 +132,9 @@ const sync = async () => {
 
   try {
     while (hasMore) {
-      ;({ hasMore, actions } = await getActions({ after, before, skip }))
+      ; ({ hasMore, actions } = await getActions({ after, before, skip }))
       skip += actions.length
+
       await runUpdaters(actions)
     }
   } catch (error) {
