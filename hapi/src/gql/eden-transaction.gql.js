@@ -37,7 +37,7 @@ const get = async (where, getMany = false) => {
       where
     }
   )
-  
+
   return getMany ? edenTransaction : edenTransaction[0]
 }
 

@@ -19,7 +19,7 @@ const updateEdenTable = async () => {
     const members = await loadMembers({ next_key: nextKey })
 
     for (const member of members.rows) {
-      if (!member[1].election_rank > 0) continue
+      if (!(member[1].election_rank > 0)) continue
 
       const memberData = {
         account: member[1].account,
