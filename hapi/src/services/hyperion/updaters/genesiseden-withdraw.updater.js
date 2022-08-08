@@ -1,3 +1,5 @@
+const { edenTransactionGql } = require('../../../gql')
+
 module.exports = {
   type: `genesis.eden:withdraw`,
   apply: async action => {
