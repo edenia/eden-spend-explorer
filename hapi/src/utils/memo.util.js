@@ -1,4 +1,3 @@
-
 const isEdenExpense = (memoString) => {
     let splitMemo = memoString.split(":")
     return splitMemo[0].toLowerCase() === "eden_expense"

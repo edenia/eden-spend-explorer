@@ -1,4 +1,3 @@
-
 module.exports = {
   axiosUtil: require('./axios.util'),
   eosUtil: require('./eos.util'),

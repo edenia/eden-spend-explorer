@@ -38,7 +38,6 @@ const updateEdenTableElection = async () => {
       })
 
       if (!registeredElection) await edenElectionGql.save(electionData)
-
     }
 
     if (!members.more) break
