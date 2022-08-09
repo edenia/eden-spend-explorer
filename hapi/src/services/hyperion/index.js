@@ -1,13 +1,10 @@
 const moment = require('moment')
 
-const { hyperionConfig } = require('../../config')
-const { hasuraUtil, axiosUtil, sleepUtil } = require('../../utils')
-
-const hyperionStateService = require('../../gql/hyperion-state.gql')
-
 const updaters = require('./updaters')
-
+const hyperionStateService = require('../../gql/hyperion-state.gql')
 const { edenElectionGql } = require('../../gql')
+const { hyperionConfig } = require('../../config')
+const { hasuraUtil, axiosUtil, sleepUtil, isEdenExpense } = require('../../utils')
 
 const TIME_BEFORE_IRREVERSIBILITY = 164
 
@@ -94,21 +91,16 @@ const getActions = async params => {
 }
 
 const runUpdaters = async actions => {
-
   for (let index = 0; index < actions.length; index++) {
-    const action = actions[index]
-    const updater = updaters.find(
-      item => item.type === `${action.contract}:${action.action}`
-    )
+    const action  = actions[index]
+    const updater = updaters.find( item => item.type === `${action.contract}:${action.action}`)
 
-    if (!updater) {
-      continue
-    }
+    if (!updater || !isEdenExpense( action.data.memo )) continue
 
     const idEdenElection = await edenElectionGql.get({
       eden_delegate: { account: { _eq: action.data.from } },
     })
-    
+
     if (idEdenElection) await updater.apply({ ...action, idElection: idEdenElection.id })
   }
 }
@@ -132,7 +124,7 @@ const sync = async () => {
 
   try {
     while (hasMore) {
-      ; ({ hasMore, actions } = await getActions({ after, before, skip }))
+      ;({ hasMore, actions } = await getActions({ after, before, skip }))
       skip += actions.length
 
       await runUpdaters(actions)

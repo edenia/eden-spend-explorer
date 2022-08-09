@@ -1,7 +1,10 @@
+
 module.exports = {
   axiosUtil: require('./axios.util'),
   eosUtil: require('./eos.util'),
   hasuraUtil: require('./hasura.util'),
   walletUtil: require('./wallet.util'),
-  sleepUtil: require('./sleep.util')
+  sleepUtil: require('./sleep.util'),
+  memoSplit: require('./memo.util'),
+  isEdenExpense: require('./memo.util'),
 }
