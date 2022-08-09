@@ -21,7 +21,7 @@ const updateEdenTableElection = async () => {
 
     for (const member of members.rows) {
       if (!(member[1].election_rank > 0)) continue
-      
+
       const registeredMember = await edenDelegatesGql.get({
         account: { _eq: member[1].account },
       })
@@ -32,12 +32,12 @@ const updateEdenTableElection = async () => {
         delegate_level: member[1].election_rank,
       }
 
-      const registeredDelegate = await edenElectionGql.get({
+      const registeredElection = await edenElectionGql.get({
         id_delegate: { _eq: registeredMember.id },
         election_round: { _eq: electionData.election_round },
       })
 
-      if (!registeredDelegate) await edenElectionGql.save(electionData)
+      if (!registeredElection) await edenElectionGql.save(electionData)
     }
 
     if (!members.more) break
