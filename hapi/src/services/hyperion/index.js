@@ -4,7 +4,7 @@ const updaters = require('./updaters')
 const hyperionStateService = require('../../gql/hyperion-state.gql')
 const { edenElectionGql } = require('../../gql')
 const { hyperionConfig, eosConfig } = require('../../config')
-const { hasuraUtil, axiosUtil, sleepUtil, updaterUtil } = require('../../utils')
+const { hasuraUtil, axiosUtil, sleepUtil } = require('../../utils')
 
 const TIME_BEFORE_IRREVERSIBILITY = 164
 let   LAST_CONSULTED_DAY          = null
