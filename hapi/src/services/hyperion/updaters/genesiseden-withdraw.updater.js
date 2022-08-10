@@ -1,20 +1,20 @@
 const { edenTransactionGql }    = require('../../../gql')
-const { updaterUtil }           = require('../../../utils')
 
 module.exports = {
   type: `genesis.eden:withdraw`,
-  apply: async action => {
-    const { category, description } = updaterUtil.memoSplit( action.data.memo.split(':')[1] || '' )
+  apply: async action => {    
     try {
       const transactionData = {
-        txid: action.transaction_id,
-        amount: action.data.amount,
-        category,
-        date: action.timestamp,
-        description,
-        id_election: action.idElection,
-        recipient: action.data.to,
-        type: 'income'
+        txid        : action.transaction_id,
+        amount      : action.data.amount,
+        category    : 'income from genesis.edens',
+        date        : action.timestamp,
+        description : action.data.memo,
+        id_election : action.idElection,
+        recipient   : action.data.to,
+        type        : 'income',
+        eos_exchange: action.eosPrice,
+        usd_total   : action.data.amount * action.eosPrice
       }
       const registeredTransaction = await edenTransactionGql.get({
         txid: { _eq: transactionData.txid }

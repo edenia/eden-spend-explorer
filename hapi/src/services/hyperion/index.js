@@ -7,6 +7,8 @@ const { hyperionConfig, eosConfig } = require('../../config')
 const { hasuraUtil, axiosUtil, sleepUtil, updaterUtil } = require('../../utils')
 
 const TIME_BEFORE_IRREVERSIBILITY = 164
+let   LAST_CONSULTED_DAY          = null
+let   LAST_CONSULTED_DATA         = null
 
 const getLastSyncedAt = async () => {
   const state = await hyperionStateService.getState()
@@ -76,7 +78,7 @@ const getActions = async params => {
       }
     }
   )
-    
+
   const notIrreversible = data.simple_actions.find(item => !item.irreversible)
 
   if (notIrreversible) {
@@ -91,49 +93,36 @@ const getActions = async params => {
   }
 }
 
-let lastDate = null
-let lastEosExchange = null
 const runUpdaters = async actions => {
 
   for (let index = 0; index < actions.length; index++) {
     const action  = actions[index]
-    const updater = updaters.find( item => item.type === `${action.contract}:${action.action}`)
+    const updater = updaters.find(item => item.type === `${action.contract}:${action.action}`)
 
-    //TODO:updaterUtil.getHistoryEos(action.timestamp)
-    //TODO: I need until config the .env with the eosConfig.eosHistory
-    const actionDay = await moment(action.timestamp).format('DD-MM-YYYY')
+    if (!updater) continue
+
+    const idEdenElection = action.data.from === 'genesis.eden' ?
+      await edenElectionGql.get({ eden_delegate: { account: { _eq: action.data.to } } }) :
+      await edenElectionGql.get({ eden_delegate: { account: { _eq: action.data.from } } })
     
-    if (lastDate != actionDay) {
-      console.log('Hola mundo', `${actionDay}/${lastDate}`); 
-      lastDate = await actionDay
+    if (idEdenElection) {            
+      const txDate = await moment(action.timestamp).format('DD-MM-YYYY')
 
-      try {
-        lastDate = actionDay
-        let {data} = await axiosUtil.get(
+      if (LAST_CONSULTED_DAY !== txDate) {
+        const { data } = await axiosUtil.get(
           `${eosConfig.eosHistory}/coins/eos/history`,
           {
-              params: {
-                  date: actionDay,
-                  localization: false
-              }
+            params: {
+              date: txDate,
+              localization: false
+            }
           }
-        );
-        lastEosExchange = data 
-      } catch (error) {
-        console.log('error'); 
-        
-      }   
-    }  else {
-      console.log(lastEosExchange); 
+        )
+        LAST_CONSULTED_DATA = data.market_data.current_price.usd
+        LAST_CONSULTED_DAY  = txDate
+      }
+      await updater.apply({ ...action, idElection: idEdenElection.id, eosPrice: LAST_CONSULTED_DATA })
     }
-
-    if (!updater || !updaterUtil.isEdenExpense( action.data.memo )) continue
-
-    const idEdenElection = await edenElectionGql.get({
-      eden_delegate: { account: { _eq: action.data.from } },
-    })
-
-    if (idEdenElection) await updater.apply({ ...action, idElection: idEdenElection.id })
   }
 }
 
@@ -153,7 +142,7 @@ const sync = async () => {
 
     return sync()
   }
-  
+
   try {
     while (hasMore) {
       ;({ hasMore, actions } = await getActions({ after, before, skip }))
