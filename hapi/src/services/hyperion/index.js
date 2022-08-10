@@ -110,7 +110,7 @@ const runUpdaters = async actions => {
       try {
         lastDate = actionDay
         let {data} = await axiosUtil.get(
-          'https://api.coingecko.com/api/v3/coins/eos/history',
+          `${eosConfig.eosHistory}/coins/eos/history`,
           {
               params: {
                   date: actionDay,
