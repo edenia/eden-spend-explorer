@@ -3,8 +3,8 @@ const moment = require('moment')
 const updaters = require('./updaters')
 const hyperionStateService = require('../../gql/hyperion-state.gql')
 const { edenElectionGql } = require('../../gql')
-const { hyperionConfig } = require('../../config')
-const { hasuraUtil, axiosUtil, sleepUtil, isEdenExpense } = require('../../utils')
+const { hyperionConfig, eosConfig } = require('../../config')
+const { hasuraUtil, axiosUtil, sleepUtil, updaterUtil } = require('../../utils')
 
 const TIME_BEFORE_IRREVERSIBILITY = 164
 
@@ -76,6 +76,7 @@ const getActions = async params => {
       }
     }
   )
+    
   const notIrreversible = data.simple_actions.find(item => !item.irreversible)
 
   if (notIrreversible) {
@@ -90,12 +91,43 @@ const getActions = async params => {
   }
 }
 
+let lastDate = null
+let lastEosExchange = null
 const runUpdaters = async actions => {
+
   for (let index = 0; index < actions.length; index++) {
     const action  = actions[index]
     const updater = updaters.find( item => item.type === `${action.contract}:${action.action}`)
 
-    if (!updater || !isEdenExpense( action.data.memo )) continue
+    //TODO:updaterUtil.getHistoryEos(action.timestamp)
+    //TODO: I need until config the .env with the eosConfig.eosHistory
+    const actionDay = await moment(action.timestamp).format('DD-MM-YYYY')
+    
+    if (lastDate != actionDay) {
+      console.log('Hola mundo', `${actionDay}/${lastDate}`); 
+      lastDate = await actionDay
+
+      try {
+        lastDate = actionDay
+        let {data} = await axiosUtil.get(
+          'https://api.coingecko.com/api/v3/coins/eos/history',
+          {
+              params: {
+                  date: actionDay,
+                  localization: false
+              }
+          }
+        );
+        lastEosExchange = data 
+      } catch (error) {
+        console.log('error'); 
+        
+      }   
+    }  else {
+      console.log(lastEosExchange); 
+    }
+
+    if (!updater || !updaterUtil.isEdenExpense( action.data.memo )) continue
 
     const idEdenElection = await edenElectionGql.get({
       eden_delegate: { account: { _eq: action.data.from } },
@@ -121,7 +153,7 @@ const sync = async () => {
 
     return sync()
   }
-
+  
   try {
     while (hasMore) {
       ;({ hasMore, actions } = await getActions({ after, before, skip }))

@@ -1,10 +1,10 @@
-const { edenTransactionGql } = require('../../../gql')
-const { memoSplit }          = require('../../../utils')
+const { edenTransactionGql }    = require('../../../gql')
+const { updaterUtil }           = require('../../../utils')
 
 module.exports = {
   type: `genesis.eden:withdraw`,
   apply: async action => {
-    const { category, description } = memoSplit( action.data.memo.split(':')[1] || '' )
+    const { category, description } = updaterUtil.memoSplit( action.data.memo.split(':')[1] || '' )
     try {
       const transactionData = {
         txid: action.transaction_id,

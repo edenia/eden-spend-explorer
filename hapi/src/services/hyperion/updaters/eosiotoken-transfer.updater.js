@@ -1,10 +1,10 @@
 const { edenTransactionGql } = require('../../../gql')
-const { memoSplit }          = require('../../../utils')
+const { updaterUtil }        = require('../../../utils')
 
 module.exports = {
   type: `eosio.token:transfer`,
   apply: async action => {
-    const { category, description } = memoSplit( action.data.memo.split(':')[1] || '' )
+    const { category, description } = updaterUtil.memoSplit( action.data.memo.split(':')[1] || '' )
     try {
       const transactionData = {
         txid: action.transaction_id,

@@ -4,6 +4,5 @@ module.exports = {
   hasuraUtil: require('./hasura.util'),
   walletUtil: require('./wallet.util'),
   sleepUtil: require('./sleep.util'),
-  memoSplit: require('./memo.util'),
-  isEdenExpense: require('./memo.util'),
+  updaterUtil: require('./updater.util'),
 }
