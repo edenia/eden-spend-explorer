@@ -70,7 +70,7 @@ jobs:
           HAPI_HASURA_URL: ${{ secrets.HAPI_HASURA_URL }}
           HAPI_HASURA_ADMIN_SECRET: ${{ secrets.HAPI_HASURA_ADMIN_SECRET }}
           HAPI_HYPERION_API: ${{ secrets.HAPI_HYPERION_API }}
-          HAPI_COINS_HISTORY: ${{secrets.HAPI_COINS_HISTORY}}
+          HAPI_RATE_HISTORY: ${{secrets.HAPI_RATE_HISTORY}}
           HAPI_HYPERION_START_AT: '2022-04-01T00:00:00.000+00:00'
           HAPI_EDEN_ELECTION_INTERVAL: 7889400
           # hasura

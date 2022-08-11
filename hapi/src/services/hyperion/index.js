@@ -94,7 +94,6 @@ const getActions = async params => {
 }
 
 const runUpdaters = async actions => {
-
   for (let index = 0; index < actions.length; index++) {
     const action  = actions[index]
     const updater = updaters.find(item => item.type === `${action.contract}:${action.action}`)
