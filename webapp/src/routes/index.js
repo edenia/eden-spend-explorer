@@ -6,17 +6,26 @@ import {
   HelpCircle as HelpIcon,
   GitMerge as GitMergeIcon,
   GitHub as GitHubIcon,
-  Send as TelegramIcon
+  Send as TelegramIcon,
+  DollarSign as DollarIcon
 } from 'react-feather'
 
 import { mainConfig } from '../config'
 
+const Treasury = lazy(() => import('./Treasury'))
 const Home = lazy(() => import('./Home'))
 const About = lazy(() => import('./About'))
 const Help = lazy(() => import('./Help'))
 const Page404 = lazy(() => import('./Route404'))
 
 const routes = [
+  {
+    name: 'treasury',
+    icon: <DollarIcon />,
+    component: Treasury,
+    path: '/treasury',
+    exact: true
+  },
   {
     name: 'home',
     icon: <GridIcon />,

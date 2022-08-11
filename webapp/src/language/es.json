@@ -7,6 +7,9 @@
   },
   "routes": {
     "/>title": "Eden on EOS Accounting Standard",
+    "/treasury>title": "Tesorería | Eden on EOS Accounting Standard",
+    "/treasury>sidebar": "Tesorería",
+    "/treasury>heading": "Tesorería",
     "/>sidebar": "Inicio",
     "/>heading": "Inicio",
     "/about>title": "Acerca de | Eden on EOS Accounting Standard",

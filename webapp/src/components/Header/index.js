@@ -21,8 +21,8 @@ import MoreIcon from '@mui/icons-material/MoreVert'
 import { Sun as SunIcon, Moon as MoonIcon } from 'react-feather'
 
 import { useSharedState } from '../../context/state.context'
-import { mainConfig } from '../../config'
-import PageTitle from '../PageTitle'
+// import { mainConfig } from '../../config'
+// import PageTitle from '../PageTitle'
 
 import styles from './styles'
 
@@ -198,8 +198,9 @@ const Header = memo(({ onDrawerToggle }) => {
         </Hidden>
         <Typography className={classes.typography} variant="h4">
           {t(`${location.pathname}>heading`, '')}
+          -src/components/Header/index
         </Typography>
-        <PageTitle title={t(`${location.pathname}>title`, mainConfig.title)} />
+        {/* <PageTitle title={t(`${location.pathname}>title`, mainConfig.title)} /> */}
         <Box className={classes.desktopSection}>
           <SwitchThemeModeButton
             useDarkMode={state.useDarkMode}
