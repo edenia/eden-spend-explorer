@@ -7,8 +7,8 @@ const { hyperionConfig, eosConfig } = require('../../config')
 const { hasuraUtil, axiosUtil, sleepUtil } = require('../../utils')
 
 const TIME_BEFORE_IRREVERSIBILITY = 164
-let   LAST_CONSULTED_DAY          = null
-let   LAST_CONSULTED_DATA         = null
+let LASTEST_RATE_DATE_CONSULTED = null
+let LASTEST_RATE_DATA_CONSULTED = null
 
 const getLastSyncedAt = async () => {
   const state = await hyperionStateService.getState()
@@ -93,35 +93,35 @@ const getActions = async params => {
   }
 }
 
-const runUpdaters = async actions => {
+const runUpdaters = async actions => {  
   for (let index = 0; index < actions.length; index++) {
-    const action  = actions[index]
+    const action = actions[index]
     const updater = updaters.find(item => item.type === `${action.contract}:${action.action}`)
 
     if (!updater) continue
 
-    const idEdenElection = action.data.from === 'genesis.eden' ?
-      await edenElectionGql.get({ eden_delegate: { account: { _eq: action.data.to } } }) :
+    const edenElectionId = action.contract === 'genesis.eden' ?
+      await edenElectionGql.get({ eden_delegate: { account: { _eq: action.data.owner } } }) :
       await edenElectionGql.get({ eden_delegate: { account: { _eq: action.data.from } } })
-    
-    if (idEdenElection) {            
-      const txDate = await moment(action.timestamp).format('DD-MM-YYYY')
 
-      if (LAST_CONSULTED_DAY !== txDate) {
-        const { data } = await axiosUtil.get(
-          `${eosConfig.eosHistory}/coins/eos/history`,
-          {
-            params: {
-              date: txDate,
-              localization: false
-            }
+    if (!edenElectionId) continue
+
+    const txDate = await moment(action.timestamp).format('DD-MM-YYYY')
+
+    if (LASTEST_RATE_DATE_CONSULTED !== txDate) {
+      const { data } = await axiosUtil.get(
+        `${eosConfig.eosHistory}/coins/eos/history`,
+        {
+          params: {
+            date: txDate,
+            localization: false
           }
-        )
-        LAST_CONSULTED_DATA = data.market_data.current_price.usd
-        LAST_CONSULTED_DAY  = txDate
-      }
-      await updater.apply({ ...action, idElection: idEdenElection.id, eosPrice: LAST_CONSULTED_DATA })
+        }
+      )
+      LASTEST_RATE_DATA_CONSULTED = data.market_data.current_price.usd
+      LASTEST_RATE_DATE_CONSULTED = txDate
     }
+    await updater.apply({ ...action, electionId: edenElectionId.id, eosPrice: LASTEST_RATE_DATA_CONSULTED })
   }
 }
 
@@ -146,7 +146,6 @@ const sync = async () => {
     while (hasMore) {
       ;({ hasMore, actions } = await getActions({ after, before, skip }))
       skip += actions.length
-
       await runUpdaters(actions)
     }
   } catch (error) {

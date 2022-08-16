@@ -1,6 +1,7 @@
 const { edenConfig } = require('../config')
 const { eosUtil } = require('../utils')
 const { edenDelegatesGql } = require('../gql')
+const { edenElectionGql } = require('../gql')
 
 const loadMembers = async ({ next_key: nextKey = null, limit = 100 } = {}) => {
   return await eosUtil.getTableRows({
@@ -25,11 +26,23 @@ const updateEdenTable = async () => {
         account: member[1].account,
       }
 
-      const registeredMember = await edenDelegatesGql.get({
+      let registeredMember = await edenDelegatesGql.get({
         account: { _eq: memberData.account },
       })
 
-      if (!registeredMember) await edenDelegatesGql.save(memberData)
+      if (!registeredMember) registeredMember = await edenDelegatesGql.save(memberData) 
+
+      const electionData = {
+        id_delegate: registeredMember.id,
+        election_round: parseInt(member[0].slice(8)) + 1,
+        delegate_level: member[1].election_rank,
+      }
+
+      const registeredElection = await edenElectionGql.get({
+        id_delegate: { _eq: registeredMember.id },
+        election_round: { _eq: electionData.election_round },
+      })
+      if (!registeredElection) await edenElectionGql.save(electionData)
     }
 
     if (!members.more) break
@@ -40,7 +53,7 @@ const updateEdenTable = async () => {
 
 const updateEdenTableWorker = () => {
   return {
-    name: 'UPDATE EDEN MEMBERS',
+    name: 'UPDATE ACTUAL EDEN DELEGATES AND ELECTIONS',
     interval: edenConfig.edenElectionInterval,
     action: updateEdenTable
   }
