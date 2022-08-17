@@ -4,6 +4,7 @@ module.exports = {
   type: `genesis.eden:withdraw`,
   apply: async action => {
     const amount = Number( action.data.quantity.split(' ')[0] )
+
     try {
       const transactionData = {
         txid: action.transaction_id,
@@ -20,6 +21,7 @@ module.exports = {
       const registeredTransaction = await edenTransactionGql.get({
         txid: { _eq: transactionData.txid }
       })
+
       if (!registeredTransaction) await edenTransactionGql.save(transactionData)
     } catch (error) {
       console.error(`error to sync ${action.action}: ${error.message}`)

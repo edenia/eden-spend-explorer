@@ -25,7 +25,6 @@ const updateEdenTable = async () => {
       const memberData = {
         account: member[1].account,
       }
-
       let registeredMember = await edenDelegatesGql.get({
         account: { _eq: memberData.account },
       })
@@ -37,11 +36,11 @@ const updateEdenTable = async () => {
         election_round: parseInt(member[0].slice(8)) + 1,
         delegate_level: member[1].election_rank,
       }
-
       const registeredElection = await edenElectionGql.get({
         id_delegate: { _eq: registeredMember.id },
         election_round: { _eq: electionData.election_round },
       })
+
       if (!registeredElection) await edenElectionGql.save(electionData)
     }
 

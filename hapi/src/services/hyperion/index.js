@@ -26,7 +26,7 @@ const getGap = lastSyncedAt => {
   if (moment().diff(moment(lastSyncedAt), 'days') > 0) {
     return {
       amount: 1,
-      unit: 'day'
+      unit: 'hour'
     }
   }
 
@@ -78,7 +78,6 @@ const getActions = async params => {
       }
     }
   )
-
   const notIrreversible = data.simple_actions.find(item => !item.irreversible)
 
   if (notIrreversible) {
@@ -121,6 +120,7 @@ const runUpdaters = async actions => {
       LASTEST_RATE_DATA_CONSULTED = data.market_data.current_price.usd
       LASTEST_RATE_DATE_CONSULTED = txDate
     }
+
     await updater.apply({ ...action, electionId: edenElectionId.id, eosPrice: LASTEST_RATE_DATA_CONSULTED })
   }
 }
@@ -146,6 +146,7 @@ const sync = async () => {
     while (hasMore) {
       ;({ hasMore, actions } = await getActions({ after, before, skip }))
       skip += actions.length
+
       await runUpdaters(actions)
     }
   } catch (error) {
