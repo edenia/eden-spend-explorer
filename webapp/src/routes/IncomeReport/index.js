@@ -79,10 +79,10 @@ const IncomesChart = ({ data }) => {
   return (
     <>
       <Box display="flex" justifyContent="end"></Box>
-      <ResponsiveContainer width="100%" height={500}>
+      <ResponsiveContainer width="100%" height={400}>
         <ComposedChart
-          width={500}
-          height={400}
+          width={1000}
+          height={300}
           data={data}
           margin={{
             top: 20,

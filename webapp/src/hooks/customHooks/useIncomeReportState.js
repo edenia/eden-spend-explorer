@@ -2,17 +2,12 @@ import { useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 
 import { eosApi } from '../../utils/eosapi'
-import { TRANSACTIONS_QUERY } from '../../gql'
+import { INCOME_TRANSACTIONS_BY_DELEGATE_QUERY } from '../../gql'
 
 const useIncomeReportState = () => {
   const [currencyBalance, setCurrencyBalance] = useState('')
   const [eosRate, setEosRate] = useState(0)
-  const [transactionsList, setTransactionsList] = useState([
-    {
-      name: 'Test',
-      EOS: 590.35
-    }
-  ])
+  const [transactionsList, setTransactionsList] = useState()
 
   const getBalance = async () => {
     const response = eosApi.getCurrencyBalance(
@@ -50,19 +45,21 @@ const useIncomeReportState = () => {
     const newFormatData = txList.map(data => {
       return {
         name: data.eden_election.eden_delegate.account,
-        [txType]: txType === 'EOS' ? data.amount : data.usd_total
+        [txType]:
+          txType === 'EOS'
+            ? data.eden_election.eden_transactions_aggregate.aggregate.sum
+                .amount
+            : data.eden_election.eden_transactions_aggregate.aggregate.sum
+                .usd_total
       }
     })
 
-    setTransactionsList([
-      ...transactionsList,
-      newFormatData[0],
-      newFormatData[1],
-      newFormatData[2]
-    ])
+    setTransactionsList(newFormatData)
   }
 
-  const [load, { loading, data }] = useLazyQuery(TRANSACTIONS_QUERY)
+  const [load, { loading, data }] = useLazyQuery(
+    INCOME_TRANSACTIONS_BY_DELEGATE_QUERY
+  )
 
   useEffect(() => {
     getEosRate()
