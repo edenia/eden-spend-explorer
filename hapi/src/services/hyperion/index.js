@@ -23,17 +23,10 @@ const getLastSyncedAt = async () => {
 }
 
 const getGap = lastSyncedAt => {
-  if (moment().diff(moment(lastSyncedAt), 'days') > 0) {
+  if (moment().diff(moment(lastSyncedAt), 'minutes') > 0) {
     return {
       amount: 1,
-      unit: 'hour'
-    }
-  }
-
-  if (moment().diff(moment(lastSyncedAt), 'hours') > 0) {
-    return {
-      amount: 1,
-      unit: 'hour'
+      unit: 'minute'
     }
   }
 
@@ -92,16 +85,23 @@ const getActions = async params => {
   }
 }
 
-const runUpdaters = async actions => {  
+const runUpdaters = async actions => {
   for (let index = 0; index < actions.length; index++) {
     const action = actions[index]
-    const updater = updaters.find(item => item.type === `${action.contract}:${action.action}`)
+    const updater = updaters.find(
+      item => item.type === `${action.contract}:${action.action}`
+    )
 
     if (!updater) continue
 
-    const edenElectionId = action.contract === 'genesis.eden' ?
-      await edenElectionGql.get({ eden_delegate: { account: { _eq: action.data.owner } } }) :
-      await edenElectionGql.get({ eden_delegate: { account: { _eq: action.data.from } } })
+    const edenElectionId =
+      action.contract === 'genesis.eden'
+        ? await edenElectionGql.get({
+            eden_delegate: { account: { _eq: action.data.owner } }
+          })
+        : await edenElectionGql.get({
+            eden_delegate: { account: { _eq: action.data.from } }
+          })
 
     if (!edenElectionId) continue
 
@@ -121,7 +121,11 @@ const runUpdaters = async actions => {
       LASTEST_RATE_DATE_CONSULTED = txDate
     }
 
-    await updater.apply({ ...action, electionId: edenElectionId.id, eosPrice: LASTEST_RATE_DATA_CONSULTED })
+    await updater.apply({
+      ...action,
+      electionId: edenElectionId.id,
+      eosPrice: LASTEST_RATE_DATA_CONSULTED
+    })
   }
 }
 

@@ -38,5 +38,5 @@ const get = async (where, getMany = false) => {
 
 module.exports = {
   save,
-  get,
+  get
 }

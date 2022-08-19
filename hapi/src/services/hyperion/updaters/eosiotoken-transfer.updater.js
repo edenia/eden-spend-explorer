@@ -4,9 +4,11 @@ const { updaterUtil } = require('../../../utils')
 module.exports = {
   type: `eosio.token:transfer`,
   apply: async action => {
-    if ( !updaterUtil.isEdenExpense( action.data.memo) ) return
+    if (!updaterUtil.isEdenExpense(action.data.memo)) return
 
-    const { category, description } = updaterUtil.memoSplit( action.data.memo.split(':')[1] || '' )
+    const { category, description } = updaterUtil.memoSplit(
+      action.data.memo.split(':')[1] || ''
+    )
 
     try {
       const transactionData = {

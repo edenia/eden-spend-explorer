@@ -3,7 +3,7 @@ const { edenTransactionGql } = require('../../../gql')
 module.exports = {
   type: `genesis.eden:withdraw`,
   apply: async action => {
-    const amount = Number( action.data.quantity.split(' ')[0] )
+    const amount = Number(action.data.quantity.split(' ')[0])
 
     try {
       const transactionData = {
