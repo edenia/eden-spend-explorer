@@ -44,9 +44,9 @@ const run = async ({ name, action, interval }) => {
 const init = async () => {
   await hasuraUtil.hasuraAssembled()
 
-  run(hyperionService.syncWorker())
-  run(edenDelegatesService.updateEdenTableWorker())
-  run(edenElectionService.updateEdenElection())
+  // run(hyperionService.syncWorker())
+  // run(edenDelegatesService.updateEdenTableWorker())
+  // run(edenElectionService.updateEdenElection())
 }
 
 module.exports = {

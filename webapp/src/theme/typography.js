@@ -1,7 +1,22 @@
 const typography = {
+  fontFamily: [
+    'Inter',
+    'Nunito',
+    '-apple-system',
+    'BlinkMacSystemFont',
+    '"Segoe UI"',
+    'Roboto',
+    '"Helvetica Neue"',
+    'Arial',
+    'sans-serif',
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"'
+  ].join(','),
   body1: {
     fontWeight: 400,
-    letterSpacing: 0.44
+    letterSpacing: 0.44,
+    color: '#606060'
   },
   overline: {
     letterSpacing: 1.5,
