@@ -3,10 +3,12 @@ const moment = require('moment')
 const updaters = require('./updaters')
 const hyperionStateService = require('../../gql/hyperion-state.gql')
 const { edenElectionGql } = require('../../gql')
-const { hyperionConfig } = require('../../config')
-const { hasuraUtil, axiosUtil, sleepUtil, isEdenExpense } = require('../../utils')
+const { hyperionConfig, eosConfig } = require('../../config')
+const { hasuraUtil, axiosUtil, sleepUtil } = require('../../utils')
 
 const TIME_BEFORE_IRREVERSIBILITY = 164
+let LASTEST_RATE_DATE_CONSULTED = null
+let LASTEST_RATE_DATA_CONSULTED = null
 
 const getLastSyncedAt = async () => {
   const state = await hyperionStateService.getState()
@@ -21,17 +23,10 @@ const getLastSyncedAt = async () => {
 }
 
 const getGap = lastSyncedAt => {
-  if (moment().diff(moment(lastSyncedAt), 'days') > 0) {
+  if (moment().diff(moment(lastSyncedAt), 'minutes') > 0) {
     return {
       amount: 1,
-      unit: 'day'
-    }
-  }
-
-  if (moment().diff(moment(lastSyncedAt), 'hours') > 0) {
-    return {
-      amount: 1,
-      unit: 'hour'
+      unit: 'minute'
     }
   }
 
@@ -92,16 +87,45 @@ const getActions = async params => {
 
 const runUpdaters = async actions => {
   for (let index = 0; index < actions.length; index++) {
-    const action  = actions[index]
-    const updater = updaters.find( item => item.type === `${action.contract}:${action.action}`)
+    const action = actions[index]
+    const updater = updaters.find(
+      item => item.type === `${action.contract}:${action.action}`
+    )
 
-    if (!updater || !isEdenExpense( action.data.memo )) continue
+    if (!updater) continue
 
-    const idEdenElection = await edenElectionGql.get({
-      eden_delegate: { account: { _eq: action.data.from } },
+    const edenElectionId =
+      action.contract === 'genesis.eden'
+        ? await edenElectionGql.get({
+            eden_delegate: { account: { _eq: action.data.owner } }
+          })
+        : await edenElectionGql.get({
+            eden_delegate: { account: { _eq: action.data.from } }
+          })
+
+    if (!edenElectionId) continue
+
+    const txDate = await moment(action.timestamp).format('DD-MM-YYYY')
+
+    if (LASTEST_RATE_DATE_CONSULTED !== txDate) {
+      const { data } = await axiosUtil.get(
+        `${eosConfig.eosHistory}/coins/eos/history`,
+        {
+          params: {
+            date: txDate,
+            localization: false
+          }
+        }
+      )
+      LASTEST_RATE_DATA_CONSULTED = data.market_data.current_price.usd
+      LASTEST_RATE_DATE_CONSULTED = txDate
+    }
+
+    await updater.apply({
+      ...action,
+      electionId: edenElectionId.id,
+      eosPrice: LASTEST_RATE_DATA_CONSULTED
     })
-
-    if (idEdenElection) await updater.apply({ ...action, idElection: idEdenElection.id })
   }
 }
 

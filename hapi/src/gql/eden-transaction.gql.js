@@ -31,17 +31,15 @@ const get = async (where, getMany = false) => {
     }
   }
   `
-  const { eden_transaction: edenTransaction }  = await hasuraUtil.instance.request(
-    query,
-    {
+  const { eden_transaction: edenTransaction } =
+    await hasuraUtil.instance.request(query, {
       where
-    }
-  )
+    })
 
   return getMany ? edenTransaction : edenTransaction[0]
 }
 
 module.exports = {
   save,
-  get,
+  get
 }
