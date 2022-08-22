@@ -1,4 +1,4 @@
-FROM node:16.14.0-alpine  as build-stage
+FROM node:16.17.0  as build-stage
 
 ARG react_app_tag
 ARG react_app_name

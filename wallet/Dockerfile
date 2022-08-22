@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 as install-stage
+FROM --platform=linux/amd64 ubuntu:18.04 as install-stage
 
 ENV WORK_DIR /opt/application
 ENV EOSIO_PACKAGE_URL https://github.com/EOSIO/eos/releases/download/v2.1.0/eosio_2.1.0-1-ubuntu-18.04_amd64.deb

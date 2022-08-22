@@ -9,7 +9,7 @@ services:
       - ./tmp/wallet/:/opt/application/data/
   postgres:
     container_name: 'eosreports-postgres'
-    image: postgres:13.6-alpine
+    image: postgres:12.12-bullseye
     ports:
       - '5432:5432'
     volumes:
@@ -20,7 +20,7 @@ services:
       POSTGRES_DB: '${POSTGRES_DB}'
   hapi:
     container_name: 'eosreports-hapi'
-    image: node:16.13.2-slim
+    image: node:16.17.0-slim
     ports:
       - '9090:9090'
     volumes:
@@ -45,7 +45,7 @@ services:
       HAPI_EDEN_ELECTION_INTERVAL: '${HAPI_EDEN_ELECTION_INTERVAL}'
   hasura:
     container_name: 'eosreports-hasura'
-    image: hasura/graphql-engine:v2.6.1.cli-migrations-v3
+    image: hasura/graphql-engine:v2.10.1.cli-migrations-v3
     ports:
       - '8080:8080'
     depends_on:
@@ -70,7 +70,7 @@ services:
       # HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "${HASURA_GRAPHQL_UNAUTHORIZED_ROLE}"
   webapp:
     container_name: 'eosreports-webapp'
-    image: node:16.14.0-alpine
+    image: node:16.17.0
     stdin_open: true
     ports:
       - '3000:3000'
