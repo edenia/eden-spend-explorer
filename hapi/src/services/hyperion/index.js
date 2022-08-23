@@ -150,8 +150,7 @@ const sync = async () => {
     while (hasMore) {
       ;({ hasMore, actions } = await getActions({ after, before, skip }))
       skip += actions.length
-      // console.log('after', after)
-      // console.log('before', before)
+
       await runUpdaters(actions)
     }
   } catch (error) {
