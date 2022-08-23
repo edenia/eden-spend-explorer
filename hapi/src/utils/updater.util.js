@@ -1,8 +1,8 @@
 const { transactionConstant } = require('../constants')
 
 const isEdenExpense = memoString => {
-  const splitMemo = memoString.split(':')
-  return splitMemo[0].toLowerCase() === 'eden_expense'
+  const memoSplit = memoString.split(':')
+  return memoSplit[0].toLowerCase() === 'eden_expense'
 }
 
 const memoSplit = memoString => {

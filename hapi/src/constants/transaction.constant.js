@@ -14,6 +14,12 @@ const CATEGORIES = [
   'travel'
 ]
 
+const RECIPIENTS = {
+  pomelo: 'app.pomelo',
+  edenia: ' edenia4edens'
+}
+
 module.exports = {
-  CATEGORIES
+  CATEGORIES,
+  RECIPIENTS
 }

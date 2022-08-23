@@ -1,14 +1,18 @@
 const { edenTransactionGql } = require('../../../gql')
 const { updaterUtil } = require('../../../utils')
+const { transactionConstant } = require('../../../constants')
 
 module.exports = {
   type: `eosio.token:transfer`,
   apply: async action => {
-    if (!updaterUtil.isEdenExpense(action.data.memo)) return
-
-    const { category, description } = updaterUtil.memoSplit(
+    let { category, description } = updaterUtil.memoSplit(
       action.data.memo.split(':')[1] || ''
     )
+
+    if (action.data.to === transactionConstant.RECIPIENTS.pomelo)
+      category = 'pomelo'
+    if (action.data.to === transactionConstant.RECIPIENTS.edenia)
+      category = 'infrastructure'
 
     try {
       const transactionData = {
