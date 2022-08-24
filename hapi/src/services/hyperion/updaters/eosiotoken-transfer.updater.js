@@ -11,6 +11,7 @@ module.exports = {
 
     if (action.data.to === transactionConstant.RECIPIENTS.pomelo)
       category = 'pomelo'
+
     if (action.data.to === transactionConstant.RECIPIENTS.edenia)
       category = 'infrastructure'
 
