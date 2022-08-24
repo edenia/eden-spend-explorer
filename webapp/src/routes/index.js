@@ -1,7 +1,7 @@
 import React, { lazy } from 'react'
 
 import {
-  Home as GridIcon,
+  Home as HomeIcon,
   Info as InfoIcon,
   HelpCircle as HelpIcon,
   GitMerge as GitMergeIcon,
@@ -21,7 +21,7 @@ const Page404 = lazy(() => import('./Route404'))
 const routes = [
   {
     name: 'home',
-    icon: <GridIcon />,
+    icon: <HomeIcon />,
     component: Home,
     path: '/',
     exact: true
