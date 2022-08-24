@@ -4,6 +4,7 @@ const save = async payload => {
   const mutation = `
     mutation ($payload: eden_delegates_insert_input!) {
       insert_eden_delegates_one(object: $payload) {
+        id,
         account
       }
     }

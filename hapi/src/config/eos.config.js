@@ -4,5 +4,5 @@ module.exports = {
   baseAccount: process.env.HAPI_NETWORK_BASE_ACCOUNT,
   baseAccountPassword: process.env.HAPI_NETWORK_BASE_PASSWORD,
   walletUrl: process.env.HAPI_NETWORK_WALLET_URL,
-  eosHistory: process.env.HAPI_COINS_HISTORY,
+  eosHistory: process.env.HAPI_RATE_HISTORY
 }
