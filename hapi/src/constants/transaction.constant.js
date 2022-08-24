@@ -16,7 +16,7 @@ const CATEGORIES = [
 
 const RECIPIENTS = {
   pomelo: 'app.pomelo',
-  edenia: ' edenia4edens'
+  edenia: 'edenia4edens'
 }
 
 module.exports = {
