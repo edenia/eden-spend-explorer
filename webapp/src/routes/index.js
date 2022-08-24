@@ -30,7 +30,7 @@ const routes = [
     name: 'incomes',
     icon: <CardIcon />,
     component: IncomeReport,
-    path: '/incomes',
+    path: '/income',
     exact: true
   },
   {

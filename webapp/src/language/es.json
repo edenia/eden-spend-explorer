@@ -7,9 +7,9 @@
   },
   "routes": {
     "/>title": "Eden on EOS Accounting Standard",
-    "/incomes>title": "Ingresos | Eden on EOS Accounting Standard",
-    "/incomes>sidebar": "Ingresos",
-    "/incomes>heading": "Ingresos",
+    "/income>title": "Ingresos | Eden on EOS Accounting Standard",
+    "/income>sidebar": "Ingresos",
+    "/income>heading": "Ingresos",
     "/>sidebar": "Inicio",
     "/>heading": "Inicio",
     "/about>title": "Acerca de | Eden on EOS Accounting Standard",
@@ -26,6 +26,22 @@
   },
   "homeRoute": {
     "welcomeMessage": "El estándar de contabilidad de Eden es un mecanismo de informes destinado a proporcionar a la comunidad de Eden y EOS información sobre cómo se asignan los fondos de Eden. Los delegados electos pueden adherirse al estándar y reportar fácilmente sus gastos de Eden utilizando un formato específico para el campo de memo de la acción de transferencia de token EOS."
+  },
+  "incomeRoute": {
+    "title": "Ingresos por delegados",
+    "titleEosBalance": "Balance de tesorería de Eden",
+    "textInformation": "Los desembolsos de los delegados de Eden se producen mensualmente y son reclamados por el delegado desde el contrato a sus cuentas personales de EOS...",
+    "textRadioButton1": "Por un delegado",
+    "textRadioButton2": "Por todos los delegados",
+    "textYearSelect": "Año",
+    "textElectionSelect": "Elección",
+    "textCurrencySelect": "Moneda",
+    "textDelegateSelect": "Delegado",
+    "titleTable": "Delegados ordenados por ingresos de mayor a menor",
+    "tableHeader1": "Nombre",
+    "tableHeader2": "Nivel de delegado",
+    "tableHeader3": "Total de EOS obtenidos",
+    "tableHeader4": "Total de USD obtenidos"
   },
   "aboutRoute": {
     "title": "Este proyecto",

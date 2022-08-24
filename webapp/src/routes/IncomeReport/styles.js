@@ -38,5 +38,15 @@ export default theme => ({
       lineHeight: 1.25,
       letterSpacing: '-0.34px'
     }
+  },
+  tableTitle: {
+    // margin: 1.5px 0.6px 0 0;
+    color: '#606060',
+    [theme.breakpoints.up('300')]: {
+      fontSize: '24px',
+      fontWeight: 'bold',
+      lineHeight: 1.25,
+      letterSpacing: '-0.48px'
+    }
   }
 })

@@ -1,1 +1,1 @@
-export * from './incomes.gql'
+export * from './income.gql'
