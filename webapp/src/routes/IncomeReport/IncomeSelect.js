@@ -15,7 +15,7 @@ const IncomeSelect = ({
       <Select
         labelId="demo-select-small"
         id="select-id"
-        value={actualValue}
+        value={actualValue || ''}
         label={labelSelect}
         onChange={({ target }) => onChangeFunction(target.value)}
         disabled={disable || !values[0]}
