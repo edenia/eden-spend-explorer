@@ -7,6 +7,9 @@
   },
   "routes": {
     "/>title": "Eden on EOS Accounting Standard",
+    "/income>title": "Treasury | Eden on EOS Accounting Standard",
+    "/income>sidebar": "Income",
+    "/income>heading": "Income",
     "/>sidebar": "Home",
     "/>heading": "Welcome",
     "/about>title": "About | Eden on EOS Accounting Standard",
@@ -23,6 +26,22 @@
   },
   "homeRoute": {
     "welcomeMessage": "The Eden Accounting Standard is a reporting mechanism meant to provide the Eden and EOS community information around how Eden funds are being allocated. Elected delegates may adhere to the standard and easily report their Eden expenses using a specific format for the memo field of the EOS token transfer action."
+  },
+  "incomeRoute": {
+    "title": "Income By Delegates",
+    "titleEosBalance": "Eden Treasury Balance",
+    "textInformation": "Eden delegate disbursements occur monthly and are claimed by the delegate from the contract to their personal EOS accounts...",
+    "textRadioButton1": "By one delegate",
+    "textRadioButton2": "By all delegates",
+    "textYearSelect": "Year",
+    "textElectionSelect": "Election",
+    "textCurrencySelect": "Currency",
+    "textDelegateSelect": "Delegate",
+    "titleTable": "Delegates ranked in order of income from highest to lowest",
+    "tableHeader1": "Name",
+    "tableHeader2": "Delegate level",
+    "tableHeader3": "Total EOS earned",
+    "tableHeader4": "Total USD earned"
   },
   "aboutRoute": {
     "title": "This project",

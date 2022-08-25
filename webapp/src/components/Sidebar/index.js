@@ -27,7 +27,7 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 
 const NavLink = React.forwardRef((props, ref) => (
-  <RouterNavLink innerRef={ref} {...props} />
+  <RouterNavLink ref={ref} {...props} />
 ))
 
 NavLink.displayName = 'NavLink'
@@ -63,9 +63,8 @@ const ListItemLink = ({ name, path, icon, badge, ...props }) => {
     <MuiListItem
       button
       component={path.includes('http') ? ExternalLink : NavLink}
-      exact
       to={path}
-      activeClassName="active"
+      activeclassname="active"
       href={path}
       {...props}
     >

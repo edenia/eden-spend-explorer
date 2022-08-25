@@ -1,16 +1,18 @@
 import React, { lazy } from 'react'
 
 import {
-  Grid as GridIcon,
+  Home as HomeIcon,
   Info as InfoIcon,
   HelpCircle as HelpIcon,
   GitMerge as GitMergeIcon,
   GitHub as GitHubIcon,
-  Send as TelegramIcon
+  Send as TelegramIcon,
+  CreditCard as CardIcon
 } from 'react-feather'
 
 import { mainConfig } from '../config'
 
+const IncomeReport = lazy(() => import('./IncomeReport'))
 const Home = lazy(() => import('./Home'))
 const About = lazy(() => import('./About'))
 const Help = lazy(() => import('./Help'))
@@ -19,9 +21,16 @@ const Page404 = lazy(() => import('./Route404'))
 const routes = [
   {
     name: 'home',
-    icon: <GridIcon />,
+    icon: <HomeIcon />,
     component: Home,
     path: '/',
+    exact: true
+  },
+  {
+    name: 'incomes',
+    icon: <CardIcon />,
+    component: IncomeReport,
+    path: '/income',
     exact: true
   },
   {
