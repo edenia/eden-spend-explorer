@@ -155,29 +155,22 @@ const useIncomeReportState = () => {
     getEosBalance()
     loadElectionsByYear()
     loadIncomeByAllDelegates()
+    loadIncomeByDelegateAccount()
   }, [])
 
   useEffect(() => {
-    loadElectionsByYear()
-  }, [electionYearSelect])
-
-  useEffect(() => {
-    if (electionsByYearData?.eden_election[0]) {
+    if (electionsByYearData?.eden_election) {
       setElectionRoundSelect(
-        electionsByYearData.eden_election[0].election_round
+        electionsByYearData.eden_election[0]?.election_round
       )
       setElectionsByYearList(electionsByYearData.eden_election)
     }
   }, [electionsByYearData])
 
   useEffect(() => {
-    loadIncomeByDelegateAccount()
-  }, [delegateSelect])
-
-  useEffect(() => {
     if (icomeByAllDelegatesData?.eden_election) {
       setDelegateSelect(
-        icomeByAllDelegatesData.eden_election[0]?.eden_delegate.account || ''
+        icomeByAllDelegatesData.eden_election[0]?.eden_delegate.account
       )
       setIncomeByAllDelegatesList(icomeByAllDelegatesData.eden_election)
     }
