@@ -13,10 +13,10 @@ const save = async payload => {
   return data.insert_eden_election_one
 }
 
-const get = async (date, getMany = false) => {
+const get = async (where, getMany = false) => {
   const query = `
-    query ($date: timestamptz) {
-      eden_historic_election(where: {date_election: {_lte: $date}}, limit: 1, order_by: {date_election: desc}) {
+    query ($where: eden_election_bool_exz) {
+      eden_historic_election(where: $where, limit: 1, order_by: {date_election: desc}) {
         id
         election_round
         date_election
@@ -27,7 +27,7 @@ const get = async (date, getMany = false) => {
   `
   const { eden_historic_election: edenHistoricElection } =
     await hasuraUtil.instance.request(query, {
-      date
+      where
     })
 
   return getMany ? edenHistoricElection : edenHistoricElection[0]

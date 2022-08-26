@@ -1,23 +1,22 @@
-const {
-  edenDelegatesGql,
-  edenElectionGql,
-  edenHistoricElectionGql
-} = require('../../../gql')
+const { edenElectionGql } = require('../../../gql')
+const { edenHistoricElectionGql } = require('../../../gql')
+const { edenDelegatesGql } = require('../../../gql')
+const { eosUtil } = require('../../../utils')
 
 module.exports = {
   type: `genesis:fundtransfer`,
   apply: async action => {
     try {
-      const election = edenHistoricElectionGql.get(
-        action.data.distribution_time
-      )
+      const election = await edenHistoricElectionGql.get({
+        date_election: { _lte: action.data.distribution_time }
+      })
 
       let registeredMember = await edenDelegatesGql.get({
         account: { _eq: action.data.to }
       })
 
       if (!registeredMember)
-        registeredMember = await edenDelegatesGql.save(memberData)
+        registeredMember = await edenDelegatesGql.save(action.data.to)
 
       const electionData = {
         id_delegate: registeredMember.id,
@@ -32,12 +31,18 @@ module.exports = {
 
       if (!registeredElection) await edenElectionGql.save(electionData)
 
-      if (registeredElection.delegate_level < electionData.delegate_level)
-        await edenElectionGql.updateDelegateLevel(
-          electionData.id_delegate,
-          electionData.election_round,
-          electionData.delegate_level
+      if (registeredElection.delegate_level < electionData.delegate_level) {
+        const rank = electionData.delegate_level
+        await edenElectionGql.update(
+          {
+            id_delegate: { _eq: electionData.id_delegate },
+            election_round: { _eq: electionData.election_round }
+          },
+          {
+            delegate_level: { rank }
+          }
         )
+      }
     } catch (error) {
       console.error(`error to sync ${action.action}: ${error.message}`)
     }

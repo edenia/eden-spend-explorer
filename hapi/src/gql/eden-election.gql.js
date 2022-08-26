@@ -13,10 +13,10 @@ const save = async payload => {
   return data.insert_eden_election_one
 }
 
-const updateDelegateLevel = async (delegate, electionRound, delegate_level) => {
+const update = async (where, eden_election) => {
   const mutation = `
-    mutation updateDelegateLevel($delegate: uuid, $electionRound: Int, $delegate_level: Int) {
-      update_eden_election(where: {election_round: {_eq: $electionRound}, id_delegate: {_eq: $delegate}}, _set: {delegate_level: $delegate_level}) {
+    mutation update($where: eden_election_bool_exp!, $eden_election: eden_election_set_input) {
+      update_eden_election(where: $where, _set: $eden_election}) {
         returning {
           id
         }
@@ -25,9 +25,8 @@ const updateDelegateLevel = async (delegate, electionRound, delegate_level) => {
   `
 
   const data = await hasuraUtil.instance.request(mutation, {
-    delegate,
-    electionRound,
-    delegate_level
+    where,
+    eden_election
   })
 
   return data.update_eden_election
@@ -58,6 +57,6 @@ const get = async (where, getMany = false) => {
 
 module.exports = {
   save,
-  updateDelegateLevel,
+  update,
   get
 }
