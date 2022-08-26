@@ -12,7 +12,7 @@ module.exports = {
         action.data.distribution_time
       )
 
-      let registeredMember = edenDelegatesGql.get({
+      let registeredMember = await edenDelegatesGql.get({
         account: { _eq: action.data.to }
       })
 
@@ -25,7 +25,7 @@ module.exports = {
         delegate_level: action.data.rank
       }
 
-      const registeredElection = edenElectionGql.get({
+      const registeredElection = await edenElectionGql.get({
         id_delegate: { _eq: registeredMember.id },
         election_round: { _eq: electionData.election_round }
       })
