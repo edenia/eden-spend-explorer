@@ -149,6 +149,7 @@ const Sidebar = ({ routes, ...props }) => {
       </Box>
 
       <Scrollbar className={classes.scrollbar}>
+        <Box width="235px" height="2px" bgcolor="#00c2bf" margin="auto" />
         <List component="nav">
           {routes.map((category, index) => (
             <ListItem

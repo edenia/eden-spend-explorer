@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import Box from '@mui/material/Box'
+import { Grid, Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 
 import styles from './styles'
@@ -11,7 +11,22 @@ const Footer = () => {
 
   return (
     <Box borderTop={1} borderColor="#DEE3E3" className={classes.root}>
-      Probando ando
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <Box className={classes.edenInformation}>
+            <a href="https://edeneos.org/">Genesis Eden Community</a>
+          </Box>
+        </Grid>
+        <Grid item xs={6}>
+          <Box display="flex" justifyContent="end">
+            <Box className={classes.creatorInformation}>
+              <a href="https://edenia.com/">
+                An open source project made with <span>♥</span> by Edenia
+              </a>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   )
 }

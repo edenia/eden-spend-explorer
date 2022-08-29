@@ -55,6 +55,7 @@ const IncomeReport = () => {
               height="100%"
               paddingLeft={2}
             >
+              <Box width="4px" height="31px" bgcolor="#00c2bf" />
               <label className={classes.eosBalance}>{t('title')}</label>
             </Box>
           </Grid>

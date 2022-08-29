@@ -51,6 +51,9 @@ export default theme => ({
     },
     '& .active': {
       backgroundColor: 'rgba(0, 194, 191, 0.25)'
+    },
+    '& .active:hover': {
+      backgroundColor: 'rgba(0, 194, 191, 0.80)'
     }
   }
 })

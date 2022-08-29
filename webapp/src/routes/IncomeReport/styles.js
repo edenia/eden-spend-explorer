@@ -18,6 +18,7 @@ export default theme => ({
   },
   eosBalance: {
     [theme.breakpoints.up('300')]: {
+      marginLeft: '8px',
       fontSize: '22.6px',
       fontWeight: 'bold',
       lineHeight: 1.12,

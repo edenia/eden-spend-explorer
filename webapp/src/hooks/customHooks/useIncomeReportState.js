@@ -165,6 +165,11 @@ const useIncomeReportState = () => {
       )
       setElectionsByYearList(electionsByYearData.eden_election)
     }
+    if (!electionsByYearData?.eden_election[0]) {
+      setIncomeByAllDelegatesList([])
+      setIncomeByDelegateAccountList([])
+      setDelegateSelect('')
+    }
   }, [electionsByYearData])
 
   useEffect(() => {
