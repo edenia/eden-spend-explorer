@@ -4,7 +4,6 @@ import { NavLink as RouterNavLink, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
-import Divider from '@mui/material/Divider'
 import Chip from '@mui/material/Chip'
 import List from '@mui/material/List'
 import MuiListItem from '@mui/material/ListItem'
@@ -140,7 +139,7 @@ const Sidebar = ({ routes, ...props }) => {
   const classes = useStyles()
 
   return (
-    <Drawer {...props}>
+    <Drawer className={classes.main} {...props}>
       <Box className={classes.brand}>
         <img
           alt={mainConfig.title}
@@ -148,7 +147,7 @@ const Sidebar = ({ routes, ...props }) => {
           onClick={() => navigate('/')}
         />
       </Box>
-      <Divider />
+
       <Scrollbar className={classes.scrollbar}>
         <List component="nav">
           {routes.map((category, index) => (

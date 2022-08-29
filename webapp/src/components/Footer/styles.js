@@ -1,7 +1,11 @@
 export default theme => ({
   root: {
     padding: theme.spacing(2),
-    position: 'relative'
+    backgroundColor: '#eef1f4',
+    height: '64px',
+    position: 'fixed',
+    bottom: 0,
+    width: '100%'
   },
   listItem: {
     display: 'inline-block',

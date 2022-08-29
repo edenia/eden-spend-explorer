@@ -9,7 +9,6 @@ export default theme => ({
     }
   },
   eosPriceTitle: {
-    color: '#606060',
     [theme.breakpoints.up('300')]: {
       fontSize: '11.3px',
       lineHeight: 1.37,
@@ -18,7 +17,6 @@ export default theme => ({
     }
   },
   eosBalance: {
-    color: '#606060',
     [theme.breakpoints.up('300')]: {
       fontSize: '22.6px',
       fontWeight: 'bold',
@@ -27,7 +25,6 @@ export default theme => ({
     }
   },
   eosBalanceInDollars: {
-    color: '#606060',
     [theme.breakpoints.up('300')]: {
       fontSize: '17px',
       fontWeight: 'bold',
@@ -36,7 +33,6 @@ export default theme => ({
     }
   },
   tableTitle: {
-    color: '#606060',
     [theme.breakpoints.up('300')]: {
       fontSize: '24px',
       fontWeight: 'bold',

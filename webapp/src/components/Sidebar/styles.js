@@ -1,6 +1,7 @@
 export default theme => ({
+  main: { '& .MuiDrawer-paper': { borderWidth: 0 } },
   brand: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: '#eef1f4',
     display: 'flex',
     justifyContent: 'center',
     padding: theme.spacing(3),
@@ -13,7 +14,7 @@ export default theme => ({
     }
   },
   scrollbar: {
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: '#eef1f4'
   },
   badge: {
     fontWeight: theme.typography.fontWeightBold,
@@ -33,11 +34,13 @@ export default theme => ({
       paddingLeft: theme.spacing(2),
       cursor: 'default'
     },
-    '& .MuiBox-root': {
-      width: '100%',
+    '& .MuiListItem-root': {
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      borderRadius: '12px',
+      width: '234px',
+      margin: 'auto'
     },
     '& .MuiCollapse-container': {
       width: '100%',
@@ -47,7 +50,7 @@ export default theme => ({
       fontSize: theme.typography.subtitle2.fontSize
     },
     '& .active': {
-      backgroundColor: theme.palette.action.selected
+      backgroundColor: 'rgba(0, 194, 191, 0.25)'
     }
   }
 })
