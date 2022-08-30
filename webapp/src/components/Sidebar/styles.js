@@ -1,7 +1,7 @@
 export default theme => ({
   main: { '& .MuiDrawer-paper': { borderWidth: 0 } },
   brand: {
-    backgroundColor: '#eef1f4',
+    backgroundColor: theme.palette.primaryLight.main,
     display: 'flex',
     justifyContent: 'center',
     padding: theme.spacing(3),
@@ -14,7 +14,7 @@ export default theme => ({
     }
   },
   scrollbar: {
-    backgroundColor: '#eef1f4'
+    backgroundColor: theme.palette.primaryLight.main
   },
   badge: {
     fontWeight: theme.typography.fontWeightBold,

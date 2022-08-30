@@ -1,5 +1,6 @@
 export default theme => ({
   appBar: {
+    position: 'fixed',
     backgroundColor: `${theme.palette.background.paper}`,
     boxShadow: `${theme.shadows[0]}`,
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -15,7 +16,7 @@ export default theme => ({
     }
   },
   typography: {
-    color: `${theme.palette.text.primary}`,
+    color: `${theme.palette.text.secondary}`,
     flexGrow: 1
   },
   desktopSection: {

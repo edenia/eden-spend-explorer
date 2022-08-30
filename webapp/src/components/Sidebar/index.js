@@ -1,25 +1,27 @@
 import React, { memo, useState } from 'react'
 import PropTypes from 'prop-types'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { NavLink as RouterNavLink, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import Box from '@mui/material/Box'
-import Drawer from '@mui/material/Drawer'
-import Chip from '@mui/material/Chip'
-import List from '@mui/material/List'
-import MuiListItem from '@mui/material/ListItem'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import Typography from '@mui/material/Typography'
-import Collapse from '@mui/material/Collapse'
 import { makeStyles } from '@mui/styles'
+import MuiListItem from '@mui/material/ListItem'
+import {
+  Box,
+  Drawer,
+  Chip,
+  List,
+  Typography,
+  ListItemIcon,
+  ListItemText,
+  Collapse,
+  Toolbar
+} from '@mui/material'
 import {
   ChevronDown as ChevronDownIcon,
   ChevronUp as ChevronUpIcon
 } from 'react-feather'
 import Scrollbar from 'react-perfect-scrollbar'
 import 'react-perfect-scrollbar/dist/css/styles.css'
-
-import { mainConfig } from '../../config'
 
 import styles from './styles'
 
@@ -140,12 +142,15 @@ const Sidebar = ({ routes, ...props }) => {
 
   return (
     <Drawer className={classes.main} {...props}>
+      <Toolbar />
       <Box className={classes.brand}>
-        <img
-          alt={mainConfig.title}
-          src={mainConfig.logo}
-          onClick={() => navigate('/')}
-        />
+        <Box display="flex" flexDirection="column" textAlign="center">
+          <AccountCircleIcon
+            onClick={() => navigate('/')}
+            sx={{ color: '#00c2bf', fontSize: '80px' }}
+          />
+          <Typography>USER</Typography>
+        </Box>
       </Box>
 
       <Scrollbar className={classes.scrollbar}>

@@ -28,7 +28,8 @@
     "welcomeMessage": "El estándar de contabilidad de Eden es un mecanismo de informes destinado a proporcionar a la comunidad de Eden y EOS información sobre cómo se asignan los fondos de Eden. Los delegados electos pueden adherirse al estándar y reportar fácilmente sus gastos de Eden utilizando un formato específico para el campo de memo de la acción de transferencia de token EOS."
   },
   "incomeRoute": {
-    "title": "Ingresos por delegados",
+    "title": "Ingresos",
+    "subTitle": "Ingresos por delegados",
     "titleEosBalance": "Balance de tesorería de Eden",
     "textInformation": "Los desembolsos de los delegados de Eden se producen mensualmente y son reclamados por el delegado desde el contrato a sus cuentas personales de EOS...",
     "textRadioButton1": "Por un delegado",

@@ -10,6 +10,7 @@ import Message from '../../components/Message'
 import Footer from '../../components/Footer'
 
 import styles from './styles'
+import { Toolbar } from '@mui/material'
 
 const drawerWidth = 260
 const useStyles = makeStyles(theme => styles(theme, drawerWidth))
@@ -26,10 +27,11 @@ const Dashboard = ({ children, routes }) => {
     <Box height="100%">
       <Box className={classes.root}>
         <Box className={classes.drawer}>
+          <Header onDrawerToggle={handleDrawerToggle} />
           <Hidden mdUp implementation="js">
             <Sidebar
               PaperProps={{
-                style: { width: drawerWidth, height: 'calc(100vh - 64px)' }
+                style: { width: drawerWidth }
               }}
               variant="temporary"
               open={mobileOpen}
@@ -37,7 +39,7 @@ const Dashboard = ({ children, routes }) => {
               routes={routes}
             />
           </Hidden>
-          <Hidden smDown implementation="css">
+          <Hidden mdDown implementation="css">
             <Sidebar
               PaperProps={{
                 style: { width: drawerWidth, height: 'calc(100vh - 64px)' }
@@ -48,7 +50,7 @@ const Dashboard = ({ children, routes }) => {
           </Hidden>
         </Box>
         <Box className={classes.mainContent}>
-          <Header onDrawerToggle={handleDrawerToggle} />
+          <Toolbar />
           <Box className={classes.childContent}>{children}</Box>
           <Message />
         </Box>

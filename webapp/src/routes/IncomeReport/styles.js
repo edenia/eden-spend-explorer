@@ -1,4 +1,17 @@
 export default theme => ({
+  title: {
+    fontWeight: 'bold',
+    fontSize: '32px',
+    lineHeight: 1.13,
+    letterSpacing: '-0.64px',
+    marginLeft: '8px'
+  },
+  subTitle: {
+    fontSize: '24px',
+    fontWeight: 'bold',
+    lineHeight: 1.25,
+    letterSpacing: '-0.48px'
+  },
   eosPriceContainer: {
     backgroundColor: 'rgba(0, 194, 191, 0.25)',
     [theme.breakpoints.up('300')]: {
@@ -18,12 +31,26 @@ export default theme => ({
   },
   eosBalance: {
     [theme.breakpoints.up('300')]: {
-      marginLeft: '8px',
       fontSize: '22.6px',
       fontWeight: 'bold',
       lineHeight: 1.12,
       letterSpacing: '-0.45px'
     }
+  },
+  filtersContainer: {
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center'
+    },
+    [theme.breakpoints.up('sm')]: {
+      textAlign: 'end'
+    }
+  },
+  chartContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    overflow: 'hidden',
+    overflowX: 'auto',
+    overflowY: 'auto'
   },
   eosBalanceInDollars: {
     [theme.breakpoints.up('300')]: {
@@ -31,14 +58,6 @@ export default theme => ({
       fontWeight: 'bold',
       lineHeight: 1.25,
       letterSpacing: '-0.34px'
-    }
-  },
-  tableTitle: {
-    [theme.breakpoints.up('300')]: {
-      fontSize: '24px',
-      fontWeight: 'bold',
-      lineHeight: 1.25,
-      letterSpacing: '-0.48px'
     }
   }
 })

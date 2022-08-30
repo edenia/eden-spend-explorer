@@ -28,7 +28,8 @@
     "welcomeMessage": "The Eden Accounting Standard is a reporting mechanism meant to provide the Eden and EOS community information around how Eden funds are being allocated. Elected delegates may adhere to the standard and easily report their Eden expenses using a specific format for the memo field of the EOS token transfer action."
   },
   "incomeRoute": {
-    "title": "Income By Delegate",
+    "title": "Income",
+    "subTitle": "Income By Delegate",
     "titleEosBalance": "Eden Treasury Balance",
     "textInformation": "Eden delegate disbursements occur monthly and are claimed by the delegate from the contract to their personal EOS accounts...",
     "textRadioButton1": "By one delegate",

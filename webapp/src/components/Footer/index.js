@@ -10,14 +10,14 @@ const Footer = () => {
   const classes = useStyles()
 
   return (
-    <Box borderTop={1} borderColor="#DEE3E3" className={classes.root}>
+    <Box borderTop={1} className={classes.root}>
       <Grid container spacing={2}>
-        <Grid item xs={6}>
+        <Grid item xs={4}>
           <Box className={classes.edenInformation}>
             <a href="https://edeneos.org/">Genesis Eden Community</a>
           </Box>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={8}>
           <Box display="flex" justifyContent="end">
             <Box className={classes.creatorInformation}>
               <a href="https://edenia.com/">
