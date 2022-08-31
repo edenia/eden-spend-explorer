@@ -13,10 +13,10 @@ const save = async payload => {
   return data.insert_eden_election_one
 }
 
-const update = async (where, eden_election) => {
+const update = async ({ where, _set }) => {
   const mutation = `
-    mutation update($where: eden_election_bool_exp!, $eden_election: eden_election_set_input) {
-      update_eden_election(where: $where, _set: $eden_election}) {
+    mutation update($where: eden_election_bool_exp!, $_set: eden_election_set_input) {
+      update_eden_election(where: $where, _set: $_set) {
         returning {
           id
         }
@@ -26,7 +26,7 @@ const update = async (where, eden_election) => {
 
   const data = await hasuraUtil.instance.request(mutation, {
     where,
-    eden_election
+    _set
   })
 
   return data.update_eden_election
