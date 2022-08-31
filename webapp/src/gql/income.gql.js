@@ -87,8 +87,8 @@ export const GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
 
 export const GET_ELECTIONS_BY_YEAR = gql`
   query getElectionsBydate($minDate: timestamptz!, $maxDate: timestamptz!) {
-    eden_election(
-      where: { created_at: { _gte: $minDate, _lt: $maxDate } }
+    eden_history_election_date(
+      where: { date_election: { _gte: $minDate, _lt: $maxDate } }
       distinct_on: election_round
     ) {
       election_round
