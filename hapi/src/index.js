@@ -5,7 +5,6 @@ const { workerService } = require('./services')
 const routes = require('./routes')
 
 const init = async () => {
-  const test = 5
   const server = Hapi.server({
     port: serverConfig.port,
     host: serverConfig.host,
