@@ -11,7 +11,7 @@ const historicDelegates = async ({
   limit = 100
 } = {}) => {
   return await eosUtil.getTableRows({
-    code: 'genesis.eden',
+    code: edenConfig.edenContract,
     scope: 0,
     table: 'distaccount',
     limit,
@@ -115,7 +115,7 @@ const getDelegateByFundTransfer = async () => {
     while (hasMore) {
       ;({ hasMore, actions } = await getActions(
         { skip },
-        'genesis.eden:fundtransfer'
+        edenConfig.edenContract + ':fundtransfer'
       ))
       skip += actions.length
       await runDelegateUpdaters(actions)
