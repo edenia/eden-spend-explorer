@@ -165,7 +165,7 @@ const useIncomeReportState = () => {
       )
       setElectionsByYearList(electionsByYearData.eden_history_election_date)
     }
-    if (!electionsByYearData.eden_history_election_date[0]) {
+    if (!electionsByYearData?.eden_history_election_date[0]) {
       setIncomeByAllDelegatesList([])
       setIncomeByDelegateAccountList([])
       setDelegateSelect('')
