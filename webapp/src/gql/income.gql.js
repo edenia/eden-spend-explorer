@@ -1,10 +1,10 @@
 import gql from 'graphql-tag'
 
 export const GET_INCOME_TRANSACTIONS_DELEGATES_QUERY = gql`
-  query getDelegatesByElectionRound($election_round: Int!) {
+  query getDelegatesByElectionRound($election: Int!) {
     eden_election(
       where: {
-        election_round: { _eq: $election_round }
+        election: { _eq: $election }
         eden_transactions: { type: { _eq: "income" } }
       }
     ) {
@@ -14,7 +14,7 @@ export const GET_INCOME_TRANSACTIONS_DELEGATES_QUERY = gql`
       eden_transactions_aggregate(
         where: {
           type: { _eq: "income" }
-          eden_election: { election_round: { _eq: $election_round } }
+          eden_election: { election: { _eq: $election } }
         }
       ) {
         aggregate {
@@ -29,7 +29,7 @@ export const GET_INCOME_TRANSACTIONS_DELEGATES_QUERY = gql`
     eden_transaction_aggregate(
       where: {
         type: { _eq: "income" }
-        eden_election: { election_round: { _eq: $election_round } }
+        eden_election: { election: { _eq: $election } }
       }
     ) {
       aggregate {
@@ -42,15 +42,12 @@ export const GET_INCOME_TRANSACTIONS_DELEGATES_QUERY = gql`
   }
 `
 export const GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
-  query getTransactionsByDelegateAccount(
-    $election_round: Int!
-    $account: String!
-  ) {
+  query getTransactionsByDelegateAccount($election: Int!, $account: String!) {
     eden_transaction(
       where: {
         type: { _eq: "income" }
         _and: {
-          eden_election: { election_round: { _eq: $election_round } }
+          eden_election: { election: { _eq: $election } }
           _and: {
             eden_election: { eden_delegate: { account: { _eq: $account } } }
           }
@@ -67,7 +64,7 @@ export const GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
     eden_transaction_aggregate(
       where: {
         eden_election: {
-          election_round: { _eq: $election_round }
+          election: { _eq: $election }
           _and: { eden_transactions: { type: { _eq: "income" } } }
         }
         _and: {
@@ -89,9 +86,9 @@ export const GET_ELECTIONS_BY_YEAR = gql`
   query getElectionsBydate($minDate: timestamptz!, $maxDate: timestamptz!) {
     eden_election(
       where: { created_at: { _gte: $minDate, _lt: $maxDate } }
-      distinct_on: election_round
+      distinct_on: election
     ) {
-      election_round
+      election
     }
   }
 `

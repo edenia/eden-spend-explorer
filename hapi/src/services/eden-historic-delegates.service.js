@@ -63,13 +63,13 @@ const registerHistoricDelegate = async (date, account, rank) => {
 
   const electionData = {
     id_delegate: registeredMember.id,
-    election_round: election.election_round,
+    election: election.election,
     delegate_level: rank
   }
 
   let registeredElection = await edenElectionGql.get({
     id_delegate: { _eq: registeredMember.id },
-    election_round: { _eq: electionData.election_round }
+    election: { _eq: electionData.election }
   })
 
   if (!registeredElection)
@@ -80,7 +80,7 @@ const registerHistoricDelegate = async (date, account, rank) => {
     await edenElectionGql.update({
       where: {
         id_delegate: { _eq: electionData.id_delegate },
-        election_round: { _eq: electionData.election_round }
+        election: { _eq: electionData.election }
       },
       _set: {
         delegate_level: newRank

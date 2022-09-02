@@ -4,7 +4,7 @@ const save = async payload => {
   const mutation = `
     mutation ($payload: eden_election_insert_input!) {
       insert_eden_election_one(object: $payload) {
-        election_round
+        election
       }
     }
   `
@@ -18,7 +18,7 @@ const get = async (where, getMany = false) => {
     query ($where: eden_historic_election_bool_exp) {
       eden_historic_election(where: $where, limit: 1, order_by: {date_election: desc}) {
         id
-        election_round
+        election
         date_election
         created_at
         updated_at
