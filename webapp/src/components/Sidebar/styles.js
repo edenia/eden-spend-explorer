@@ -1,5 +1,5 @@
 export default theme => ({
-  main: { '& .MuiDrawer-paper': { borderWidth: 0 } },
+  main: { '& .MuiDrawer-paper': { borderWidth: 1 } },
   brand: {
     backgroundColor: theme.palette.primaryLight.main,
     display: 'flex',

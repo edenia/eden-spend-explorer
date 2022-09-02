@@ -1,6 +1,9 @@
 import React, { memo } from 'react'
 import { Grid, Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import { GitMerge as GitMergeIcon } from 'react-feather'
+
+import { mainConfig } from '../../config'
 
 import styles from './styles'
 
@@ -10,18 +13,54 @@ const Footer = () => {
   const classes = useStyles()
 
   return (
-    <Box borderTop={1} className={classes.root}>
-      <Grid container spacing={2}>
-        <Grid item xs={4}>
-          <Box className={classes.edenInformation}>
-            <a href="https://edeneos.org/">Genesis Eden Community</a>
+    <Box className={classes.root}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={4}>
+          <Box className={classes.footerInformation}>
+            <img
+              width="140"
+              height="100"
+              src="https://guias.eoscostarica.io/assets/images/eoscostarica-logo-790106817dcb2928ca190a0723d48662.png"
+            />
+            Copyright ® {new Date().getFullYear()}
+            <a href="https://edenia.com/">Edenia</a>
           </Box>
         </Grid>
-        <Grid item xs={8}>
-          <Box display="flex" justifyContent="end">
-            <Box className={classes.creatorInformation}>
+        <Grid item xs={12} sm={4}>
+          <Box className={classes.footerInformation}>
+            EOS Costa Rica
+            <Box
+              display="flex"
+              alignItems="center"
+              flexDirection="column"
+              mt={2}
+            >
+              <a href="https://edeneos.org/">Website EOS Costa Rica</a>
+              <a href="https://t.me/eoscr">Telegram Channel</a>
+              <a href="https://www.linkedin.com/company/eoscostarica/mycompany/">
+                Linkedin
+              </a>
+              <a href="https://github.com/eoscostarica">GitHub</a>
+            </Box>
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Box className={classes.footerInformation}>
+            Eden Community
+            <Box
+              display="flex"
+              alignItems="center"
+              flexDirection="column"
+              mt={2}
+            >
+              <a href="https://edeneos.org/">Website Eden On EOS</a>
               <a href="https://edenia.com/">
                 An open source project made with <span>♥</span> by Edenia
+              </a>
+              <a href="https://github.com/eoscostarica/eden-accounting-standard/tags">
+                <Box display="flex">
+                  <GitMergeIcon /> {mainConfig.appVersion}
+                </Box>
               </a>
             </Box>
           </Box>

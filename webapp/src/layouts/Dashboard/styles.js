@@ -1,7 +1,6 @@
 export default (theme, drawerWidth) => ({
   root: {
-    display: 'flex',
-    minHeight: 'calc(100vh - 64px)'
+    display: 'flex'
   },
   drawer: {
     [theme.breakpoints.up('md')]: {
@@ -13,15 +12,14 @@ export default (theme, drawerWidth) => ({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    maxWidth: '100%',
-    overflow: 'hidden',
-    height: 'calc(100vh - 48px)'
+    overflow: 'hidden'
   },
   childContent: {
     flex: 1,
     height: '100%',
     padding: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    overflow: 'auto'
+    overflow: 'auto',
+    minHeight: '100vh'
   }
 })
