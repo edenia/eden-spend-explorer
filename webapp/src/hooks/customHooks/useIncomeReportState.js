@@ -159,13 +159,13 @@ const useIncomeReportState = () => {
   }, [])
 
   useEffect(() => {
-    if (electionsByYearData?.eden_history_election_date) {
+    if (electionsByYearData?.eden_historic_election) {
       setElectionRoundSelect(
-        electionsByYearData.eden_history_election_date[0]?.election_round
+        electionsByYearData.eden_historic_election[0]?.election_round
       )
-      setElectionsByYearList(electionsByYearData.eden_history_election_date)
+      setElectionsByYearList(electionsByYearData.eden_historic_election)
     }
-    if (!electionsByYearData?.eden_history_election_date[0]) {
+    if (!electionsByYearData?.eden_historic_election[0]) {
       setIncomeByAllDelegatesList([])
       setIncomeByDelegateAccountList([])
       setDelegateSelect('')
