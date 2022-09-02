@@ -41,7 +41,7 @@ jobs:
           REACT_APP_UAL_API_PROTOCOL: 'https'
           REACT_APP_UAL_API_HOST: 'eosreports.com'
           REACT_APP_UAL_API_PORT: '443'
-          REACT_APP_UAL_CHAIN_ID: '2a02a0053e5a8cf73a56ba0fda11e4d92e0238a4a2aa74fccf46d5a910746840'
+          REACT_APP_UAL_CHAIN_ID: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
           REACT_APP_HASURA_URL: 'https://graphql.eosreports.com/v1/graphql'
           REACT_APP_RATE_HISTORY: https://api.coingecko.com/api/v3
 
@@ -63,8 +63,8 @@ jobs:
           # hapi
           HAPI_SERVER_PORT: 9090
           HAPI_SERVER_ADDRESS: 0.0.0.0
-          HAPI_NETWORK_API: 'https://jungle.edenia.cloud'
-          HAPI_NETWORK_CHAIN_ID: '2a02a0053e5a8cf73a56ba0fda11e4d92e0238a4a2aa74fccf46d5a910746840'
+          HAPI_NETWORK_API: 'https://eos.edenia.cloud'
+          HAPI_NETWORK_CHAIN_ID: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
           HAPI_NETWORK_BASE_ACCOUNT: ${{ secrets.HAPI_NETWORK_BASE_ACCOUNT }}
           HAPI_NETWORK_BASE_PASSWORD: ${{ secrets.HAPI_NETWORK_BASE_PASSWORD }}
           HAPI_NETWORK_WALLET_URL: ${{ secrets.HAPI_NETWORK_WALLET }}
@@ -72,8 +72,9 @@ jobs:
           HAPI_HASURA_ADMIN_SECRET: ${{ secrets.HAPI_HASURA_ADMIN_SECRET }}
           HAPI_HYPERION_API: ${{ secrets.HAPI_HYPERION_API }}
           HAPI_RATE_HISTORY: ${{secrets.HAPI_RATE_HISTORY}}
-          HAPI_HYPERION_START_AT: '2022-04-01T00:00:00.000+00:00'
+          HAPI_HYPERION_START_AT: '2022-07-01T00:00:00.000+00:00'
           HAPI_EDEN_ELECTION_INTERVAL: 7889400
+          HAPI_EDEN_CONTRACT: genesis.eden
           # hasura
           HASURA_GRAPHQL_ENABLE_CONSOLE: true
           HASURA_GRAPHQL_DATABASE_URL: ${{ secrets.HASURA_GRAPHQL_DATABASE_URL }}
