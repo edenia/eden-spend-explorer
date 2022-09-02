@@ -165,6 +165,7 @@ const useIncomeReportState = () => {
       )
       setElectionsByYearList(electionsByYearData.eden_historic_election)
     }
+
     if (!electionsByYearData?.eden_historic_election[0]) {
       setIncomeByAllDelegatesList([])
       setIncomeByDelegateAccountList([])
@@ -182,8 +183,9 @@ const useIncomeReportState = () => {
   }, [icomeByAllDelegatesData])
 
   useEffect(() => {
-    incomeByAccountData?.eden_transaction &&
-      setIncomeByDelegateAccountList(incomeByAccountData.eden_transaction)
+    incomeByAccountData?.eden_transaction
+      ? setIncomeByDelegateAccountList(incomeByAccountData.eden_transaction)
+      : setIncomeByDelegateAccountList([])
   }, [incomeByAccountData])
 
   useEffect(() => {
