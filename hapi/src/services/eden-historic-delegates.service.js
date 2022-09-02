@@ -3,7 +3,8 @@ const {
   edenHistoricElectionGql,
   edenElectionGql
 } = require('../gql')
-const { hasuraUtil, sleepUtil, eosUtil, axiosUtil } = require('../utils')
+const { servicesConstant } = require('../constants')
+const { sleepUtil, eosUtil, axiosUtil } = require('../utils')
 const { hyperionConfig, edenConfig } = require('../config')
 
 const historicDelegates = async ({
@@ -53,16 +54,12 @@ const registerHistoricDelegate = async (date, account, rank) => {
     date_election: { _lte: date }
   })
 
-  const memberData = {
-    account: account
-  }
-
   let registeredMember = await edenDelegatesGql.get({
-    account: { _eq: memberData.account }
+    account: { _eq: account }
   })
 
   if (!registeredMember)
-    registeredMember = await edenDelegatesGql.save(memberData)
+    registeredMember = await edenDelegatesGql.save({ account })
 
   const electionData = {
     id_delegate: registeredMember.id,
@@ -107,7 +104,6 @@ const runDelegateUpdaters = async actions => {
 }
 
 const getDelegateByFundTransfer = async () => {
-  await hasuraUtil.hasuraAssembled()
   let skip = 0
   let hasMore = true
   let actions = []
@@ -115,15 +111,13 @@ const getDelegateByFundTransfer = async () => {
     while (hasMore) {
       ;({ hasMore, actions } = await getActions(
         { skip },
-        edenConfig.edenContract + ':fundtransfer'
+        `${edenConfig.edenContract}:fundtransfer`
       ))
       skip += actions.length
       await runDelegateUpdaters(actions)
     }
   } catch (error) {
     console.error('hyperion error', error.message)
-    await sleepUtil(5)
-    return getDelegateByFundTransfer()
   }
 }
 
@@ -147,7 +141,7 @@ const updateHistoricDelegate = async () => {
 
 const updateDelegateTable = () => {
   return {
-    name: 'UPDATE HISCTORIC EDEN DELEGATES AND HISTORIC ELECTIONS',
+    name: servicesConstant.MESSAGES.historicDelegates,
     interval: edenConfig.edenElectionInterval,
     action: updateHistoricDelegate
   }
