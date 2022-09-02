@@ -2,6 +2,7 @@ const { edenConfig } = require('../config')
 const { eosUtil } = require('../utils')
 const { edenDelegatesGql } = require('../gql')
 const { edenElectionGql } = require('../gql')
+const { servicesConstant } = require('../constants')
 
 const loadMembers = async ({ next_key: nextKey = null, limit = 100 } = {}) => {
   return await eosUtil.getTableRows({
@@ -53,7 +54,7 @@ const updateEdenTable = async () => {
 
 const updateEdenTableWorker = () => {
   return {
-    name: 'UPDATE ACTUAL EDEN DELEGATES AND ELECTIONS',
+    name: servicesConstant.MESSAGES.delegates,
     interval: edenConfig.edenElectionInterval,
     action: updateEdenTable
   }

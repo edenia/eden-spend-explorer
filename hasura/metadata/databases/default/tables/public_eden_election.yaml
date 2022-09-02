@@ -1,6 +1,6 @@
 table:
-  schema: public
   name: eden_election
+  schema: public
 object_relationships:
   - name: eden_delegate
     using:
@@ -11,5 +11,5 @@ array_relationships:
       foreign_key_constraint_on:
         column: id_election
         table:
-          schema: public
           name: eden_transaction
+          schema: public

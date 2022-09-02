@@ -1,11 +1,11 @@
 table:
-  schema: public
   name: eden_delegates
+  schema: public
 array_relationships:
   - name: eden_elections
     using:
       foreign_key_constraint_on:
         column: id_delegate
         table:
-          schema: public
           name: eden_election
+          schema: public

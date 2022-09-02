@@ -52,8 +52,11 @@ hasura-cli:
 		curl -s -o /dev/null -w 'hasura status %{http_code}\n' http://localhost:8080/healthz; \
 		do echo "$(BLUE)hasura |$(RESET) waiting for hasura service"; \
 		sleep 5; done;
-	@cd hasura && hasura seeds apply --admin-secret $(HASURA_GRAPHQL_ADMIN_SECRET) --database-name default && echo "success!" || echo "failure!";
 	@cd hasura && hasura console --endpoint http://localhost:8080 --skip-update-check --no-browser --admin-secret $(HASURA_GRAPHQL_ADMIN_SECRET);
+
+hasura-plant:
+	$(eval -include .env)
+	@cd hasura && hasura seeds apply --admin-secret $(HASURA_GRAPHQL_ADMIN_SECRET) --database-name default && echo "success!" || echo "failure!";
 
 webapp:
 	$(eval -include .env)
@@ -73,6 +76,11 @@ clean:
 	@rm -rf tmp/hapi
 	@rm -rf tmp/webapp
 	@docker system prune
+
+docker-clean:
+	@docker-compose stop
+	@docker rm eosreports-postgres eosreports-wallet eosreports-hasura eosreports-hapi
+	@docker volume rm eosio-spend-explorer_postgres_data
 
 build-kubernetes: ##@devops Generate proper k8s files based on the templates
 build-kubernetes: ./kubernetes

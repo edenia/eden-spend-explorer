@@ -1,6 +1,6 @@
 table:
-  schema: public
   name: eden_transaction
+  schema: public
 object_relationships:
   - name: eden_election
     using:
