@@ -29,7 +29,7 @@
   },
   "incomeRoute": {
     "title": "Ingresos",
-    "subTitle": "Ingresos por delegados",
+    "subTitle": "Ingresos por delegado",
     "titleEosBalance": "Balance de tesorería de Eden",
     "textInformation": "Los desembolsos de los delegados de Eden se producen mensualmente y son reclamados por el delegado desde el contrato a sus cuentas personales de EOS...",
     "textRadioButton1": "Por un delegado",
