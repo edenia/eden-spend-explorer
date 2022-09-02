@@ -1,0 +1,1 @@
+INSERT INTO "public"."eden_historic_election"("id", "election_round", "date_election", "created_at", "updated_at") VALUES (E'46a45c92-0478-4d20-a752-73f470d54df2', 2, E'2022-07-09T00:00:00+00:00', E'2022-09-02T15:12:51.825746+00:00', E'2022-09-02T15:12:51.825746+00:00');
