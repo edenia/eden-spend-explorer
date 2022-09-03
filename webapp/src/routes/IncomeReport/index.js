@@ -86,6 +86,7 @@ const IncomeReport = () => {
             </Box>
           </Grid>
         </Grid>
+
         <Container>
           <Box textAlign="justify" marginTop={2}>
             <Typography variant="span" className={classes.subTitle}>
