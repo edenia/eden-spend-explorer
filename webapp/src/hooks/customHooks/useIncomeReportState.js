@@ -139,13 +139,13 @@ const useIncomeReportState = () => {
 
   const [loadIncomeByAllDelegates, { data: icomeByAllDelegatesData }] =
     useLazyQuery(GET_INCOME_TRANSACTIONS_DELEGATES_QUERY, {
-      variables: { election_round: electionRoundSelect }
+      variables: { election: electionRoundSelect }
     })
 
   const [loadIncomeByDelegateAccount, { data: incomeByAccountData }] =
     useLazyQuery(GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY, {
       variables: {
-        election_round: electionRoundSelect,
+        election: electionRoundSelect,
         account: delegateSelect
       }
     })
@@ -160,9 +160,7 @@ const useIncomeReportState = () => {
 
   useEffect(() => {
     if (electionsByYearData?.eden_election) {
-      setElectionRoundSelect(
-        electionsByYearData.eden_election[0]?.election_round
-      )
+      setElectionRoundSelect(electionsByYearData.eden_election[0]?.election)
       setElectionsByYearList(electionsByYearData.eden_election)
     }
   }, [electionsByYearData])
