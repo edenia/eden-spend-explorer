@@ -52,7 +52,6 @@ const IncomeReport = () => {
             <Typography variant="span">{t('title')}</Typography>
           </div>
         </div>
-
         <div className={classes.eosPriceContainer}>
           <label className={classes.eosPriceTitle}>
             {t('titleEosBalance')}

@@ -35,12 +35,12 @@ const updateEdenTable = async () => {
 
       const electionData = {
         id_delegate: registeredMember.id,
-        election_round: parseInt(member[0].slice(8)) + 1,
+        election: parseInt(member[0].slice(8)) + 1,
         delegate_level: member[1].election_rank
       }
       const registeredElection = await edenElectionGql.get({
         id_delegate: { _eq: registeredMember.id },
-        election_round: { _eq: electionData.election_round }
+        election: { _eq: electionData.election }
       })
 
       if (!registeredElection) await edenElectionGql.save(electionData)
