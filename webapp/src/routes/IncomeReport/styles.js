@@ -65,7 +65,7 @@ export default theme => ({
     marginTop: '30px',
     display: 'flex',
     marginLeft: '12px',
-    justifyContent: 'start',
+    justifyContent: 'end',
     [theme.breakpoints.down('sm')]: {
       textAlign: 'center',
       flexDirection: 'column'
@@ -80,7 +80,8 @@ export default theme => ({
     overflow: 'hidden',
     overflowX: 'auto',
     '& #chart-scroll-id': {
-      minWidth: '925px'
+      minWidth: '925px',
+      width: '100%'
     }
   },
   eosBalanceInDollars: {
@@ -101,6 +102,25 @@ export default theme => ({
     alignItems: 'center'
   },
   tableContainer: {
-    marginTop: '80px'
+    marginTop: '80px',
+    '& th': {
+      fontWeight: 'bold',
+      color: theme.palette.secondary.main
+    },
+    '& td': {
+      color: theme.palette.secondary.main
+    }
+  },
+  chartLinks: {
+    display: 'flex',
+    '& a ': {
+      textAlign: 'center',
+      textDecoration: 'none',
+      color: theme.palette.secondary.main,
+      marginTop: '2px'
+    },
+    '& a:hover': {
+      color: 'rgba(0, 194, 191, 0.80)'
+    }
   }
 })

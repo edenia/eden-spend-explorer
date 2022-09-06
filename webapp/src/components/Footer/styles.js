@@ -16,6 +16,7 @@ export default theme => ({
     alignItems: 'center',
     height: '100%',
     '& a ': {
+      display: 'flex',
       fontSize: '14px',
       lineHeight: 1.5,
       letterSpacing: '0.08px',

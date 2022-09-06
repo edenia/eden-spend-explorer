@@ -19,16 +19,17 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 
 const RenderChartLegend = ({ data }) => {
+  const classes = useStyles()
   return (
     <ul style={{ listStyle: 'none', overflowY: 'auto', maxHeight: '400px' }}>
       {data.map(({ name, color }) => (
         <li key={`key-${name}`}>
-          <Box display="flex">
+          <div className={classes.chartLinks}>
             <Box width={18} height={18} m={0.5} bgcolor={color} />
             <a href={`https://eosauthority.com/account/${name}?network=eos`}>
               {name}
             </a>
-          </Box>
+          </div>
         </li>
       ))}
     </ul>
@@ -44,20 +45,19 @@ const IncomeChart = ({ data, coinType }) => {
     <>
       <div className={classes.chartContainer}>
         <div id="chart-scroll-id">
-          <ResponsiveContainer width="100%" height={400}>
+          <ResponsiveContainer width="100%" height={450}>
             <ComposedChart
-              width="100vw"
-              height={300}
+              height={400}
               data={data}
               margin={{
                 top: 20,
-                right: 20,
+                right: 0,
                 bottom: 20,
-                left: 20
+                left: 12
               }}
             >
               <CartesianGrid stroke="#f5f5f5" />
-              <XAxis hide dataKey="name" scale="band" />
+              <XAxis hide dataKey="name" scale="auto" />
               <YAxis tick={{ stroke: '#606060', strokeWidth: 0.5 }} />
               <Tooltip />
               <Legend
