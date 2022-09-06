@@ -21,18 +21,24 @@ const useStyles = makeStyles(styles)
 const RenderChartLegend = ({ data }) => {
   const classes = useStyles()
   return (
-    <ul style={{ listStyle: 'none', overflowY: 'auto', maxHeight: '400px' }}>
+    <div className={classes.chartLinks}>
       {data.map(({ name, color }) => (
-        <li key={`key-${name}`}>
-          <div className={classes.chartLinks}>
-            <Box width={18} height={18} m={0.5} bgcolor={color} />
-            <a href={`https://eosauthority.com/account/${name}?network=eos`}>
-              {name}
-            </a>
-          </div>
-        </li>
+        <a
+          key={`key-${name}`}
+          href={`https://eosauthority.com/account/${name}?network=eos`}
+        >
+          <Box
+            width={18}
+            height={18}
+            ml={2}
+            mt={0.5}
+            mr={0.5}
+            bgcolor={color}
+          />
+          {name}
+        </a>
       ))}
-    </ul>
+    </div>
   )
 }
 RenderChartLegend.propTypes = {

@@ -113,7 +113,11 @@ export default theme => ({
   },
   chartLinks: {
     display: 'flex',
+    flexDirection: 'column',
+    overflowY: 'auto',
+    maxHeight: '400px',
     '& a ': {
+      display: 'flex',
       textAlign: 'center',
       textDecoration: 'none',
       color: theme.palette.secondary.main,
