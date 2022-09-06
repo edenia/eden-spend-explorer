@@ -1,21 +1,17 @@
 import React, { memo, useState } from 'react'
 import PropTypes from 'prop-types'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { NavLink as RouterNavLink, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@mui/styles'
 import MuiListItem from '@mui/material/ListItem'
-import {
-  Box,
-  Drawer,
-  Chip,
-  List,
-  Typography,
-  ListItemIcon,
-  ListItemText,
-  Collapse,
-  Toolbar
-} from '@mui/material'
+import Drawer from '@mui/material/Drawer'
+import Chip from '@mui/material/Chip'
+import List from '@mui/material/List'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import Typography from '@mui/material/Typography'
+import Collapse from '@mui/material/Collapse'
+import Toolbar from '@mui/material/Toolbar'
 import {
   ChevronDown as ChevronDownIcon,
   ChevronUp as ChevronUpIcon
@@ -123,11 +119,11 @@ const ListItem = ({ header, childrens, ...props }) => {
   const classes = useStyles()
 
   return (
-    <Box className={classes.listItem}>
+    <div className={classes.listItem}>
       {header && <Typography>{t(header)}</Typography>}
       {childrens && <ListItemGroup childrens={childrens} {...props} />}
       {!childrens && <ListItemLink {...props} />}
-    </Box>
+    </div>
   )
 }
 
@@ -143,18 +139,22 @@ const Sidebar = ({ routes, ...props }) => {
   return (
     <Drawer className={classes.main} {...props}>
       <Toolbar />
-      <Box className={classes.brand}>
-        <Box display="flex" flexDirection="column" textAlign="center">
-          <AccountCircleIcon
-            onClick={() => navigate('/')}
-            sx={{ color: '#00c2bf', fontSize: '80px' }}
-          />
-          <Typography>USER</Typography>
-        </Box>
-      </Box>
+      <div className={classes.brand}>
+        <div className={classes.ellipseContainer}>
+          <div className={classes.ellipse}>
+            <img
+              onClick={() => navigate('/')}
+              src={`${process.env.PUBLIC_URL}/images/user@3x.png`}
+            />
+          </div>
+        </div>
+        <div>
+          <Typography variant="span">User</Typography>
+        </div>
+      </div>
 
       <Scrollbar className={classes.scrollbar}>
-        <Box width="235px" height="2px" bgcolor="#00c2bf" margin="auto" />
+        <div className={classes.divider} />
         <List component="nav">
           {routes.map((category, index) => (
             <ListItem

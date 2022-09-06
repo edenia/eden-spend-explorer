@@ -42,12 +42,10 @@ const IncomeChart = ({ data, coinType }) => {
   const classes = useStyles()
   return (
     <>
-      <Box className={classes.chartContainer}>
-        <Box minWidth="720px" width="100%">
-          <ResponsiveContainer width="100%" height={400}>
+      <div className={classes.chartContainer}>
+        <div id="chart-scroll-id">
+          <ResponsiveContainer width="100%" height={500}>
             <ComposedChart
-              width={1000}
-              height={300}
               data={data}
               margin={{
                 top: 20,
@@ -58,16 +56,14 @@ const IncomeChart = ({ data, coinType }) => {
             >
               <CartesianGrid stroke="#f5f5f5" />
               <XAxis hide dataKey="name" scale="band" />
-              <YAxis />
+              <YAxis tick={{ stroke: '#606060', strokeWidth: 0.5 }} />
               <Tooltip />
-              {
-                <Legend
-                  content={<RenderChartLegend data={data} />}
-                  align="right"
-                  layout="vertical"
-                  verticalAlign="middle"
-                />
-              }
+              <Legend
+                content={<RenderChartLegend data={data} />}
+                align="right"
+                layout="vertical"
+                verticalAlign="middle"
+              />
               <Bar
                 legendType="wye"
                 dataKey={coinType}
@@ -80,8 +76,8 @@ const IncomeChart = ({ data, coinType }) => {
               </Bar>
             </ComposedChart>
           </ResponsiveContainer>
-        </Box>
-      </Box>
+        </div>
+      </div>
     </>
   )
 }

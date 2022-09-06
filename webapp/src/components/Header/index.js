@@ -9,7 +9,6 @@ import MenuItem from '@mui/material/MenuItem'
 import AppBar from '@mui/material/AppBar'
 import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
-import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import MenuIcon from '@mui/icons-material/Menu'
 import LanguageIcon from '@mui/icons-material/Language'
@@ -201,16 +200,16 @@ const Header = memo(({ onDrawerToggle }) => {
               <MenuIcon />
             </IconButton>
           </Hidden>
-          <Box className={classes.typography}>
+          <div className={classes.typography}>
             <img
               height={47}
-              src={process.env.PUBLIC_URL + '/EOS-Spend-Explorer.png'}
+              src={`${process.env.PUBLIC_URL}/images/EOS-Spend-Explorer.png`}
             />
-          </Box>
+          </div>
           <PageTitle
             title={t(`${location.pathname}>title`, mainConfig.title)}
           />
-          <Box className={classes.desktopSection}>
+          <div className={classes.desktopSection}>
             <SwitchThemeModeButton
               useDarkMode={state.useDarkMode}
               onSwitch={handleSwitchThemeMode}
@@ -225,8 +224,8 @@ const Header = memo(({ onDrawerToggle }) => {
               onLogin={handleLogin}
               onSignOut={handleSignOut}
             />
-          </Box>
-          <Box className={classes.mobileSection}>
+          </div>
+          <div className={classes.mobileSection}>
             <IconButton
               aria-label="show more"
               aria-haspopup="true"
@@ -234,7 +233,7 @@ const Header = memo(({ onDrawerToggle }) => {
             >
               <MoreIcon />
             </IconButton>
-          </Box>
+          </div>
         </Toolbar>
         <Menu
           anchorEl={menuAnchorEl}

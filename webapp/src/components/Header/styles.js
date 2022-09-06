@@ -17,14 +17,15 @@ export default theme => ({
   },
   typography: {
     color: `${theme.palette.text.secondary}`,
-    flexGrow: 1
+    flexGrow: 1,
+    display: 'flex',
+    alignItems: 'center'
   },
   desktopSection: {
     display: 'none',
     height: 54,
     alignItems: 'center',
     justifyContent: 'space-between',
-    margin: '0 auto 7px auto',
     [theme.breakpoints.up('md')]: {
       display: 'flex'
     }

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Hidden from '@mui/material/Hidden'
-import Box from '@mui/material/Box'
 import { makeStyles } from '@mui/styles'
 
 import Sidebar from '../../components/Sidebar'
@@ -24,8 +23,8 @@ const Dashboard = ({ children, routes }) => {
   }
 
   return (
-    <Box className={classes.root}>
-      <Box className={classes.drawer}>
+    <div className={classes.root}>
+      <div className={classes.drawer}>
         <Header onDrawerToggle={handleDrawerToggle} />
         <Hidden mdUp implementation="js">
           <Sidebar
@@ -47,14 +46,14 @@ const Dashboard = ({ children, routes }) => {
             routes={routes}
           />
         </Hidden>
-      </Box>
-      <Box className={classes.mainContent}>
+      </div>
+      <div className={classes.mainContent}>
         <Toolbar />
-        <Box className={classes.childContent}>{children}</Box>
+        <div className={classes.childContent}>{children}</div>
         <Message />
         <Footer />
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 
