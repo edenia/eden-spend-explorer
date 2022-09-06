@@ -20,7 +20,7 @@ const useStyles = makeStyles(styles)
 
 const RenderChartLegend = ({ data }) => {
   return (
-    <ul style={{ listStyle: 'none' }}>
+    <ul style={{ listStyle: 'none', overflowY: 'auto', maxHeight: '400px' }}>
       {data.map(({ name, color }) => (
         <li key={`key-${name}`}>
           <Box display="flex">
@@ -44,8 +44,10 @@ const IncomeChart = ({ data, coinType }) => {
     <>
       <div className={classes.chartContainer}>
         <div id="chart-scroll-id">
-          <ResponsiveContainer width="100%" height={500}>
+          <ResponsiveContainer width="100%" height={400}>
             <ComposedChart
+              width="100vw"
+              height={300}
               data={data}
               margin={{
                 top: 20,
@@ -67,7 +69,7 @@ const IncomeChart = ({ data, coinType }) => {
               <Bar
                 legendType="wye"
                 dataKey={coinType}
-                barSize={50}
+                barSize={25}
                 fill="#606060"
               >
                 {data.map(({ name, color }) => (

@@ -65,7 +65,7 @@ export default theme => ({
     marginTop: '30px',
     display: 'flex',
     marginLeft: '12px',
-    justifyContent: 'center',
+    justifyContent: 'start',
     [theme.breakpoints.down('sm')]: {
       textAlign: 'center',
       flexDirection: 'column'
@@ -79,10 +79,8 @@ export default theme => ({
     flexDirection: 'row',
     overflow: 'hidden',
     overflowX: 'auto',
-    overflowY: 'auto',
     '& #chart-scroll-id': {
-      minWidth: '750px',
-      with: '100%'
+      minWidth: '925px'
     }
   },
   eosBalanceInDollars: {

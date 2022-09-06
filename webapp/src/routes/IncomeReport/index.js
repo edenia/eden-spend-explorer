@@ -105,7 +105,7 @@ const IncomeReport = () => {
           <IncomeSelect
             onChangeFunction={setElectionRoundSelect}
             labelSelect={t('textElectionSelect')}
-            values={electionsByYearList.map(data => `${data.election_round}`)}
+            values={electionsByYearList.map(data => `${data.election}`)}
             actualValue={electionRoundSelect}
           />
           <IncomeSelect

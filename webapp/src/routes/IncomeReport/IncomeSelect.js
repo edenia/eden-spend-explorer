@@ -23,7 +23,7 @@ const IncomeSelect = ({
         {values[0] ? (
           values.map(value => (
             <MenuItem key={value} value={value}>
-              {value}
+              {labelSelect === 'Election' ? Number(value) + 1 : value}
             </MenuItem>
           ))
         ) : (

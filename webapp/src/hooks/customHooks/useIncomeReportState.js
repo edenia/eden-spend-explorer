@@ -175,10 +175,15 @@ const useIncomeReportState = () => {
 
   useEffect(() => {
     if (icomeByAllDelegatesData?.eden_election) {
+      setIncomeByAllDelegatesList(icomeByAllDelegatesData.eden_election)
       setDelegateSelect(
         icomeByAllDelegatesData.eden_election[0]?.eden_delegate.account
       )
-      setIncomeByAllDelegatesList(icomeByAllDelegatesData.eden_election)
+    }
+
+    if (!icomeByAllDelegatesData?.eden_election[0]) {
+      setIncomeByAllDelegatesList([])
+      setDelegateSelect('')
     }
   }, [icomeByAllDelegatesData])
 
