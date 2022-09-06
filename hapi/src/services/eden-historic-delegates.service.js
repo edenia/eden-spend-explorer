@@ -122,16 +122,13 @@ const registerUnclaimedTransaction = async (
     const election = await edenHistoricElectionGql.get({
       date_election: { _lte: date }
     })
-
     const delegateData = await edenDelegatesGql.get({
       account: { _eq: account }
     })
-
     const electionData = await edenElectionGql.get({
       id_delegate: { _eq: delegateData.id },
       election: { _eq: election.election }
     })
-
     const transactionData = {
       txid: id,
       amount,
