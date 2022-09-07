@@ -5,3 +5,21 @@ object_relationships:
   - name: eden_election
     using:
       foreign_key_constraint_on: id_election
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - category
+        - description
+        - recipient
+        - txid
+        - type
+        - amount
+        - eos_exchange
+        - usd_total
+        - created_at
+        - date
+        - updated_at
+        - id
+        - id_election
+      filter: {}

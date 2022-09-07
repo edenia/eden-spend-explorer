@@ -13,3 +13,14 @@ array_relationships:
         table:
           name: eden_transaction
           schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - created_at
+        - delegate_level
+        - election
+        - id
+        - id_delegate
+        - updated_at
+      filter: {}
