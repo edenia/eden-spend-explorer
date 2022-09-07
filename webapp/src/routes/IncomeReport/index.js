@@ -30,7 +30,8 @@ const IncomeReport = () => {
       showDelegateRadio,
       delegateSelect,
       incomeByAllDelegatesList,
-      electionsByYearList
+      electionsByYearList,
+      nextEdenDisbursement
     },
     {
       setTypeCurrencySelect,
@@ -72,7 +73,7 @@ const IncomeReport = () => {
         <label>
           {t('textInformation')}
           <br />
-          Next disbursement date: June 8, 2022
+          <strong>{`${t('nextDisbursement')} ${nextEdenDisbursement}`}</strong>
         </label>
       </div>
 

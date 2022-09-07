@@ -32,6 +32,7 @@
     "subTitle": "Income By Delegate",
     "titleEosBalance": "Eden Treasury Balance",
     "textInformation": "Eden delegate disbursements occur monthly and are claimed by the delegate from the contract to their personal EOS accounts...",
+    "nextDisbursement": "Next disbursement date:",
     "textRadioButton1": "By one delegate",
     "textRadioButton2": "By all delegates",
     "textYearSelect": "Year",
