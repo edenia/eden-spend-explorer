@@ -32,8 +32,8 @@ const IncomeTable = ({ data }) => {
               </TableCell>
               <TableCell>{name}</TableCell>
               <TableCell>{level}</TableCell>
-              <TableCell>{EOS.toFixed(2)}</TableCell>
-              <TableCell>{USD.toFixed(2)}</TableCell>
+              <TableCell>{EOS}</TableCell>
+              <TableCell>{USD}</TableCell>
             </TableRow>
           ))}
         </TableBody>

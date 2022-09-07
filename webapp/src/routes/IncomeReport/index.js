@@ -39,7 +39,8 @@ const IncomeReport = () => {
       setElectionYearSelect,
       setElectionRoundSelect,
       setShowDelegateRadio,
-      setDelegateSelect
+      setDelegateSelect,
+      thousandSeparator
     }
   ] = useIncomeReportState()
   const classes = useStyles()
@@ -59,11 +60,17 @@ const IncomeReport = () => {
             {t('titleEosBalance')}
           </label>
           <label className={classes.eosBalance}>
-            {Number(currencyBalance.split(' ')[0]).toFixed(2)} EOS
+            {thousandSeparator(
+              Number(currencyBalance.split(' ')[0]).toFixed(2)
+            )}{' '}
+            EOS
           </label>
           <label className={classes.eosBalanceInDollars}>
-            ${(eosRate * Number(currencyBalance.split(' ')[0])).toFixed(2)} @ $
-            {eosRate.toFixed(2)}/EOS
+            $
+            {thousandSeparator(
+              (eosRate * Number(currencyBalance.split(' ')[0])).toFixed(2)
+            )}{' '}
+            @ ${eosRate.toFixed(2)}/EOS
           </label>
         </div>
       </div>

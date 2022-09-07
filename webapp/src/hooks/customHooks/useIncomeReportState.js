@@ -58,7 +58,7 @@ const useIncomeReportState = () => {
     )
     const data = await response
 
-    setCurrencyBalance(data[0])
+    setCurrencyBalance(data[0] || '')
   }
 
   const getNextEdenDisbursement = async () => {
@@ -95,12 +95,20 @@ const useIncomeReportState = () => {
     }
   }
 
+  const thousandSeparator = number => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  }
+
   const newDataFormatByAllDelegates = transactionsList => {
     const newFormatData = transactionsList.map(data => {
       return {
         name: data.eden_delegate.account,
-        EOS: data.eden_transactions_aggregate.aggregate.sum.amount,
-        USD: data.eden_transactions_aggregate.aggregate.sum.usd_total,
+        EOS: Number(
+          data.eden_transactions_aggregate.aggregate.sum.amount.toFixed(2)
+        ),
+        USD: Number(
+          data.eden_transactions_aggregate.aggregate.sum.usd_total.toFixed(2)
+        ),
         color: generateColor(),
         level: data.delegate_level
       }
@@ -113,8 +121,8 @@ const useIncomeReportState = () => {
     const newFormatData = transactionsList.map((data, index) => {
       return {
         name: `${delegateSelect}_${index}`,
-        EOS: data.amount,
-        USD: data.usd_total,
+        EOS: Number(data.amount.toFixed(2)),
+        USD: Number(data.usd_total.toFixed(2)),
         color: generateColor(),
         level: data.eden_election.delegate_level
       }
@@ -225,7 +233,8 @@ const useIncomeReportState = () => {
       setElectionYearSelect,
       setElectionRoundSelect,
       setShowDelegateRadio,
-      setDelegateSelect
+      setDelegateSelect,
+      thousandSeparator
     }
   ]
 }
