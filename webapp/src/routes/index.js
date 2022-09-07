@@ -1,14 +1,16 @@
 import React, { lazy } from 'react'
 
 import {
-  Home as HomeIcon,
-  Info as InfoIcon,
-  HelpCircle as HelpIcon,
   GitMerge as GitMergeIcon,
   GitHub as GitHubIcon,
-  Send as TelegramIcon,
-  CreditCard as CardIcon
+  Send as TelegramIcon
 } from 'react-feather'
+import {
+  AddCard as AddCardIcon,
+  Home as HomeIcon,
+  InfoOutlined as InfoIcon,
+  HelpOutlineOutlined as HelpIcon
+} from '@mui/icons-material'
 
 import { mainConfig } from '../config'
 
@@ -28,7 +30,7 @@ const routes = [
   },
   {
     name: 'incomes',
-    icon: <CardIcon />,
+    icon: <AddCardIcon />,
     component: IncomeReport,
     path: '/income',
     exact: true

@@ -2,25 +2,22 @@ import React, { memo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { NavLink as RouterNavLink, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import Box from '@mui/material/Box'
+import { makeStyles } from '@mui/styles'
+import MuiListItem from '@mui/material/ListItem'
 import Drawer from '@mui/material/Drawer'
-import Divider from '@mui/material/Divider'
 import Chip from '@mui/material/Chip'
 import List from '@mui/material/List'
-import MuiListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
 import Collapse from '@mui/material/Collapse'
-import { makeStyles } from '@mui/styles'
+import Toolbar from '@mui/material/Toolbar'
 import {
   ChevronDown as ChevronDownIcon,
   ChevronUp as ChevronUpIcon
 } from 'react-feather'
 import Scrollbar from 'react-perfect-scrollbar'
 import 'react-perfect-scrollbar/dist/css/styles.css'
-
-import { mainConfig } from '../../config'
 
 import styles from './styles'
 
@@ -122,11 +119,11 @@ const ListItem = ({ header, childrens, ...props }) => {
   const classes = useStyles()
 
   return (
-    <Box className={classes.listItem}>
+    <div className={classes.listItem}>
       {header && <Typography>{t(header)}</Typography>}
       {childrens && <ListItemGroup childrens={childrens} {...props} />}
       {!childrens && <ListItemLink {...props} />}
-    </Box>
+    </div>
   )
 }
 
@@ -140,16 +137,24 @@ const Sidebar = ({ routes, ...props }) => {
   const classes = useStyles()
 
   return (
-    <Drawer {...props}>
-      <Box className={classes.brand}>
-        <img
-          alt={mainConfig.title}
-          src={mainConfig.logo}
-          onClick={() => navigate('/')}
-        />
-      </Box>
-      <Divider />
+    <Drawer className={classes.main} {...props}>
+      <Toolbar />
+      <div className={classes.brand}>
+        <div className={classes.ellipseContainer}>
+          <div className={classes.ellipse}>
+            <img
+              onClick={() => navigate('/')}
+              src={`${process.env.PUBLIC_URL}/images/user@3x.png`}
+            />
+          </div>
+        </div>
+        <div>
+          <Typography variant="span">User</Typography>
+        </div>
+      </div>
+
       <Scrollbar className={classes.scrollbar}>
+        <div className={classes.divider} />
         <List component="nav">
           {routes.map((category, index) => (
             <ListItem

@@ -44,7 +44,7 @@ jobs:
           REACT_APP_UAL_API_PORT: '443'
           REACT_APP_UAL_CHAIN_ID: '2a02a0053e5a8cf73a56ba0fda11e4d92e0238a4a2aa74fccf46d5a910746840'
           REACT_APP_HASURA_URL: ${{ secrets.REACT_APP_HASURA_URL }}
-          REACT_APP_RATE_HISTORY: https://api.coingecko.com/api/v3
+          REACT_APP_RATE_HISTORY: ${{ secrets.REACT_APP_RATE_HISTORY }}
 
       - name: Build kubernetes files
         id: build_kubernetes_files

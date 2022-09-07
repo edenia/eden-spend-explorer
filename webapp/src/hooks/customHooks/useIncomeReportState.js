@@ -159,24 +159,38 @@ const useIncomeReportState = () => {
   }, [])
 
   useEffect(() => {
-    if (electionsByYearData?.eden_election) {
-      setElectionRoundSelect(electionsByYearData.eden_election[0]?.election)
-      setElectionsByYearList(electionsByYearData.eden_election)
+    if (electionsByYearData?.eden_historic_election) {
+      setElectionRoundSelect(
+        electionsByYearData.eden_historic_election[0]?.election_round
+      )
+      setElectionsByYearList(electionsByYearData.eden_historic_election)
+    }
+
+    if (!electionsByYearData?.eden_historic_election[0]) {
+      setIncomeByAllDelegatesList([])
+      setIncomeByDelegateAccountList([])
+      setDelegateSelect('')
     }
   }, [electionsByYearData])
 
   useEffect(() => {
     if (icomeByAllDelegatesData?.eden_election) {
+      setIncomeByAllDelegatesList(icomeByAllDelegatesData.eden_election)
       setDelegateSelect(
         icomeByAllDelegatesData.eden_election[0]?.eden_delegate.account
       )
-      setIncomeByAllDelegatesList(icomeByAllDelegatesData.eden_election)
+    }
+
+    if (!icomeByAllDelegatesData?.eden_election[0]) {
+      setIncomeByAllDelegatesList([])
+      setDelegateSelect('')
     }
   }, [icomeByAllDelegatesData])
 
   useEffect(() => {
-    incomeByAccountData?.eden_transaction &&
-      setIncomeByDelegateAccountList(incomeByAccountData.eden_transaction)
+    incomeByAccountData?.eden_transaction
+      ? setIncomeByDelegateAccountList(incomeByAccountData.eden_transaction)
+      : setIncomeByDelegateAccountList([])
   }, [incomeByAccountData])
 
   useEffect(() => {

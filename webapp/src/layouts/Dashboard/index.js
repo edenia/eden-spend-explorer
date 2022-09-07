@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Hidden from '@mui/material/Hidden'
-import Box from '@mui/material/Box'
 import { makeStyles } from '@mui/styles'
+import { Toolbar } from '@mui/material'
 
 import Sidebar from '../../components/Sidebar'
 import Header from '../../components/Header'
-import Footer from '../../components/Footer'
 import Message from '../../components/Message'
+import Footer from '../../components/Footer'
 
 import styles from './styles'
 
@@ -23,32 +23,37 @@ const Dashboard = ({ children, routes }) => {
   }
 
   return (
-    <Box className={classes.root}>
-      <Box className={classes.drawer}>
+    <div className={classes.root}>
+      <div className={classes.drawer}>
+        <Header onDrawerToggle={handleDrawerToggle} />
         <Hidden mdUp implementation="js">
           <Sidebar
-            PaperProps={{ style: { width: drawerWidth } }}
+            PaperProps={{
+              style: { width: drawerWidth }
+            }}
             variant="temporary"
             open={mobileOpen}
             onClose={handleDrawerToggle}
             routes={routes}
           />
         </Hidden>
-        <Hidden smDown implementation="css">
+        <Hidden mdDown implementation="css">
           <Sidebar
-            PaperProps={{ style: { width: drawerWidth } }}
+            PaperProps={{
+              style: { width: drawerWidth }
+            }}
             variant="permanent"
             routes={routes}
           />
         </Hidden>
-      </Box>
-      <Box className={classes.mainContent}>
-        <Header onDrawerToggle={handleDrawerToggle} />
-        <Box className={classes.childContent}>{children}</Box>
-        <Footer />
+      </div>
+      <div className={classes.mainContent}>
+        <Toolbar />
+        <div className={classes.childContent}>{children}</div>
         <Message />
-      </Box>
-    </Box>
+        <Footer />
+      </div>
+    </div>
   )
 }
 

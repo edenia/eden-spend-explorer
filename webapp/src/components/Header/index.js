@@ -9,9 +9,7 @@ import MenuItem from '@mui/material/MenuItem'
 import AppBar from '@mui/material/AppBar'
 import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
-import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
 import MenuIcon from '@mui/icons-material/Menu'
 import LanguageIcon from '@mui/icons-material/Language'
 import FingerprintIcon from '@mui/icons-material/Fingerprint'
@@ -189,74 +187,86 @@ const Header = memo(({ onDrawerToggle }) => {
   }, [i18n.language])
 
   return (
-    <AppBar className={classes.appBar} position="sticky">
-      <Toolbar className={classes.toolbar}>
-        <Hidden mdUp>
-          <IconButton aria-label="Open drawer" onClick={onDrawerToggle}>
-            <MenuIcon />
-          </IconButton>
-        </Hidden>
-        <Typography className={classes.typography} variant="h4">
-          {t(`${location.pathname}>heading`, '')}
-        </Typography>
-        <PageTitle title={t(`${location.pathname}>title`, mainConfig.title)} />
-        <Box className={classes.desktopSection}>
-          <SwitchThemeModeButton
-            useDarkMode={state.useDarkMode}
-            onSwitch={handleSwitchThemeMode}
-          />
-          <LanguageButton
-            current={currentLanguaje}
-            onChange={handleChangeLanguage}
-          />
-          <UserButton user={state.user} />
-          <AuthButton
-            user={state.user}
-            onLogin={handleLogin}
-            onSignOut={handleSignOut}
-          />
-        </Box>
-        <Box className={classes.mobileSection}>
-          <IconButton
-            aria-label="show more"
-            aria-haspopup="true"
-            onClick={handleOpenMenu}
-          >
-            <MoreIcon />
-          </IconButton>
-        </Box>
-      </Toolbar>
-      <Menu
-        anchorEl={menuAnchorEl}
-        open={!!menuAnchorEl}
-        onClose={handleCloseMenu}
+    <div>
+      <AppBar
+        color="primaryLight"
+        className={classes.appBar}
+        sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}
+        elevation={1}
       >
-        <MenuItem>
-          <SwitchThemeModeButton
-            useDarkMode={state.useDarkMode}
-            onSwitch={handleSwitchThemeMode}
+        <Toolbar className={classes.toolbar}>
+          <Hidden mdUp>
+            <IconButton aria-label="Open drawer" onClick={onDrawerToggle}>
+              <MenuIcon />
+            </IconButton>
+          </Hidden>
+          <div className={classes.typography}>
+            <img
+              height={47}
+              src={`${process.env.PUBLIC_URL}/images/EOS-Spend-Explorer.png`}
+            />
+          </div>
+          <PageTitle
+            title={t(`${location.pathname}>title`, mainConfig.title)}
           />
-        </MenuItem>
-        <MenuItem>
-          <LanguageButton
-            current={currentLanguaje}
-            onChange={handleChangeLanguage}
-          />
-        </MenuItem>
-        {state.user && (
-          <MenuItem>
+          <div className={classes.desktopSection}>
+            <SwitchThemeModeButton
+              useDarkMode={state.useDarkMode}
+              onSwitch={handleSwitchThemeMode}
+            />
+            <LanguageButton
+              current={currentLanguaje}
+              onChange={handleChangeLanguage}
+            />
             <UserButton user={state.user} />
+            <AuthButton
+              user={state.user}
+              onLogin={handleLogin}
+              onSignOut={handleSignOut}
+            />
+          </div>
+          <div className={classes.mobileSection}>
+            <IconButton
+              aria-label="show more"
+              aria-haspopup="true"
+              onClick={handleOpenMenu}
+            >
+              <MoreIcon />
+            </IconButton>
+          </div>
+        </Toolbar>
+        <Menu
+          anchorEl={menuAnchorEl}
+          open={!!menuAnchorEl}
+          onClose={handleCloseMenu}
+        >
+          <MenuItem>
+            <SwitchThemeModeButton
+              useDarkMode={state.useDarkMode}
+              onSwitch={handleSwitchThemeMode}
+            />
           </MenuItem>
-        )}
-        <MenuItem>
-          <AuthButton
-            user={state.user}
-            onLogin={handleLogin}
-            onSignOut={handleSignOut}
-          />
-        </MenuItem>
-      </Menu>
-    </AppBar>
+          <MenuItem>
+            <LanguageButton
+              current={currentLanguaje}
+              onChange={handleChangeLanguage}
+            />
+          </MenuItem>
+          {state.user && (
+            <MenuItem>
+              <UserButton user={state.user} />
+            </MenuItem>
+          )}
+          <MenuItem>
+            <AuthButton
+              user={state.user}
+              onLogin={handleLogin}
+              onSignOut={handleSignOut}
+            />
+          </MenuItem>
+        </Menu>
+      </AppBar>
+    </div>
   )
 })
 

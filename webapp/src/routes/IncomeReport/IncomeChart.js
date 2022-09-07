@@ -1,6 +1,7 @@
 import React, { memo } from 'react'
 import PropTypes from 'prop-types'
 import { Box } from '@mui/system'
+import { makeStyles } from '@mui/styles'
 import {
   ComposedChart,
   Bar,
@@ -13,20 +14,31 @@ import {
   Cell
 } from 'recharts'
 
+import styles from './styles'
+
+const useStyles = makeStyles(styles)
+
 const RenderChartLegend = ({ data }) => {
+  const classes = useStyles()
   return (
-    <ul style={{ listStyle: 'none' }}>
+    <div className={classes.chartLinks}>
       {data.map(({ name, color }) => (
-        <li key={`key-${name}`}>
-          <Box display="flex">
-            <Box width={18} height={18} m={0.5} bgcolor={color} />
-            <a href={`https://eosauthority.com/account/${name}?network=eos`}>
-              {name}
-            </a>
-          </Box>
-        </li>
+        <a
+          key={`key-${name}`}
+          href={`https://eosauthority.com/account/${name}?network=eos`}
+        >
+          <Box
+            width={18}
+            height={18}
+            ml={2}
+            mt={0.5}
+            mr={0.5}
+            bgcolor={color}
+          />
+          {name}
+        </a>
       ))}
-    </ul>
+    </div>
   )
 }
 RenderChartLegend.propTypes = {
@@ -34,40 +46,46 @@ RenderChartLegend.propTypes = {
 }
 
 const IncomeChart = ({ data, coinType }) => {
+  const classes = useStyles()
   return (
     <>
-      <Box display="flex" justifyContent="end"></Box>
-      <ResponsiveContainer width="100%" height={400}>
-        <ComposedChart
-          width={1000}
-          height={300}
-          data={data}
-          margin={{
-            top: 20,
-            right: 20,
-            bottom: 20,
-            left: 20
-          }}
-        >
-          <CartesianGrid stroke="#f5f5f5" />
-          <XAxis hide dataKey="name" scale="band" />
-          <YAxis />
-          <Tooltip />
-          {
-            <Legend
-              content={<RenderChartLegend data={data} />}
-              align="right"
-              layout="vertical"
-              verticalAlign="middle"
-            />
-          }
-          <Bar legendType="wye" dataKey={coinType} barSize={50} fill="#606060">
-            {data.map(({ name, color }) => (
-              <Cell key={`cell-${name}`} fill={color} />
-            ))}
-          </Bar>
-        </ComposedChart>
-      </ResponsiveContainer>
+      <div className={classes.chartContainer}>
+        <div id="chart-scroll-id">
+          <ResponsiveContainer width="100%" height={450}>
+            <ComposedChart
+              height={400}
+              data={data}
+              margin={{
+                top: 20,
+                right: 0,
+                bottom: 20,
+                left: 12
+              }}
+            >
+              <CartesianGrid stroke="#f5f5f5" />
+              <XAxis hide dataKey="name" scale="auto" />
+              <YAxis tick={{ stroke: '#606060', strokeWidth: 0.5 }} />
+              <Tooltip />
+              <Legend
+                content={<RenderChartLegend data={data} />}
+                align="right"
+                layout="vertical"
+                verticalAlign="middle"
+              />
+              <Bar
+                legendType="wye"
+                dataKey={coinType}
+                barSize={25}
+                fill="#606060"
+              >
+                {data.map(({ name, color }) => (
+                  <Cell key={`cell-${name}`} fill={color} />
+                ))}
+              </Bar>
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </>
   )
 }
