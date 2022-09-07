@@ -73,7 +73,7 @@ const IncomeReport = () => {
         <label>
           {t('textInformation')}
           <br />
-          {`${t('nextDisbursement')} ${nextEdenDisbursement}`}
+          <strong>{`${t('nextDisbursement')} ${nextEdenDisbursement}`}</strong>
         </label>
       </div>
 
