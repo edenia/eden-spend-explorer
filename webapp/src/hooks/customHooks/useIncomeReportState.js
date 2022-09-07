@@ -48,6 +48,7 @@ const getActualDate = () => {
 
 const useIncomeReportState = () => {
   const [currencyBalance, setCurrencyBalance] = useState('')
+  const [nextEdenDisbursement, setNextEdenDisbursement] = useState('')
   const [eosRate, setEosRate] = useState(0)
   const [typeCurrencySelect, setTypeCurrencySelect] = useState('EOS')
   const [electionYearSelect, setElectionYearSelect] = useState(2021)
@@ -69,6 +70,21 @@ const useIncomeReportState = () => {
     const data = await response
 
     setCurrencyBalance(data[0])
+  }
+
+  const getNextEdenDisbursement = async () => {
+    const response = eosApi.getTableRows({
+      json: true,
+      code: 'genesis.eden',
+      scope: 0,
+      table: 'distribution'
+    })
+    const data = await response
+    const date = new Date(
+      data?.rows[0][1]?.distribution_time
+    ).toLocaleDateString()
+
+    setNextEdenDisbursement(date)
   }
 
   const getEosRate = async () => {
@@ -153,6 +169,7 @@ const useIncomeReportState = () => {
   useEffect(() => {
     getEosRate()
     getEosBalance()
+    getNextEdenDisbursement()
     loadElectionsByYear()
     loadIncomeByAllDelegates()
     loadIncomeByDelegateAccount()
@@ -210,7 +227,8 @@ const useIncomeReportState = () => {
       showDelegateRadio,
       delegateSelect,
       incomeByAllDelegatesList,
-      electionsByYearList
+      electionsByYearList,
+      nextEdenDisbursement
     },
     {
       setTypeCurrencySelect,
