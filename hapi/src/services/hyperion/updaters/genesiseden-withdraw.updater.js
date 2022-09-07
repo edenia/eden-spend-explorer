@@ -9,7 +9,7 @@ module.exports = {
       const transactionData = {
         txid: action.transaction_id,
         amount,
-        category: 'income from genesis.eden',
+        category: 'claimed',
         date: action.timestamp,
         description: action.actors,
         id_election: action.electionId,
