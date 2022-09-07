@@ -57,7 +57,7 @@ const useIncomeReportState = () => {
     )
     const data = await response
 
-    setCurrencyBalance(data[0])
+    setCurrencyBalance(data[0] || '')
   }
 
   const getEosRate = async () => {
@@ -77,6 +77,10 @@ const useIncomeReportState = () => {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const thousandSeparator = number => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
   const newDataFormatByAllDelegates = transactionsList => {
@@ -207,7 +211,8 @@ const useIncomeReportState = () => {
       setElectionYearSelect,
       setElectionRoundSelect,
       setShowDelegateRadio,
-      setDelegateSelect
+      setDelegateSelect,
+      thousandSeparator
     }
   ]
 }
