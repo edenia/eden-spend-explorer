@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Hidden from '@mui/material/Hidden'
 import { makeStyles } from '@mui/styles'
+import { Toolbar } from '@mui/material'
 
 import Sidebar from '../../components/Sidebar'
 import Header from '../../components/Header'
@@ -9,7 +10,6 @@ import Message from '../../components/Message'
 import Footer from '../../components/Footer'
 
 import styles from './styles'
-import { Toolbar } from '@mui/material'
 
 const drawerWidth = 260
 const useStyles = makeStyles(theme => styles(theme, drawerWidth))

@@ -9,11 +9,12 @@ import {
   Typography
 } from '@mui/material'
 
-import styles from './styles'
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
+
 import IncomeChart from './IncomeChart'
 import IncomeTable from './IncomeTable'
 import IncomeSelect from './IncomeSelect'
+import styles from './styles'
 
 const useStyles = makeStyles(styles)
 
