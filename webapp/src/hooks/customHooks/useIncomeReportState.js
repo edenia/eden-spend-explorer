@@ -8,26 +8,15 @@ import {
   GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY,
   GET_ELECTIONS_BY_YEAR
 } from '../../gql'
+import { listChartColors } from '../../constants'
 
-const letterGenerate = () => {
-  const letters = []
-  const numbers = (Math.random() * 15).toFixed(0)
+let CURRENT_GRAPHIC_COLOR = 0
 
-  for (let index = 97; index <= 102; index++) {
-    letters.push(String.fromCharCode(index))
-  }
-  for (let index = 0; index <= 9; index++) {
-    letters.push(index)
-  }
+const generateColor = () => {
+  if (CURRENT_GRAPHIC_COLOR === 18) CURRENT_GRAPHIC_COLOR = 0
 
-  return letters[numbers]
-}
-
-const generateColorHEX = () => {
-  let color = '#'
-  for (let i = 0; i < 6; i++) {
-    color = color + letterGenerate()
-  }
+  const color = listChartColors[CURRENT_GRAPHIC_COLOR]
+  CURRENT_GRAPHIC_COLOR++
 
   return color
 }
@@ -112,7 +101,7 @@ const useIncomeReportState = () => {
         name: data.eden_delegate.account,
         EOS: data.eden_transactions_aggregate.aggregate.sum.amount,
         USD: data.eden_transactions_aggregate.aggregate.sum.usd_total,
-        color: generateColorHEX(),
+        color: generateColor(),
         level: data.delegate_level
       }
     })
@@ -126,7 +115,7 @@ const useIncomeReportState = () => {
         name: `${delegateSelect}_${index}`,
         EOS: data.amount,
         USD: data.usd_total,
-        color: generateColorHEX(),
+        color: generateColor(),
         level: data.eden_election.delegate_level
       }
     })
