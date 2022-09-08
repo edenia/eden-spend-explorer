@@ -7,7 +7,7 @@ const IncomeSelect = ({
   values,
   onChangeFunction,
   actualValue,
-  disable = false
+  disable
 }) => {
   if (disable) return null
   else {
