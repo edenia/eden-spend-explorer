@@ -1,3 +1,14 @@
 table:
   name: eden_historic_election
   schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - created_at
+        - date_election
+        - election
+        - id
+        - updated_at
+      filter: {}
+      allow_aggregations: true

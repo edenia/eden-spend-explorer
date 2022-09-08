@@ -9,3 +9,13 @@ array_relationships:
         table:
           name: eden_election
           schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - account
+        - created_at
+        - updated_at
+        - id
+      filter: {}
+      allow_aggregations: true
