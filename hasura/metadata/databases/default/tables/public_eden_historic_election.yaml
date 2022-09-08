@@ -11,3 +11,4 @@ select_permissions:
         - id
         - updated_at
       filter: {}
+      allow_aggregations: true

@@ -24,3 +24,4 @@ select_permissions:
         - id_delegate
         - updated_at
       filter: {}
+      allow_aggregations: true

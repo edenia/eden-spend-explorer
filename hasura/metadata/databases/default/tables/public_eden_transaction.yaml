@@ -23,3 +23,4 @@ select_permissions:
         - id
         - id_election
       filter: {}
+      allow_aggregations: true
