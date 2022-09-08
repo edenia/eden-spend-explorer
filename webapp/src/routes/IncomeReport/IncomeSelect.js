@@ -20,7 +20,6 @@ const IncomeSelect = ({
           value={actualValue || ''}
           label={labelSelect}
           onChange={({ target }) => onChangeFunction(target.value)}
-          disabled={disable || !values[0]}
         >
           {values[0] ? (
             values.map(value => (
