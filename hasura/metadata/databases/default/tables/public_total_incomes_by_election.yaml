@@ -1,0 +1,3 @@
+table:
+  name: total_incomes_by_election
+  schema: public

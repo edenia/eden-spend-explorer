@@ -40,6 +40,7 @@
     "textCurrencySelect": "Currency",
     "textDelegateSelect": "Delegate",
     "titleTable": "Delegates ranked in order of income from highest to lowest",
+    "titleTable2": "Elections ranked in order of election from highest to lowest",
     "tableHeader1": "Name",
     "tableHeader2": "Delegate level",
     "tableHeader3": "Total EOS earned",

@@ -92,3 +92,12 @@ export const GET_ELECTIONS_BY_YEAR = gql`
     }
   }
 `
+export const GET_TOTAL_INCOME_BY_ELECTIONS_QUERY = gql`
+  query getTotalIncomeByElection {
+    total_incomes_by_election {
+      amount
+      usd_total
+      election
+    }
+  }
+`

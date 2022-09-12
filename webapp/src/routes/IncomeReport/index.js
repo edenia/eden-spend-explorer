@@ -31,7 +31,8 @@ const IncomeReport = () => {
       delegateSelect,
       incomeByAllDelegatesList,
       electionsByYearList,
-      nextEdenDisbursement
+      nextEdenDisbursement,
+      showElectionRadio
     },
     {
       setTypeCurrencySelect,
@@ -40,7 +41,8 @@ const IncomeReport = () => {
       setElectionRoundSelect,
       setShowDelegateRadio,
       setDelegateSelect,
-      thousandSeparator
+      thousandSeparator,
+      setShowElectionRadio
     }
   ] = useIncomeReportState()
   const classes = useStyles()
@@ -85,53 +87,78 @@ const IncomeReport = () => {
       </div>
 
       <div className={classes.filtersContainer}>
-        <FormControl>
-          <RadioGroup
-            name="controlled-radio-buttons-group"
-            value={showDelegateRadio}
-            row
-            onChange={({ target }) => setShowDelegateRadio(target.value)}
-          >
-            <FormControlLabel
-              control={<Radio size="small" />}
-              label={t('textRadioButton1')}
-              value="oneDelegate"
-            />
-            <FormControlLabel
-              control={<Radio size="small" />}
-              label={t('textRadioButton2')}
-              value="allDelegates"
-            />
-          </RadioGroup>
-        </FormControl>
-        <div>
-          <IncomeSelect
-            onChangeFunction={setElectionYearSelect}
-            labelSelect={t('textYearSelect')}
-            values={getListElectionYears()}
-            actualValue={electionYearSelect}
-          />
-          <IncomeSelect
-            onChangeFunction={setElectionRoundSelect}
-            labelSelect={t('textElectionSelect')}
-            values={electionsByYearList.map(data => `${data.election}`)}
-            actualValue={electionRoundSelect}
-          />
+        <div id="id-radio-election-container">
+          <FormControl>
+            <RadioGroup
+              name="election-radio-buttons-group"
+              row
+              onChange={({ target }) => setShowElectionRadio(target.value)}
+              value={showElectionRadio}
+            >
+              <FormControlLabel
+                control={<Radio size="small" />}
+                label={'All Elections'}
+                value="allElections"
+              />
+              <FormControlLabel
+                control={<Radio size="small" />}
+                label={'One Election'}
+                value="oneElection"
+              />
+            </RadioGroup>
+          </FormControl>
           <IncomeSelect
             onChangeFunction={setTypeCurrencySelect}
             labelSelect={t('textCurrencySelect')}
             values={['EOS', 'USD']}
             actualValue={typeCurrencySelect}
           />
-          <IncomeSelect
-            onChangeFunction={setDelegateSelect}
-            labelSelect={t('textDelegateSelect')}
-            values={incomeByAllDelegatesList.map(
-              data => data.eden_delegate.account
-            )}
-            disable={showDelegateRadio === 'allDelegates'}
-            actualValue={delegateSelect}
-          />
+        </div>
+        <div id="id-select-election-container">
+          {showElectionRadio === 'oneElection' && (
+            <>
+              <FormControl>
+                <RadioGroup
+                  name="controlled-radio-buttons-group"
+                  value={showDelegateRadio}
+                  row
+                  onChange={({ target }) => setShowDelegateRadio(target.value)}
+                >
+                  <FormControlLabel
+                    control={<Radio size="small" />}
+                    label={t('textRadioButton2')}
+                    value="allDelegates"
+                  />
+                  <FormControlLabel
+                    control={<Radio size="small" />}
+                    label={t('textRadioButton1')}
+                    value="oneDelegate"
+                  />
+                </RadioGroup>
+              </FormControl>
+              <IncomeSelect
+                onChangeFunction={setElectionYearSelect}
+                labelSelect={t('textYearSelect')}
+                values={getListElectionYears()}
+                actualValue={electionYearSelect}
+              />
+              <IncomeSelect
+                onChangeFunction={setElectionRoundSelect}
+                labelSelect={t('textElectionSelect')}
+                values={electionsByYearList.map(data => `${data.election}`)}
+                actualValue={electionRoundSelect}
+              />
+              <IncomeSelect
+                onChangeFunction={setDelegateSelect}
+                labelSelect={t('textDelegateSelect')}
+                values={incomeByAllDelegatesList.map(
+                  data => data.eden_delegate.account
+                )}
+                disable={showDelegateRadio === 'allDelegates'}
+                actualValue={delegateSelect}
+              />
+            </>
+          )}
         </div>
       </div>
 
@@ -139,7 +166,12 @@ const IncomeReport = () => {
 
       <div className={classes.tableContainer}>
         <div className={classes.subTitle}>
-          <Typography variant="span">{t('titleTable')}</Typography>
+          <Typography variant="span">
+            {chartTransactionsList[0]?.level
+              ? t('titleTable')
+              : t('titleTable2')}
+          </Typography>
+
           <IncomeTable data={chartTransactionsList} />
         </div>
       </div>
