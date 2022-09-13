@@ -10,31 +10,28 @@ const IncomeSelect = ({
   disable
 }) => {
   if (disable) return null
-  else {
-    return (
-      <FormControl sx={{ m: 1, width: 100 }} size="small">
-        <InputLabel>{labelSelect}</InputLabel>
-        <Select
-          labelId="demo-select-small"
-          id="select-id"
-          value={actualValue}
-          label={labelSelect}
-          onChange={({ target }) => onChangeFunction(target.value)}
-          disabled={disable || !values[0]}
-        >
-          {values[0] ? (
-            values.map(value => (
-              <MenuItem key={value} value={value}>
-                {labelSelect === 'Election' ? Number(value) + 1 : value}
-              </MenuItem>
-            ))
-          ) : (
-            <MenuItem value=""></MenuItem>
-          )}
-        </Select>
-      </FormControl>
-    )
-  }
+  return (
+    <FormControl sx={{ m: 1, width: 100 }} size="small">
+      <InputLabel>{labelSelect}</InputLabel>
+      <Select
+        labelId="demo-select-small"
+        id="select-id"
+        value={actualValue}
+        label={labelSelect}
+        onChange={({ target }) => onChangeFunction(target.value)}
+      >
+        {values[0] ? (
+          values.map(value => (
+            <MenuItem key={value} value={value}>
+              {labelSelect === 'Election' ? Number(value) + 1 : value}
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem value=""></MenuItem>
+        )}
+      </Select>
+    </FormControl>
+  )
 }
 IncomeSelect.propTypes = {
   labelSelect: PropTypes.string,
