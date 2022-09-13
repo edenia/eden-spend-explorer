@@ -235,9 +235,9 @@ const useIncomeReportState = () => {
 
   useEffect(() => {
     if (showElectionRadio === 'allElections') {
-      totalIncomeByElectionData?.total_incomes_by_election[0] &&
+      totalIncomeByElectionData?.total_income_by_election[0] &&
         newDataFormatByElection(
-          totalIncomeByElectionData.total_incomes_by_election
+          totalIncomeByElectionData.total_income_by_election
         )
     } else {
       showDelegateRadio === 'allDelegates'

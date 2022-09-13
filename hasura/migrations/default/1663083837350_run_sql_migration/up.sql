@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW "public"."total_incomes_by_election" AS
+CREATE OR REPLACE VIEW "public"."total_income_by_election" AS
  SELECT eden_election.election,
     sum(eden_transaction.amount) AS amount,
     sum(eden_transaction.usd_total) AS usd_total
