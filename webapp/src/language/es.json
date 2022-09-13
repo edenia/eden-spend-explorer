@@ -40,6 +40,7 @@
     "textCurrencySelect": "Moneda",
     "textDelegateSelect": "Delegado",
     "titleTable": "Delegados ordenados por ingresos de mayor a menor",
+    "titleTable2": "Elecciones ordenadas de la mas reciente a la mas vieja",
     "tableHeader1": "Nombre",
     "tableHeader2": "Nivel de delegado",
     "tableHeader3": "Total de EOS obtenidos",

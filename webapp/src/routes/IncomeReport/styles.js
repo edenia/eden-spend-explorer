@@ -63,15 +63,28 @@ export default theme => ({
   },
   filtersContainer: {
     marginTop: '30px',
-    display: 'flex',
-    marginLeft: '12px',
-    justifyContent: 'end',
-    [theme.breakpoints.down('sm')]: {
-      textAlign: 'center',
-      flexDirection: 'column'
+    '& #id-radio-election-container': {
+      display: 'flex',
+      marginLeft: '12px',
+      justifyContent: 'end',
+      alignItems: 'center'
     },
-    [theme.breakpoints.up('sm')]: {
-      textAlign: 'center'
+    '& #id-select-election-container': {
+      minHeight: '50px',
+      display: 'flex',
+      marginLeft: '12px',
+      justifyContent: 'end',
+      transition: 'background ease-in .3s',
+      [theme.breakpoints.down('sm')]: {
+        marginTop: 8,
+        borderTop: '1px solid',
+        textAlign: 'center',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
+      },
+      [theme.breakpoints.up('sm')]: {
+        textAlign: 'center'
+      }
     }
   },
   chartContainer: {
@@ -126,5 +139,9 @@ export default theme => ({
     '& a:hover': {
       color: 'rgba(0, 194, 191, 0.80)'
     }
+  },
+  disableLink: {
+    pointerEvents: 'none',
+    cursor: 'pointer'
   }
 })

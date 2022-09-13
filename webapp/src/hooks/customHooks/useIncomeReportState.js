@@ -6,6 +6,7 @@ import { mainConfig } from '../../config'
 import {
   GET_INCOME_TRANSACTIONS_DELEGATES_QUERY,
   GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY,
+  GET_TOTAL_INCOME_BY_ELECTIONS_QUERY,
   GET_ELECTIONS_BY_YEAR
 } from '../../gql'
 import { listChartColors } from '../../constants'
@@ -41,9 +42,10 @@ const useIncomeReportState = () => {
   const [eosRate, setEosRate] = useState(0)
   const [typeCurrencySelect, setTypeCurrencySelect] = useState('EOS')
   const [electionYearSelect, setElectionYearSelect] = useState(2021)
-  const [electionRoundSelect, setElectionRoundSelect] = useState('')
+  const [electionRoundSelect, setElectionRoundSelect] = useState(0)
   const [delegateSelect, setDelegateSelect] = useState('')
   const [showDelegateRadio, setShowDelegateRadio] = useState('allDelegates')
+  const [showElectionRadio, setShowElectionRadio] = useState('allElections')
   const [electionsByYearList, setElectionsByYearList] = useState([])
   const [chartTransactionsList, setChartTransactionsList] = useState([])
   const [incomeByAllDelegatesList, setIncomeByAllDelegatesList] = useState([])
@@ -99,6 +101,19 @@ const useIncomeReportState = () => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
+  const newDataFormatByElection = electionsList => {
+    const newFormatData = electionsList.map(data => {
+      return {
+        name: `Election ${data.election + 1}`,
+        EOS: Number(data.amount).toFixed(2),
+        USD: Number(data.usd_total).toFixed(2),
+        color: generateColor()
+      }
+    })
+
+    setChartTransactionsList(newFormatData.sort(sortDescList))
+  }
+
   const newDataFormatByAllDelegates = transactionsList => {
     const newFormatData = transactionsList.map(data => {
       return {
@@ -113,7 +128,8 @@ const useIncomeReportState = () => {
           data.eden_transactions_aggregate.aggregate.avg.eos_exchange.toFixed(2)
         ),
         color: generateColor(),
-        level: data.delegate_level
+        level: data.delegate_level,
+        link: false
       }
     })
 
@@ -123,7 +139,7 @@ const useIncomeReportState = () => {
   const newDataFormatByDelegate = transactionsList => {
     const newFormatData = transactionsList.map((data, index) => {
       return {
-        name: `${delegateSelect}_${index}`,
+        name: `${delegateSelect} ${index + 1}`,
         EOS: Number(data.amount.toFixed(2)),
         USD: Number(data.usd_total.toFixed(2)),
         EOS_EXCHANGE: Number(data.eos_exchange.toFixed(2)),
@@ -143,6 +159,9 @@ const useIncomeReportState = () => {
 
     return yearsList
   }
+
+  const [loadTotalIncomeByElection, { data: totalIncomeByElectionData }] =
+    useLazyQuery(GET_TOTAL_INCOME_BY_ELECTIONS_QUERY)
 
   const [loadElectionsByYear, { data: electionsByYearData }] = useLazyQuery(
     GET_ELECTIONS_BY_YEAR,
@@ -174,13 +193,20 @@ const useIncomeReportState = () => {
     loadElectionsByYear()
     loadIncomeByAllDelegates()
     loadIncomeByDelegateAccount()
+    loadTotalIncomeByElection()
   }, [])
 
   useEffect(() => {
-    if (electionsByYearData?.eden_historic_election) {
+    if (electionsByYearData?.eden_historic_election[0]) {
+      setElectionsByYearList([
+        ...electionsByYearList,
+        ...electionsByYearData.eden_historic_election
+      ])
+
       setElectionRoundSelect(
-        electionsByYearData.eden_historic_election[0]?.election_round
+        electionsByYearData.eden_historic_election[0]?.election
       )
+
       setElectionsByYearList(electionsByYearData.eden_historic_election)
     }
 
@@ -212,10 +238,23 @@ const useIncomeReportState = () => {
   }, [incomeByAccountData])
 
   useEffect(() => {
-    showDelegateRadio === 'allDelegates'
-      ? newDataFormatByAllDelegates(incomeByAllDelegatesList)
-      : newDataFormatByDelegate(incomeByDelegateAccountList)
-  }, [showDelegateRadio, incomeByDelegateAccountList, incomeByAllDelegatesList])
+    if (showElectionRadio === 'allElections') {
+      totalIncomeByElectionData?.total_income_by_election[0] &&
+        newDataFormatByElection(
+          totalIncomeByElectionData.total_income_by_election
+        )
+    } else {
+      showDelegateRadio === 'allDelegates'
+        ? newDataFormatByAllDelegates(incomeByAllDelegatesList)
+        : newDataFormatByDelegate(incomeByDelegateAccountList)
+    }
+  }, [
+    showElectionRadio,
+    totalIncomeByElectionData,
+    showDelegateRadio,
+    incomeByDelegateAccountList,
+    incomeByAllDelegatesList
+  ])
 
   return [
     {
@@ -229,7 +268,8 @@ const useIncomeReportState = () => {
       delegateSelect,
       incomeByAllDelegatesList,
       electionsByYearList,
-      nextEdenDisbursement
+      nextEdenDisbursement,
+      showElectionRadio
     },
     {
       setTypeCurrencySelect,
@@ -238,7 +278,8 @@ const useIncomeReportState = () => {
       setElectionRoundSelect,
       setShowDelegateRadio,
       setDelegateSelect,
-      thousandSeparator
+      thousandSeparator,
+      setShowElectionRadio
     }
   ]
 }

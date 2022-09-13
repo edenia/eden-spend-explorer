@@ -23,8 +23,9 @@ const RenderChartLegend = ({ data }) => {
   const classes = useStyles()
   return (
     <div className={classes.chartLinks}>
-      {data.map(({ name, color }) => (
+      {data.map(({ name, color, link = true }) => (
         <a
+          className={link ? classes.disableLink : ''}
           key={`key-${name}`}
           href={`https://eosauthority.com/account/${name}?network=eos`}
         >
