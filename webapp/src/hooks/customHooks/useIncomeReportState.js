@@ -109,6 +109,9 @@ const useIncomeReportState = () => {
         USD: Number(
           data.eden_transactions_aggregate.aggregate.sum.usd_total.toFixed(2)
         ),
+        EOS_EXCHANGE: Number(
+          data.eden_transactions_aggregate.aggregate.avg.eos_exchange.toFixed(2)
+        ),
         color: generateColor(),
         level: data.delegate_level
       }
@@ -123,6 +126,7 @@ const useIncomeReportState = () => {
         name: `${delegateSelect}_${index}`,
         EOS: Number(data.amount.toFixed(2)),
         USD: Number(data.usd_total.toFixed(2)),
+        EOS_EXCHANGE: Number(data.eos_exchange.toFixed(2)),
         color: generateColor(),
         level: data.eden_election.delegate_level
       }

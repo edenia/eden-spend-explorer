@@ -22,22 +22,12 @@ export const GET_INCOME_TRANSACTIONS_DELEGATES_QUERY = gql`
             amount
             usd_total
           }
+          avg {
+            eos_exchange
+          }
         }
       }
       delegate_level
-    }
-    eden_transaction_aggregate(
-      where: {
-        type: { _eq: "income" }
-        eden_election: { election: { _eq: $election } }
-      }
-    ) {
-      aggregate {
-        sum {
-          amount
-          usd_total
-        }
-      }
     }
   }
 `
@@ -60,15 +50,14 @@ export const GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
       eden_election {
         delegate_level
       }
+      eos_exchange
     }
     eden_transaction_aggregate(
       where: {
+        type: { _eq: "income" }
         eden_election: {
           election: { _eq: $election }
-          _and: { eden_transactions: { type: { _eq: "income" } } }
-        }
-        _and: {
-          eden_election: { eden_delegate: { account: { _eq: $account } } }
+          eden_delegate: { account: { _eq: $account } }
         }
       }
     ) {

@@ -11,7 +11,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Cell
+  Cell,
+  Line
 } from 'recharts'
 
 import styles from './styles'
@@ -65,6 +66,13 @@ const IncomeChart = ({ data, coinType }) => {
               <CartesianGrid stroke="#f5f5f5" />
               <XAxis hide dataKey="name" scale="auto" />
               <YAxis tick={{ stroke: '#606060', strokeWidth: 0.5 }} />
+              <YAxis
+                dataKey="EOS_EXCHANGE"
+                scale="auto"
+                yAxisId="right"
+                orientation="right"
+                tick={{ stroke: '#00c2bf', strokeWidth: 0.5 }}
+              />
               <Tooltip />
               <Legend
                 content={<RenderChartLegend data={data} />}
@@ -82,6 +90,13 @@ const IncomeChart = ({ data, coinType }) => {
                   <Cell key={`cell-${name}`} fill={color} />
                 ))}
               </Bar>
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="EOS_EXCHANGE"
+                stroke="#00c2bf"
+                strokeWidth={2}
+              />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
