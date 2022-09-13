@@ -95,6 +95,7 @@ const IncomeChart = ({ data, coinType }) => {
                 type="monotone"
                 dataKey="EOS_EXCHANGE"
                 stroke="#00c2bf"
+                strokeWidth={2}
               />
             </ComposedChart>
           </ResponsiveContainer>
