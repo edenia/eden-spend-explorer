@@ -16,6 +16,7 @@ import {
 } from 'recharts'
 
 import styles from './styles'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(styles)
 
@@ -47,7 +48,35 @@ RenderChartLegend.propTypes = {
   data: PropTypes.array
 }
 
-const IncomeChart = ({ data, coinType }) => {
+const CustomTooltip = ({
+  active,
+  payload = [],
+  label = '',
+  thousandSeparator
+}) => {
+  const { t } = useTranslation('incomeRoute')
+  return (
+    <div>
+      <strong>{label}</strong>
+      {active &&
+        payload.map((data, i) => (
+          <div key={`${i}-tooltip`}>{`${
+            data.dataKey === 'EOS_EXCHANGE'
+              ? t('chartExchangeRateEos')
+              : data.dataKey
+          } : ${thousandSeparator(data.payload[data.dataKey])}`}</div>
+        ))}
+    </div>
+  )
+}
+CustomTooltip.propTypes = {
+  active: PropTypes.bool,
+  payload: PropTypes.array,
+  label: PropTypes.any,
+  thousandSeparator: PropTypes.func
+}
+
+const IncomeChart = ({ data, coinType, showEosRate, thousandSeparator }) => {
   const classes = useStyles()
   return (
     <>
@@ -65,39 +94,47 @@ const IncomeChart = ({ data, coinType }) => {
               }}
             >
               <CartesianGrid stroke="#f5f5f5" />
-              <XAxis hide dataKey="name" scale="auto" />
-              <YAxis tick={{ stroke: '#606060', strokeWidth: 0.5 }} />
+              <XAxis tick={{ fontSize: 10 }} dataKey="name" scale="auto" />
               <YAxis
-                dataKey="EOS_EXCHANGE"
-                scale="auto"
-                yAxisId="right"
-                orientation="right"
-                tick={{ stroke: '#00c2bf', strokeWidth: 0.5 }}
+                tick={{ fontSize: 14, stroke: '#606060', strokeWidth: 0.5 }}
               />
-              <Tooltip />
-              <Legend
-                content={<RenderChartLegend data={data} />}
-                align="right"
-                layout="vertical"
-                verticalAlign="middle"
+              {showEosRate && (
+                <>
+                  <YAxis
+                    dataKey="EOS_EXCHANGE"
+                    scale="auto"
+                    yAxisId="right"
+                    orientation="right"
+                    tick={{ fontSize: 14, stroke: '#00c2bf', strokeWidth: 0.5 }}
+                  />
+
+                  <Line
+                    yAxisId="right"
+                    type="monotone"
+                    dataKey="EOS_EXCHANGE"
+                    stroke="#00c2bf"
+                    strokeWidth={2}
+                  />
+                </>
+              )}
+              <Tooltip
+                wrapperStyle={{
+                  outline: 'none',
+                  borderRadius: '4px',
+                  backgroundColor: '#bfefef',
+                  fontSize: '14px',
+                  padding: '8px'
+                }}
+                content={
+                  <CustomTooltip thousandSeparator={thousandSeparator} />
+                }
               />
-              <Bar
-                legendType="wye"
-                dataKey={coinType}
-                barSize={25}
-                fill="#606060"
-              >
+              <Legend content={<RenderChartLegend data={data} />} />
+              <Bar dataKey={coinType} barSize={25} fill="#606060">
                 {data.map(({ name, color }) => (
                   <Cell key={`cell-${name}`} fill={color} />
                 ))}
               </Bar>
-              <Line
-                yAxisId="right"
-                type="monotone"
-                dataKey="EOS_EXCHANGE"
-                stroke="#00c2bf"
-                strokeWidth={2}
-              />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
@@ -108,7 +145,9 @@ const IncomeChart = ({ data, coinType }) => {
 
 IncomeChart.propTypes = {
   data: PropTypes.array,
-  coinType: PropTypes.string
+  coinType: PropTypes.string,
+  showEosRate: PropTypes.bool,
+  thousandSeparator: PropTypes.func
 }
 
 export default memo(IncomeChart)

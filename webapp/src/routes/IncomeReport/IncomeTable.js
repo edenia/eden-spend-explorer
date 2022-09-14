@@ -10,7 +10,7 @@ import {
   TableBody
 } from '@mui/material'
 
-const IncomeTable = ({ data }) => {
+const IncomeTable = ({ data, thousandSeparator }) => {
   const { t } = useTranslation('incomeRoute')
   return (
     <TableContainer sx={{ maxHeight: 440, marginTop: 2 }}>
@@ -18,7 +18,11 @@ const IncomeTable = ({ data }) => {
         <TableHead>
           <TableRow>
             <TableCell></TableCell>
-            <TableCell>{t('tableHeader1')}</TableCell>
+            {
+              <TableCell>
+                {data[0]?.level ? t('tableHeader1') : t('tableElectionHeader')}
+              </TableCell>
+            }
             {data[0]?.level && <TableCell>{t('tableHeader2')}</TableCell>}
             <TableCell>{t('tableHeader3')}</TableCell>
             <TableCell>{t('tableHeader4')}</TableCell>
@@ -32,8 +36,8 @@ const IncomeTable = ({ data }) => {
               </TableCell>
               <TableCell>{name}</TableCell>
               {level && <TableCell>{level}</TableCell>}
-              <TableCell>{EOS}</TableCell>
-              <TableCell>{USD}</TableCell>
+              <TableCell>{thousandSeparator(EOS)}</TableCell>
+              <TableCell>{thousandSeparator(USD)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -42,7 +46,8 @@ const IncomeTable = ({ data }) => {
   )
 }
 IncomeTable.propTypes = {
-  data: PropTypes.array
+  data: PropTypes.array,
+  thousandSeparator: PropTypes.func
 }
 
 export default memo(IncomeTable)
