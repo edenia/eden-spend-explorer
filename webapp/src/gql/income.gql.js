@@ -90,3 +90,18 @@ export const GET_TOTAL_INCOME_BY_ELECTIONS_QUERY = gql`
     }
   }
 `
+
+export const GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION = gql`
+  query getIncomesClaimedAndUnclaimedByElection($election: Int) {
+    incomes_claimed_and_unclaimed(
+      where: { election: { _eq: $election } }
+      order_by: { amount: desc }
+    ) {
+      usd_total
+      recipient
+      category
+      amount
+      exchange_rate
+    }
+  }
+`

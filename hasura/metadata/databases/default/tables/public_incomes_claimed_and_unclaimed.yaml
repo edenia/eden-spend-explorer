@@ -1,11 +1,14 @@
 table:
-  name: total_income_by_election
+  name: incomes_claimed_and_unclaimed
   schema: public
 select_permissions:
   - role: guest
     permission:
       columns:
         - amount
+        - category
         - election
+        - exchange_rate
+        - recipient
         - usd_total
       filter: {}

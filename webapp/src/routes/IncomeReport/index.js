@@ -11,6 +11,7 @@ import {
 
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
 
+import IncomeClaimedChart from './IncomeClaimedChart'
 import IncomeChart from './IncomeChart'
 import IncomeTable from './IncomeTable'
 import IncomeSelect from './IncomeSelect'
@@ -32,7 +33,8 @@ const IncomeReport = () => {
       incomeByAllDelegatesList,
       electionsByYearList,
       nextEdenDisbursement,
-      showElectionRadio
+      showElectionRadio,
+      incomeClaimedAndUnclaimedList
     },
     {
       setTypeCurrencySelect,
@@ -163,6 +165,11 @@ const IncomeReport = () => {
       </div>
 
       <IncomeChart data={chartTransactionsList} coinType={typeCurrencySelect} />
+
+      <IncomeClaimedChart
+        data={incomeClaimedAndUnclaimedList}
+        coinType={typeCurrencySelect}
+      />
 
       <div className={classes.tableContainer}>
         <div className={classes.subTitle}>

@@ -11,7 +11,6 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Cell,
   Line
 } from 'recharts'
 
@@ -47,20 +46,20 @@ RenderChartLegend.propTypes = {
   data: PropTypes.array
 }
 
-const IncomeChart = ({ data, coinType }) => {
+const IncomeClaimedChart = ({ data, coinType }) => {
   const classes = useStyles()
   return (
     <>
       <div className={classes.chartContainer}>
         <div id="chart-scroll-id">
-          <ResponsiveContainer width="100%" height={450}>
+          <ResponsiveContainer width="40%" height={250}>
             <ComposedChart
-              height={400}
+              height={200}
               data={data}
               margin={{
-                top: 20,
+                top: 40,
                 right: 0,
-                bottom: 20,
+                bottom: 0,
                 left: 12
               }}
             >
@@ -75,22 +74,21 @@ const IncomeChart = ({ data, coinType }) => {
                 tick={{ stroke: '#00c2bf', strokeWidth: 0.5 }}
               />
               <Tooltip />
-              <Legend
-                content={<RenderChartLegend data={data} />}
-                align="right"
-                layout="vertical"
-                verticalAlign="middle"
+              <Legend />
+              <Bar
+                legendType="wye"
+                stackId="a"
+                dataKey={`${coinType}_CLAIMED`}
+                barSize={25}
+                fill="#82ca9d"
               />
               <Bar
                 legendType="wye"
-                dataKey={coinType}
+                stackId="a"
+                dataKey={`${coinType}_UNCLAIMED`}
                 barSize={25}
-                fill="#606060"
-              >
-                {data.map(({ name, color }) => (
-                  <Cell key={`cell-${name}`} fill={color} />
-                ))}
-              </Bar>
+                fill="#8884d8"
+              />
               <Line
                 yAxisId="right"
                 type="monotone"
@@ -106,9 +104,9 @@ const IncomeChart = ({ data, coinType }) => {
   )
 }
 
-IncomeChart.propTypes = {
+IncomeClaimedChart.propTypes = {
   data: PropTypes.array,
   coinType: PropTypes.string
 }
 
-export default memo(IncomeChart)
+export default memo(IncomeClaimedChart)
