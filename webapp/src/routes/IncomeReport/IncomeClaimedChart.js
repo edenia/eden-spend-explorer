@@ -52,9 +52,9 @@ const IncomeClaimedChart = ({ data, coinType }) => {
     <>
       <div className={classes.chartContainer}>
         <div id="chart-scroll-id">
-          <ResponsiveContainer width="40%" height={250}>
+          <ResponsiveContainer width="50%" height={300}>
             <ComposedChart
-              height={200}
+              height={300}
               data={data}
               margin={{
                 top: 40,

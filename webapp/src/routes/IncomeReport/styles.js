@@ -90,8 +90,10 @@ export default theme => ({
   chartContainer: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
     overflow: 'hidden',
-    overflowX: 'auto',
+    overflowX: 'hidden',
+    with: '100%',
     '& #chart-scroll-id': {
       minWidth: '925px',
       width: '100%'

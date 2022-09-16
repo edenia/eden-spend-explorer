@@ -8,7 +8,9 @@ import {
   GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY,
   GET_TOTAL_INCOME_BY_ELECTIONS_QUERY,
   GET_ELECTIONS_BY_YEAR,
-  GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION
+  GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION,
+  GET_TOTAL_CLAIMED_AND_UNCLAIMED,
+  GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION
 } from '../../gql'
 import { listChartColors } from '../../constants'
 
@@ -53,6 +55,8 @@ const useIncomeReportState = () => {
   const [incomeByDelegateAccountList, setIncomeByDelegateAccountList] =
     useState([])
   const [incomeClaimedAndUnclaimedList, setIncomeClaimedAndUnclaimedList] =
+    useState([])
+  const [totalClaimedAndUnclaimedList, setTotalClaimedAndUnclaimedList] =
     useState([])
 
   const getEosBalance = async () => {
@@ -179,6 +183,18 @@ const useIncomeReportState = () => {
       setIncomeClaimedAndUnclaimedList(newFormatData)
     }
 
+  const newDataFormatTotalClaimedAndUnclaimed =
+    totalClaimedAndUnclaimedData => {
+      const newFormatData = totalClaimedAndUnclaimedData.map(data => {
+        return {
+          name: data.category,
+          EOS: Number(data.amount.toFixed(2)),
+          USD: Number(data.usd_total.toFixed(2))
+        }
+      })
+      setTotalClaimedAndUnclaimedList(newFormatData)
+    }
+
   const getListElectionYears = () => {
     const yearsList = []
     const yearCurrent = new Date().getFullYear()
@@ -222,6 +238,18 @@ const useIncomeReportState = () => {
       }
     })
 
+  const [loadTotalClaimedAndUnclaimed, { data: totalClaimedAndUnclaimedData }] =
+    useLazyQuery(GET_TOTAL_CLAIMED_AND_UNCLAIMED)
+
+  const [
+    loadTotalClaimedAndUnclaimedByElection,
+    { data: totalClaimedAndUnclaimedByElectionData }
+  ] = useLazyQuery(GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION, {
+    variables: {
+      election: electionRoundSelect
+    }
+  })
+
   useEffect(() => {
     getEosRate()
     getEosBalance()
@@ -231,6 +259,8 @@ const useIncomeReportState = () => {
     loadIncomeByDelegateAccount()
     loadTotalIncomeByElection()
     loadClaimedAndUnclaimedByElection()
+    loadTotalClaimedAndUnclaimed()
+    loadTotalClaimedAndUnclaimedByElection()
   }, [])
 
   useEffect(() => {
@@ -283,6 +313,24 @@ const useIncomeReportState = () => {
 
   useEffect(() => {
     if (showElectionRadio === 'allElections') {
+      totalClaimedAndUnclaimedData?.total_claimed_and_unclaimed &&
+        newDataFormatTotalClaimedAndUnclaimed(
+          totalClaimedAndUnclaimedData.total_claimed_and_unclaimed
+        )
+    } else {
+      totalClaimedAndUnclaimedByElectionData?.total_claimed_and_unclaimed_by_election &&
+        newDataFormatTotalClaimedAndUnclaimed(
+          totalClaimedAndUnclaimedByElectionData?.total_claimed_and_unclaimed_by_election
+        )
+    }
+  }, [
+    showElectionRadio,
+    totalClaimedAndUnclaimedData,
+    totalClaimedAndUnclaimedByElectionData
+  ])
+
+  useEffect(() => {
+    if (showElectionRadio === 'allElections') {
       totalIncomeByElectionData?.total_income_by_election[0] &&
         newDataFormatByElection(
           totalIncomeByElectionData.total_income_by_election
@@ -314,7 +362,8 @@ const useIncomeReportState = () => {
       electionsByYearList,
       nextEdenDisbursement,
       showElectionRadio,
-      incomeClaimedAndUnclaimedList
+      incomeClaimedAndUnclaimedList,
+      totalClaimedAndUnclaimedList
     },
     {
       setTypeCurrencySelect,

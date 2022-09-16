@@ -1,0 +1,3 @@
+table:
+  name: total_claimed_and_unclaimed_by_election
+  schema: public
