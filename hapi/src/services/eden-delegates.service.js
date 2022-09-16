@@ -1,24 +1,43 @@
-const { edenConfig } = require('../config')
-const { eosUtil } = require('../utils')
+const moment = require('moment')
+
+const { servicesUtil } = require('../utils')
 const { edenDelegatesGql } = require('../gql')
 const { edenElectionGql } = require('../gql')
+const { edenHistoricElectionGql } = require('../gql')
 const { servicesConstant } = require('../constants')
 
-const loadMembers = async ({ next_key: nextKey = null, limit = 100 } = {}) => {
-  return await eosUtil.getTableRows({
-    code: 'genesis.eden',
-    scope: 0,
-    table: 'member',
-    limit,
-    lower_bound: nextKey
+const saveNewHistoricElection = async () => {
+  const currentDate = moment().format()
+  const lastElection = await edenHistoricElectionGql.get({
+    date_election: { _lte: currentDate }
   })
+
+  const electState = await servicesUtil.loadTableData(
+    { next_key: null },
+    'elect.state'
+  )
+  const electStateData = electState.rows[0]
+  const nextElection = electStateData[1].last_election_time.split('T')[0]
+
+  if (lastElection.date_election.split('T')[0] === nextElection) return
+
+  const newElectionData = {
+    election: lastElection.election + 1,
+    date_election: nextElection
+  }
+
+  await edenHistoricElectionGql.save(newElectionData)
 }
 
 const updateEdenTable = async () => {
-  let nextKey = null
+  await saveNewHistoricElection()
 
+  let nextKey = null
   while (true) {
-    const members = await loadMembers({ next_key: nextKey })
+    const members = await servicesUtil.loadTableData(
+      { next_key: nextKey },
+      'member'
+    )
 
     for (const member of members.rows) {
       if (!(member[1].election_rank > 0)) continue
@@ -55,7 +74,7 @@ const updateEdenTable = async () => {
 const updateEdenTableWorker = () => {
   return {
     name: servicesConstant.MESSAGES.delegates,
-    interval: edenConfig.edenElectionInterval,
+    interval: servicesUtil.nextElectionDate,
     action: updateEdenTable
   }
 }

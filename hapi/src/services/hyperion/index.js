@@ -1,10 +1,16 @@
 const moment = require('moment')
 
-const updaters = require('./updaters')
 const hyperionStateService = require('../../gql/hyperion-state.gql')
-const { edenElectionGql } = require('../../gql')
-const { hyperionConfig, eosConfig } = require('../../config')
-const { hasuraUtil, axiosUtil, sleepUtil } = require('../../utils')
+const { edenElectionGql, edenHistoricElectionGql } = require('../../gql')
+const { hyperionConfig } = require('../../config')
+const {
+  hasuraUtil,
+  axiosUtil,
+  sleepUtil,
+  servicesUtil
+} = require('../../utils')
+
+const updaters = require('./updaters')
 
 const TIME_BEFORE_IRREVERSIBILITY = 164
 let LASTEST_RATE_DATE_CONSULTED = null
@@ -94,29 +100,29 @@ const runUpdaters = async actions => {
 
     if (!updater) continue
 
+    const electionNumber = await edenHistoricElectionGql.get({
+      date_election: { _lte: action.timestamp }
+    })
     const edenElectionId =
-      action.contract === 'genesis.eden'
+      action.action === 'withdraw'
         ? await edenElectionGql.get({
-            eden_delegate: { account: { _eq: action.data.owner } }
+            eden_delegate: { account: { _eq: action.data.owner } },
+            election: { _eq: electionNumber.election }
           })
         : await edenElectionGql.get({
-            eden_delegate: { account: { _eq: action.data.from } }
+            eden_delegate: { account: { _eq: action.data.from } },
+            election: { _eq: electionNumber.election }
           })
 
     if (!edenElectionId) continue
 
-    const txDate = await moment(action.timestamp).format('DD-MM-YYYY')
+    const txDate = moment(action.timestamp).format('DD-MM-YYYY')
 
-    if (LASTEST_RATE_DATE_CONSULTED !== txDate) {
-      const { data } = await axiosUtil.get(
-        `${eosConfig.eosHistory}/coins/eos/history`,
-        {
-          params: {
-            date: txDate,
-            localization: false
-          }
-        }
-      )
+    if (
+      LASTEST_RATE_DATE_CONSULTED !== txDate &&
+      action.action !== 'fundtransfer'
+    ) {
+      const data = await servicesUtil.getExchangeRateByDate(txDate)
       LASTEST_RATE_DATA_CONSULTED = data.market_data.current_price.usd
       LASTEST_RATE_DATE_CONSULTED = txDate
     }

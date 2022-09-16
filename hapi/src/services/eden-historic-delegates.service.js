@@ -1,17 +1,11 @@
-const moment = require('moment')
-
 const {
   edenDelegatesGql,
   edenHistoricElectionGql,
-  edenElectionGql,
-  edenTransactionGql
+  edenElectionGql
 } = require('../gql')
 const { servicesConstant } = require('../constants')
 const { sleepUtil, eosUtil, axiosUtil } = require('../utils')
-const { hyperionConfig, edenConfig, eosConfig } = require('../config')
-
-let LASTEST_RATE_DATE_CONSULTED = null
-let LASTEST_RATE_DATA_CONSULTED = null
+const { hyperionConfig, edenConfig } = require('../config')
 
 const historicDelegates = async ({
   next_key: nextKey = null,
@@ -95,62 +89,6 @@ const registerHistoricDelegate = async (date, account, rank) => {
   }
 }
 
-const registerUnclaimedTransaction = async (
-  date,
-  account,
-  rank,
-  amount,
-  id
-) => {
-  const txDate = await moment(date).format('DD-MM-YYYY')
-
-  if (LASTEST_RATE_DATE_CONSULTED !== txDate) {
-    const { data } = await axiosUtil.get(
-      `${eosConfig.eosHistory}/coins/eos/history`,
-      {
-        params: {
-          date: txDate,
-          localization: false
-        }
-      }
-    )
-    LASTEST_RATE_DATA_CONSULTED = data.market_data.current_price.usd
-    LASTEST_RATE_DATE_CONSULTED = txDate
-  }
-
-  try {
-    const election = await edenHistoricElectionGql.get({
-      date_election: { _lte: date }
-    })
-    const delegateData = await edenDelegatesGql.get({
-      account: { _eq: account }
-    })
-    const electionData = await edenElectionGql.get({
-      id_delegate: { _eq: delegateData.id },
-      election: { _eq: election.election }
-    })
-    const transactionData = {
-      txid: id,
-      amount,
-      category: 'unclaimed',
-      date: date,
-      description: `distribution funds rank ${rank}`,
-      id_election: electionData.id,
-      recipient: account,
-      type: 'income',
-      eos_exchange: LASTEST_RATE_DATA_CONSULTED,
-      usd_total: amount * LASTEST_RATE_DATA_CONSULTED
-    }
-    const registeredTransaction = await edenTransactionGql.get({
-      txid: { _eq: transactionData.txid }
-    })
-
-    if (!registeredTransaction) await edenTransactionGql.save(transactionData)
-  } catch (error) {
-    console.error(`error to sync ${error.message}`)
-  }
-}
-
 const runDelegateUpdaters = async actions => {
   for (let index = 0; index < actions.length; index++) {
     const action = actions[index]
@@ -183,7 +121,7 @@ const getDelegateByFundTransfer = async () => {
   }
 }
 
-const updateHistoricDelegate = async () => {
+const getDelegateByDistAccount = async () => {
   let nextKey = null
   while (true) {
     const delegates = await historicDelegates({ next_key: nextKey })
@@ -191,23 +129,41 @@ const updateHistoricDelegate = async () => {
       const date = delegate[1].distribution_time
       const account = delegate[1].owner
       const rank = delegate[1].rank
-      const id = delegate[1].id.toString()
-      const amount = Number(delegate[1].balance.split(' ')[0])
       await registerHistoricDelegate(date, account, rank)
-      await registerUnclaimedTransaction(date, account, rank, amount, id)
     }
 
     if (!delegates.more) break
 
     nextKey = delegates.next_key
   }
+}
+
+const saveHistoricElection = async () => {
+  const historicElectionsList = edenConfig.edenElectionHistorics || []
+
+  await historicElectionsList.forEach(async element => {
+    const election = await edenHistoricElectionGql.get({
+      election: { _eq: element.election }
+    })
+
+    if (election) return
+
+    await edenHistoricElectionGql.save({
+      election: element.election,
+      date_election: element.date_election
+    })
+  })
+}
+
+const updateHistoricDelegate = async () => {
+  await saveHistoricElection()
+  await getDelegateByDistAccount()
   await getDelegateByFundTransfer()
 }
 
 const updateDelegateTable = () => {
   return {
     name: servicesConstant.MESSAGES.historicDelegates,
-    interval: edenConfig.edenElectionInterval,
     action: updateHistoricDelegate
   }
 }

@@ -4,5 +4,6 @@ module.exports = {
   hasuraUtil: require('./hasura.util'),
   walletUtil: require('./wallet.util'),
   sleepUtil: require('./sleep.util'),
-  updaterUtil: require('./updater.util')
+  updaterUtil: require('./updater.util'),
+  servicesUtil: require('./services.util')
 }
