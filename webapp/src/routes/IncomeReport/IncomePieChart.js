@@ -104,6 +104,7 @@ const IncomePieChart = ({ data, coinType }) => {
           <ResponsiveContainer width="50%" height={300}>
             <PieChart
               height={300}
+              width="50%"
               margin={{
                 top: 40,
                 right: 0,
@@ -117,7 +118,7 @@ const IncomePieChart = ({ data, coinType }) => {
                 data={data}
                 nameKey={'name'}
                 dataKey={coinType}
-                cx="50%"
+                cx="60%"
                 cy="50%"
                 innerRadius={60}
                 outerRadius={80}
