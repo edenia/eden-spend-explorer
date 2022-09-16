@@ -74,7 +74,7 @@ export default theme => ({
       display: 'flex',
       marginLeft: '12px',
       justifyContent: 'end',
-      transition: 'background ease-in .3s',
+      alignItems: 'center',
       [theme.breakpoints.down('sm')]: {
         marginTop: 8,
         borderTop: '1px solid',
@@ -126,7 +126,8 @@ export default theme => ({
   },
   chartLinks: {
     display: 'flex',
-    flexDirection: 'column',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
     overflowY: 'auto',
     maxHeight: '400px',
     '& a ': {

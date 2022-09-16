@@ -40,11 +40,13 @@
     "textCurrencySelect": "Moneda",
     "textDelegateSelect": "Delegado",
     "titleTable": "Delegados ordenados por ingresos de mayor a menor",
-    "titleTable2": "Elecciones ordenadas de la mas reciente a la mas vieja",
+    "titleTable2": "Elecciones ordenadas de la mas antigua a la mas reciente",
+    "tableElectionHeader": "Periodo",
     "tableHeader1": "Nombre",
     "tableHeader2": "Nivel de delegado",
-    "tableHeader3": "Total de EOS obtenidos",
-    "tableHeader4": "Total de USD obtenidos"
+    "tableHeader3": "Total de EOS distribuidos",
+    "tableHeader4": "Total de USD distribuidos",
+    "chartExchangeRateEos": "Tipo de cambio"
   },
   "aboutRoute": {
     "title": "Este proyecto",
