@@ -60,29 +60,35 @@ const useIncomeReportState = () => {
     useState([])
 
   const getEosBalance = async () => {
-    const response = eosApi.getCurrencyBalance(
-      'eosio.token',
-      'genesis.eden',
-      'EOS'
-    )
-    const data = await response
+    try {
+      const response = await eosApi.getCurrencyBalance(
+        'eosio.token',
+        mainConfig.edenContract,
+        'EOS'
+      )
 
-    setCurrencyBalance(data[0] || '')
+      setCurrencyBalance(response[0] || '')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const getNextEdenDisbursement = async () => {
-    const response = eosApi.getTableRows({
-      json: true,
-      code: 'genesis.eden',
-      scope: 0,
-      table: 'distribution'
-    })
-    const data = await response
-    const date = new Date(
-      data?.rows[0][1]?.distribution_time
-    ).toLocaleDateString()
+    try {
+      const response = await eosApi.getTableRows({
+        json: true,
+        code: mainConfig.edenContract,
+        scope: 0,
+        table: 'distribution'
+      })
+      const date = new Date(
+        response?.rows[0][1]?.distribution_time
+      ).toLocaleDateString()
 
-    setNextEdenDisbursement(date)
+      setNextEdenDisbursement(date)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const getEosRate = async () => {
@@ -118,7 +124,7 @@ const useIncomeReportState = () => {
       }
     })
 
-    setChartTransactionsList(newFormatData.sort(sortDescList))
+    setChartTransactionsList(newFormatData)
   }
 
   const newDataFormatByAllDelegates = transactionsList => {

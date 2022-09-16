@@ -40,11 +40,13 @@
     "textCurrencySelect": "Currency",
     "textDelegateSelect": "Delegate",
     "titleTable": "Delegates ranked in order of income from highest to lowest",
-    "titleTable2": "Elections sorted from newest to oldest",
+    "titleTable2": "Elections sorted from oldest to newest",
+    "tableElectionHeader": "Term",
     "tableHeader1": "Name",
     "tableHeader2": "Delegate level",
-    "tableHeader3": "Total EOS earned",
-    "tableHeader4": "Total USD earned"
+    "tableHeader3": "Total EOS distributed",
+    "tableHeader4": "Total USD distributed",
+    "chartExchangeRateEos": "Exchange Rate"
   },
   "aboutRoute": {
     "title": "This project",

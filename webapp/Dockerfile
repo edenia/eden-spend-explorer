@@ -12,6 +12,7 @@ ARG react_app_ual_api_port
 ARG react_app_ual_chain_id
 ARG react_app_hasura_url
 ARG react_app_rate_history
+ARG react_app_eden_contract
 
 ENV REACT_APP_TAG $react_app_tag
 ENV REACT_APP_NAME $react_app_name
@@ -25,6 +26,7 @@ ENV REACT_APP_UAL_API_PORT $react_app_ual_api_port
 ENV REACT_APP_UAL_CHAIN_ID $react_app_ual_chain_id
 ENV REACT_APP_HASURA_URL $react_app_hasura_url
 ENV REACT_APP_RATE_HISTORY $react_app_rate_history
+ENV REACT_APP_EDEN_CONTRACT $react_app_eden_contract
 
 WORKDIR /usr/src/app
 

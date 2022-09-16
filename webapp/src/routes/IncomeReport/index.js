@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
 import {
@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup,
+  Switch,
   Typography
 } from '@mui/material'
 
@@ -51,6 +52,7 @@ const IncomeReport = () => {
   ] = useIncomeReportState()
   const classes = useStyles()
   const { t } = useTranslation('incomeRoute')
+  const [showEosRateSwitch, setshowEosRateSwitch] = useState(true)
 
   return (
     <div className={classes.root}>
@@ -122,6 +124,19 @@ const IncomeReport = () => {
           {showElectionRadio === 'oneElection' && (
             <>
               <FormControl>
+                <FormControlLabel
+                  label={t('chartExchangeRateEos')}
+                  control={
+                    <Switch
+                      checked={showEosRateSwitch}
+                      onChange={({ target }) =>
+                        setshowEosRateSwitch(target.checked)
+                      }
+                    />
+                  }
+                />
+              </FormControl>
+              <FormControl>
                 <RadioGroup
                   name="controlled-radio-buttons-group"
                   value={showDelegateRadio}
@@ -166,7 +181,12 @@ const IncomeReport = () => {
         </div>
       </div>
 
-      <IncomeChart data={chartTransactionsList} coinType={typeCurrencySelect} />
+      <IncomeChart
+        data={chartTransactionsList}
+        coinType={typeCurrencySelect}
+        showEosRate={showEosRateSwitch}
+        thousandSeparator={thousandSeparator}
+      />
 
       <div className={classes.chartContainer}>
         <IncomeClaimedChart
@@ -188,7 +208,10 @@ const IncomeReport = () => {
               : t('titleTable2')}
           </Typography>
 
-          <IncomeTable data={chartTransactionsList} />
+          <IncomeTable
+            data={chartTransactionsList}
+            thousandSeparator={thousandSeparator}
+          />
         </div>
       </div>
     </div>
