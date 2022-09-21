@@ -36,7 +36,6 @@ const renderActiveShape = props => {
   const ex = mx + (cos >= 0 ? 1 : -1) * 22
   const ey = my
   const textAnchor = cos >= 0 ? 'start' : 'end'
-  console.log({ props })
 
   return (
     <g>
@@ -99,8 +98,6 @@ const IncomePieChart = ({ data, coinType }) => {
   const newData = data.map(info => {
     return { ...info, coin: coinType }
   })
-  console.log({ newData })
-
   const classes = useStyles()
   const [activeIndex, setActiveIndex] = useState(0)
 

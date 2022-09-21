@@ -1,6 +1,5 @@
 import React, { memo } from 'react'
 import PropTypes from 'prop-types'
-import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
 import {
   ComposedChart,
@@ -18,34 +17,6 @@ import styles from './styles'
 import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(styles)
-
-const RenderChartLegend = ({ data }) => {
-  const classes = useStyles()
-  return (
-    <div className={classes.chartLinks}>
-      {data.map(({ name, color, link = true }) => (
-        <a
-          className={link ? classes.disableLink : ''}
-          key={`key-${name}`}
-          href={`https://eosauthority.com/account/${name}?network=eos`}
-        >
-          <Box
-            width={18}
-            height={18}
-            ml={2}
-            mt={0.5}
-            mr={0.5}
-            bgcolor={color}
-          />
-          {name}
-        </a>
-      ))}
-    </div>
-  )
-}
-RenderChartLegend.propTypes = {
-  data: PropTypes.array
-}
 
 const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
   const { t } = useTranslation('incomeRoute')
