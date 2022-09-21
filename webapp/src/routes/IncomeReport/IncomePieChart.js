@@ -88,10 +88,9 @@ const renderActiveShape = props => {
 
 const IncomePieChart = ({ data, coinType }) => {
   const classes = useStyles()
+  const [activeIndex, setActiveIndex] = useState(0)
 
   GLOBAL_COIN = coinType
-
-  const [activeIndex, setActiveIndex] = useState(0)
 
   const onPieEnter = (_, index) => {
     setActiveIndex(index)
