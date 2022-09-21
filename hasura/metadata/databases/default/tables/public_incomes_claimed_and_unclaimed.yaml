@@ -1,0 +1,3 @@
+table:
+  name: incomes_claimed_and_unclaimed
+  schema: public

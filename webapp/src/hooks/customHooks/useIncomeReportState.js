@@ -7,7 +7,10 @@ import {
   GET_INCOME_TRANSACTIONS_DELEGATES_QUERY,
   GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY,
   GET_TOTAL_INCOME_BY_ELECTIONS_QUERY,
-  GET_ELECTIONS_BY_YEAR
+  GET_ELECTIONS_BY_YEAR,
+  GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION,
+  GET_TOTAL_CLAIMED_AND_UNCLAIMED,
+  GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION
 } from '../../gql'
 import { listChartColors } from '../../constants'
 
@@ -50,6 +53,10 @@ const useIncomeReportState = () => {
   const [chartTransactionsList, setChartTransactionsList] = useState([])
   const [incomeByAllDelegatesList, setIncomeByAllDelegatesList] = useState([])
   const [incomeByDelegateAccountList, setIncomeByDelegateAccountList] =
+    useState([])
+  const [incomeClaimedAndUnclaimedList, setIncomeClaimedAndUnclaimedList] =
+    useState([])
+  const [totalClaimedAndUnclaimedList, setTotalClaimedAndUnclaimedList] =
     useState([])
 
   const getEosBalance = async () => {
@@ -130,7 +137,7 @@ const useIncomeReportState = () => {
         USD: Number(
           data.eden_transactions_aggregate.aggregate.sum.usd_total.toFixed(2)
         ),
-        EOS_EXCHANGE: Number(
+        EXCHANGE_RATE: Number(
           data.eden_transactions_aggregate.aggregate.avg.eos_exchange.toFixed(2)
         ),
         color: generateColor(),
@@ -148,13 +155,51 @@ const useIncomeReportState = () => {
         name: `${delegateSelect} ${index + 1}`,
         EOS: Number(data.amount.toFixed(2)),
         USD: Number(data.usd_total.toFixed(2)),
-        EOS_EXCHANGE: Number(data.eos_exchange.toFixed(2)),
+        EXCHANGE_RATE: Number(data.eos_exchange.toFixed(2)),
         color: generateColor(),
         level: data.eden_election.delegate_level
       }
     })
     setChartTransactionsList(newFormatData)
   }
+
+  const newDataFormatClaimedAndUnclaimedByElection =
+    claimedAndUnclaimedData => {
+      const newFormatData = claimedAndUnclaimedData.map(data => {
+        if (data.category === 'unclaimed') {
+          return {
+            name: data.recipient,
+            EOS_UNCLAIMED: Number(data.amount.toFixed(2)),
+            USD_UNCLAIMED: Number(data.usd_total.toFixed(2)),
+            EOS_CLAIMED: 0,
+            USD_CLAIMED: 0,
+            EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
+          }
+        } else {
+          return {
+            name: data.recipient,
+            EOS_CLAIMED: Number(data.amount.toFixed(2)),
+            USD_CLAIMED: Number(data.usd_total.toFixed(2)),
+            EOS_UNCLAIMED: 0,
+            USD_UNCLAIMED: 0,
+            EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
+          }
+        }
+      })
+      setIncomeClaimedAndUnclaimedList(newFormatData)
+    }
+
+  const newDataFormatTotalClaimedAndUnclaimed =
+    totalClaimedAndUnclaimedData => {
+      const newFormatData = totalClaimedAndUnclaimedData.map(data => {
+        return {
+          name: data.category,
+          EOS: Number(data.amount.toFixed(2)),
+          USD: Number(data.usd_total.toFixed(2))
+        }
+      })
+      setTotalClaimedAndUnclaimedList(newFormatData)
+    }
 
   const getListElectionYears = () => {
     const yearsList = []
@@ -192,6 +237,25 @@ const useIncomeReportState = () => {
       }
     })
 
+  const [loadClaimedAndUnclaimedByElection, { data: claimedAndUnclaimedData }] =
+    useLazyQuery(GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION, {
+      variables: {
+        election: electionRoundSelect
+      }
+    })
+
+  const [loadTotalClaimedAndUnclaimed, { data: totalClaimedAndUnclaimedData }] =
+    useLazyQuery(GET_TOTAL_CLAIMED_AND_UNCLAIMED)
+
+  const [
+    loadTotalClaimedAndUnclaimedByElection,
+    { data: totalClaimedAndUnclaimedByElectionData }
+  ] = useLazyQuery(GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION, {
+    variables: {
+      election: electionRoundSelect
+    }
+  })
+
   useEffect(() => {
     getEosRate()
     getEosBalance()
@@ -200,6 +264,9 @@ const useIncomeReportState = () => {
     loadIncomeByAllDelegates()
     loadIncomeByDelegateAccount()
     loadTotalIncomeByElection()
+    loadClaimedAndUnclaimedByElection()
+    loadTotalClaimedAndUnclaimed()
+    loadTotalClaimedAndUnclaimedByElection()
   }, [])
 
   useEffect(() => {
@@ -244,6 +311,31 @@ const useIncomeReportState = () => {
   }, [incomeByAccountData])
 
   useEffect(() => {
+    claimedAndUnclaimedData?.incomes_claimed_and_unclaimed &&
+      newDataFormatClaimedAndUnclaimedByElection(
+        claimedAndUnclaimedData.incomes_claimed_and_unclaimed
+      )
+  }, [claimedAndUnclaimedData])
+
+  useEffect(() => {
+    if (showElectionRadio === 'allElections') {
+      totalClaimedAndUnclaimedData?.total_claimed_and_unclaimed &&
+        newDataFormatTotalClaimedAndUnclaimed(
+          totalClaimedAndUnclaimedData.total_claimed_and_unclaimed
+        )
+    } else {
+      totalClaimedAndUnclaimedByElectionData?.total_claimed_and_unclaimed_by_election &&
+        newDataFormatTotalClaimedAndUnclaimed(
+          totalClaimedAndUnclaimedByElectionData?.total_claimed_and_unclaimed_by_election
+        )
+    }
+  }, [
+    showElectionRadio,
+    totalClaimedAndUnclaimedData,
+    totalClaimedAndUnclaimedByElectionData
+  ])
+
+  useEffect(() => {
     if (showElectionRadio === 'allElections') {
       totalIncomeByElectionData?.total_income_by_election[0] &&
         newDataFormatByElection(
@@ -275,7 +367,9 @@ const useIncomeReportState = () => {
       incomeByAllDelegatesList,
       electionsByYearList,
       nextEdenDisbursement,
-      showElectionRadio
+      showElectionRadio,
+      incomeClaimedAndUnclaimedList,
+      totalClaimedAndUnclaimedList
     },
     {
       setTypeCurrencySelect,

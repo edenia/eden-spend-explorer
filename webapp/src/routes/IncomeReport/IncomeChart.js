@@ -58,7 +58,7 @@ const CustomTooltip = ({
   return (
     <div>
       <strong>{label}</strong>
-      {active &&
+      {payload &&
         payload.map((data, i) => (
           <div key={`${i}-tooltip`}>{`${
             data.dataKey === 'EOS_EXCHANGE'
@@ -96,22 +96,21 @@ const IncomeChart = ({ data, coinType, showEosRate, thousandSeparator }) => {
               <CartesianGrid stroke="#f5f5f5" />
               <XAxis tick={{ fontSize: 10 }} dataKey="name" scale="auto" />
               <YAxis
-                tick={{ fontSize: 14, stroke: '#606060', strokeWidth: 0.5 }}
+                tick={{ fontSize: 14, stroke: '#00c2bf', strokeWidth: 0.5 }}
               />
               {showEosRate && (
                 <>
                   <YAxis
-                    dataKey="EOS_EXCHANGE"
+                    dataKey="EXCHANGE_RATE"
                     scale="auto"
                     yAxisId="right"
                     orientation="right"
                     tick={{ fontSize: 14, stroke: '#00c2bf', strokeWidth: 0.5 }}
                   />
-
                   <Line
                     yAxisId="right"
                     type="monotone"
-                    dataKey="EOS_EXCHANGE"
+                    dataKey="EXCHANGE_RATE"
                     stroke="#00c2bf"
                     strokeWidth={2}
                   />
