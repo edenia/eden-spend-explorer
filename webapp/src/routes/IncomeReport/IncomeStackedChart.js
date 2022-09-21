@@ -15,6 +15,7 @@ import {
 } from 'recharts'
 
 import styles from './styles'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(styles)
 
@@ -46,7 +47,34 @@ RenderChartLegend.propTypes = {
   data: PropTypes.array
 }
 
-const IncomeStakedChart = ({ data, coinType }) => {
+const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
+  const { t } = useTranslation('incomeRoute')
+  return (
+    <div>
+      <strong>{label}</strong>
+      {payload &&
+        payload.map((data, i) => (
+          <div key={`${i}-tooltip`}>{`${
+            data.dataKey === 'EOS_EXCHANGE'
+              ? t('chartExchangeRateEos')
+              : data.dataKey
+          } : ${thousandSeparator(data.payload[data.dataKey])}`}</div>
+        ))}
+    </div>
+  )
+}
+CustomTooltip.propTypes = {
+  payload: PropTypes.array,
+  label: PropTypes.any,
+  thousandSeparator: PropTypes.func
+}
+
+const IncomeStakedChart = ({
+  data,
+  coinType,
+  showEosRate,
+  thousandSeparator
+}) => {
   const classes = useStyles()
   return (
     <>
@@ -66,14 +94,36 @@ const IncomeStakedChart = ({ data, coinType }) => {
               <CartesianGrid stroke="#f5f5f5" />
               <XAxis hide dataKey="name" scale="auto" />
               <YAxis tick={{ stroke: '#606060', strokeWidth: 0.5 }} />
-              <YAxis
-                dataKey="EXCHANGE_RATE"
-                scale="auto"
-                yAxisId="right"
-                orientation="right"
-                tick={{ stroke: '#00c2bf', strokeWidth: 0.5 }}
+              {showEosRate && (
+                <>
+                  <YAxis
+                    dataKey="EXCHANGE_RATE"
+                    scale="auto"
+                    yAxisId="right"
+                    orientation="right"
+                    tick={{ fontSize: 14, stroke: '#00c2bf', strokeWidth: 0.5 }}
+                  />
+                  <Line
+                    yAxisId="right"
+                    type="monotone"
+                    dataKey="EXCHANGE_RATE"
+                    stroke="#00c2bf"
+                    strokeWidth={2}
+                  />
+                </>
+              )}
+              <Tooltip
+                wrapperStyle={{
+                  outline: 'none',
+                  borderRadius: '4px',
+                  backgroundColor: '#bfefef',
+                  fontSize: '14px',
+                  padding: '8px'
+                }}
+                content={
+                  <CustomTooltip thousandSeparator={thousandSeparator} />
+                }
               />
-              <Tooltip />
               <Legend />
               <Bar
                 legendType="wye"
@@ -89,13 +139,6 @@ const IncomeStakedChart = ({ data, coinType }) => {
                 barSize={25}
                 fill="#8884d8"
               />
-              <Line
-                yAxisId="right"
-                type="monotone"
-                dataKey="EXCHANGE_RATE"
-                stroke="#00c2bf"
-                strokeWidth={2}
-              />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
@@ -106,7 +149,9 @@ const IncomeStakedChart = ({ data, coinType }) => {
 
 IncomeStakedChart.propTypes = {
   data: PropTypes.array,
-  coinType: PropTypes.string
+  coinType: PropTypes.string,
+  showEosRate: PropTypes.bool,
+  thousandSeparator: PropTypes.func
 }
 
 export default memo(IncomeStakedChart)

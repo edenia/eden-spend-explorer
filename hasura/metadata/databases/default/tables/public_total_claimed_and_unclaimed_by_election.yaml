@@ -1,3 +1,13 @@
 table:
   name: total_claimed_and_unclaimed_by_election
   schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - category
+        - election
+        - amount
+        - usd_total
+      filter: {}
+      allow_aggregations: true

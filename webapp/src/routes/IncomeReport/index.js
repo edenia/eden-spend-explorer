@@ -192,6 +192,8 @@ const IncomeReport = () => {
         <IncomeStackedChart
           data={incomeClaimedAndUnclaimedList}
           coinType={typeCurrencySelect}
+          showEosRate={showEosRateSwitch}
+          thousandSeparator={thousandSeparator}
         />
 
         <IncomePieChart

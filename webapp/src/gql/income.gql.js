@@ -43,7 +43,7 @@ export const GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
           }
         }
       }
-      order_by: { amount: desc }
+      order_by: { date: asc }
     ) {
       amount
       usd_total
@@ -95,7 +95,7 @@ export const GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION = gql`
   query getIncomesClaimedAndUnclaimedByElection($election: Int) {
     incomes_claimed_and_unclaimed(
       where: { election: { _eq: $election } }
-      order_by: { amount: desc }
+      order_by: { date: asc }
     ) {
       usd_total
       recipient
@@ -115,6 +115,7 @@ export const GET_TOTAL_CLAIMED_AND_UNCLAIMED = gql`
     }
   }
 `
+
 export const GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION = gql`
   query getTotalClaimedAndUnclaimedByElection($election: Int) {
     total_claimed_and_unclaimed_by_election(

@@ -48,12 +48,7 @@ RenderChartLegend.propTypes = {
   data: PropTypes.array
 }
 
-const CustomTooltip = ({
-  active,
-  payload = [],
-  label = '',
-  thousandSeparator
-}) => {
+const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
   const { t } = useTranslation('incomeRoute')
   return (
     <div>
@@ -70,7 +65,6 @@ const CustomTooltip = ({
   )
 }
 CustomTooltip.propTypes = {
-  active: PropTypes.bool,
   payload: PropTypes.array,
   label: PropTypes.any,
   thousandSeparator: PropTypes.func
