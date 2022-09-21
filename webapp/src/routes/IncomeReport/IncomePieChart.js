@@ -120,7 +120,7 @@ const IncomePieChart = ({ data, coinType }) => {
                 data={newData}
                 nameKey={'name'}
                 dataKey={coinType}
-                cx="60%"
+                cx="50%"
                 cy="50%"
                 innerRadius={60}
                 outerRadius={80}
