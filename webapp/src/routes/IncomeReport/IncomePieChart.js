@@ -7,8 +7,6 @@ import styles from './styles'
 
 const useStyles = makeStyles(styles)
 
-let GLOBAL_COIN = ''
-
 const thousandSeparator = number => {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
@@ -26,7 +24,8 @@ const renderActiveShape = props => {
     fill,
     payload,
     percent,
-    value
+    value,
+    coin
   } = props
   const sin = Math.sin(-RADIAN * midAngle)
   const cos = Math.cos(-RADIAN * midAngle)
@@ -37,6 +36,7 @@ const renderActiveShape = props => {
   const ex = mx + (cos >= 0 ? 1 : -1) * 22
   const ey = my
   const textAnchor = cos >= 0 ? 'start' : 'end'
+  console.log({ props })
 
   return (
     <g>
@@ -72,7 +72,7 @@ const renderActiveShape = props => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{`${GLOBAL_COIN}-${thousandSeparator(Number(value))}`}</text>
+      >{`${coin}-${thousandSeparator(Number(value))}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -87,10 +87,13 @@ const renderActiveShape = props => {
 }
 
 const IncomePieChart = ({ data, coinType }) => {
+  const newData = data.map(info => {
+    return { ...info, coin: coinType }
+  })
+  console.log({ newData })
+
   const classes = useStyles()
   const [activeIndex, setActiveIndex] = useState(0)
-
-  GLOBAL_COIN = coinType
 
   const onPieEnter = (_, index) => {
     setActiveIndex(index)
@@ -114,7 +117,7 @@ const IncomePieChart = ({ data, coinType }) => {
               <Pie
                 activeIndex={activeIndex}
                 activeShape={renderActiveShape}
-                data={data}
+                data={newData}
                 nameKey={'name'}
                 dataKey={coinType}
                 cx="60%"
