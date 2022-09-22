@@ -156,6 +156,7 @@ const useIncomeReportState = () => {
         EOS: Number(data.amount.toFixed(2)),
         USD: Number(data.usd_total.toFixed(2)),
         EXCHANGE_RATE: Number(data.eos_exchange.toFixed(2)),
+        date: data.date,
         color: generateColor(),
         level: data.eden_election.delegate_level
       }

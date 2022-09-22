@@ -50,6 +50,7 @@ export const GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
       eden_election {
         delegate_level
       }
+      date
       eos_exchange
     }
     eden_transaction_aggregate(

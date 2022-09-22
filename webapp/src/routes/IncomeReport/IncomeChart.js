@@ -50,16 +50,26 @@ RenderChartLegend.propTypes = {
 
 const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
   const { t } = useTranslation('incomeRoute')
+  console.log(payload)
   return (
     <div>
       <strong>{label}</strong>
       {payload &&
         payload.map((data, i) => (
-          <div key={`${i}-tooltip`}>{`${
-            data.dataKey === 'EOS_EXCHANGE'
-              ? t('chartExchangeRateEos')
-              : data.dataKey
-          } : ${thousandSeparator(data.payload[data.dataKey])}`}</div>
+          <div key={`${i}-tooltip`}>
+            <div>{`${
+              data.dataKey === 'EOS_EXCHANGE'
+                ? t('chartExchangeRateEos')
+                : data.dataKey
+            } : ${thousandSeparator(data.payload[data.dataKey])}`}</div>
+            <div>
+              {i === 0 &&
+                data.payload?.date &&
+                `${data.payload.date ? 'Date' : ''} : ${
+                  data.payload.date ? data.payload.date.split('T')[0] : ''
+                } `}
+            </div>
+          </div>
         ))}
     </div>
   )
