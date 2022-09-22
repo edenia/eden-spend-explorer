@@ -166,25 +166,23 @@ const useIncomeReportState = () => {
   const newDataFormatClaimedAndUnclaimedByElection =
     claimedAndUnclaimedData => {
       const newFormatData = claimedAndUnclaimedData.map(data => {
-        if (data.category === 'unclaimed') {
-          return {
-            name: data.recipient,
-            EOS_UNCLAIMED: Number(data.amount.toFixed(2)),
-            USD_UNCLAIMED: Number(data.usd_total.toFixed(2)),
-            EOS_CLAIMED: 0,
-            USD_CLAIMED: 0,
-            EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
-          }
-        } else {
-          return {
-            name: data.recipient,
-            EOS_CLAIMED: Number(data.amount.toFixed(2)),
-            USD_CLAIMED: Number(data.usd_total.toFixed(2)),
-            EOS_UNCLAIMED: 0,
-            USD_UNCLAIMED: 0,
-            EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
-          }
-        }
+        return data.category === 'unclaimed'
+          ? {
+              name: data.recipient,
+              EOS_UNCLAIMED: Number(data.amount.toFixed(2)),
+              USD_UNCLAIMED: Number(data.usd_total.toFixed(2)),
+              EOS_CLAIMED: 0,
+              USD_CLAIMED: 0,
+              EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
+            }
+          : {
+              name: data.recipient,
+              EOS_CLAIMED: Number(data.amount.toFixed(2)),
+              USD_CLAIMED: Number(data.usd_total.toFixed(2)),
+              EOS_UNCLAIMED: 0,
+              USD_UNCLAIMED: 0,
+              EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
+            }
       })
       setIncomeClaimedAndUnclaimedList(newFormatData)
     }

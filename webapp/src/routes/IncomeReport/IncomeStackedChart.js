@@ -1,6 +1,7 @@
 import React, { memo } from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@mui/styles'
+import { useTranslation } from 'react-i18next'
 import {
   ComposedChart,
   Bar,
@@ -14,7 +15,6 @@ import {
 } from 'recharts'
 
 import styles from './styles'
-import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(styles)
 
