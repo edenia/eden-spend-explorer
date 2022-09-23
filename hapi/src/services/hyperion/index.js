@@ -7,7 +7,7 @@ const {
   hasuraUtil,
   axiosUtil,
   sleepUtil,
-  servicesUtil
+  communityUtil
 } = require('../../utils')
 
 const updaters = require('./updaters')
@@ -122,7 +122,7 @@ const runUpdaters = async actions => {
       LASTEST_RATE_DATE_CONSULTED !== txDate &&
       action.action !== 'fundtransfer'
     ) {
-      const data = await servicesUtil.getExchangeRateByDate(txDate)
+      const data = await communityUtil.getExchangeRateByDate(txDate)
       LASTEST_RATE_DATA_CONSULTED = data.market_data.current_price.usd
       LASTEST_RATE_DATE_CONSULTED = txDate
     }

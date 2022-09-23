@@ -7,7 +7,7 @@ const {
   edenTransactionGql
 } = require('../gql')
 const { servicesConstant } = require('../constants')
-const { servicesUtil } = require('../utils')
+const { communityUtil } = require('../utils')
 
 let LASTEST_RATE_DATE_CONSULTED = null
 let LASTEST_RATE_DATA_CONSULTED = null
@@ -28,7 +28,7 @@ const registerUnclaimedTransaction = async (
   const txDate = moment(date).format('DD-MM-YYYY')
 
   if (LASTEST_RATE_DATE_CONSULTED !== txDate) {
-    const data = await servicesUtil.getExchangeRateByDate(txDate)
+    const data = await communityUtil.getExchangeRateByDate(txDate)
     LASTEST_RATE_DATA_CONSULTED = data.market_data.current_price.usd
     LASTEST_RATE_DATE_CONSULTED = txDate
   }
@@ -63,7 +63,7 @@ const registerUnclaimedTransaction = async (
 const updateUnclaimedFunds = async () => {
   let nextKey = null
   while (true) {
-    const delegates = await servicesUtil.loadTableData(
+    const delegates = await communityUtil.loadTableData(
       { next_key: nextKey, limit: 10000 },
       'distaccount'
     )
@@ -86,7 +86,7 @@ const updateUnclaimedFunds = async () => {
 const updateEdenUncleimedFundsWorker = () => {
   return {
     name: servicesConstant.MESSAGES.uncleimedFunds,
-    interval: servicesUtil.nextDistributionDate,
+    interval: communityUtil.nextDistributionDate,
     action: updateUnclaimedFunds
   }
 }

@@ -1,6 +1,6 @@
 const moment = require('moment')
 
-const { servicesUtil } = require('../utils')
+const { communityUtil } = require('../utils')
 const { edenDelegatesGql } = require('../gql')
 const { edenElectionGql } = require('../gql')
 const { edenHistoricElectionGql } = require('../gql')
@@ -12,7 +12,7 @@ const saveNewHistoricElection = async () => {
     date_election: { _lte: currentDate }
   })
 
-  const electState = await servicesUtil.loadTableData(
+  const electState = await communityUtil.loadTableData(
     { next_key: null },
     'elect.state'
   )
@@ -34,7 +34,7 @@ const updateEdenTable = async () => {
 
   let nextKey = null
   while (true) {
-    const members = await servicesUtil.loadTableData(
+    const members = await communityUtil.loadTableData(
       { next_key: nextKey },
       'member'
     )
@@ -74,7 +74,7 @@ const updateEdenTable = async () => {
 const updateEdenTableWorker = () => {
   return {
     name: servicesConstant.MESSAGES.delegates,
-    interval: servicesUtil.nextElectionDate,
+    interval: communityUtil.nextElectionDate,
     action: updateEdenTable
   }
 }
