@@ -13,6 +13,8 @@ import {
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
 
 import IncomeChart from './IncomeChart'
+import IncomeStackedChart from './IncomeStackedChart'
+import IncomePieChart from './IncomePieChart'
 import IncomeTable from './IncomeTable'
 import IncomeSelect from './IncomeSelect'
 import styles from './styles'
@@ -33,7 +35,9 @@ const IncomeReport = () => {
       incomeByAllDelegatesList,
       electionsByYearList,
       nextEdenDisbursement,
-      showElectionRadio
+      showElectionRadio,
+      incomeClaimedAndUnclaimedList,
+      totalClaimedAndUnclaimedList
     },
     {
       setTypeCurrencySelect,
@@ -183,6 +187,20 @@ const IncomeReport = () => {
         showEosRate={showEosRateSwitch}
         thousandSeparator={thousandSeparator}
       />
+
+      <div className={classes.chartContainer}>
+        <IncomeStackedChart
+          data={incomeClaimedAndUnclaimedList}
+          coinType={typeCurrencySelect}
+          showEosRate={showEosRateSwitch}
+          thousandSeparator={thousandSeparator}
+        />
+
+        <IncomePieChart
+          data={totalClaimedAndUnclaimedList}
+          coinType={typeCurrencySelect}
+        />
+      </div>
 
       <div className={classes.tableContainer}>
         <div className={classes.subTitle}>

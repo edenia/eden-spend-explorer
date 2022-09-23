@@ -7,5 +7,6 @@
     "**/.yarn": true,
     "**/.pnp.*": true
   },
-  "prettier.prettierPath": "./webapp/.yarn/sdks/prettier/index.js"
+  "prettier.prettierPath": "./webapp/.yarn/sdks/prettier/index.js",
+  "eslint.workingDirectories": [{ "mode": "auto" }]
 }

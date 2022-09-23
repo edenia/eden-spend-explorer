@@ -1,0 +1,15 @@
+table:
+  name: incomes_claimed_and_unclaimed
+  schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - category
+        - recipient
+        - election
+        - amount
+        - exchange_rate
+        - usd_total
+      filter: {}
+      allow_aggregations: true
