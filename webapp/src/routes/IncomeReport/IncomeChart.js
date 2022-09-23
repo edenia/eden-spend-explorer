@@ -24,10 +24,10 @@ const RenderChartLegend = ({ data }) => {
   const classes = useStyles()
   return (
     <div className={classes.chartLinks}>
-      {data.map(({ name, color, link = true }) => (
+      {data.map(({ name, color, link = true, category, date }, index) => (
         <a
           className={link ? classes.disableLink : ''}
-          key={`key-${name}`}
+          key={`key-${name}-${index}-link-chart`}
           href={`https://eosauthority.com/account/${name}?network=eos`}
         >
           <Box
@@ -38,7 +38,7 @@ const RenderChartLegend = ({ data }) => {
             mr={0.5}
             bgcolor={color}
           />
-          {name}
+          {category ? date : name}
         </a>
       ))}
     </div>
@@ -50,7 +50,6 @@ RenderChartLegend.propTypes = {
 
 const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
   const { t } = useTranslation('incomeRoute')
-  console.log(payload)
   return (
     <div>
       <strong>{label}</strong>
