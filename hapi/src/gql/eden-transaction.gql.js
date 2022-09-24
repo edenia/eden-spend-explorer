@@ -39,7 +39,23 @@ const get = async (where, getMany = false) => {
   return getMany ? edenTransaction : edenTransaction[0]
 }
 
+const deleteTx = async where => {
+  const mutation = `
+  mutation ($where: eden_transaction_bool_exp!) {
+    delete_eden_transaction(where: $where) {
+      returning {
+        txid
+      }
+    }
+  }
+  `
+  const data = await hasuraUtil.instance.request(mutation, { where })
+
+  return data.delete_eden_transaction
+}
+
 module.exports = {
   save,
-  get
+  get,
+  deleteTx
 }

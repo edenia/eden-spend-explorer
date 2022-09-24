@@ -3,6 +3,7 @@ const { hasuraUtil } = require('../utils')
 const hyperionService = require('./hyperion')
 const edenDelegatesService = require('./eden-delegates.service')
 const edenHistoricDelegateService = require('./eden-historic-delegates.service')
+const edenUnclaimedFundsService = require('./eden-unclaimed-funds.service')
 
 const MAX_TIMEOUT_MS = 2147483.647
 
@@ -13,6 +14,8 @@ const sleep = seconds => {
 }
 
 const run = async ({ name, action, interval }) => {
+  const intervalTime = interval ? await interval() : undefined
+
   try {
     await action()
   } catch (error) {
@@ -21,13 +24,13 @@ const run = async ({ name, action, interval }) => {
 
   console.log(`COMPLETED ${name} WORKER`)
 
-  if (!interval) {
+  if (!intervalTime) {
     return
   }
 
-  console.log(`${name} WORKER WILL RUN AGAIN IN ${interval / 60} MINUTES`)
+  console.log(`${name} WORKER WILL RUN AGAIN IN ${intervalTime / 60} MINUTES`)
 
-  let partialInterval = interval
+  let partialInterval = intervalTime
 
   while (partialInterval > 0) {
     const tempInterval =
@@ -43,8 +46,9 @@ const run = async ({ name, action, interval }) => {
 
 const init = async () => {
   await hasuraUtil.hasuraAssembled()
-  run(edenHistoricDelegateService.updateDelegateTable())
+  await run(edenHistoricDelegateService.updateDelegateTable())
   run(edenDelegatesService.updateEdenTableWorker())
+  run(edenUnclaimedFundsService.updateEdenUncleimedFundsWorker())
   run(hyperionService.syncWorker())
 }
 
