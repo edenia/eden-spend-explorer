@@ -167,23 +167,14 @@ const useIncomeReportState = () => {
   const newDataFormatClaimedAndUnclaimedByElection =
     claimedAndUnclaimedData => {
       const newFormatData = claimedAndUnclaimedData.map(data => {
-        return data.category === 'unclaimed'
-          ? {
-              name: data.recipient,
-              EOS_UNCLAIMED: Number(data.amount.toFixed(2)),
-              USD_UNCLAIMED: Number(data.usd_total.toFixed(2)),
-              EOS_CLAIMED: 0,
-              USD_CLAIMED: 0,
-              EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
-            }
-          : {
-              name: data.recipient,
-              EOS_CLAIMED: Number(data.amount.toFixed(2)),
-              USD_CLAIMED: Number(data.usd_total.toFixed(2)),
-              EOS_UNCLAIMED: 0,
-              USD_UNCLAIMED: 0,
-              EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
-            }
+        return {
+          name: data.recipient,
+          EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(2)),
+          USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(2)),
+          EOS_CLAIMED: Number(data.eos_claimed.toFixed(2)),
+          USD_CLAIMED: Number(data.usd_claimed.toFixed(2)),
+          EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
+        }
       })
       setIncomeClaimedAndUnclaimedList(newFormatData)
     }
@@ -310,9 +301,9 @@ const useIncomeReportState = () => {
   }, [incomeByAccountData])
 
   useEffect(() => {
-    claimedAndUnclaimedData?.incomes_claimed_and_unclaimed &&
+    claimedAndUnclaimedData?.historic_incomes &&
       newDataFormatClaimedAndUnclaimedByElection(
-        claimedAndUnclaimedData.incomes_claimed_and_unclaimed
+        claimedAndUnclaimedData.historic_incomes
       )
   }, [claimedAndUnclaimedData])
 
