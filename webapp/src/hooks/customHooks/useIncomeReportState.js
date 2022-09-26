@@ -44,7 +44,7 @@ const useIncomeReportState = () => {
   const [nextEdenDisbursement, setNextEdenDisbursement] = useState('')
   const [eosRate, setEosRate] = useState(0)
   const [typeCurrencySelect, setTypeCurrencySelect] = useState('EOS')
-  const [electionYearSelect, setElectionYearSelect] = useState(2021)
+  const [electionYearSelect, setElectionYearSelect] = useState('All')
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
   const [delegateSelect, setDelegateSelect] = useState('')
   const [showDelegateRadio, setShowDelegateRadio] = useState('allDelegates')
@@ -201,7 +201,7 @@ const useIncomeReportState = () => {
     }
 
   const getListElectionYears = () => {
-    const yearsList = []
+    const yearsList = ['All']
     const yearCurrent = new Date().getFullYear()
     for (let index = 2021; index <= yearCurrent; index++) {
       yearsList.push(index)
@@ -216,10 +216,16 @@ const useIncomeReportState = () => {
   const [loadElectionsByYear, { data: electionsByYearData }] = useLazyQuery(
     GET_ELECTIONS_BY_YEAR,
     {
-      variables: {
-        minDate: `${electionYearSelect}-01-01`,
-        maxDate: `${electionYearSelect}-12-31`
-      }
+      variables:
+        electionYearSelect === 'All'
+          ? {
+              minDate: `2021-01-01`,
+              maxDate: `${new Date().getFullYear()}-12-31`
+            }
+          : {
+              minDate: `${electionYearSelect}-01-01`,
+              maxDate: `${electionYearSelect}-12-31`
+            }
     }
   )
 

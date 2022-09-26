@@ -50,7 +50,6 @@ RenderChartLegend.propTypes = {
 
 const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
   const { t } = useTranslation('incomeRoute')
-  console.log(payload)
   return (
     <div>
       <strong>{label}</strong>
