@@ -43,7 +43,7 @@
     "titleTable2": "Elecciones ordenadas de la mas antigua a la mas reciente",
     "tableElectionHeader": "Periodo",
     "tableHeader1": "Nombre",
-    "tableHeader2": "Id de transacción",
+    "tableHeader2": "ID (caps)",
     "tableHeader3": "Nivel de delegado",
     "tableHeader4": "Total de EOS distribuidos",
     "tableHeader5": "Total de USD distribuidos",
