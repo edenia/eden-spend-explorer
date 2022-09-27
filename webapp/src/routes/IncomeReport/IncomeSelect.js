@@ -1,5 +1,6 @@
 import React, { memo } from 'react'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 
 const IncomeSelect = ({
@@ -9,6 +10,8 @@ const IncomeSelect = ({
   actualValue,
   disable
 }) => {
+  const { t } = useTranslation('incomeRoute')
+
   if (disable) return null
   return (
     <FormControl sx={{ m: 1, width: 100 }} size="small">
@@ -23,7 +26,11 @@ const IncomeSelect = ({
         {values[0] ? (
           values.map(value => (
             <MenuItem key={value} value={value}>
-              {labelSelect === 'Election' ? Number(value) + 1 : value}
+              {labelSelect === t('textElectionSelect')
+                ? Number(value) + 1
+                : value === 'All'
+                ? t('AllSelectYear')
+                : value}
             </MenuItem>
           ))
         ) : (

@@ -48,7 +48,8 @@
     "tableHeader4": "Total de EOS distribuidos",
     "tableHeader5": "Total de USD distribuidos",
     "tableHeader6": "Fecha de transacción",
-    "chartExchangeRateEos": "Tipo de cambio"
+    "chartExchangeRateEos": "Tipo de cambio",
+    "AllSelectYear": "Todos"
   },
   "aboutRoute": {
     "title": "Este proyecto",

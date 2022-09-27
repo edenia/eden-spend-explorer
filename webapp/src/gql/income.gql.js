@@ -28,6 +28,7 @@ export const GET_INCOME_TRANSACTIONS_DELEGATES_QUERY = gql`
         }
       }
       delegate_level
+      election
     }
   }
 `
@@ -49,6 +50,7 @@ export const GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
       usd_total
       eden_election {
         delegate_level
+        election
       }
       date
       eos_exchange

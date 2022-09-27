@@ -48,7 +48,8 @@
     "tableHeader4": "Total EOS distributed",
     "tableHeader5": "Total USD distributed",
     "tableHeader6": "Transaction date",
-    "chartExchangeRateEos": "Exchange Rate"
+    "chartExchangeRateEos": "Exchange Rate",
+    "AllSelectYear": "All"
   },
   "aboutRoute": {
     "title": "This project",
