@@ -52,6 +52,8 @@ export const GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
       }
       date
       eos_exchange
+      txid
+      category
     }
     eden_transaction_aggregate(
       where: {
