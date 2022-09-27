@@ -1,6 +1,7 @@
 import React, { memo, useState } from 'react'
 import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
+import { DataGrid } from '@mui/x-data-grid'
 import {
   FormControl,
   FormControlLabel,
@@ -20,6 +21,21 @@ import IncomeSelect from './IncomeSelect'
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
+
+const columns = [
+  { field: 'name', headerName: 'Name', flex: 1 },
+  {
+    field: 'EOS',
+    headerName: 'Total EOS distributed',
+    flex: 1
+  },
+  {
+    field: 'USD',
+    headerName: 'Total USD distributed',
+    flex: 1
+  },
+  { field: 'level', headerName: 'Level', flex: 1 }
+]
 
 const IncomeReport = () => {
   const [
@@ -53,6 +69,8 @@ const IncomeReport = () => {
   const classes = useStyles()
   const { t } = useTranslation('incomeRoute')
   const [showEosRateSwitch, setshowEosRateSwitch] = useState(true)
+
+  console.log(chartTransactionsList)
 
   return (
     <div className={classes.root}>
@@ -213,6 +231,25 @@ const IncomeReport = () => {
           <IncomeTable
             data={chartTransactionsList}
             thousandSeparator={thousandSeparator}
+          />
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          height: 400,
+          width: '100%',
+          marginTop: '16px'
+        }}
+      >
+        <div style={{ flexGrow: 1 }}>
+          <DataGrid
+            sx={{ border: 'none' }}
+            rows={chartTransactionsList}
+            columns={columns}
+            autoPageSize
+            pagination
+            getRowId={(row, i) => `${row.name}-${i}`}
           />
         </div>
       </div>
