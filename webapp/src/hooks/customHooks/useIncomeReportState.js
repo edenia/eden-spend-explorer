@@ -44,7 +44,7 @@ const useIncomeReportState = () => {
   const [nextEdenDisbursement, setNextEdenDisbursement] = useState('')
   const [eosRate, setEosRate] = useState(0)
   const [typeCurrencySelect, setTypeCurrencySelect] = useState('EOS')
-  const [electionYearSelect, setElectionYearSelect] = useState(2021)
+  const [electionYearSelect, setElectionYearSelect] = useState('All')
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
   const [delegateSelect, setDelegateSelect] = useState('')
   const [showDelegateRadio, setShowDelegateRadio] = useState('allDelegates')
@@ -150,15 +150,17 @@ const useIncomeReportState = () => {
   }
 
   const newDataFormatByDelegate = transactionsList => {
-    const newFormatData = transactionsList.map((data, index) => {
+    const newFormatData = transactionsList.map(data => {
       return {
-        name: `${delegateSelect} ${index + 1}`,
+        name: delegateSelect,
         EOS: Number(data.amount.toFixed(2)),
         USD: Number(data.usd_total.toFixed(2)),
         EXCHANGE_RATE: Number(data.eos_exchange.toFixed(2)),
-        date: data.date,
+        date: new Date(data.date).toLocaleDateString(),
         color: generateColor(),
-        level: data.eden_election.delegate_level
+        level: data.eden_election.delegate_level,
+        txId: data.txid,
+        category: data.category
       }
     })
     setChartTransactionsList(newFormatData)
@@ -167,23 +169,14 @@ const useIncomeReportState = () => {
   const newDataFormatClaimedAndUnclaimedByElection =
     claimedAndUnclaimedData => {
       const newFormatData = claimedAndUnclaimedData.map(data => {
-        return data.category === 'unclaimed'
-          ? {
-              name: data.recipient,
-              EOS_UNCLAIMED: Number(data.amount.toFixed(2)),
-              USD_UNCLAIMED: Number(data.usd_total.toFixed(2)),
-              EOS_CLAIMED: 0,
-              USD_CLAIMED: 0,
-              EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
-            }
-          : {
-              name: data.recipient,
-              EOS_CLAIMED: Number(data.amount.toFixed(2)),
-              USD_CLAIMED: Number(data.usd_total.toFixed(2)),
-              EOS_UNCLAIMED: 0,
-              USD_UNCLAIMED: 0,
-              EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
-            }
+        return {
+          name: data.recipient,
+          EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(2)),
+          USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(2)),
+          EOS_CLAIMED: Number(data.eos_claimed.toFixed(2)),
+          USD_CLAIMED: Number(data.usd_claimed.toFixed(2)),
+          EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
+        }
       })
       setIncomeClaimedAndUnclaimedList(newFormatData)
     }
@@ -201,7 +194,7 @@ const useIncomeReportState = () => {
     }
 
   const getListElectionYears = () => {
-    const yearsList = []
+    const yearsList = ['All']
     const yearCurrent = new Date().getFullYear()
     for (let index = 2021; index <= yearCurrent; index++) {
       yearsList.push(index)
@@ -216,10 +209,16 @@ const useIncomeReportState = () => {
   const [loadElectionsByYear, { data: electionsByYearData }] = useLazyQuery(
     GET_ELECTIONS_BY_YEAR,
     {
-      variables: {
-        minDate: `${electionYearSelect}-01-01`,
-        maxDate: `${electionYearSelect}-12-31`
-      }
+      variables:
+        electionYearSelect === 'All'
+          ? {
+              minDate: `2021-01-01`,
+              maxDate: `${new Date().getFullYear()}-12-31`
+            }
+          : {
+              minDate: `${electionYearSelect}-01-01`,
+              maxDate: `${electionYearSelect}-12-31`
+            }
     }
   )
 
@@ -282,7 +281,7 @@ const useIncomeReportState = () => {
       setElectionsByYearList(electionsByYearData.eden_historic_election)
     }
 
-    if (!electionsByYearData?.eden_historic_election[0]) {
+    if (electionsByYearList[0]?.election !== electionRoundSelect) {
       setIncomeByAllDelegatesList([])
       setIncomeByDelegateAccountList([])
       setDelegateSelect('')
@@ -310,9 +309,9 @@ const useIncomeReportState = () => {
   }, [incomeByAccountData])
 
   useEffect(() => {
-    claimedAndUnclaimedData?.incomes_claimed_and_unclaimed &&
+    claimedAndUnclaimedData?.historic_incomes &&
       newDataFormatClaimedAndUnclaimedByElection(
-        claimedAndUnclaimedData.incomes_claimed_and_unclaimed
+        claimedAndUnclaimedData.historic_incomes
       )
   }, [claimedAndUnclaimedData])
 

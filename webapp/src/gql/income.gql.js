@@ -28,6 +28,7 @@ export const GET_INCOME_TRANSACTIONS_DELEGATES_QUERY = gql`
         }
       }
       delegate_level
+      election
     }
   }
 `
@@ -49,9 +50,12 @@ export const GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
       usd_total
       eden_election {
         delegate_level
+        election
       }
       date
       eos_exchange
+      txid
+      category
     }
     eden_transaction_aggregate(
       where: {
@@ -94,14 +98,12 @@ export const GET_TOTAL_INCOME_BY_ELECTIONS_QUERY = gql`
 
 export const GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION = gql`
   query getIncomesClaimedAndUnclaimedByElection($election: Int) {
-    incomes_claimed_and_unclaimed(
-      where: { election: { _eq: $election } }
-      order_by: { date: asc }
-    ) {
-      usd_total
+    historic_incomes(where: { election: { _eq: $election } }) {
+      usd_claimed
+      usd_unclaimed
       recipient
-      category
-      amount
+      eos_claimed
+      eos_unclaimed
       exchange_rate
     }
   }

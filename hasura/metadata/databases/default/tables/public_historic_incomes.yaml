@@ -1,0 +1,16 @@
+table:
+  name: historic_incomes
+  schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - recipient
+        - election
+        - eos_claimed
+        - eos_unclaimed
+        - usd_claimed
+        - usd_unclaimed
+        - exchange_rate
+      filter: {}
+      allow_aggregations: true
