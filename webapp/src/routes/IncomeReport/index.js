@@ -1,7 +1,8 @@
 import React, { memo, useState } from 'react'
 import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, esES, enUS } from '@mui/x-data-grid'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 import {
   FormControl,
   FormControlLabel,
@@ -21,21 +22,6 @@ import IncomeSelect from './IncomeSelect'
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
-
-const columns = [
-  { field: 'name', headerName: 'Name', flex: 1 },
-  {
-    field: 'EOS',
-    headerName: 'Total EOS distributed',
-    flex: 1
-  },
-  {
-    field: 'USD',
-    headerName: 'Total USD distributed',
-    flex: 1
-  },
-  { field: 'level', headerName: 'Level', flex: 1 }
-]
 
 const IncomeReport = () => {
   const [
@@ -70,7 +56,32 @@ const IncomeReport = () => {
   const { t } = useTranslation('incomeRoute')
   const [showEosRateSwitch, setshowEosRateSwitch] = useState(true)
 
-  console.log(chartTransactionsList)
+  const theme = createTheme(t('tableHeader1') === 'Name' ? enUS : esES)
+  const columns = [
+    {
+      field: 'name',
+      headerName: chartTransactionsList[0]?.level
+        ? t('tableHeader1')
+        : t('tableElectionHeader'),
+      flex: 1
+    },
+    {
+      field: 'EOS',
+      headerName: t('tableHeader3'),
+      flex: 1
+    },
+    {
+      field: 'USD',
+      headerName: t('tableHeader4'),
+      flex: 1
+    },
+    {
+      field: 'level',
+      headerName: t('tableHeader2'),
+      flex: 1,
+      hide: !chartTransactionsList[0]?.level
+    }
+  ]
 
   return (
     <div className={classes.root}>
@@ -243,14 +254,16 @@ const IncomeReport = () => {
         }}
       >
         <div style={{ flexGrow: 1 }}>
-          <DataGrid
-            sx={{ border: 'none' }}
-            rows={chartTransactionsList}
-            columns={columns}
-            autoPageSize
-            pagination
-            getRowId={(row, i) => `${row.name}-${i}`}
-          />
+          <ThemeProvider theme={theme}>
+            <DataGrid
+              sx={{ border: 'none' }}
+              rows={chartTransactionsList}
+              columns={columns}
+              autoPageSize
+              pagination
+              getRowId={(row, i) => `${row.name}-${i}`}
+            />
+          </ThemeProvider>
         </div>
       </div>
     </div>
