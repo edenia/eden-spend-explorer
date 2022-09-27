@@ -46,7 +46,8 @@
     "tableHeader2": "Delegate level",
     "tableHeader3": "Total EOS distributed",
     "tableHeader4": "Total USD distributed",
-    "chartExchangeRateEos": "Exchange Rate"
+    "chartExchangeRateEos": "Exchange Rate",
+    "AllSelectYear": "All"
   },
   "aboutRoute": {
     "title": "This project",
