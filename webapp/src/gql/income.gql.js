@@ -94,14 +94,12 @@ export const GET_TOTAL_INCOME_BY_ELECTIONS_QUERY = gql`
 
 export const GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION = gql`
   query getIncomesClaimedAndUnclaimedByElection($election: Int) {
-    incomes_claimed_and_unclaimed(
-      where: { election: { _eq: $election } }
-      order_by: { date: asc }
-    ) {
-      usd_total
+    historic_incomes(where: { election: { _eq: $election } }) {
+      usd_claimed
+      usd_unclaimed
       recipient
-      category
-      amount
+      eos_claimed
+      eos_unclaimed
       exchange_rate
     }
   }
