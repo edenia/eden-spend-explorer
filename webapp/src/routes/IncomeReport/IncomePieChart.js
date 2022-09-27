@@ -128,8 +128,8 @@ const IncomePieChart = ({ data, coinType }) => {
                 dataKey={coinType}
                 cx="50%"
                 cy="50%"
-                innerRadius={60}
-                outerRadius={80}
+                innerRadius={45}
+                outerRadius={60}
                 fill="#00c2bf"
                 onMouseEnter={onPieEnter}
               />
