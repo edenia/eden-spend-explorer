@@ -10,7 +10,10 @@ import {
   GET_ELECTIONS_BY_YEAR,
   GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION,
   GET_TOTAL_CLAIMED_AND_UNCLAIMED,
-  GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION
+  GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION,
+  GET_PERCENT_ALL_ELECTIONS,
+  GET_PERCENT_BY_ELECTIONS,
+  GET_PERCENT_BY_DELEGATES
 } from '../../gql'
 import { listChartColors } from '../../constants'
 
@@ -58,6 +61,7 @@ const useIncomeReportState = () => {
     useState([])
   const [totalClaimedAndUnclaimedList, setTotalClaimedAndUnclaimedList] =
     useState([])
+  const [percentIncomeList, setPercentIncomeList] = useState([])
 
   const getEosBalance = async () => {
     try {
@@ -193,6 +197,33 @@ const useIncomeReportState = () => {
       setTotalClaimedAndUnclaimedList(newFormatData)
     }
 
+  const newDataFormatPercentAllElections = percentAllElectionData => {
+    const newFormatData = percentAllElectionData.map(data => {
+      return {
+        name: data.election,
+        EOS_CLAIMED: Number(data.eos_claimed.toFixed(4)) * 100,
+        EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(4)) * 100,
+        USD_CLAIMED: Number(data.usd_claimed.toFixed(4)) * 100,
+        USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(4)) * 100
+      }
+    })
+    setPercentIncomeList(newFormatData)
+  }
+
+  const newDataFormatPercentByElection = percentByElectionData => {
+    const newFormatData = percentByElectionData.map(data => {
+      return {
+        name: data.recipient,
+        election: data.election,
+        EOS_CLAIMED: Number(data.eos_claimed.toFixed(4)) * 100,
+        EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(4)) * 100,
+        USD_CLAIMED: Number(data.usd_claimed.toFixed(4)) * 100,
+        USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(4)) * 100
+      }
+    })
+    setPercentIncomeList(newFormatData)
+  }
+
   const getListElectionYears = () => {
     const yearsList = ['All']
     const yearCurrent = new Date().getFullYear()
@@ -254,6 +285,28 @@ const useIncomeReportState = () => {
     }
   })
 
+  const [loadPercentAllElections, { data: percentAllElectionData }] =
+    useLazyQuery(GET_PERCENT_ALL_ELECTIONS)
+
+  const [loadPercentByElection, { data: percentByElectionData }] = useLazyQuery(
+    GET_PERCENT_BY_ELECTIONS,
+    {
+      variables: {
+        election: electionRoundSelect
+      }
+    }
+  )
+
+  const [loadPercentByDelegate, { data: percentByDelegateData }] = useLazyQuery(
+    GET_PERCENT_BY_DELEGATES,
+    {
+      variables: {
+        election: electionRoundSelect,
+        delegate: delegateSelect
+      }
+    }
+  )
+
   useEffect(() => {
     getEosRate()
     getEosBalance()
@@ -265,6 +318,9 @@ const useIncomeReportState = () => {
     loadClaimedAndUnclaimedByElection()
     loadTotalClaimedAndUnclaimed()
     loadTotalClaimedAndUnclaimedByElection()
+    loadPercentAllElections()
+    loadPercentByElection()
+    loadPercentByDelegate()
   }, [])
 
   useEffect(() => {
@@ -335,6 +391,31 @@ const useIncomeReportState = () => {
 
   useEffect(() => {
     if (showElectionRadio === 'allElections') {
+      percentAllElectionData?.percent_by_all_elections &&
+        newDataFormatPercentAllElections(
+          percentAllElectionData.percent_by_all_elections
+        )
+    } else {
+      showDelegateRadio === 'allDelegates'
+        ? percentByElectionData?.percent_by_delegates &&
+          newDataFormatPercentByElection(
+            percentByElectionData.percent_by_delegates
+          )
+        : percentByDelegateData?.percent_by_delegates &&
+          newDataFormatPercentByElection(
+            percentByDelegateData.percent_by_delegates
+          )
+    }
+  }, [
+    showElectionRadio,
+    showDelegateRadio,
+    percentAllElectionData,
+    percentByElectionData,
+    percentByDelegateData
+  ])
+
+  useEffect(() => {
+    if (showElectionRadio === 'allElections') {
       totalIncomeByElectionData?.total_income_by_election[0] &&
         newDataFormatByElection(
           totalIncomeByElectionData.total_income_by_election
@@ -367,7 +448,8 @@ const useIncomeReportState = () => {
       nextEdenDisbursement,
       showElectionRadio,
       incomeClaimedAndUnclaimedList,
-      totalClaimedAndUnclaimedList
+      totalClaimedAndUnclaimedList,
+      percentIncomeList
     },
     {
       setTypeCurrencySelect,

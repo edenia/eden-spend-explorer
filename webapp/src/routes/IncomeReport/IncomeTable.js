@@ -16,7 +16,7 @@ import styles from './styles'
 
 const useStyles = makeStyles(styles)
 
-const IncomeTable = ({ data, thousandSeparator }) => {
+const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
   const classes = useStyles()
   const { t } = useTranslation('incomeRoute')
   return (
@@ -96,7 +96,8 @@ const IncomeTable = ({ data, thousandSeparator }) => {
 }
 IncomeTable.propTypes = {
   data: PropTypes.array,
-  thousandSeparator: PropTypes.func
+  thousandSeparator: PropTypes.func,
+  dataPercent: PropTypes.array
 }
 
 export default memo(IncomeTable)

@@ -37,7 +37,8 @@ const IncomeReport = () => {
       nextEdenDisbursement,
       showElectionRadio,
       incomeClaimedAndUnclaimedList,
-      totalClaimedAndUnclaimedList
+      totalClaimedAndUnclaimedList,
+      percentIncomeList
     },
     {
       setTypeCurrencySelect,
@@ -213,6 +214,7 @@ const IncomeReport = () => {
           <IncomeTable
             data={chartTransactionsList}
             thousandSeparator={thousandSeparator}
+            dataPercent={percentIncomeList}
           />
         </div>
       </div>

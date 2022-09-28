@@ -1,0 +1,3 @@
+table:
+  name: percent_by_delegades
+  schema: public
