@@ -1,8 +1,6 @@
 import React, { memo, useState } from 'react'
 import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
-import { DataGrid, esES, enUS } from '@mui/x-data-grid'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
 import {
   FormControl,
   FormControlLabel,
@@ -17,8 +15,8 @@ import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
 import IncomeChart from './IncomeChart'
 import IncomeStackedChart from './IncomeStackedChart'
 import IncomePieChart from './IncomePieChart'
-import IncomeTable from './IncomeTable'
 import IncomeSelect from './IncomeSelect'
+import IncomeTable from './IncomeTable'
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
@@ -55,33 +53,6 @@ const IncomeReport = () => {
   const classes = useStyles()
   const { t } = useTranslation('incomeRoute')
   const [showEosRateSwitch, setshowEosRateSwitch] = useState(true)
-
-  const theme = createTheme(t('tableHeader1') === 'Name' ? enUS : esES)
-  const columns = [
-    {
-      field: 'name',
-      headerName: chartTransactionsList[0]?.level
-        ? t('tableHeader1')
-        : t('tableElectionHeader'),
-      flex: 1
-    },
-    {
-      field: 'EOS',
-      headerName: t('tableHeader3'),
-      flex: 1
-    },
-    {
-      field: 'USD',
-      headerName: t('tableHeader4'),
-      flex: 1
-    },
-    {
-      field: 'level',
-      headerName: t('tableHeader2'),
-      flex: 1,
-      hide: !chartTransactionsList[0]?.level
-    }
-  ]
 
   return (
     <div className={classes.root}>
@@ -239,31 +210,12 @@ const IncomeReport = () => {
               : t('titleTable2')}
           </Typography>
 
-          <IncomeTable
-            data={chartTransactionsList}
-            thousandSeparator={thousandSeparator}
-          />
-        </div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          height: 400,
-          width: '100%',
-          marginTop: '16px'
-        }}
-      >
-        <div style={{ flexGrow: 1 }}>
-          <ThemeProvider theme={theme}>
-            <DataGrid
-              sx={{ border: 'none' }}
-              rows={chartTransactionsList}
-              columns={columns}
-              autoPageSize
-              pagination
-              getRowId={(row, i) => `${row.name}-${i}`}
+          <div id="id-table-container">
+            <IncomeTable
+              data={chartTransactionsList}
+              thousandSeparator={thousandSeparator}
             />
-          </ThemeProvider>
+          </div>
         </div>
       </div>
     </div>

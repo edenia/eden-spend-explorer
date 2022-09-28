@@ -290,6 +290,8 @@ const useIncomeReportState = () => {
 
   useEffect(() => {
     if (icomeByAllDelegatesData?.eden_election) {
+      console.log(icomeByAllDelegatesData)
+
       setIncomeByAllDelegatesList(icomeByAllDelegatesData.eden_election)
       setDelegateSelect(
         icomeByAllDelegatesData.eden_election[0]?.eden_delegate.account
