@@ -1,19 +1,19 @@
 const { edenTransactionGql } = require('../../../gql')
+const { edenConfig } = require('../../../config')
 
 module.exports = {
-  type: `genesis.eden:withdraw`,
+  type: `${edenConfig.edenContract}:withdraw`,
   apply: async action => {
-    const amount = Number(action.data.quantity.split(' ')[0])
-
     try {
+      const amount = Number(action.json.quantity.split(' ')[0])
       const transactionData = {
         txid: action.transaction_id,
         amount,
         category: 'claimed',
         date: action.timestamp,
-        description: action.actors,
+        description: action.json.owner,
         id_election: action.electionId,
-        recipient: action.data.owner,
+        recipient: action.json.owner,
         type: 'income',
         eos_exchange: action.eosPrice,
         usd_total: amount * action.eosPrice

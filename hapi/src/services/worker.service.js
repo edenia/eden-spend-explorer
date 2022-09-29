@@ -1,6 +1,6 @@
 const { hasuraUtil } = require('../utils')
 
-const hyperionService = require('./hyperion')
+const dfuseService = require('./dfuse/index')
 const edenDelegatesService = require('./eden-delegates.service')
 const edenHistoricDelegateService = require('./eden-historic-delegates.service')
 const edenUnclaimedFundsService = require('./eden-unclaimed-funds.service')
@@ -46,10 +46,10 @@ const run = async ({ name, action, interval }) => {
 
 const init = async () => {
   await hasuraUtil.hasuraAssembled()
-  await run(edenHistoricDelegateService.updateDelegateTable())
+  await run(edenHistoricDelegateService.updateHistoricDelegatesWorker())
   run(edenDelegatesService.updateEdenTableWorker())
   run(edenUnclaimedFundsService.updateEdenUncleimedFundsWorker())
-  run(hyperionService.syncWorker())
+  run(dfuseService.syncWorker())
 }
 
 module.exports = {
