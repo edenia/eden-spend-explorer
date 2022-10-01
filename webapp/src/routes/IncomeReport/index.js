@@ -11,7 +11,6 @@ import {
 } from '@mui/material'
 
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
-
 import IncomeChart from './IncomeChart'
 import IncomeStackedChart from './IncomeStackedChart'
 import IncomePieChart from './IncomePieChart'
@@ -51,8 +50,11 @@ const IncomeReport = () => {
       setShowElectionRadio
     }
   ] = useIncomeReportState()
+
   const classes = useStyles()
+
   const { t } = useTranslation('incomeRoute')
+
   const [showEosRateSwitch, setshowEosRateSwitch] = useState(true)
 
   return (

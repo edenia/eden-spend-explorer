@@ -18,7 +18,9 @@ const useStyles = makeStyles(styles)
 
 const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
   const classes = useStyles()
+
   const { t } = useTranslation('incomeRoute')
+
   return (
     <TableContainer sx={{ maxHeight: 440, marginTop: 2 }}>
       <Table stickyHeader aria-label="sticky table">
@@ -94,6 +96,7 @@ const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
     </TableContainer>
   )
 }
+
 IncomeTable.propTypes = {
   data: PropTypes.array,
   thousandSeparator: PropTypes.func,

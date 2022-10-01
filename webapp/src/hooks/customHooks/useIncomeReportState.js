@@ -44,23 +44,38 @@ const getActualDate = () => {
 
 const useIncomeReportState = () => {
   const [currencyBalance, setCurrencyBalance] = useState('')
+
   const [nextEdenDisbursement, setNextEdenDisbursement] = useState('')
+
   const [eosRate, setEosRate] = useState(0)
+
   const [typeCurrencySelect, setTypeCurrencySelect] = useState('EOS')
+
   const [electionYearSelect, setElectionYearSelect] = useState('All')
+
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
+
   const [delegateSelect, setDelegateSelect] = useState('')
+
   const [showDelegateRadio, setShowDelegateRadio] = useState('allDelegates')
+
   const [showElectionRadio, setShowElectionRadio] = useState('allElections')
+
   const [electionsByYearList, setElectionsByYearList] = useState([])
+
   const [chartTransactionsList, setChartTransactionsList] = useState([])
+
   const [incomeByAllDelegatesList, setIncomeByAllDelegatesList] = useState([])
+
   const [incomeByDelegateAccountList, setIncomeByDelegateAccountList] =
     useState([])
+
   const [incomeClaimedAndUnclaimedList, setIncomeClaimedAndUnclaimedList] =
     useState([])
+
   const [totalClaimedAndUnclaimedList, setTotalClaimedAndUnclaimedList] =
     useState([])
+
   const [percentIncomeList, setPercentIncomeList] = useState([])
 
   const getEosBalance = async () => {
@@ -119,108 +134,99 @@ const useIncomeReportState = () => {
   }
 
   const newDataFormatByElection = electionsList => {
-    const newFormatData = electionsList.map(data => {
-      return {
-        name: `Election ${data.election + 1}`,
-        EOS: Number(data.amount).toFixed(2),
-        USD: Number(data.usd_total).toFixed(2),
-        color: generateColor()
-      }
-    })
+    const newFormatData = electionsList.map(data => ({
+      name: `Election ${data.election + 1}`,
+      EOS: Number(data.amount).toFixed(2),
+      USD: Number(data.usd_total).toFixed(2),
+      color: generateColor()
+    }))
 
     setChartTransactionsList(newFormatData)
   }
 
   const newDataFormatByAllDelegates = transactionsList => {
-    const newFormatData = transactionsList.map(data => {
-      return {
-        name: data.eden_delegate.account,
-        EOS: Number(
-          data.eden_transactions_aggregate.aggregate.sum.amount.toFixed(2)
-        ),
-        USD: Number(
-          data.eden_transactions_aggregate.aggregate.sum.usd_total.toFixed(2)
-        ),
-        EXCHANGE_RATE: Number(
-          data.eden_transactions_aggregate.aggregate.avg.eos_exchange.toFixed(2)
-        ),
-        color: generateColor(),
-        level: data.delegate_level,
-        link: false
-      }
-    })
+    const newFormatData = transactionsList.map(data => ({
+      name: data.eden_delegate.account,
+      EOS: Number(
+        data.eden_transactions_aggregate.aggregate.sum.amount.toFixed(2)
+      ),
+      USD: Number(
+        data.eden_transactions_aggregate.aggregate.sum.usd_total.toFixed(2)
+      ),
+      EXCHANGE_RATE: Number(
+        data.eden_transactions_aggregate.aggregate.avg.eos_exchange.toFixed(2)
+      ),
+      color: generateColor(),
+      level: data.delegate_level,
+      link: false
+    }))
 
     setChartTransactionsList(newFormatData.sort(sortDescList))
   }
 
   const newDataFormatByDelegate = transactionsList => {
-    const newFormatData = transactionsList.map(data => {
-      return {
-        name: delegateSelect,
-        EOS: Number(data.amount.toFixed(2)),
-        USD: Number(data.usd_total.toFixed(2)),
-        EXCHANGE_RATE: Number(data.eos_exchange.toFixed(2)),
-        date: new Date(data.date).toLocaleDateString(),
-        color: generateColor(),
-        level: data.eden_election.delegate_level,
-        txId: data.txid,
-        category: data.category
-      }
-    })
+    const newFormatData = transactionsList.map(data => ({
+      name: delegateSelect,
+      EOS: Number(data.amount.toFixed(2)),
+      USD: Number(data.usd_total.toFixed(2)),
+      EXCHANGE_RATE: Number(data.eos_exchange.toFixed(2)),
+      date: new Date(data.date).toLocaleDateString(),
+      color: generateColor(),
+      level: data.eden_election.delegate_level,
+      txId: data.txid,
+      category: data.category
+    }))
+
     setChartTransactionsList(newFormatData)
   }
 
   const newDataFormatClaimedAndUnclaimedByElection =
     claimedAndUnclaimedData => {
-      const newFormatData = claimedAndUnclaimedData.map(data => {
-        return {
-          name: data.recipient,
-          EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(2)),
-          USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(2)),
-          EOS_CLAIMED: Number(data.eos_claimed.toFixed(2)),
-          USD_CLAIMED: Number(data.usd_claimed.toFixed(2)),
-          EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
-        }
-      })
+      const newFormatData = claimedAndUnclaimedData.map(data => ({
+        name: data.recipient,
+        EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(2)),
+        USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(2)),
+        EOS_CLAIMED: Number(data.eos_claimed.toFixed(2)),
+        USD_CLAIMED: Number(data.usd_claimed.toFixed(2)),
+        EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
+      }))
+
       setIncomeClaimedAndUnclaimedList(newFormatData)
     }
 
   const newDataFormatTotalClaimedAndUnclaimed =
     totalClaimedAndUnclaimedData => {
-      const newFormatData = totalClaimedAndUnclaimedData.map(data => {
-        return {
-          name: data.category,
-          EOS: Number(data.amount.toFixed(2)),
-          USD: Number(data.usd_total.toFixed(2))
-        }
-      })
+      const newFormatData = totalClaimedAndUnclaimedData.map(data => ({
+        name: data.category,
+        EOS: Number(data.amount.toFixed(2)),
+        USD: Number(data.usd_total.toFixed(2))
+      }))
+
       setTotalClaimedAndUnclaimedList(newFormatData)
     }
 
   const newDataFormatPercentAllElections = percentAllElectionData => {
-    const newFormatData = percentAllElectionData.map(data => {
-      return {
-        name: data.election,
-        EOS_CLAIMED: Number(data.eos_claimed.toFixed(4)) * 100,
-        EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(4)) * 100,
-        USD_CLAIMED: Number(data.usd_claimed.toFixed(4)) * 100,
-        USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(4)) * 100
-      }
-    })
+    const newFormatData = percentAllElectionData.map(data => ({
+      name: data.election,
+      EOS_CLAIMED: Number(data.eos_claimed.toFixed(4)) * 100,
+      EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(4)) * 100,
+      USD_CLAIMED: Number(data.usd_claimed.toFixed(4)) * 100,
+      USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(4)) * 100
+    }))
+
     setPercentIncomeList(newFormatData)
   }
 
   const newDataFormatPercentByElection = percentByElectionData => {
-    const newFormatData = percentByElectionData.map(data => {
-      return {
-        name: data.recipient,
-        election: data.election,
-        EOS_CLAIMED: Number(data.eos_claimed.toFixed(4)) * 100,
-        EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(4)) * 100,
-        USD_CLAIMED: Number(data.usd_claimed.toFixed(4)) * 100,
-        USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(4)) * 100
-      }
-    })
+    const newFormatData = percentByElectionData.map(data => ({
+      name: data.recipient,
+      election: data.election,
+      EOS_CLAIMED: Number(data.eos_claimed.toFixed(4)) * 100,
+      EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(4)) * 100,
+      USD_CLAIMED: Number(data.usd_claimed.toFixed(4)) * 100,
+      USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(4)) * 100
+    }))
+
     setPercentIncomeList(newFormatData)
   }
 
