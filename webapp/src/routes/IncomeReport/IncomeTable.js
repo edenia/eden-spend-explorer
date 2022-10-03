@@ -16,9 +16,11 @@ import styles from './styles'
 
 const useStyles = makeStyles(styles)
 
-const IncomeTable = ({ data, thousandSeparator }) => {
+const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
   const classes = useStyles()
+
   const { t } = useTranslation('incomeRoute')
+
   return (
     <TableContainer sx={{ maxHeight: 440, marginTop: 2 }}>
       <Table stickyHeader aria-label="sticky table">
@@ -94,9 +96,11 @@ const IncomeTable = ({ data, thousandSeparator }) => {
     </TableContainer>
   )
 }
+
 IncomeTable.propTypes = {
   data: PropTypes.array,
-  thousandSeparator: PropTypes.func
+  thousandSeparator: PropTypes.func,
+  dataPercent: PropTypes.array
 }
 
 export default memo(IncomeTable)

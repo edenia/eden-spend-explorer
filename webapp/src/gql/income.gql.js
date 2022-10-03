@@ -131,3 +131,43 @@ export const GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION = gql`
     }
   }
 `
+
+export const GET_PERCENT_ALL_ELECTIONS = gql`
+  query getPercentAllElections {
+    percent_by_all_elections {
+      eos_claimed
+      eos_unclaimed
+      usd_claimed
+      usd_unclaimed
+      election
+    }
+  }
+`
+
+export const GET_PERCENT_BY_ELECTIONS = gql`
+  query getPercentByElections($election: Int) {
+    percent_by_delegates(where: { election: { _eq: $election } }) {
+      election
+      eos_claimed
+      eos_unclaimed
+      recipient
+      usd_claimed
+      usd_unclaimed
+    }
+  }
+`
+
+export const GET_PERCENT_BY_DELEGATES = gql`
+  query getPercentByDelegate($election: Int, $delegate: String = "") {
+    percent_by_delegates(
+      where: { election: { _eq: $election }, recipient: { _eq: $delegate } }
+    ) {
+      election
+      eos_claimed
+      eos_unclaimed
+      recipient
+      usd_claimed
+      usd_unclaimed
+    }
+  }
+`

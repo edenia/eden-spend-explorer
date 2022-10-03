@@ -10,7 +10,10 @@ import {
   GET_ELECTIONS_BY_YEAR,
   GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION,
   GET_TOTAL_CLAIMED_AND_UNCLAIMED,
-  GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION
+  GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION,
+  GET_PERCENT_ALL_ELECTIONS,
+  GET_PERCENT_BY_ELECTIONS,
+  GET_PERCENT_BY_DELEGATES
 } from '../../gql'
 import { listChartColors } from '../../constants'
 
@@ -41,23 +44,39 @@ const getActualDate = () => {
 
 const useIncomeReportState = () => {
   const [currencyBalance, setCurrencyBalance] = useState('')
+
   const [nextEdenDisbursement, setNextEdenDisbursement] = useState('')
+
   const [eosRate, setEosRate] = useState(0)
+
   const [typeCurrencySelect, setTypeCurrencySelect] = useState('EOS')
+
   const [electionYearSelect, setElectionYearSelect] = useState('All')
+
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
+
   const [delegateSelect, setDelegateSelect] = useState('')
+
   const [showDelegateRadio, setShowDelegateRadio] = useState('allDelegates')
+
   const [showElectionRadio, setShowElectionRadio] = useState('allElections')
+
   const [electionsByYearList, setElectionsByYearList] = useState([])
+
   const [chartTransactionsList, setChartTransactionsList] = useState([])
+
   const [incomeByAllDelegatesList, setIncomeByAllDelegatesList] = useState([])
+
   const [incomeByDelegateAccountList, setIncomeByDelegateAccountList] =
     useState([])
+
   const [incomeClaimedAndUnclaimedList, setIncomeClaimedAndUnclaimedList] =
     useState([])
+
   const [totalClaimedAndUnclaimedList, setTotalClaimedAndUnclaimedList] =
     useState([])
+
+  const [percentIncomeList, setPercentIncomeList] = useState([])
 
   const getEosBalance = async () => {
     try {
@@ -115,83 +134,101 @@ const useIncomeReportState = () => {
   }
 
   const newDataFormatByElection = electionsList => {
-    const newFormatData = electionsList.map(data => {
-      return {
-        name: `Election ${data.election + 1}`,
-        EOS: Number(data.amount).toFixed(2),
-        USD: Number(data.usd_total).toFixed(2),
-        color: generateColor()
-      }
-    })
+    const newFormatData = electionsList.map(data => ({
+      name: `Election ${data.election + 1}`,
+      EOS: Number(data.amount).toFixed(2),
+      USD: Number(data.usd_total).toFixed(2),
+      color: generateColor()
+    }))
 
     setChartTransactionsList(newFormatData)
   }
 
   const newDataFormatByAllDelegates = transactionsList => {
-    const newFormatData = transactionsList.map(data => {
-      return {
-        name: data.eden_delegate.account,
-        EOS: Number(
-          data.eden_transactions_aggregate.aggregate.sum.amount.toFixed(2)
-        ),
-        USD: Number(
-          data.eden_transactions_aggregate.aggregate.sum.usd_total.toFixed(2)
-        ),
-        EXCHANGE_RATE: Number(
-          data.eden_transactions_aggregate.aggregate.avg.eos_exchange.toFixed(2)
-        ),
-        color: generateColor(),
-        level: data.delegate_level,
-        link: false
-      }
-    })
+    const newFormatData = transactionsList.map(data => ({
+      name: data.eden_delegate.account,
+      EOS: Number(
+        data.eden_transactions_aggregate.aggregate.sum.amount.toFixed(2)
+      ),
+      USD: Number(
+        data.eden_transactions_aggregate.aggregate.sum.usd_total.toFixed(2)
+      ),
+      EXCHANGE_RATE: Number(
+        data.eden_transactions_aggregate.aggregate.avg.eos_exchange.toFixed(2)
+      ),
+      color: generateColor(),
+      level: data.delegate_level,
+      link: false
+    }))
 
     setChartTransactionsList(newFormatData.sort(sortDescList))
   }
 
   const newDataFormatByDelegate = transactionsList => {
-    const newFormatData = transactionsList.map(data => {
-      return {
-        name: delegateSelect,
-        EOS: Number(data.amount.toFixed(2)),
-        USD: Number(data.usd_total.toFixed(2)),
-        EXCHANGE_RATE: Number(data.eos_exchange.toFixed(2)),
-        date: new Date(data.date).toLocaleDateString(),
-        color: generateColor(),
-        level: data.eden_election.delegate_level,
-        txId: data.txid,
-        category: data.category
-      }
-    })
+    const newFormatData = transactionsList.map(data => ({
+      name: delegateSelect,
+      EOS: Number(data.amount.toFixed(2)),
+      USD: Number(data.usd_total.toFixed(2)),
+      EXCHANGE_RATE: Number(data.eos_exchange.toFixed(2)),
+      date: new Date(data.date).toLocaleDateString(),
+      color: generateColor(),
+      level: data.eden_election.delegate_level,
+      txId: data.txid,
+      category: data.category
+    }))
+
     setChartTransactionsList(newFormatData)
   }
 
   const newDataFormatClaimedAndUnclaimedByElection =
     claimedAndUnclaimedData => {
-      const newFormatData = claimedAndUnclaimedData.map(data => {
-        return {
-          name: data.recipient,
-          EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(2)),
-          USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(2)),
-          EOS_CLAIMED: Number(data.eos_claimed.toFixed(2)),
-          USD_CLAIMED: Number(data.usd_claimed.toFixed(2)),
-          EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
-        }
-      })
+      const newFormatData = claimedAndUnclaimedData.map(data => ({
+        name: data.recipient,
+        EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(2)),
+        USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(2)),
+        EOS_CLAIMED: Number(data.eos_claimed.toFixed(2)),
+        USD_CLAIMED: Number(data.usd_claimed.toFixed(2)),
+        EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
+      }))
+
       setIncomeClaimedAndUnclaimedList(newFormatData)
     }
 
   const newDataFormatTotalClaimedAndUnclaimed =
     totalClaimedAndUnclaimedData => {
-      const newFormatData = totalClaimedAndUnclaimedData.map(data => {
-        return {
-          name: data.category,
-          EOS: Number(data.amount.toFixed(2)),
-          USD: Number(data.usd_total.toFixed(2))
-        }
-      })
+      const newFormatData = totalClaimedAndUnclaimedData.map(data => ({
+        name: data.category,
+        EOS: Number(data.amount.toFixed(2)),
+        USD: Number(data.usd_total.toFixed(2))
+      }))
+
       setTotalClaimedAndUnclaimedList(newFormatData)
     }
+
+  const newDataFormatPercentAllElections = percentAllElectionData => {
+    const newFormatData = percentAllElectionData.map(data => ({
+      name: data.election,
+      EOS_CLAIMED: Number(data.eos_claimed.toFixed(4)) * 100,
+      EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(4)) * 100,
+      USD_CLAIMED: Number(data.usd_claimed.toFixed(4)) * 100,
+      USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(4)) * 100
+    }))
+
+    setPercentIncomeList(newFormatData)
+  }
+
+  const newDataFormatPercentByElection = percentByElectionData => {
+    const newFormatData = percentByElectionData.map(data => ({
+      name: data.recipient,
+      election: data.election,
+      EOS_CLAIMED: Number(data.eos_claimed.toFixed(4)) * 100,
+      EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(4)) * 100,
+      USD_CLAIMED: Number(data.usd_claimed.toFixed(4)) * 100,
+      USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(4)) * 100
+    }))
+
+    setPercentIncomeList(newFormatData)
+  }
 
   const getListElectionYears = () => {
     const yearsList = ['All']
@@ -254,6 +291,28 @@ const useIncomeReportState = () => {
     }
   })
 
+  const [loadPercentAllElections, { data: percentAllElectionData }] =
+    useLazyQuery(GET_PERCENT_ALL_ELECTIONS)
+
+  const [loadPercentByElection, { data: percentByElectionData }] = useLazyQuery(
+    GET_PERCENT_BY_ELECTIONS,
+    {
+      variables: {
+        election: electionRoundSelect
+      }
+    }
+  )
+
+  const [loadPercentByDelegate, { data: percentByDelegateData }] = useLazyQuery(
+    GET_PERCENT_BY_DELEGATES,
+    {
+      variables: {
+        election: electionRoundSelect,
+        delegate: delegateSelect
+      }
+    }
+  )
+
   useEffect(() => {
     getEosRate()
     getEosBalance()
@@ -265,6 +324,9 @@ const useIncomeReportState = () => {
     loadClaimedAndUnclaimedByElection()
     loadTotalClaimedAndUnclaimed()
     loadTotalClaimedAndUnclaimedByElection()
+    loadPercentAllElections()
+    loadPercentByElection()
+    loadPercentByDelegate()
   }, [])
 
   useEffect(() => {
@@ -335,6 +397,31 @@ const useIncomeReportState = () => {
 
   useEffect(() => {
     if (showElectionRadio === 'allElections') {
+      percentAllElectionData?.percent_by_all_elections &&
+        newDataFormatPercentAllElections(
+          percentAllElectionData.percent_by_all_elections
+        )
+    } else {
+      showDelegateRadio === 'allDelegates'
+        ? percentByElectionData?.percent_by_delegates &&
+          newDataFormatPercentByElection(
+            percentByElectionData.percent_by_delegates
+          )
+        : percentByDelegateData?.percent_by_delegates &&
+          newDataFormatPercentByElection(
+            percentByDelegateData.percent_by_delegates
+          )
+    }
+  }, [
+    showElectionRadio,
+    showDelegateRadio,
+    percentAllElectionData,
+    percentByElectionData,
+    percentByDelegateData
+  ])
+
+  useEffect(() => {
+    if (showElectionRadio === 'allElections') {
       totalIncomeByElectionData?.total_income_by_election[0] &&
         newDataFormatByElection(
           totalIncomeByElectionData.total_income_by_election
@@ -367,7 +454,8 @@ const useIncomeReportState = () => {
       nextEdenDisbursement,
       showElectionRadio,
       incomeClaimedAndUnclaimedList,
-      totalClaimedAndUnclaimedList
+      totalClaimedAndUnclaimedList,
+      percentIncomeList
     },
     {
       setTypeCurrencySelect,
