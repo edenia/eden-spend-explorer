@@ -5,6 +5,8 @@
 - "!include public_historic_incomes.yaml"
 - "!include public_hyperion_state.yaml"
 - "!include public_incomes_claimed_and_unclaimed.yaml"
+- "!include public_percent_by_all_elections.yaml"
+- "!include public_percent_by_delegates.yaml"
 - "!include public_total_claimed_and_unclaimed.yaml"
 - "!include public_total_claimed_and_unclaimed_by_election.yaml"
 - "!include public_total_income_by_election.yaml"

@@ -89,9 +89,11 @@ const IncomeTable = ({ data, thousandSeparator }) => {
     </ThemeProvider>
   )
 }
+
 IncomeTable.propTypes = {
   data: PropTypes.array,
-  thousandSeparator: PropTypes.func
+  thousandSeparator: PropTypes.func,
+  dataPercent: PropTypes.array
 }
 
 export default memo(IncomeTable)
