@@ -14,8 +14,8 @@ import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
 import IncomeChart from './IncomeChart'
 import IncomeStackedChart from './IncomeStackedChart'
 import IncomePieChart from './IncomePieChart'
-import IncomeTable from './IncomeTable'
 import IncomeSelect from './IncomeSelect'
+import IncomeTable from './IncomeTable'
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
@@ -106,12 +106,12 @@ const IncomeReport = () => {
             >
               <FormControlLabel
                 control={<Radio size="small" />}
-                label={'All Elections'}
+                label={t('textRadioButton4')}
                 value="allElections"
               />
               <FormControlLabel
                 control={<Radio size="small" />}
-                label={'One Election'}
+                label={t('textRadioButton3')}
                 value="oneElection"
               />
             </RadioGroup>
@@ -213,11 +213,13 @@ const IncomeReport = () => {
               : t('titleTable2')}
           </Typography>
 
-          <IncomeTable
-            data={chartTransactionsList}
-            thousandSeparator={thousandSeparator}
-            dataPercent={percentIncomeList}
-          />
+          <div id="id-table-container">
+            <IncomeTable
+              data={chartTransactionsList}
+              thousandSeparator={thousandSeparator}
+              dataPercent={percentIncomeList}
+            />
+          </div>
         </div>
       </div>
     </div>

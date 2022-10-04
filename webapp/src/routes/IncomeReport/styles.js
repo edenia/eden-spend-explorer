@@ -118,12 +118,16 @@ export default theme => ({
   },
   tableContainer: {
     marginTop: '80px',
-    '& th': {
+    '& .MuiDataGrid-columnHeaderTitle': {
       fontWeight: 'bold',
       color: theme.palette.secondary.main
     },
-    '& td': {
+    '& .MuiDataGrid-cell': {
       color: theme.palette.secondary.main
+    },
+    '& #id-table-container': {
+      marginTop: '16px',
+      height: 368
     }
   },
   chartLinks: {
