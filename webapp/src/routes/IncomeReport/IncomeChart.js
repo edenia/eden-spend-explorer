@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
@@ -14,14 +14,17 @@ import {
   Cell,
   Line
 } from 'recharts'
+import { useTranslation } from 'react-i18next'
+import { useCurrentPng } from 'recharts-to-png'
+import FileSaver from 'file-saver'
 
 import styles from './styles'
-import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(styles)
 
 const RenderChartLegend = ({ data }) => {
   const classes = useStyles()
+
   return (
     <div className={classes.chartLinks}>
       {data.map(({ name, color, link = true, category, date }, index) => (
@@ -50,6 +53,7 @@ RenderChartLegend.propTypes = {
 
 const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
   const { t } = useTranslation('incomeRoute')
+
   return (
     <div>
       <strong>{label}</strong>
@@ -81,6 +85,17 @@ CustomTooltip.propTypes = {
 
 const IncomeChart = ({ data, coinType, showEosRate, thousandSeparator }) => {
   const classes = useStyles()
+
+  const [getBarPng, { ref: barRef }] = useCurrentPng()
+
+  const handleBarDownload = useCallback(async () => {
+    const png = await getBarPng()
+
+    if (png) {
+      FileSaver.saveAs(png, 'bar-chart.png')
+    }
+  }, [getBarPng])
+
   return (
     <>
       <div className={classes.chartContainer}>
@@ -95,6 +110,7 @@ const IncomeChart = ({ data, coinType, showEosRate, thousandSeparator }) => {
                 bottom: 20,
                 left: 12
               }}
+              ref={barRef}
             >
               <CartesianGrid stroke="#f5f5f5" />
               <XAxis tick={{ fontSize: 10 }} dataKey="name" scale="auto" />
@@ -139,6 +155,9 @@ const IncomeChart = ({ data, coinType, showEosRate, thousandSeparator }) => {
               </Bar>
             </ComposedChart>
           </ResponsiveContainer>
+          <button onClick={handleBarDownload}>
+            <code>Download Bar Chart</code>
+          </button>
         </div>
       </div>
     </>
