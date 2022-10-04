@@ -1,7 +1,7 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: eosreports-storage
+  name: eden-spending-storage
   labels:
     version: ${VERSION}
 parameters:

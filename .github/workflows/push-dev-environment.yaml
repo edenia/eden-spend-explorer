@@ -33,7 +33,7 @@ jobs:
           # webapp
           PORT: 80
           REACT_APP_TAG: ${{ github.ref }}
-          REACT_APP_NAME: 'eosreports'
+          REACT_APP_NAME: 'eden-spending'
           REACT_APP_TITLE: 'Eden on EOS Accounting Standard'
           REACT_APP_LOGO: 'https://raw.githubusercontent.com/eoscostarica/design-assets/master/logos/eosCR/fullColor-vertiall-transparent-white.png'
           REACT_APP_FOOTER_LINKS: '[]'
@@ -53,9 +53,9 @@ jobs:
             build-kubernetes
         env:
           # general
-          NAMESPACE: eosreports
-          INGRESS_HOST: eosreports.com
-          INGRESS_GRAPHQL_HOST: graphql.eosreports.com
+          NAMESPACE: eden-spending
+          INGRESS_HOST: spending.eden.eoscommunity.org
+          INGRESS_GRAPHQL_HOST: graphql-spending.eden.eoscommunity.org
           # Postgres
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
@@ -88,7 +88,7 @@ jobs:
         uses: steebchen/kubectl@v1.1.0
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-          NAMESPACE: eosreports
+          NAMESPACE: eden-spending
           K8S_BUILD_DIR: build_k8s
         with:
           args: version && make deploy-kubernetes
