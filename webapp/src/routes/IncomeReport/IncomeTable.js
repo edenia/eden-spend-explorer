@@ -59,18 +59,21 @@ const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
       field: 'level',
       headerName: t('tableHeader3'),
       hide: !data[0]?.level,
+      type: 'number',
       ...rowsCenter
     },
     {
       field: 'EOS',
       headerName: t('tableHeader4'),
       renderCell: param => <>{thousandSeparator(param.value)}</>,
+      type: 'number',
       ...rowsCenter
     },
     {
       field: 'USD',
       headerName: t('tableHeader5'),
       renderCell: param => <>{thousandSeparator(param.value)}</>,
+      type: 'number',
       ...rowsCenter
     },
     {
@@ -82,21 +85,25 @@ const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
     {
       field: 'EOS_CLAIMED',
       headerName: t('tableHeader7'),
+      type: 'number',
       ...rowsCenter
     },
     {
       field: 'EOS_UNCLAIMED',
       headerName: t('tableHeader8'),
+      type: 'number',
       ...rowsCenter
     },
     {
       field: 'USD_CLAIMED',
       headerName: t('tableHeader9'),
+      type: 'number',
       ...rowsCenter
     },
     {
       field: 'USD_UNCLAIMED',
       headerName: t('tableHeader10'),
+      type: 'number',
       ...rowsCenter
     }
   ]
@@ -106,6 +113,7 @@ const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
       <DataGrid
         sx={{ border: 'none' }}
         rows={newDataTable}
+        loading={!newDataTable[0]?.EOS_CLAIMED}
         columns={columns}
         pageSize={pagePaginationSize}
         onPageSizeChange={newPageSize => setPagePaginationSize(newPageSize)}
