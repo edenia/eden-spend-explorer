@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
@@ -13,6 +13,8 @@ import {
   ResponsiveContainer,
   Line
 } from 'recharts'
+import { useCurrentPng } from 'recharts-to-png'
+import FileSaver from 'file-saver'
 
 import styles from './styles'
 
@@ -20,6 +22,7 @@ const useStyles = makeStyles(styles)
 
 const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
   const { t } = useTranslation('incomeRoute')
+
   return (
     <div>
       <strong>{label}</strong>
@@ -47,6 +50,17 @@ const IncomeStakedChart = ({
   thousandSeparator
 }) => {
   const classes = useStyles()
+
+  const [getStakedPng, { ref: stackedRef }] = useCurrentPng()
+
+  const handleStakedDownload = useCallback(async () => {
+    const png = await getStakedPng()
+
+    if (png) {
+      FileSaver.saveAs(png, 'staked-chart.png')
+    }
+  }, [getStakedPng])
+
   return (
     <>
       <div className={classes.chartContainer}>
@@ -61,6 +75,7 @@ const IncomeStakedChart = ({
                 bottom: 0,
                 left: 12
               }}
+              ref={stackedRef}
             >
               <CartesianGrid stroke="#f5f5f5" />
               <XAxis hide dataKey="name" scale="auto" />
@@ -112,6 +127,9 @@ const IncomeStakedChart = ({
               />
             </ComposedChart>
           </ResponsiveContainer>
+          <button onClick={handleStakedDownload}>
+            <code>Download Staked Bar Chart</code>
+          </button>
         </div>
       </div>
     </>
