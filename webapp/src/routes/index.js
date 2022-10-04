@@ -53,14 +53,14 @@ const routes = [
   {
     name: 'changelog',
     badge: mainConfig.appVersion,
-    path: 'https://github.com/eoscostarica/eden-accounting-standard/tags',
+    path: 'https://github.com/edenia/eden-spend-explorer/tags',
     icon: <GitMergeIcon />,
     exact: true
   },
   {
     header: 'community',
     name: 'github',
-    path: 'https://github.com/eoscostarica/eden-accounting-standard',
+    path: 'https://github.com/edenia/eden-spend-explorer',
     icon: <GitHubIcon />
   },
   {

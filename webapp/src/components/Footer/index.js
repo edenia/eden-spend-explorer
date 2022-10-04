@@ -40,7 +40,7 @@ const Footer = () => {
         <a href="https://www.notion.so/Getting-an-Invite-2d38947d5be94dcb84dfa1ae48894802">
           Get an Invite
         </a>
-        <a href="https://github.com/eoscostarica/eden-accounting-standard/tags">
+        <a href="https://github.com/edenia/eden-spend-explorer/tags">
           <GitMergeIcon /> Version {mainConfig.appVersion}
         </a>
       </div>

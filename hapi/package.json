@@ -2,7 +2,7 @@
   "name": "eden-spending",
   "version": "1.0.0",
   "description": "Eden on EOS Accounting Standard",
-  "repository": "https://github.com/eoscostarica/eden-accounting-standard.git",
+  "repository": "https://github.com/edenia/eden-spend-explorer.git",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
