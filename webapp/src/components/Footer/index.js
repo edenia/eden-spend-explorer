@@ -25,8 +25,8 @@ const Footer = () => {
         </a>
       </div>
       <div className={classes.footerInformation}>
-        <p>EOS Costa Rica</p>
-        <a href="https://edenia.com/es">Website EDENIA Costa Rica</a>
+        <p>Edenia</p>
+        <a href="https://edenia.com/en">Edenia.com Website</a>
         <a href="https://t.me/eoscr">Telegram Channel</a>
         <a href="https://www.linkedin.com/company/edeniaweb3">LinkedIn</a>
         <a href="https://github.com/edenia">GitHub</a>
