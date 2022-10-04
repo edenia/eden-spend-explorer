@@ -6,7 +6,7 @@
 
 **Income and Expense Tracking Standard for Eden on EOS Delegates**
 
-![](https://img.shields.io/github/license/eoscostarica/eden-accounting-standard) ![](https://img.shields.io/badge/code%20style-standard-brightgreen.svg) ![](https://img.shields.io/badge/%E2%9C%93-collaborative_etiquette-brightgreen.svg) ![](https://img.shields.io/twitter/follow/eoscostarica.svg?style=social&logo=twitter) ![](https://img.shields.io/github/forks/eoscostarica/eden-accounting-standard?style=social)
+![](https://img.shields.io/github/license/edenia/eden-spend-explorer) ![](https://img.shields.io/badge/code%20style-standard-brightgreen.svg) ![](https://img.shields.io/badge/%E2%9C%93-collaborative_etiquette-brightgreen.svg) ![](https://img.shields.io/twitter/follow/eoscostarica.svg?style=social&logo=twitter) ![](https://github.com/edenia/eden-spend-explorer/fork)
 
 The Eden Accounting Standard is a reporting mechanism meant to provide the Eden and EOS community information around how Eden funds are being allocated. Elected delegates may adhere to the standard and easily report their Eden expenses using a specific format for the memo field of the EOS token transfer action.
 
@@ -246,7 +246,6 @@ Some things you need before getting started:
 - [Yarn:](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable) You have to install first **npm** for then install **yarn**. The installation depents of the operative system.
 - [Hasura CLI:](https://hasura.io/docs/latest/getting-started/index/) You will need it to handle DB.
 
-
 ### First Time
 
 Copy the `.env.example` then update the environment variables according to your needs.
@@ -257,7 +256,7 @@ cp .env.example .env
 
 ### Quick Start
 
-1.  Clone this repo using `git clone --depth=1 https://github.com/eoscostarica/eden-accounting-standard.git <YOUR_PROJECT_NAME>`.
+1.  Clone this repo using `git clone --depth=1 https://github.com/edenia/eden-spend-explorer <YOUR_PROJECT_NAME>`.
 2.  Move to the appropriate directory: `cd <YOUR_PROJECT_NAME>`.
 3.  Run `make run` in order to start the project using docker compose.
 
@@ -267,7 +266,7 @@ At this point you can navigate to `http://localhost:3000`.
 
 Please read Edenia's [Open Source Contributing Guidelines](https://developers.eoscostarica.io/docs/open-source-guidelines).
 
-Please report bugs big and small by [opening an issue](https://github.com/eoscostarica/eden-accounting-standard/issues/new/choose)
+Please report bugs big and small by [opening an issue](https://github.com/edenia/eden-spend-explorer/issues/new/choose)
 
 ## About Edenia
 
