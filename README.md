@@ -6,7 +6,7 @@
 
 **Income and Expense Tracking Standard for Eden on EOS Delegates**
 
-![](https://img.shields.io/github/license/edenia/eden-spend-explorer) ![](https://img.shields.io/badge/code%20style-standard-brightgreen.svg) ![](https://img.shields.io/badge/%E2%9C%93-collaborative_etiquette-brightgreen.svg) ![](https://img.shields.io/twitter/follow/eoscostarica.svg?style=social&logo=twitter) ![](https://github.com/edenia/eden-spend-explorer/fork)
+![](https://img.shields.io/github/license/edenia/eden-spend-explorer) ![](https://img.shields.io/badge/code%20style-standard-brightgreen.svg) ![](https://img.shields.io/badge/%E2%9C%93-collaborative_etiquette-brightgreen.svg) ![](https://img.shields.io/twitter/follow/edeniaWeb3.svg?style=social&logo=twitter) ![](https://github.com/edenia/eden-spend-explorer/fork)
 
 The Eden Accounting Standard is a reporting mechanism meant to provide the Eden and EOS community information around how Eden funds are being allocated. Elected delegates may adhere to the standard and easily report their Eden expenses using a specific format for the memo field of the EOS token transfer action.
 
@@ -276,7 +276,7 @@ Please report bugs big and small by [opening an issue](https://github.com/edenia
 	<img width="300" alt="Edenia Logo" src="https://raw.githubusercontent.com/edenia/.github/master/.github/workflows/images/edenia-logo.png"></img>
 </a>
 
-[![Twitter](https://img.shields.io/twitter/follow/EdeniaWeb3?style=for-the-badge)](https://twitter.com/EdeniaWeb3)
+[![Twitter Follow](https://img.shields.io/twitter/follow/edeniaWeb3.svg?style=social&logo=twitter)](https://twitter.com/edeniaWeb3)
 [![Discord](https://img.shields.io/discord/946500573677625344?color=black&label=Discord&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/YeGcF6QwhP)
 
 </div>
