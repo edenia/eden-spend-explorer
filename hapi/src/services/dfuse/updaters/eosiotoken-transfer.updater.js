@@ -6,27 +6,28 @@ module.exports = {
   type: `eosio.token:transfer`,
   apply: async action => {
     let { category, description } = updaterUtil.memoSplit(
-      action.data.memo.split(':')[1] || ''
+      action.json.memo.split(':')[1] || ''
     )
 
-    if (action.data.to === transactionConstant.RECIPIENTS.pomelo)
+    if (action.json.to === transactionConstant.RECIPIENTS.pomelo)
       category = 'pomelo'
 
-    if (action.data.to === transactionConstant.RECIPIENTS.edenia)
+    if (action.json.to === transactionConstant.RECIPIENTS.edenia)
       category = 'infrastructure'
 
     try {
+      const amount = Number(action.json.quantity.split(' ')[0])
       const transactionData = {
         txid: action.transaction_id,
-        amount: action.data.amount,
+        amount,
         category,
         date: action.timestamp,
         description,
         id_election: action.electionId,
-        recipient: action.data.to,
+        recipient: action.json.to,
         type: 'expense',
         eos_exchange: action.eosPrice,
-        usd_total: action.data.amount * action.eosPrice
+        usd_total: amount * action.eosPrice
       }
       const registeredTransaction = await edenTransactionGql.get({
         txid: { _eq: transactionData.txid }

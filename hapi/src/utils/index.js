@@ -5,5 +5,6 @@ module.exports = {
   walletUtil: require('./wallet.util'),
   sleepUtil: require('./sleep.util'),
   updaterUtil: require('./updater.util'),
-  communityUtil: require('./community.util')
+  communityUtil: require('./community.util'),
+  dfuseUtil: require('./dfuse.util')
 }
