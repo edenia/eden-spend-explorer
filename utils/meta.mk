@@ -3,10 +3,10 @@
 VERSION ?= $(shell git rev-parse --short HEAD)
 CURRENT_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
 
-IMAGE_NAME_WEBAPP=eosreports-webapp
-IMAGE_NAME_HAPI=eosreports-hapi
-IMAGE_NAME_HASURA=eosreports-hasura
-IMAGE_NAME_WALLET=eosreports-wallet
+IMAGE_NAME_WEBAPP=eden-spending-webapp
+IMAGE_NAME_HAPI=eden-spending-hapi
+IMAGE_NAME_HASURA=eden-spending-hasura
+IMAGE_NAME_WALLET=eden-spending-wallet
 
 DOCKER_REGISTRY=eoscostarica506
 SUBDIRS = webapp hapi hasura wallet

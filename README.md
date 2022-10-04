@@ -256,7 +256,7 @@ cp .env.example .env
 
 ### Quick Start
 
-1.  Clone this repo using `git clone --depth=1 https://github.com/edenia/eden-spend-explorer <YOUR_PROJECT_NAME>`.
+1.  Clone this repo using `git clone --depth=1 https://github.com/edenia/eden-spend-explorer.git <YOUR_PROJECT_NAME>`.
 2.  Move to the appropriate directory: `cd <YOUR_PROJECT_NAME>`.
 3.  Run `make run` in order to start the project using docker compose.
 

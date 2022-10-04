@@ -79,7 +79,7 @@ clean:
 
 docker-clean:
 	@docker-compose stop
-	@docker rm eosreports-postgres eosreports-wallet eosreports-hasura eosreports-hapi
+	@docker rm eden-spending-postgres eden-spending-wallet eden-spending-hasura eden-spending-hapi
 	@docker volume rm eosio-spend-explorer_postgres_data
 
 build-kubernetes: ##@devops Generate proper k8s files based on the templates
