@@ -246,7 +246,6 @@ Some things you need before getting started:
 - [Yarn:](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable) You have to install first **npm** for then install **yarn**. The installation depents of the operative system.
 - [Hasura CLI:](https://hasura.io/docs/latest/getting-started/index/) You will need it to handle DB.
 
-
 ### First Time
 
 Copy the `.env.example` then update the environment variables according to your needs.
@@ -257,7 +256,7 @@ cp .env.example .env
 
 ### Quick Start
 
-1.  Clone this repo using `git clone --depth=1 https://github.com/eoscostarica/eden-accounting-standard.git <YOUR_PROJECT_NAME>`.
+1.  Clone this repo using `git clone --depth=1 https://github.com/edenia/eden-spend-explorer.git <YOUR_PROJECT_NAME>`.
 2.  Move to the appropriate directory: `cd <YOUR_PROJECT_NAME>`.
 3.  Run `make run` in order to start the project using docker compose.
 
@@ -267,7 +266,7 @@ At this point you can navigate to `http://localhost:3000`.
 
 Please read Edenia's [Open Source Contributing Guidelines](https://developers.eoscostarica.io/docs/open-source-guidelines).
 
-Please report bugs big and small by [opening an issue](https://github.com/eoscostarica/eden-accounting-standard/issues/new/choose)
+Please report bugs big and small by [opening an issue](https://github.com/edenia/eden-spend-explorer/issues/new/choose)
 
 ## About Edenia
 
