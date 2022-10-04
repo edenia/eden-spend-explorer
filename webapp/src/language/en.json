@@ -35,6 +35,8 @@
     "nextDisbursement": "Next disbursement date:",
     "textRadioButton1": "By one delegate",
     "textRadioButton2": "By all delegates",
+    "textRadioButton3": "By one election",
+    "textRadioButton4": "By all elections",
     "textYearSelect": "Year",
     "textElectionSelect": "Election",
     "textCurrencySelect": "Currency",
@@ -48,8 +50,13 @@
     "tableHeader4": "Total EOS distributed",
     "tableHeader5": "Total USD distributed",
     "tableHeader6": "Transaction date",
-    "chartExchangeRateEos": "Exchange Rate",
-    "AllSelectYear": "All"
+    "tableHeader7": "EOS claimed percent",
+    "tableHeader8": "EOS unclaimed percent",
+    "tableHeader9": "USD claimed percent",
+    "tableHeader10": "USD unclaimed percent",
+    "EXCHANGE_RATE": "Exchange rate",
+    "AllSelectYear": "All",
+    "date": "Date"
   },
   "aboutRoute": {
     "title": "This project",

@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { DataGrid, esES, enUS } from '@mui/x-data-grid'
@@ -11,7 +11,12 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
-const IncomeTable = ({ data, thousandSeparator }) => {
+const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
+  const [pagePaginationSize, setPagePaginationSize] = useState(5)
+  const newDataTable = data.map(firstObj => ({
+    ...dataPercent.find(secondObj => secondObj.name === firstObj.name),
+    ...firstObj
+  }))
   const classes = useStyles()
   const { t } = useTranslation('incomeRoute')
   const theme = createTheme(t('tableHeader1') === 'Name' ? enUS : esES)
@@ -73,6 +78,26 @@ const IncomeTable = ({ data, thousandSeparator }) => {
       headerName: t('tableHeader6'),
       hide: !data[0]?.date,
       ...rowsCenter
+    },
+    {
+      field: 'EOS_CLAIMED',
+      headerName: t('tableHeader7'),
+      ...rowsCenter
+    },
+    {
+      field: 'EOS_UNCLAIMED',
+      headerName: t('tableHeader8'),
+      ...rowsCenter
+    },
+    {
+      field: 'USD_CLAIMED',
+      headerName: t('tableHeader9'),
+      ...rowsCenter
+    },
+    {
+      field: 'USD_UNCLAIMED',
+      headerName: t('tableHeader10'),
+      ...rowsCenter
     }
   ]
 
@@ -80,9 +105,11 @@ const IncomeTable = ({ data, thousandSeparator }) => {
     <ThemeProvider theme={theme}>
       <DataGrid
         sx={{ border: 'none' }}
-        rows={data}
+        rows={newDataTable}
         columns={columns}
-        autoPageSize
+        pageSize={pagePaginationSize}
+        onPageSizeChange={newPageSize => setPagePaginationSize(newPageSize)}
+        rowsPerPageOptions={[5, 10, 20]}
         pagination
         getRowId={row => `${row.name}-${row.txId}`}
       />

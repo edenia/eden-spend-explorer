@@ -106,12 +106,12 @@ const IncomeReport = () => {
             >
               <FormControlLabel
                 control={<Radio size="small" />}
-                label={'All Elections'}
+                label={t('textRadioButton4')}
                 value="allElections"
               />
               <FormControlLabel
                 control={<Radio size="small" />}
-                label={'One Election'}
+                label={t('textRadioButton3')}
                 value="oneElection"
               />
             </RadioGroup>
