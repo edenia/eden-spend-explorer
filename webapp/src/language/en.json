@@ -3,13 +3,15 @@
     "login": "Login",
     "signOut": "Logout",
     "lightMode": "Light Mode",
-    "darkMode": "Dark Mode"
+    "darkMode": "Dark Mode",
+    "titleEosBalance": "Eden Treasury Balance"
   },
   "routes": {
     "/>title": "Eden on EOS Accounting Standard",
     "/income>title": "Treasury | Eden on EOS Accounting Standard",
     "/income>sidebar": "Income",
     "/income>heading": "Income",
+    "/expense>sidebar": "Expense",
     "/>sidebar": "Home",
     "/>heading": "Welcome",
     "/about>title": "About | Eden on EOS Accounting Standard",
@@ -30,7 +32,6 @@
   "incomeRoute": {
     "title": "Income",
     "subTitle": "Income By Delegate",
-    "titleEosBalance": "Eden Treasury Balance",
     "textInformation": "Eden delegate disbursements occur monthly and are claimed by the delegate from the contract to their personal EOS accounts...",
     "nextDisbursement": "Next disbursement date:",
     "textRadioButton1": "By one delegate",

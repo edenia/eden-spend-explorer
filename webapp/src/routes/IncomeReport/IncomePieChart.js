@@ -3,13 +3,11 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@mui/styles'
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts'
 
+import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
+
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
-
-const thousandSeparator = number => {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-}
 
 const renderActiveShape = props => {
   const RADIAN = Math.PI / 180
@@ -79,7 +77,7 @@ const renderActiveShape = props => {
         textAnchor={textAnchor}
         fill="#333"
         lengthAdjust="spacingAndGlyphs"
-      >{`${coin}-${thousandSeparator(Number(value))}`}</text>
+      >{`${coin}-${formatWithThousandSeparator(value, 2)}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}

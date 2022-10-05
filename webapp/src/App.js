@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo } from 'react'
+import React, { Suspense, useEffect, useMemo } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -6,6 +6,7 @@ import { StylesProvider, createGenerateClassName } from '@mui/styles'
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 
+import useTresuryBalanceState from './hooks/customHooks/useTresuryBalanceState'
 import routes from './routes'
 import Loader from './components/Loader'
 import DashboardLayout from './layouts/Dashboard'
@@ -18,7 +19,9 @@ const generateClassName = createGenerateClassName({
 })
 
 const App = () => {
-  const [state] = useSharedState()
+  const [state, { setEOSTrasuryBalance }] = useSharedState()
+
+  const [{ eosRate, currencyBalance }] = useTresuryBalanceState()
 
   const renderRoute = ({ component: Component, ...route }, index) => (
     <Route
@@ -36,6 +39,13 @@ const App = () => {
   )
 
   const theme = useMemo(() => getTheme(state.useDarkMode), [state.useDarkMode])
+
+  useEffect(() => {
+    setEOSTrasuryBalance({
+      eosRate,
+      currencyBalance
+    })
+  }, [eosRate, currencyBalance])
 
   return (
     <BrowserRouter>

@@ -6,15 +6,17 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { makeStyles } from '@mui/styles'
 import { Tooltip } from '@mui/material'
 
+import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
+
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
 const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
-const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
+const IncomeTable = ({ data, dataPercent }) => {
   const [pagePaginationSize, setPagePaginationSize] = useState(5)
-  const newDataTable = data.map(firstObj => ({
-    ...dataPercent.find(secondObj => secondObj.name === firstObj.name),
+  const newDataTable = dataPercent.map(firstObj => ({
+    ...data.find(secondObj => secondObj.name === firstObj.name),
     ...firstObj
   }))
   const classes = useStyles()
@@ -65,14 +67,14 @@ const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
     {
       field: 'EOS',
       headerName: t('tableHeader4'),
-      renderCell: param => <>{thousandSeparator(param.value)}</>,
+      renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
     },
     {
       field: 'USD',
       headerName: t('tableHeader5'),
-      renderCell: param => <>{thousandSeparator(param.value)}</>,
+      renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
     },
@@ -113,7 +115,8 @@ const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
       <DataGrid
         sx={{ border: 'none' }}
         rows={newDataTable}
-        loading={!newDataTable[0]?.EOS_CLAIMED}
+        loading={!newDataTable[0]}
+        on
         columns={columns}
         pageSize={pagePaginationSize}
         onPageSizeChange={newPageSize => setPagePaginationSize(newPageSize)}
@@ -127,7 +130,6 @@ const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
 
 IncomeTable.propTypes = {
   data: PropTypes.array,
-  thousandSeparator: PropTypes.func,
   dataPercent: PropTypes.array
 }
 

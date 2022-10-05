@@ -11,6 +11,8 @@ import {
 } from '@mui/material'
 
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
+import TreasuryBalance from '../../components/TreasuryBalance'
+
 import IncomeChart from './IncomeChart'
 import IncomeStackedChart from './IncomeStackedChart'
 import IncomePieChart from './IncomePieChart'
@@ -23,8 +25,6 @@ const useStyles = makeStyles(styles)
 const IncomeReport = () => {
   const [
     {
-      currencyBalance,
-      eosRate,
       chartTransactionsList,
       typeCurrencySelect,
       electionYearSelect,
@@ -46,7 +46,6 @@ const IncomeReport = () => {
       setElectionRoundSelect,
       setShowDelegateRadio,
       setDelegateSelect,
-      thousandSeparator,
       setShowElectionRadio
     }
   ] = useIncomeReportState()
@@ -66,24 +65,7 @@ const IncomeReport = () => {
             <Typography variant="span">{t('title')}</Typography>
           </div>
         </div>
-        <div className={classes.eosPriceContainer}>
-          <label className={classes.eosPriceTitle}>
-            {t('titleEosBalance')}
-          </label>
-          <label className={classes.eosBalance}>
-            {thousandSeparator(
-              Number(currencyBalance.split(' ')[0]).toFixed(2)
-            )}{' '}
-            EOS
-          </label>
-          <label className={classes.eosBalanceInDollars}>
-            $
-            {thousandSeparator(
-              (eosRate * Number(currencyBalance.split(' ')[0])).toFixed(2)
-            )}{' '}
-            @ ${eosRate.toFixed(2)}/EOS
-          </label>
-        </div>
+        <TreasuryBalance />
       </div>
       <div className={classes.subTitle}>
         <Typography variant="span">{t('subTitle')}</Typography>
@@ -188,7 +170,6 @@ const IncomeReport = () => {
         data={chartTransactionsList}
         coinType={typeCurrencySelect}
         showEosRate={showEosRateSwitch}
-        thousandSeparator={thousandSeparator}
       />
 
       <div className={classes.chartContainer}>
@@ -196,7 +177,6 @@ const IncomeReport = () => {
           data={incomeClaimedAndUnclaimedList}
           coinType={typeCurrencySelect}
           showEosRate={showEosRateSwitch}
-          thousandSeparator={thousandSeparator}
         />
 
         <IncomePieChart
@@ -216,7 +196,6 @@ const IncomeReport = () => {
           <div id="id-table-container">
             <IncomeTable
               data={chartTransactionsList}
-              thousandSeparator={thousandSeparator}
               dataPercent={percentIncomeList}
             />
           </div>

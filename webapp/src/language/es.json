@@ -3,13 +3,15 @@
     "login": "Ingresar",
     "signOut": "Salir",
     "lightMode": "Modo Claro",
-    "darkMode": "Modo Oscuro"
+    "darkMode": "Modo Oscuro",
+    "titleEosBalance": "Balance de tesorería de Eden"
   },
   "routes": {
     "/>title": "Eden on EOS Accounting Standard",
     "/income>title": "Ingresos | Eden on EOS Accounting Standard",
     "/income>sidebar": "Ingresos",
     "/income>heading": "Ingresos",
+    "/expense>sidebar": "Gastos",
     "/>sidebar": "Inicio",
     "/>heading": "Inicio",
     "/about>title": "Acerca de | Eden on EOS Accounting Standard",
@@ -30,7 +32,6 @@
   "incomeRoute": {
     "title": "Ingresos",
     "subTitle": "Ingresos por delegado",
-    "titleEosBalance": "Balance de tesorería de Eden",
     "textInformation": "Los desembolsos de los delegados de Eden se producen mensualmente y son reclamados por el delegado desde el contrato a sus cuentas personales de EOS...",
     "nextDisbursement": "Próxima fecha de desembolso:",
     "textRadioButton1": "Por un delegado",

@@ -14,11 +14,13 @@ import {
   Line
 } from 'recharts'
 
+import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
+
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
 
-const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
+const CustomTooltip = ({ payload = [], label = '' }) => {
   const { t } = useTranslation('incomeRoute')
   return (
     <div>
@@ -29,23 +31,20 @@ const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
             data.dataKey === 'EOS_EXCHANGE'
               ? t('chartExchangeRateEos')
               : data.dataKey
-          } : ${thousandSeparator(data.payload[data.dataKey])}`}</div>
+          } : ${formatWithThousandSeparator(
+            data.payload[data.dataKey],
+            2
+          )}`}</div>
         ))}
     </div>
   )
 }
 CustomTooltip.propTypes = {
   payload: PropTypes.array,
-  label: PropTypes.any,
-  thousandSeparator: PropTypes.func
+  label: PropTypes.any
 }
 
-const IncomeStakedChart = ({
-  data,
-  coinType,
-  showEosRate,
-  thousandSeparator
-}) => {
+const IncomeStakedChart = ({ data, coinType, showEosRate }) => {
   const classes = useStyles()
   return (
     <>
@@ -91,9 +90,7 @@ const IncomeStakedChart = ({
                   fontSize: '14px',
                   padding: '8px'
                 }}
-                content={
-                  <CustomTooltip thousandSeparator={thousandSeparator} />
-                }
+                content={<CustomTooltip />}
               />
               <Legend />
               <Bar
@@ -121,8 +118,7 @@ const IncomeStakedChart = ({
 IncomeStakedChart.propTypes = {
   data: PropTypes.array,
   coinType: PropTypes.string,
-  showEosRate: PropTypes.bool,
-  thousandSeparator: PropTypes.func
+  showEosRate: PropTypes.bool
 }
 
 export default memo(IncomeStakedChart)

@@ -5,7 +5,8 @@ const SharedStateContext = React.createContext()
 
 const initialValue = {
   useDarkMode: false,
-  user: null
+  user: null,
+  eosTrasuryBalance: {}
 }
 
 const sharedStateReducer = (state, action) => {
@@ -50,6 +51,12 @@ const sharedStateReducer = (state, action) => {
       state.ual.logout()
 
       return state
+
+    case 'setEosTresuryBalance':
+      return {
+        ...state,
+        eosTrasuryBalance: action.payload
+      }
 
     default: {
       throw new Error(`Unsupported action type: ${action.type}`)
@@ -98,6 +105,11 @@ export const useSharedState = () => {
   const hideMessage = () => dispatch({ type: 'hideMessage' })
   const login = () => dispatch({ type: 'login' })
   const logout = () => dispatch({ type: 'logout' })
+  const setEOSTrasuryBalance = payload =>
+    dispatch({ type: 'setEosTresuryBalance', payload })
 
-  return [state, { setState, showMessage, hideMessage, login, logout }]
+  return [
+    state,
+    { setState, showMessage, hideMessage, login, logout, setEOSTrasuryBalance }
+  ]
 }

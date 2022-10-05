@@ -36,18 +36,8 @@ const sortDescList = (a, b) => {
   return 0
 }
 
-const getActualDate = () => {
-  const date = new Date()
-
-  return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
-}
-
 const useIncomeReportState = () => {
-  const [currencyBalance, setCurrencyBalance] = useState('')
-
   const [nextEdenDisbursement, setNextEdenDisbursement] = useState('')
-
-  const [eosRate, setEosRate] = useState(0)
 
   const [typeCurrencySelect, setTypeCurrencySelect] = useState('EOS')
 
@@ -78,20 +68,6 @@ const useIncomeReportState = () => {
 
   const [percentIncomeList, setPercentIncomeList] = useState([])
 
-  const getEosBalance = async () => {
-    try {
-      const response = await eosApi.getCurrencyBalance(
-        'eosio.token',
-        mainConfig.edenContract,
-        'EOS'
-      )
-
-      setCurrencyBalance(response[0] || '')
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   const getNextEdenDisbursement = async () => {
     try {
       const response = await eosApi.getTableRows({
@@ -110,29 +86,6 @@ const useIncomeReportState = () => {
     }
   }
 
-  const getEosRate = async () => {
-    try {
-      const response = await fetch(
-        `${
-          mainConfig.eosRate
-        }/coins/eos/history?date=${getActualDate()}&localization=false`,
-        {
-          method: 'GET',
-          redirect: 'follow'
-        }
-      )
-      const data = await response.json()
-
-      setEosRate(data.market_data.current_price.usd)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const thousandSeparator = number => {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-  }
-
   const newDataFormatByElection = electionsList => {
     const newFormatData = electionsList.map(data => ({
       name: `Election ${data.election + 1}`,
@@ -147,14 +100,10 @@ const useIncomeReportState = () => {
   const newDataFormatByAllDelegates = transactionsList => {
     const newFormatData = transactionsList.map(data => ({
       name: data.eden_delegate.account,
-      EOS: Number(
-        data.eden_transactions_aggregate.aggregate.sum.amount.toFixed(2)
-      ),
-      USD: Number(
-        data.eden_transactions_aggregate.aggregate.sum.usd_total.toFixed(2)
-      ),
+      EOS: Number(data.eden_transactions_aggregate.aggregate.sum.amount),
+      USD: Number(data.eden_transactions_aggregate.aggregate.sum.usd_total),
       EXCHANGE_RATE: Number(
-        data.eden_transactions_aggregate.aggregate.avg.eos_exchange.toFixed(2)
+        data.eden_transactions_aggregate.aggregate.avg.eos_exchange
       ),
       color: generateColor(),
       level: data.delegate_level,
@@ -167,9 +116,9 @@ const useIncomeReportState = () => {
   const newDataFormatByDelegate = transactionsList => {
     const newFormatData = transactionsList.map(data => ({
       name: delegateSelect,
-      EOS: Number(data.amount.toFixed(2)),
+      EOS: Number(data.amount),
       USD: Number(data.usd_total.toFixed(2)),
-      EXCHANGE_RATE: Number(data.eos_exchange.toFixed(2)),
+      EXCHANGE_RATE: Number(data.eos_exchange),
       date: new Date(data.date).toLocaleDateString(),
       color: generateColor(),
       level: data.eden_election.delegate_level,
@@ -184,11 +133,11 @@ const useIncomeReportState = () => {
     claimedAndUnclaimedData => {
       const newFormatData = claimedAndUnclaimedData.map(data => ({
         name: data.recipient,
-        EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(2)),
-        USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(2)),
-        EOS_CLAIMED: Number(data.eos_claimed.toFixed(2)),
-        USD_CLAIMED: Number(data.usd_claimed.toFixed(2)),
-        EXCHANGE_RATE: Number(data.exchange_rate.toFixed(2))
+        EOS_UNCLAIMED: Number(data.eos_unclaimed),
+        USD_UNCLAIMED: Number(data.usd_unclaimed),
+        EOS_CLAIMED: Number(data.eos_claimed),
+        USD_CLAIMED: Number(data.usd_claimed),
+        EXCHANGE_RATE: Number(data.exchange_rate)
       }))
 
       setIncomeClaimedAndUnclaimedList(newFormatData)
@@ -198,8 +147,8 @@ const useIncomeReportState = () => {
     totalClaimedAndUnclaimedData => {
       const newFormatData = totalClaimedAndUnclaimedData.map(data => ({
         name: data.category,
-        EOS: Number(data.amount.toFixed(2)),
-        USD: Number(data.usd_total.toFixed(2))
+        EOS: Number(data.amount),
+        USD: Number(data.usd_total)
       }))
 
       setTotalClaimedAndUnclaimedList(newFormatData)
@@ -208,10 +157,10 @@ const useIncomeReportState = () => {
   const newDataFormatPercentAllElections = percentAllElectionData => {
     const newFormatData = percentAllElectionData.map(data => ({
       name: `Election ${data.election + 1}`,
-      EOS_CLAIMED: Number(data.eos_claimed.toFixed(4)) * 100,
-      EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(4)) * 100,
-      USD_CLAIMED: Number(data.usd_claimed.toFixed(4)) * 100,
-      USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(4)) * 100
+      EOS_CLAIMED: Number(data.eos_claimed) * 100,
+      EOS_UNCLAIMED: Number(data.eos_unclaimed) * 100,
+      USD_CLAIMED: Number(data.usd_claimed) * 100,
+      USD_UNCLAIMED: Number(data.usd_unclaimed) * 100
     }))
 
     setPercentIncomeList(newFormatData)
@@ -221,10 +170,10 @@ const useIncomeReportState = () => {
     const newFormatData = percentByElectionData.map(data => ({
       name: data.recipient,
       election: data.election,
-      EOS_CLAIMED: Number(data.eos_claimed.toFixed(4)) * 100,
-      EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(4)) * 100,
-      USD_CLAIMED: Number(data.usd_claimed.toFixed(4)) * 100,
-      USD_UNCLAIMED: Number(data.usd_unclaimed.toFixed(4)) * 100
+      EOS_CLAIMED: Number(data.eos_claimed) * 100,
+      EOS_UNCLAIMED: Number(data.eos_unclaimed) * 100,
+      USD_CLAIMED: Number(data.usd_claimed) * 100,
+      USD_UNCLAIMED: Number(data.usd_unclaimed) * 100
     }))
 
     setPercentIncomeList(newFormatData)
@@ -314,8 +263,6 @@ const useIncomeReportState = () => {
   )
 
   useEffect(() => {
-    getEosRate()
-    getEosBalance()
     getNextEdenDisbursement()
     loadElectionsByYear()
     loadIncomeByAllDelegates()
@@ -441,8 +388,6 @@ const useIncomeReportState = () => {
 
   return [
     {
-      currencyBalance,
-      eosRate,
       chartTransactionsList,
       typeCurrencySelect,
       electionYearSelect,
@@ -464,7 +409,6 @@ const useIncomeReportState = () => {
       setElectionRoundSelect,
       setShowDelegateRadio,
       setDelegateSelect,
-      thousandSeparator,
       setShowElectionRadio
     }
   ]

@@ -1,6 +1,7 @@
 import React, { memo } from 'react'
 import PropTypes from 'prop-types'
 import { Box } from '@mui/system'
+import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@mui/styles'
 import {
   ComposedChart,
@@ -15,8 +16,9 @@ import {
   Line
 } from 'recharts'
 
+import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
+
 import styles from './styles'
-import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(styles)
 
@@ -48,7 +50,7 @@ RenderChartLegend.propTypes = {
   data: PropTypes.array
 }
 
-const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
+const CustomTooltip = ({ payload = [], label = '' }) => {
   const { t } = useTranslation('incomeRoute')
   return (
     <div>
@@ -56,8 +58,9 @@ const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
       {payload &&
         payload.map((data, i) => (
           <div key={`${i}-tooltip`}>
-            <div>{`${t(data.dataKey)} : ${thousandSeparator(
-              data.payload[data.dataKey]
+            <div>{`${t(data.dataKey)} : ${formatWithThousandSeparator(
+              data.payload[data.dataKey],
+              2
             )}`}</div>
             <div>
               {i === 0 &&
@@ -73,11 +76,10 @@ const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
 }
 CustomTooltip.propTypes = {
   payload: PropTypes.array,
-  label: PropTypes.any,
-  thousandSeparator: PropTypes.func
+  label: PropTypes.any
 }
 
-const IncomeChart = ({ data, coinType, showEosRate, thousandSeparator }) => {
+const IncomeChart = ({ data, coinType, showEosRate }) => {
   const classes = useStyles()
   return (
     <>
@@ -125,9 +127,7 @@ const IncomeChart = ({ data, coinType, showEosRate, thousandSeparator }) => {
                   fontSize: '14px',
                   padding: '8px'
                 }}
-                content={
-                  <CustomTooltip thousandSeparator={thousandSeparator} />
-                }
+                content={<CustomTooltip />}
               />
               <Legend content={<RenderChartLegend data={data} />} />
               <Bar dataKey={coinType} barSize={25} fill="#606060">
@@ -146,8 +146,7 @@ const IncomeChart = ({ data, coinType, showEosRate, thousandSeparator }) => {
 IncomeChart.propTypes = {
   data: PropTypes.array,
   coinType: PropTypes.string,
-  showEosRate: PropTypes.bool,
-  thousandSeparator: PropTypes.func
+  showEosRate: PropTypes.bool
 }
 
 export default memo(IncomeChart)
