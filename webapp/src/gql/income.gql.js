@@ -101,9 +101,9 @@ export const GET_ELECTIONS_BY_YEAR = gql`
     }
   }
 `
-export const GET_TOTAL_INCOME_BY_ELECTIONS_QUERY = gql`
+export const GET_TOTAL_BY_ELECTIONS_QUERY = gql`
   query getTotalIncomeByElection {
-    total_income_by_election {
+    total_by_election(where: { type: { _eq: "income" } }) {
       amount
       usd_total
       election

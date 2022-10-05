@@ -6,7 +6,7 @@ import { mainConfig } from '../../config'
 import {
   GET_INCOME_TRANSACTIONS_DELEGATES_QUERY,
   GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY,
-  GET_TOTAL_INCOME_BY_ELECTIONS_QUERY,
+  GET_TOTAL_BY_ELECTIONS_QUERY,
   GET_ELECTIONS_BY_YEAR,
   GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION,
   GET_TOTAL_BY_CATEGORY,
@@ -238,8 +238,8 @@ const useIncomeReportState = () => {
     return yearsList
   }
 
-  const [loadTotalIncomeByElection, { data: totalIncomeByElectionData }] =
-    useLazyQuery(GET_TOTAL_INCOME_BY_ELECTIONS_QUERY)
+  const [loadTotalIncomeByElection, { data: totalByElectionData }] =
+    useLazyQuery(GET_TOTAL_BY_ELECTIONS_QUERY)
 
   const [loadElectionsByYear, { data: electionsByYearData }] = useLazyQuery(
     GET_ELECTIONS_BY_YEAR,
@@ -414,10 +414,8 @@ const useIncomeReportState = () => {
 
   useEffect(() => {
     if (showElectionRadio === 'allElections') {
-      totalIncomeByElectionData?.total_income_by_election[0] &&
-        newDataFormatByElection(
-          totalIncomeByElectionData.total_income_by_election
-        )
+      totalByElectionData?.total_by_election[0] &&
+        newDataFormatByElection(totalByElectionData.total_by_election)
     } else {
       showDelegateRadio === 'allDelegates'
         ? newDataFormatByAllDelegates(incomeByAllDelegatesList)
@@ -425,7 +423,7 @@ const useIncomeReportState = () => {
     }
   }, [
     showElectionRadio,
-    totalIncomeByElectionData,
+    totalByElectionData,
     showDelegateRadio,
     incomeByDelegateAccountList,
     incomeByAllDelegatesList

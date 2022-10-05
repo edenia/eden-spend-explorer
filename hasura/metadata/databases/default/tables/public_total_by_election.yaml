@@ -1,0 +1,12 @@
+table:
+  name: total_by_election
+  schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - election
+        - amount
+        - usd_total
+      filter: {}
+      allow_aggregations: true

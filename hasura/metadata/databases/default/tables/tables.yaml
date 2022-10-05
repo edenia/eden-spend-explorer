@@ -9,4 +9,4 @@
 - "!include public_percent_by_delegates.yaml"
 - "!include public_total_by_category.yaml"
 - "!include public_total_by_category_and_election.yaml"
-- "!include public_total_income_by_election.yaml"
+- "!include public_total_by_election.yaml"
