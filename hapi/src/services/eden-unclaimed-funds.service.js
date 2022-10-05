@@ -7,7 +7,7 @@ const {
   edenTransactionGql
 } = require('../gql')
 const { servicesConstant } = require('../constants')
-const { communityUtil } = require('../utils')
+const { communityUtil, sleepUtil } = require('../utils')
 
 let LASTEST_RATE_DATE_CONSULTED = null
 let LASTEST_RATE_DATA_CONSULTED = null
@@ -28,9 +28,17 @@ const registerUnclaimedTransaction = async (
   const txDate = moment(date).format('DD-MM-YYYY')
 
   if (LASTEST_RATE_DATE_CONSULTED !== txDate) {
-    const data = await communityUtil.getExchangeRateByDate(txDate)
-    LASTEST_RATE_DATA_CONSULTED = data.market_data.current_price.usd
-    LASTEST_RATE_DATE_CONSULTED = txDate
+    try {
+      const data = await communityUtil.getExchangeRateByDate(txDate)
+      LASTEST_RATE_DATA_CONSULTED = data.market_data.current_price.usd
+      LASTEST_RATE_DATE_CONSULTED = txDate
+    } catch (error) {
+      console.error(
+        `error registerUnclaimedTx, number of date queries exceeded: ${error.message}`
+      )
+      await sleepUtil(60)
+      return registerUnclaimedTransaction(date, account, rank, amount, id)
+    }
   }
 
   const election = await edenHistoricElectionGql.get({
