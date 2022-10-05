@@ -30,6 +30,21 @@ export const GET_INCOME_TRANSACTIONS_DELEGATES_QUERY = gql`
       delegate_level
       election
     }
+    eden_transaction_aggregate(
+      distinct_on: txid
+      where: {
+        type: { _eq: "income" }
+        eden_election: { election: { _eq: $election } }
+        category: { _eq: "claimed" }
+      }
+    ) {
+      aggregate {
+        sum {
+          amount
+          usd_total
+        }
+      }
+    }
   }
 `
 export const GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`

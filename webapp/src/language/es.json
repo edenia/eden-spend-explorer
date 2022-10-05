@@ -35,6 +35,8 @@
     "nextDisbursement": "Próxima fecha de desembolso:",
     "textRadioButton1": "Por un delegado",
     "textRadioButton2": "Por todos los delegados",
+    "textRadioButton3": "Por elección",
+    "textRadioButton4": "Por todas las elecciones",
     "textYearSelect": "Año",
     "textElectionSelect": "Elección",
     "textCurrencySelect": "Moneda",
@@ -48,8 +50,13 @@
     "tableHeader4": "Total de EOS distribuidos",
     "tableHeader5": "Total de USD distribuidos",
     "tableHeader6": "Fecha de transacción",
-    "chartExchangeRateEos": "Tipo de cambio",
-    "AllSelectYear": "Todos"
+    "tableHeader7": "% EOS reclamado",
+    "tableHeader8": "% EOS no reclamado",
+    "tableHeader9": "% USD reclamado",
+    "tableHeader10": "% USD no reclamado",
+    "exchangeRate": "Tipo de cambio",
+    "AllSelectYear": "Todos",
+    "date": "Fecha"
   },
   "aboutRoute": {
     "title": "Este proyecto",

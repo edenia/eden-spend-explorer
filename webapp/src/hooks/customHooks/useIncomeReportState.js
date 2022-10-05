@@ -207,7 +207,7 @@ const useIncomeReportState = () => {
 
   const newDataFormatPercentAllElections = percentAllElectionData => {
     const newFormatData = percentAllElectionData.map(data => ({
-      name: data.election,
+      name: `Election ${data.election + 1}`,
       EOS_CLAIMED: Number(data.eos_claimed.toFixed(4)) * 100,
       EOS_UNCLAIMED: Number(data.eos_unclaimed.toFixed(4)) * 100,
       USD_CLAIMED: Number(data.usd_claimed.toFixed(4)) * 100,
