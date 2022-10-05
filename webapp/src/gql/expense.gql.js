@@ -10,88 +10,63 @@ export const GET_ELECTIONS_BY_YEAR = gql`
     }
   }
 `
-export const GET_TOTAL_INCOME_BY_ELECTIONS_QUERY = gql`
-  query getTotalIncomeByElection {
-    total_income_by_election {
-      amount
-      usd_total
-      election
-    }
-  }
-`
-
-export const GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION = gql`
-  query getIncomesClaimedAndUnclaimedByElection($election: Int) {
-    historic_incomes(where: { election: { _eq: $election } }) {
-      usd_claimed
-      usd_unclaimed
-      recipient
-      eos_claimed
-      eos_unclaimed
-      exchange_rate
-    }
-  }
-`
-
-export const GET_TOTAL_CLAIMED_AND_UNCLAIMED = gql`
-  query getTotalClaimedAndUnclaimed {
-    total_claimed_and_unclaimed {
-      amount
-      category
-      usd_total
-    }
-  }
-`
-
-export const GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION = gql`
-  query getTotalClaimedAndUnclaimedByElection($election: Int) {
-    total_claimed_and_unclaimed_by_election(
-      where: { election: { _eq: $election } }
+export const GET_EXPENSE_TRANSACTIONS_BY_ALL_ACCOUNTS_QUERY = gql`
+  query getDelegatesByElectionRound($election: Int!) {
+    eden_election(
+      where: {
+        election: { _eq: $election }
+        eden_transactions: { type: { _eq: "expense" } }
+      }
     ) {
-      amount
-      category
+      eden_delegate {
+        account
+      }
+      eden_transactions_aggregate(
+        where: {
+          type: { _eq: "expense" }
+          eden_election: { election: { _eq: $election } }
+        }
+      ) {
+        aggregate {
+          sum {
+            amount
+            usd_total
+          }
+          avg {
+            eos_exchange
+          }
+        }
+      }
+      delegate_level
       election
-      usd_total
     }
   }
 `
 
-export const GET_PERCENT_ALL_ELECTIONS = gql`
-  query getPercentAllElections {
-    percent_by_all_elections {
-      eos_claimed
-      eos_unclaimed
-      usd_claimed
-      usd_unclaimed
+export const GET_EXPENSE_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
+query getTransactionsByDelegateAccount($election: Int!, $account: String!) {
+  eden_transaction(
+    where: {
+      type: { _eq: "expense" }
+      _and: {
+        eden_election: { election: { _eq: $election } }
+        _and: {
+          eden_election: { eden_delegate: { account: { _eq: $account } } }
+        }
+      }
+    }
+    order_by: { date: asc }
+  ) {
+    amount
+    usd_total
+    eden_election {
+      delegate_level
       election
     }
+    date
+    eos_exchange
+    txid
+    category
   }
-`
 
-export const GET_PERCENT_BY_ELECTIONS = gql`
-  query getPercentByElections($election: Int) {
-    percent_by_delegates(where: { election: { _eq: $election } }) {
-      election
-      eos_claimed
-      eos_unclaimed
-      recipient
-      usd_claimed
-      usd_unclaimed
-    }
-  }
-`
-
-export const GET_PERCENT_BY_DELEGATES = gql`
-  query getPercentByDelegate($election: Int, $delegate: String = "") {
-    percent_by_delegates(
-      where: { election: { _eq: $election }, recipient: { _eq: $delegate } }
-    ) {
-      election
-      eos_claimed
-      eos_unclaimed
-      recipient
-      usd_claimed
-      usd_unclaimed
-    }
-  }
-`
+}

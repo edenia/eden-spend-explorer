@@ -13,7 +13,12 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
-const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
+const IncomeTable = ({
+  data,
+  dataPercent,
+  showDelegateRadio,
+  showElectionRadio
+}) => {
   const [pagePaginationSize, setPagePaginationSize] = useState(5)
 
   const newDataTable =
@@ -31,7 +36,7 @@ const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
     {
       field: 'txId',
       headerName: t('tableHeader2'),
-      hide: !newDataTable[0]?.txId,
+      hide: showElectionRadio === 'allElections',
       cellClassName: classes.chartLinks,
       renderCell: param => (
         <Tooltip title={param.value}>
@@ -81,12 +86,9 @@ const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
             : t('unclaimedCategory')}
         </>
       ),
-<<<<<<< HEAD
-      hide: !newDataTable[0]?.category,
-=======
+
       hide: showDelegateRadio !== 'oneDelegate',
->>>>>>> e265e6d9953f62a62f57773bb06001efe98ca710
-      rowsCenter
+      ...rowsCenter
     },
     {
       field: 'EOS',
@@ -105,55 +107,35 @@ const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
     {
       field: 'date',
       headerName: t('tableHeader6'),
-<<<<<<< HEAD
-      hide: !newDataTable[0]?.date,
-=======
       hide: showDelegateRadio !== 'oneDelegate',
->>>>>>> e265e6d9953f62a62f57773bb06001efe98ca710
       ...rowsCenter
     },
     {
       field: 'EOS_CLAIMED',
       headerName: t('tableHeader7'),
       type: 'number',
-<<<<<<< HEAD
-      hide: !newDataTable[0]?.EOS_CLAIMED,
-=======
       hide: showDelegateRadio === 'oneDelegate',
->>>>>>> e265e6d9953f62a62f57773bb06001efe98ca710
       ...rowsCenter
     },
     {
       field: 'EOS_UNCLAIMED',
       headerName: t('tableHeader8'),
       type: 'number',
-<<<<<<< HEAD
-      hide: !newDataTable[0]?.EOS_UNCLAIMED,
-=======
       hide: showDelegateRadio === 'oneDelegate',
->>>>>>> e265e6d9953f62a62f57773bb06001efe98ca710
       ...rowsCenter
     },
     {
       field: 'USD_CLAIMED',
       headerName: t('tableHeader9'),
       type: 'number',
-<<<<<<< HEAD
-      hide: !newDataTable[0]?.USD_CLAIMED,
-=======
       hide: showDelegateRadio === 'oneDelegate',
->>>>>>> e265e6d9953f62a62f57773bb06001efe98ca710
       ...rowsCenter
     },
     {
       field: 'USD_UNCLAIMED',
       headerName: t('tableHeader10'),
       type: 'number',
-<<<<<<< HEAD
-      hide: !newDataTable[0]?.USD_UNCLAIMED,
-=======
       hide: showDelegateRadio === 'oneDelegate',
->>>>>>> e265e6d9953f62a62f57773bb06001efe98ca710
       ...rowsCenter
     }
   ]
@@ -177,12 +159,9 @@ const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
 
 IncomeTable.propTypes = {
   data: PropTypes.array,
-<<<<<<< HEAD
-  dataPercent: PropTypes.array
-=======
   dataPercent: PropTypes.array,
-  showDelegateRadio: PropTypes.string
->>>>>>> e265e6d9953f62a62f57773bb06001efe98ca710
+  showDelegateRadio: PropTypes.string,
+  showElectionRadio: PropTypes.string
 }
 
 export default memo(IncomeTable)
