@@ -29,19 +29,22 @@
   "homeRoute": {
     "welcomeMessage": "El estándar de contabilidad de Eden es un mecanismo de informes destinado a proporcionar a la comunidad de Eden y EOS información sobre cómo se asignan los fondos de Eden. Los delegados electos pueden adherirse al estándar y reportar fácilmente sus gastos de Eden utilizando un formato específico para el campo de memo de la acción de transferencia de token EOS."
   },
-  "incomeRoute": {
-    "title": "Ingresos",
-    "subTitle": "Ingresos por delegado",
-    "textInformation": "Los desembolsos de los delegados de Eden se producen mensualmente y son reclamados por el delegado desde el contrato a sus cuentas personales de EOS...",
-    "nextDisbursement": "Próxima fecha de desembolso:",
+  "generalForm": {
     "textRadioButton1": "Por un delegado",
     "textRadioButton2": "Por todos los delegados",
     "textRadioButton3": "Por elección",
     "textRadioButton4": "Por todas las elecciones",
     "textYearSelect": "Año",
+    "AllSelectYear": "Todos",
     "textElectionSelect": "Elección",
     "textCurrencySelect": "Moneda",
-    "textDelegateSelect": "Delegado",
+    "textDelegateSelect": "Delegado"
+  },
+  "incomeRoute": {
+    "title": "Ingresos",
+    "subTitle": "Ingresos por delegado",
+    "textInformation": "Los desembolsos de los delegados de Eden se producen mensualmente y son reclamados por el delegado desde el contrato a sus cuentas personales de EOS...",
+    "nextDisbursement": "Próxima fecha de desembolso:",
     "titleTable": "Delegados ordenados por ingresos de mayor a menor",
     "titleTable2": "Elecciones ordenadas de la mas antigua a la mas reciente",
     "tableElectionHeader": "Periodo",
@@ -55,9 +58,14 @@
     "tableHeader8": "Porcentaje EOS no reclamado",
     "tableHeader9": "Porcentaje USD reclamado",
     "tableHeader10": "Porcentaje USD no reclamado",
-    "EXCHANGE_RATE": "Tipo de cambio",
-    "AllSelectYear": "Todos",
+    "exchangeRate": "Tipo de cambio",
     "date": "Fecha"
+  },
+  "expenseRoute": {
+    "title": "Gastos",
+    "subTitle": "Gastos por todas las elecciones, eleciones y delegados",
+    "textInformation": "Aquí puedes ver los gastos realizados en cada una de las diferentes elecciones tanto la actual como las anteriores mendiante diferentes gráficos y tablas....",
+    "exchangeRate": "Tipo de cambio"
   },
   "aboutRoute": {
     "title": "Este proyecto",

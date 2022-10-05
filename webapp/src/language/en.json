@@ -29,19 +29,22 @@
   "homeRoute": {
     "welcomeMessage": "The Eden Accounting Standard is a reporting mechanism meant to provide the Eden and EOS community information around how Eden funds are being allocated. Elected delegates may adhere to the standard and easily report their Eden expenses using a specific format for the memo field of the EOS token transfer action."
   },
-  "incomeRoute": {
-    "title": "Income",
-    "subTitle": "Income By Delegate",
-    "textInformation": "Eden delegate disbursements occur monthly and are claimed by the delegate from the contract to their personal EOS accounts...",
-    "nextDisbursement": "Next disbursement date:",
+  "generalForm": {
     "textRadioButton1": "By one delegate",
     "textRadioButton2": "By all delegates",
     "textRadioButton3": "By one election",
     "textRadioButton4": "By all elections",
     "textYearSelect": "Year",
+    "AllSelectYear": "All",
     "textElectionSelect": "Election",
     "textCurrencySelect": "Currency",
-    "textDelegateSelect": "Delegate",
+    "textDelegateSelect": "Delegate"
+  },
+  "incomeRoute": {
+    "title": "Income",
+    "subTitle": "Income By Delegate",
+    "textInformation": "Eden delegate disbursements occur monthly and are claimed by the delegate from the contract to their personal EOS accounts...",
+    "nextDisbursement": "Next disbursement date:",
     "titleTable": "Delegates ranked in order of income from highest to lowest",
     "titleTable2": "Elections sorted from oldest to newest",
     "tableElectionHeader": "Term",
@@ -55,9 +58,14 @@
     "tableHeader8": "EOS unclaimed percent",
     "tableHeader9": "USD claimed percent",
     "tableHeader10": "USD unclaimed percent",
-    "EXCHANGE_RATE": "Exchange rate",
-    "AllSelectYear": "All",
+    "exchangeRate": "Exchange rate",
     "date": "Date"
+  },
+  "expenseRoute": {
+    "title": "Expense",
+    "subTitle": "Expenses by all elections, elections, and delegates",
+    "textInformation": "Here you can see the different expenses incurred in each election, from the first to the current election for different options using charts and graphs....",
+    "exchangeRate": "Exchange rate"
   },
   "aboutRoute": {
     "title": "This project",

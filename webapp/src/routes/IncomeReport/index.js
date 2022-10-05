@@ -12,11 +12,11 @@ import {
 
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
 import TreasuryBalance from '../../components/TreasuryBalance'
+import SelectComponent from '../../components/Select'
 
 import IncomeChart from './IncomeChart'
 import IncomeStackedChart from './IncomeStackedChart'
 import IncomePieChart from './IncomePieChart'
-import IncomeSelect from './IncomeSelect'
 import IncomeTable from './IncomeTable'
 import styles from './styles'
 
@@ -53,6 +53,7 @@ const IncomeReport = () => {
   const classes = useStyles()
 
   const { t } = useTranslation('incomeRoute')
+  const { t: t2 } = useTranslation('generalForm')
 
   const [showEosRateSwitch, setshowEosRateSwitch] = useState(true)
 
@@ -88,19 +89,19 @@ const IncomeReport = () => {
             >
               <FormControlLabel
                 control={<Radio size="small" />}
-                label={t('textRadioButton4')}
+                label={t2('textRadioButton4')}
                 value="allElections"
               />
               <FormControlLabel
                 control={<Radio size="small" />}
-                label={t('textRadioButton3')}
+                label={t2('textRadioButton3')}
                 value="oneElection"
               />
             </RadioGroup>
           </FormControl>
-          <IncomeSelect
+          <SelectComponent
             onChangeFunction={setTypeCurrencySelect}
-            labelSelect={t('textCurrencySelect')}
+            labelSelect={t2('textCurrencySelect')}
             values={['EOS', 'USD']}
             actualValue={typeCurrencySelect}
           />
@@ -110,7 +111,7 @@ const IncomeReport = () => {
             <>
               <FormControl>
                 <FormControlLabel
-                  label={t('chartExchangeRateEos')}
+                  label={t2('chartExchangeRateEos')}
                   control={
                     <Switch
                       checked={showEosRateSwitch}
@@ -130,31 +131,31 @@ const IncomeReport = () => {
                 >
                   <FormControlLabel
                     control={<Radio size="small" />}
-                    label={t('textRadioButton2')}
+                    label={t2('textRadioButton2')}
                     value="allDelegates"
                   />
                   <FormControlLabel
                     control={<Radio size="small" />}
-                    label={t('textRadioButton1')}
+                    label={t2('textRadioButton1')}
                     value="oneDelegate"
                   />
                 </RadioGroup>
               </FormControl>
-              <IncomeSelect
+              <SelectComponent
                 onChangeFunction={setElectionYearSelect}
-                labelSelect={t('textYearSelect')}
+                labelSelect={t2('textYearSelect')}
                 values={getListElectionYears()}
                 actualValue={electionYearSelect}
               />
-              <IncomeSelect
+              <SelectComponent
                 onChangeFunction={setElectionRoundSelect}
-                labelSelect={t('textElectionSelect')}
+                labelSelect={t2('textElectionSelect')}
                 values={electionsByYearList.map(data => `${data.election}`)}
                 actualValue={electionRoundSelect}
               />
-              <IncomeSelect
+              <SelectComponent
                 onChangeFunction={setDelegateSelect}
-                labelSelect={t('textDelegateSelect')}
+                labelSelect={t2('textDelegateSelect')}
                 values={incomeByAllDelegatesList.map(
                   data => data.eden_delegate.account
                 )}
@@ -189,8 +190,8 @@ const IncomeReport = () => {
         <div className={classes.subTitle}>
           <Typography variant="span">
             {chartTransactionsList[0]?.level
-              ? t('titleTable')
-              : t('titleTable2')}
+              ? t2('titleTable')
+              : t2('titleTable2')}
           </Typography>
 
           <div id="id-table-container">

@@ -196,7 +196,7 @@ const useIncomeReportState = () => {
     GET_ELECTIONS_BY_YEAR,
     {
       variables:
-        electionYearSelect === 'All'
+        electionYearSelect === 'All' || electionYearSelect === 'Todos'
           ? {
               minDate: `2021-01-01`,
               maxDate: `${new Date().getFullYear()}-12-31`
