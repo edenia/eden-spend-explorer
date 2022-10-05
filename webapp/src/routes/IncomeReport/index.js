@@ -15,7 +15,7 @@ import IncomeChart from './IncomeChart'
 import IncomeStackedChart from './IncomeStackedChart'
 import IncomePieChart from './IncomePieChart'
 import IncomeSelect from './IncomeSelect'
-import IncomeTable from './IncomeTable'
+// import IncomeTable from './IncomeTable'
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
@@ -36,8 +36,8 @@ const IncomeReport = () => {
       nextEdenDisbursement,
       showElectionRadio,
       incomeClaimedAndUnclaimedList,
-      totalClaimedAndUnclaimedList,
-      percentIncomeList
+      totalByCategoryList
+      // percentIncomeList
     },
     {
       setTypeCurrencySelect,
@@ -200,7 +200,7 @@ const IncomeReport = () => {
         />
 
         <IncomePieChart
-          data={totalClaimedAndUnclaimedList}
+          data={totalByCategoryList}
           coinType={typeCurrencySelect}
         />
       </div>
@@ -214,11 +214,11 @@ const IncomeReport = () => {
           </Typography>
 
           <div id="id-table-container">
-            <IncomeTable
+            {/* <IncomeTable
               data={chartTransactionsList}
               thousandSeparator={thousandSeparator}
               dataPercent={percentIncomeList}
-            />
+            /> */}
           </div>
         </div>
       </div>
