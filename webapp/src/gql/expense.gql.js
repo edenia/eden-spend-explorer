@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const GET_ELECTIONS_BY_YEAR = gql`
+export const GET_EXPENSE_ELECTIONS_BY_YEAR = gql`
   query getElectionsBydate($minDate: timestamptz!, $maxDate: timestamptz!) {
     eden_historic_election(
       where: { date_election: { _gte: $minDate, _lt: $maxDate } }
@@ -44,29 +44,29 @@ export const GET_EXPENSE_TRANSACTIONS_BY_ALL_ACCOUNTS_QUERY = gql`
 `
 
 export const GET_EXPENSE_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
-query getTransactionsByDelegateAccount($election: Int!, $account: String!) {
-  eden_transaction(
-    where: {
-      type: { _eq: "expense" }
-      _and: {
-        eden_election: { election: { _eq: $election } }
+  query getTransactionsByDelegateAccount($election: Int!, $account: String!) {
+    eden_transaction(
+      where: {
+        type: { _eq: "expense" }
         _and: {
-          eden_election: { eden_delegate: { account: { _eq: $account } } }
+          eden_election: { election: { _eq: $election } }
+          _and: {
+            eden_election: { eden_delegate: { account: { _eq: $account } } }
+          }
         }
       }
+      order_by: { date: asc }
+    ) {
+      amount
+      usd_total
+      eden_election {
+        delegate_level
+        election
+      }
+      date
+      eos_exchange
+      txid
+      category
     }
-    order_by: { date: asc }
-  ) {
-    amount
-    usd_total
-    eden_election {
-      delegate_level
-      election
-    }
-    date
-    eos_exchange
-    txid
-    category
   }
-
-}
+`

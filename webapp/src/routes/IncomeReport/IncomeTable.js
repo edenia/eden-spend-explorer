@@ -13,12 +13,7 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
-const IncomeTable = ({
-  data,
-  dataPercent,
-  showDelegateRadio,
-  showElectionRadio
-}) => {
+const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
   const [pagePaginationSize, setPagePaginationSize] = useState(5)
 
   const newDataTable =
@@ -36,7 +31,7 @@ const IncomeTable = ({
     {
       field: 'txId',
       headerName: t('tableHeader2'),
-      hide: showElectionRadio === 'allElections',
+      hide: !newDataTable.txId,
       cellClassName: classes.chartLinks,
       renderCell: param => (
         <Tooltip title={param.value}>
@@ -160,8 +155,7 @@ const IncomeTable = ({
 IncomeTable.propTypes = {
   data: PropTypes.array,
   dataPercent: PropTypes.array,
-  showDelegateRadio: PropTypes.string,
-  showElectionRadio: PropTypes.string
+  showDelegateRadio: PropTypes.string
 }
 
 export default memo(IncomeTable)
