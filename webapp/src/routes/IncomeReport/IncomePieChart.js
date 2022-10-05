@@ -1,7 +1,9 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@mui/styles'
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts'
+import { useCurrentPng } from 'recharts-to-png'
+import FileSaver from 'file-saver'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 
@@ -94,7 +96,9 @@ const renderActiveShape = props => {
 
 const IncomePieChart = ({ data, coinType }) => {
   const classes = useStyles()
+
   const [activeIndex, setActiveIndex] = useState(0)
+
   const newData = data.map(info => {
     return { ...info, coin: coinType }
   })
@@ -102,6 +106,16 @@ const IncomePieChart = ({ data, coinType }) => {
   const onPieEnter = (_, index) => {
     setActiveIndex(index)
   }
+
+  const [getPiePng, { ref: pieRef }] = useCurrentPng()
+
+  const handlePieDownload = useCallback(async () => {
+    const png = await getPiePng()
+
+    if (png) {
+      FileSaver.saveAs(png, 'pie-chart.png')
+    }
+  }, [getPiePng])
 
   return (
     <>
@@ -117,6 +131,7 @@ const IncomePieChart = ({ data, coinType }) => {
                 bottom: 0,
                 left: 12
               }}
+              ref={pieRef}
             >
               <Pie
                 activeIndex={activeIndex}
@@ -133,6 +148,9 @@ const IncomePieChart = ({ data, coinType }) => {
               />
             </PieChart>
           </ResponsiveContainer>
+          <button onClick={handlePieDownload}>
+            <code>Download Pie Chart</code>
+          </button>
         </div>
       </div>
     </>
