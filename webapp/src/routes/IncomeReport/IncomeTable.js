@@ -15,10 +15,15 @@ const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
 const IncomeTable = ({ data, dataPercent }) => {
   const [pagePaginationSize, setPagePaginationSize] = useState(5)
-  const newDataTable = dataPercent.map(firstObj => ({
-    ...data.find(secondObj => secondObj.name === firstObj.name),
-    ...firstObj
-  }))
+
+  const newDataTable =
+    data.length === dataPercent.length
+      ? dataPercent.map(firstObj => ({
+          ...data.find(secondObj => secondObj.name === firstObj.name),
+          ...firstObj
+        }))
+      : data
+
   const classes = useStyles()
   const { t } = useTranslation('incomeRoute')
   const theme = createTheme(t('tableHeader1') === 'Name' ? enUS : esES)
@@ -26,13 +31,13 @@ const IncomeTable = ({ data, dataPercent }) => {
     {
       field: 'txId',
       headerName: t('tableHeader2'),
-      hide: !data[0]?.txId,
+      hide: !newDataTable[0]?.txId,
       cellClassName: classes.chartLinks,
       renderCell: param => (
         <Tooltip title={param.value}>
           <a
             href={
-              param.value.lenght > 60
+              param.value.length > 60
                 ? `https://bloks.io/transaction/${param.value}`
                 : `https://bloks.io/account/genesis.eden?loadContract=true&tab=Tables&table=distaccount&account=genesis.eden&scope=&limit=100&lower_bound=${param.value}&upper_bound=${param.value}`
             }
@@ -45,11 +50,13 @@ const IncomeTable = ({ data, dataPercent }) => {
     },
     {
       field: 'name',
-      headerName: data[0]?.level ? t('tableHeader1') : t('tableElectionHeader'),
+      headerName: newDataTable[0]?.level
+        ? t('tableHeader1')
+        : t('tableElectionHeader'),
       cellClassName: classes.chartLinks,
       renderCell: param => (
         <a
-          className={data[0]?.level ? '' : classes.disableLink}
+          className={newDataTable[0]?.level ? '' : classes.disableLink}
           href={`https://eosauthority.com/account/${param.value}?network=eos`}
         >
           {param.value}
@@ -60,9 +67,22 @@ const IncomeTable = ({ data, dataPercent }) => {
     {
       field: 'level',
       headerName: t('tableHeader3'),
-      hide: !data[0]?.level,
+      hide: !newDataTable[0]?.level,
       type: 'number',
       ...rowsCenter
+    },
+    {
+      field: 'category',
+      headerName: t('tableHeader11'),
+      renderCell: param => (
+        <>
+          {param.value === 'claimed'
+            ? t('claimedCategory')
+            : t('unclaimedCategory')}
+        </>
+      ),
+      hide: !newDataTable[0]?.category,
+      rowsCenter
     },
     {
       field: 'EOS',
@@ -81,31 +101,35 @@ const IncomeTable = ({ data, dataPercent }) => {
     {
       field: 'date',
       headerName: t('tableHeader6'),
-      hide: !data[0]?.date,
+      hide: !newDataTable[0]?.date,
       ...rowsCenter
     },
     {
       field: 'EOS_CLAIMED',
       headerName: t('tableHeader7'),
       type: 'number',
+      hide: !newDataTable[0]?.EOS_CLAIMED,
       ...rowsCenter
     },
     {
       field: 'EOS_UNCLAIMED',
       headerName: t('tableHeader8'),
       type: 'number',
+      hide: !newDataTable[0]?.EOS_UNCLAIMED,
       ...rowsCenter
     },
     {
       field: 'USD_CLAIMED',
       headerName: t('tableHeader9'),
       type: 'number',
+      hide: !newDataTable[0]?.USD_CLAIMED,
       ...rowsCenter
     },
     {
       field: 'USD_UNCLAIMED',
       headerName: t('tableHeader10'),
       type: 'number',
+      hide: !newDataTable[0]?.USD_UNCLAIMED,
       ...rowsCenter
     }
   ]

@@ -10,6 +10,7 @@ import {
   Typography
 } from '@mui/material'
 
+import { useSharedState } from '../../context/state.context'
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import SelectComponent from '../../components/Select'
@@ -33,7 +34,6 @@ const IncomeReport = () => {
       delegateSelect,
       incomeByAllDelegatesList,
       electionsByYearList,
-      nextEdenDisbursement,
       showElectionRadio,
       incomeClaimedAndUnclaimedList,
       totalClaimedAndUnclaimedList,
@@ -53,9 +53,14 @@ const IncomeReport = () => {
   const classes = useStyles()
 
   const { t } = useTranslation('incomeRoute')
+
   const { t: t2 } = useTranslation('generalForm')
 
   const [showEosRateSwitch, setshowEosRateSwitch] = useState(true)
+
+  const [state] = useSharedState()
+
+  const { nextEdenDisbursement = '' } = state.eosTrasuryBalance
 
   return (
     <div className={classes.root}>
@@ -111,7 +116,7 @@ const IncomeReport = () => {
             <>
               <FormControl>
                 <FormControlLabel
-                  label={t2('chartExchangeRateEos')}
+                  label={t('exchangeRate')}
                   control={
                     <Switch
                       checked={showEosRateSwitch}
@@ -190,8 +195,8 @@ const IncomeReport = () => {
         <div className={classes.subTitle}>
           <Typography variant="span">
             {chartTransactionsList[0]?.level
-              ? t2('titleTable')
-              : t2('titleTable2')}
+              ? t('titleTable')
+              : t('titleTable2')}
           </Typography>
 
           <div id="id-table-container">

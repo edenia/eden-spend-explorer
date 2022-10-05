@@ -58,6 +58,9 @@
     "tableHeader8": "EOS unclaimed percent",
     "tableHeader9": "USD claimed percent",
     "tableHeader10": "USD unclaimed percent",
+    "tableHeader11": "Category",
+    "claimedCategory": "Claimed",
+    "unclaimedCategory": "Unclaimed",
     "exchangeRate": "Exchange rate",
     "date": "Date"
   },

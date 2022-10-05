@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 
-import { eosApi } from '../../utils/eosapi'
-import { mainConfig } from '../../config'
 import {
   GET_INCOME_TRANSACTIONS_DELEGATES_QUERY,
   GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY,
@@ -37,8 +35,6 @@ const sortDescList = (a, b) => {
 }
 
 const useIncomeReportState = () => {
-  const [nextEdenDisbursement, setNextEdenDisbursement] = useState('')
-
   const [typeCurrencySelect, setTypeCurrencySelect] = useState('EOS')
 
   const [electionYearSelect, setElectionYearSelect] = useState('All')
@@ -67,24 +63,6 @@ const useIncomeReportState = () => {
     useState([])
 
   const [percentIncomeList, setPercentIncomeList] = useState([])
-
-  const getNextEdenDisbursement = async () => {
-    try {
-      const response = await eosApi.getTableRows({
-        json: true,
-        code: mainConfig.edenContract,
-        scope: 0,
-        table: 'distribution'
-      })
-      const date = new Date(
-        response?.rows[0][1]?.distribution_time
-      ).toLocaleDateString()
-
-      setNextEdenDisbursement(date)
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   const newDataFormatByElection = electionsList => {
     const newFormatData = electionsList.map(data => ({
@@ -263,7 +241,6 @@ const useIncomeReportState = () => {
   )
 
   useEffect(() => {
-    getNextEdenDisbursement()
     loadElectionsByYear()
     loadIncomeByAllDelegates()
     loadIncomeByDelegateAccount()
@@ -396,7 +373,6 @@ const useIncomeReportState = () => {
       delegateSelect,
       incomeByAllDelegatesList,
       electionsByYearList,
-      nextEdenDisbursement,
       showElectionRadio,
       incomeClaimedAndUnclaimedList,
       totalClaimedAndUnclaimedList,

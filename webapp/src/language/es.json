@@ -58,6 +58,9 @@
     "tableHeader8": "Porcentaje EOS no reclamado",
     "tableHeader9": "Porcentaje USD reclamado",
     "tableHeader10": "Porcentaje USD no reclamado",
+    "tableHeader11": "Categoría",
+    "claimedCategory": "Reclamado",
+    "unclaimedCategory": "No reclamado",
     "exchangeRate": "Tipo de cambio",
     "date": "Fecha"
   },

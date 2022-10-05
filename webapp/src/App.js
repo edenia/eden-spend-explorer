@@ -21,7 +21,8 @@ const generateClassName = createGenerateClassName({
 const App = () => {
   const [state, { setEOSTrasuryBalance }] = useSharedState()
 
-  const [{ eosRate, currencyBalance }] = useTresuryBalanceState()
+  const [{ eosRate, currencyBalance, nextEdenDisbursement }] =
+    useTresuryBalanceState()
 
   const renderRoute = ({ component: Component, ...route }, index) => (
     <Route
@@ -43,9 +44,10 @@ const App = () => {
   useEffect(() => {
     setEOSTrasuryBalance({
       eosRate,
-      currencyBalance
+      currencyBalance,
+      nextEdenDisbursement
     })
-  }, [eosRate, currencyBalance])
+  }, [eosRate, currencyBalance, nextEdenDisbursement])
 
   return (
     <BrowserRouter>

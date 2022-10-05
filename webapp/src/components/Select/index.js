@@ -10,7 +10,7 @@ const SelectComponent = ({
   actualValue,
   disable
 }) => {
-  const { t } = useTranslation('incomeRoute')
+  const { t } = useTranslation('generalForm')
 
   if (disable || !values[0]) return null
   return (

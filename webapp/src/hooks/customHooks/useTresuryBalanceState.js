@@ -14,6 +14,8 @@ const useTresuryBalanceState = () => {
 
   const [eosRate, setEosRate] = useState(0)
 
+  const [nextEdenDisbursement, setNextEdenDisbursement] = useState('')
+
   const getEosBalance = async () => {
     try {
       const response = await eosApi.getCurrencyBalance(
@@ -47,12 +49,31 @@ const useTresuryBalanceState = () => {
     }
   }
 
+  const getNextEdenDisbursement = async () => {
+    try {
+      const response = await eosApi.getTableRows({
+        json: true,
+        code: mainConfig.edenContract,
+        scope: 0,
+        table: 'distribution'
+      })
+      const date = new Date(
+        response?.rows[0][1]?.distribution_time
+      ).toLocaleDateString()
+
+      setNextEdenDisbursement(date)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     getEosRate()
     getEosBalance()
+    getNextEdenDisbursement()
   }, [])
 
-  return [{ eosRate, currencyBalance }]
+  return [{ eosRate, currencyBalance, nextEdenDisbursement }]
 }
 
 export default useTresuryBalanceState

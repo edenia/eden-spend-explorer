@@ -31,7 +31,7 @@ export default theme => ({
     }
   },
   filtersContainer: {
-    marginTop: '30px',
+    marginTop: '24px',
     '& #id-radio-election-container': {
       display: 'flex',
       marginLeft: '12px',
