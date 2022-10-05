@@ -216,8 +216,8 @@ const IncomeReport = () => {
           <div id="id-table-container">
             <IncomeTable
               data={chartTransactionsList}
-              thousandSeparator={thousandSeparator}
               dataPercent={percentIncomeList}
+              showDelegateRadio={showDelegateRadio}
             />
           </div>
         </div>

@@ -6,17 +6,24 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { makeStyles } from '@mui/styles'
 import { Tooltip } from '@mui/material'
 
+import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
+
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
 const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
-const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
+const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
   const [pagePaginationSize, setPagePaginationSize] = useState(5)
-  const newDataTable = dataPercent.map(firstObj => ({
-    ...data.find(secondObj => secondObj.name === firstObj.name),
-    ...firstObj
-  }))
+
+  const newDataTable =
+    showDelegateRadio !== 'oneDelegate'
+      ? dataPercent.map(firstObj => ({
+          ...data.find(secondObj => secondObj.name === firstObj.name),
+          ...firstObj
+        }))
+      : data
+
   const classes = useStyles()
   const { t } = useTranslation('incomeRoute')
   const theme = createTheme(t('tableHeader1') === 'Name' ? enUS : esES)
@@ -24,7 +31,7 @@ const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
     {
       field: 'txId',
       headerName: t('tableHeader2'),
-      hide: !data[0]?.txId,
+      hide: !newDataTable[0]?.txId,
       cellClassName: classes.chartLinks,
       renderCell: param => (
         <Tooltip title={param.value}>
@@ -43,11 +50,13 @@ const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
     },
     {
       field: 'name',
-      headerName: data[0]?.level ? t('tableHeader1') : t('tableElectionHeader'),
+      headerName: newDataTable[0]?.level
+        ? t('tableHeader1')
+        : t('tableElectionHeader'),
       cellClassName: classes.chartLinks,
       renderCell: param => (
         <a
-          className={data[0]?.level ? '' : classes.disableLink}
+          className={newDataTable[0]?.level ? '' : classes.disableLink}
           href={`https://eosauthority.com/account/${param.value}?network=eos`}
         >
           {param.value}
@@ -58,52 +67,69 @@ const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
     {
       field: 'level',
       headerName: t('tableHeader3'),
-      hide: !data[0]?.level,
+      hide: !newDataTable[0]?.level,
       type: 'number',
       ...rowsCenter
     },
     {
+      field: 'category',
+      headerName: t('tableHeader11'),
+      renderCell: param => (
+        <>
+          {param.value === 'claimed'
+            ? t('claimedCategory')
+            : t('unclaimedCategory')}
+        </>
+      ),
+      hide: showDelegateRadio !== 'oneDelegate',
+      rowsCenter
+    },
+    {
       field: 'EOS',
       headerName: t('tableHeader4'),
-      renderCell: param => <>{thousandSeparator(param.value)}</>,
+      renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
     },
     {
       field: 'USD',
       headerName: t('tableHeader5'),
-      renderCell: param => <>{thousandSeparator(param.value)}</>,
+      renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
     },
     {
       field: 'date',
       headerName: t('tableHeader6'),
-      hide: !data[0]?.date,
+      hide: showDelegateRadio !== 'oneDelegate',
       ...rowsCenter
     },
     {
       field: 'EOS_CLAIMED',
       headerName: t('tableHeader7'),
       type: 'number',
+      hide: showDelegateRadio === 'oneDelegate',
       ...rowsCenter
     },
     {
       field: 'EOS_UNCLAIMED',
       headerName: t('tableHeader8'),
       type: 'number',
+      hide: showDelegateRadio === 'oneDelegate',
       ...rowsCenter
     },
     {
       field: 'USD_CLAIMED',
       headerName: t('tableHeader9'),
       type: 'number',
+      hide: showDelegateRadio === 'oneDelegate',
       ...rowsCenter
     },
     {
       field: 'USD_UNCLAIMED',
       headerName: t('tableHeader10'),
       type: 'number',
+      hide: showDelegateRadio === 'oneDelegate',
       ...rowsCenter
     }
   ]
@@ -127,8 +153,8 @@ const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
 
 IncomeTable.propTypes = {
   data: PropTypes.array,
-  thousandSeparator: PropTypes.func,
-  dataPercent: PropTypes.array
+  dataPercent: PropTypes.array,
+  showDelegateRadio: PropTypes.string
 }
 
 export default memo(IncomeTable)
