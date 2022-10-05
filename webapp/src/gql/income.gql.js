@@ -86,9 +86,9 @@ export const GET_ELECTIONS_BY_YEAR = gql`
     }
   }
 `
-export const GET_TOTAL_INCOME_BY_ELECTIONS_QUERY = gql`
+export const GET_TOTAL_BY_ELECTIONS_QUERY = gql`
   query getTotalIncomeByElection {
-    total_income_by_election {
+    total_by_election(where: { type: { _eq: "income" } }) {
       amount
       usd_total
       election
@@ -109,9 +109,9 @@ export const GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION = gql`
   }
 `
 
-export const GET_TOTAL_CLAIMED_AND_UNCLAIMED = gql`
+export const GET_TOTAL_BY_CATEGORY = gql`
   query getTotalClaimedAndUnclaimed {
-    total_claimed_and_unclaimed {
+    total_by_category(where: { type: { _eq: "income" } }) {
       amount
       category
       usd_total
@@ -119,10 +119,10 @@ export const GET_TOTAL_CLAIMED_AND_UNCLAIMED = gql`
   }
 `
 
-export const GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION = gql`
+export const GET_TOTAL_BY_CATEGORY_AND_ELECTION = gql`
   query getTotalClaimedAndUnclaimedByElection($election: Int) {
-    total_claimed_and_unclaimed_by_election(
-      where: { election: { _eq: $election } }
+    total_by_category_and_election(
+      where: { election: { _eq: $election }, type: { _eq: "income" } }
     ) {
       amount
       category
