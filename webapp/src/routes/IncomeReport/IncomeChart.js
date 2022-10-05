@@ -56,9 +56,11 @@ const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
       {payload &&
         payload.map((data, i) => (
           <div key={`${i}-tooltip`}>
-            <div>{`${t(data.dataKey)} : ${thousandSeparator(
-              data.payload[data.dataKey]
-            )}`}</div>
+            <div>{`${
+              data.dataKey === 'EXCHANGE_RATE'
+                ? t('exchangeRate')
+                : data.dataKey
+            } : ${thousandSeparator(data.payload[data.dataKey])}`}</div>
             <div>
               {i === 0 &&
                 data.payload?.date &&

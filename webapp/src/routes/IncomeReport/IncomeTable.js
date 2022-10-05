@@ -13,8 +13,8 @@ const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
 const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
   const [pagePaginationSize, setPagePaginationSize] = useState(5)
-  const newDataTable = data.map(firstObj => ({
-    ...dataPercent.find(secondObj => secondObj.name === firstObj.name),
+  const newDataTable = dataPercent.map(firstObj => ({
+    ...data.find(secondObj => secondObj.name === firstObj.name),
     ...firstObj
   }))
   const classes = useStyles()
@@ -30,7 +30,7 @@ const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
         <Tooltip title={param.value}>
           <a
             href={
-              param.value.lenght > 60
+              param.value.length > 60
                 ? `https://bloks.io/transaction/${param.value}`
                 : `https://bloks.io/account/genesis.eden?loadContract=true&tab=Tables&table=distaccount&account=genesis.eden&scope=&limit=100&lower_bound=${param.value}&upper_bound=${param.value}`
             }
@@ -113,7 +113,7 @@ const IncomeTable = ({ data, thousandSeparator, dataPercent }) => {
       <DataGrid
         sx={{ border: 'none' }}
         rows={newDataTable}
-        loading={!newDataTable[0]?.EOS_CLAIMED}
+        loading={!newDataTable[0]}
         columns={columns}
         pageSize={pagePaginationSize}
         onPageSizeChange={newPageSize => setPagePaginationSize(newPageSize)}
