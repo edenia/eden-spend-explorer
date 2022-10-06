@@ -1,0 +1,3 @@
+table:
+  name: historic_expenses
+  schema: public
