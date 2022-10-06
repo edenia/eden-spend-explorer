@@ -388,6 +388,9 @@ const useIncomeReportState = () => {
   }, [showElectionRadio, totalByCategory, totalByCategoryAndElectionData])
 
   useEffect(() => {
+    console.log(percentAllElectionData)
+    console.log(percentByElectionData)
+    console.log(percentByDelegateData)
     if (showElectionRadio === 'allElections') {
       percentAllElectionData?.percent_by_all_elections_incomes &&
         newDataFormatPercentAllElections(

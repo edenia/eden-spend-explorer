@@ -161,7 +161,7 @@ export const GET_PERCENT_ALL_ELECTIONS = gql`
 
 export const GET_PERCENT_BY_ELECTIONS = gql`
   query getPercentByElections($election: Int) {
-    percent_by_delegates__incomes(where: { election: { _eq: $election } }) {
+    percent_by_delegates_incomes(where: { election: { _eq: $election } }) {
       election
       eos_claimed
       eos_unclaimed
