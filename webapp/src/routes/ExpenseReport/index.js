@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 import useExpenseReport from '../../hooks/customHooks/useExpenseReportState'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import SelectComponent from '../../components/Select'
+import ExpenseChart from './ExpenseChart'
 
 import styles from './styles'
 
@@ -33,7 +34,8 @@ const ExpenseReport = () => {
       delegateSelect,
       electionRoundSelect,
       electionsByYearList,
-      incomeByAllDelegatesList
+      expenseByAllDelegatesList,
+      chartTransactionsList
     },
     {
       setShowElectionRadio,
@@ -141,7 +143,7 @@ const ExpenseReport = () => {
               <SelectComponent
                 onChangeFunction={setDelegateSelect}
                 labelSelect={t2('textDelegateSelect')}
-                values={incomeByAllDelegatesList.map(
+                values={expenseByAllDelegatesList.map(
                   data => data.eden_delegate.account
                 )}
                 disable={showDelegateRadio === 'allDelegates'}
@@ -151,6 +153,11 @@ const ExpenseReport = () => {
           )}
         </div>
       </div>
+      <ExpenseChart
+        data={chartTransactionsList}
+        coinType={typeCurrencySelect}
+        showEosRate={showEosRateSwitch}
+      />
     </div>
   )
 }

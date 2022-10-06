@@ -15,7 +15,6 @@ const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
 const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
   const [pagePaginationSize, setPagePaginationSize] = useState(5)
-
   const newDataTable =
     showDelegateRadio !== 'oneDelegate'
       ? dataPercent.map(firstObj => ({
@@ -23,7 +22,6 @@ const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
           ...firstObj
         }))
       : data
-
   const classes = useStyles()
   const { t } = useTranslation('incomeRoute')
   const theme = createTheme(t('tableHeader1') === 'Name' ? enUS : esES)
@@ -31,7 +29,7 @@ const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
     {
       field: 'txId',
       headerName: t('tableHeader2'),
-      hide: !newDataTable.txId,
+      hide: !newDataTable[0]?.txId,
       cellClassName: classes.chartLinks,
       renderCell: param => (
         <Tooltip title={param.value}>

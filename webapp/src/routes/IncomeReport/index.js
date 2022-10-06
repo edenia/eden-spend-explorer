@@ -203,6 +203,7 @@ const IncomeReport = () => {
             <IncomeTable
               data={chartTransactionsList}
               dataPercent={percentIncomeList}
+              showDelegateRadio={showDelegateRadio}
             />
           </div>
         </div>

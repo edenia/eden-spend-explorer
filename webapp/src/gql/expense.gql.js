@@ -70,3 +70,13 @@ export const GET_EXPENSE_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
     }
   }
 `
+
+export const GET_TOTAL_EXPENSE_BY_ELECTIONS_QUERY = gql`
+  query getTotalIncomeByElection {
+    total_by_election(where: { type: { _eq: "expense" } }) {
+      amount
+      usd_total
+      election
+    }
+  }
+`
