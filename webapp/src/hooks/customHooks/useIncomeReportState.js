@@ -313,19 +313,19 @@ const useIncomeReportState = () => {
 
   useEffect(() => {
     if (showElectionRadio === 'allElections') {
-      percentAllElectionData?.percent_by_all_elections &&
+      percentAllElectionData?.percent_by_all_elections_incomes &&
         newDataFormatPercentAllElections(
-          percentAllElectionData.percent_by_all_elections
+          percentAllElectionData.percent_by_all_elections_incomes
         )
     } else {
       showDelegateRadio === 'allDelegates'
-        ? percentByElectionData?.percent_by_delegates &&
+        ? percentByElectionData?.percent_by_delegates_incomes &&
           newDataFormatPercentByElection(
-            percentByElectionData.percent_by_delegates
+            percentByElectionData.percent_by_delegates_incomes
           )
-        : percentByDelegateData?.percent_by_delegates &&
+        : percentByDelegateData?.percent_by_delegates_incomes &&
           newDataFormatPercentByElection(
-            percentByDelegateData.percent_by_delegates
+            percentByDelegateData.percent_by_delegates_incomes
           )
     }
   }, [

@@ -1,0 +1,14 @@
+table:
+  name: percent_by_all_elections_incomes
+  schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - election
+        - eos_claimed
+        - eos_unclaimed
+        - usd_claimed
+        - usd_unclaimed
+      filter: {}
+      allow_aggregations: true
