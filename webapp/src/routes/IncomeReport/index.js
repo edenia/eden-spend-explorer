@@ -13,12 +13,12 @@ import {
 import { useSharedState } from '../../context/state.context'
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
 import TreasuryBalance from '../../components/TreasuryBalance'
+import TableReport from '../../components/TableReport'
 import SelectComponent from '../../components/Select'
 
-import IncomeChart from './IncomeChart'
+import LineAreaReportChart from '../../components/LineAreaReportChart'
 import IncomeStackedChart from './IncomeStackedChart'
 import IncomePieChart from './IncomePieChart'
-import IncomeTable from './IncomeTable'
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
@@ -172,7 +172,7 @@ const IncomeReport = () => {
         </div>
       </div>
 
-      <IncomeChart
+      <LineAreaReportChart
         data={chartTransactionsList}
         coinType={typeCurrencySelect}
         showEosRate={showEosRateSwitch}
@@ -200,7 +200,7 @@ const IncomeReport = () => {
           </Typography>
 
           <div id="id-table-container">
-            <IncomeTable
+            <TableReport
               data={chartTransactionsList}
               dataPercent={percentIncomeList}
               showDelegateRadio={showDelegateRadio}

@@ -11,10 +11,12 @@ import { formatWithThousandSeparator } from '../../utils/format-with-thousand-se
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
+
 const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
-const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
+const TableReport = ({ data, dataPercent, showDelegateRadio }) => {
   const [pagePaginationSize, setPagePaginationSize] = useState(5)
+
   const newDataTable =
     showDelegateRadio !== 'oneDelegate'
       ? dataPercent.map(firstObj => ({
@@ -22,15 +24,19 @@ const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
           ...firstObj
         }))
       : data
+
   const classes = useStyles()
+
   const { t } = useTranslation('incomeRoute')
+
   const theme = createTheme(t('tableHeader1') === 'Name' ? enUS : esES)
+
   const columns = [
     {
       field: 'txId',
       headerName: t('tableHeader2'),
       hide: !newDataTable[0]?.txId,
-      cellClassName: classes.chartLinks,
+      cellClassName: classes.Links,
       renderCell: param => (
         <Tooltip title={param.value}>
           <a
@@ -51,7 +57,7 @@ const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
       headerName: newDataTable[0]?.level
         ? t('tableHeader1')
         : t('tableElectionHeader'),
-      cellClassName: classes.chartLinks,
+      cellClassName: classes.Links,
       renderCell: param => (
         <a
           className={newDataTable[0]?.level ? '' : classes.disableLink}
@@ -144,16 +150,16 @@ const IncomeTable = ({ data, dataPercent, showDelegateRadio }) => {
         onPageSizeChange={newPageSize => setPagePaginationSize(newPageSize)}
         rowsPerPageOptions={[5, 10, 20]}
         pagination
-        getRowId={row => `${row.name}-${row.txId}`}
+        getRowId={row => `${row.name}-${row.txId}-${row.color}-${row.EOS}`}
       />
     </ThemeProvider>
   )
 }
 
-IncomeTable.propTypes = {
+TableReport.propTypes = {
   data: PropTypes.array,
   dataPercent: PropTypes.array,
   showDelegateRadio: PropTypes.string
 }
 
-export default memo(IncomeTable)
+export default memo(TableReport)

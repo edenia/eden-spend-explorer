@@ -11,9 +11,10 @@ import {
 import { useTranslation } from 'react-i18next'
 
 import useExpenseReport from '../../hooks/customHooks/useExpenseReportState'
+import LineAreaReportChart from '../../components/LineAreaReportChart'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import SelectComponent from '../../components/Select'
-import ExpenseChart from './ExpenseChart'
+import TableReport from '../../components/TableReport'
 
 import styles from './styles'
 
@@ -153,11 +154,24 @@ const ExpenseReport = () => {
           )}
         </div>
       </div>
-      <ExpenseChart
-        data={chartTransactionsList}
-        coinType={typeCurrencySelect}
-        showEosRate={showEosRateSwitch}
-      />
+      <div>
+        <LineAreaReportChart
+          data={chartTransactionsList}
+          coinType={typeCurrencySelect}
+          showEosRate={showEosRateSwitch}
+        />
+      </div>
+      <div className={classes.tableContainer}>
+        <div className={classes.subTitle}>
+          <div id="id-table-container">
+            <TableReport
+              data={[]}
+              dataPercent={chartTransactionsList}
+              showDelegateRadio={showDelegateRadio}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,7 +1,10 @@
 import React, { memo, useCallback } from 'react'
 import PropTypes from 'prop-types'
+import FileSaver from 'file-saver'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
+import { useTranslation } from 'react-i18next'
+import { useCurrentPng } from 'recharts-to-png'
 import {
   ComposedChart,
   Bar,
@@ -14,9 +17,6 @@ import {
   Cell,
   Line
 } from 'recharts'
-import { useTranslation } from 'react-i18next'
-import { useCurrentPng } from 'recharts-to-png'
-import FileSaver from 'file-saver'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 
@@ -62,14 +62,17 @@ const CustomTooltip = ({ payload = [], label = '' }) => {
       {payload &&
         payload.map((data, i) => (
           <div key={`${i}-tooltip`}>
-            <div>{`${t(data.dataKey)} : ${formatWithThousandSeparator(
-              data.payload[data.dataKey],
-              2
-            )}`}</div>
+            <div>
+              {`${
+                data.dataKey === 'EXCHANGE_RATE'
+                  ? t('exchangeRate')
+                  : data.dataKey
+              }: ${formatWithThousandSeparator(data.payload[data.dataKey], 3)}`}
+            </div>
             <div>
               {i === 0 &&
                 data.payload?.date &&
-                `${data.payload.date ? t('date') : ''} : ${
+                `${data.payload.date ? t('date') : ''}: ${
                   data.payload.date ? data.payload.date.split('T')[0] : ''
                 } `}
             </div>
@@ -83,7 +86,7 @@ CustomTooltip.propTypes = {
   label: PropTypes.any
 }
 
-const IncomeChart = ({ data, coinType, showEosRate }) => {
+const LineAreaReportChart = ({ data, coinType, showEosRate }) => {
   const classes = useStyles()
 
   const [getBarPng, { ref: barRef }] = useCurrentPng()
@@ -162,10 +165,10 @@ const IncomeChart = ({ data, coinType, showEosRate }) => {
   )
 }
 
-IncomeChart.propTypes = {
+LineAreaReportChart.propTypes = {
   data: PropTypes.array,
   coinType: PropTypes.string,
   showEosRate: PropTypes.bool
 }
 
-export default memo(IncomeChart)
+export default memo(LineAreaReportChart)
