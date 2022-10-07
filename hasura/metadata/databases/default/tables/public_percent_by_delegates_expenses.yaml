@@ -1,17 +1,15 @@
 table:
-  name: transaction_by_category_and_election
+  name: percent_by_delegates_expenses
   schema: public
 select_permissions:
   - role: guest
     permission:
       columns:
-        - amount
-        - category
         - delegate_payer
         - election
-        - exchange_rate
-        - recipient
-        - type
-        - usd_total
+        - eos_categorized
+        - eos_uncategorized
+        - usd_categorized
+        - usd_uncategorized
       filter: {}
       allow_aggregations: true

@@ -1,17 +1,16 @@
 table:
-  name: transaction_by_category_and_election
+  name: historic_expenses
   schema: public
 select_permissions:
   - role: guest
     permission:
       columns:
-        - amount
-        - category
         - delegate_payer
         - election
+        - eos_categorized
+        - eos_uncategorized
         - exchange_rate
-        - recipient
-        - type
-        - usd_total
+        - usd_categorized
+        - usd_uncategorized
       filter: {}
       allow_aggregations: true

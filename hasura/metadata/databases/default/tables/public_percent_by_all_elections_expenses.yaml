@@ -1,13 +1,14 @@
 table:
-  name: total_by_election
+  name: percent_by_all_elections_expenses
   schema: public
 select_permissions:
   - role: guest
     permission:
       columns:
-        - amount
         - election
-        - type
-        - usd_total
+        - eos_categorized
+        - eos_uncategorized
+        - usd_categorized
+        - usd_uncategorized
       filter: {}
       allow_aggregations: true
