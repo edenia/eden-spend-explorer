@@ -5,11 +5,13 @@ select_permissions:
   - role: guest
     permission:
       columns:
-        - category
-        - recipient
-        - election
         - amount
+        - category
+        - delegate_payer
+        - election
         - exchange_rate
+        - recipient
+        - type
         - usd_total
       filter: {}
       allow_aggregations: true

@@ -1,3 +1,16 @@
 table:
   name: historic_expenses
   schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - delegate_payer
+        - election
+        - eos_categorized
+        - eos_uncategorized
+        - exchange_rate
+        - usd_categorized
+        - usd_uncategorized
+      filter: {}
+      allow_aggregations: true
