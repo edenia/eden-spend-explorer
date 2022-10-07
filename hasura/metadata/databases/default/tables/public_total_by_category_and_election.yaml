@@ -5,9 +5,10 @@ select_permissions:
   - role: guest
     permission:
       columns:
+        - amount
         - category
         - election
-        - amount
+        - type
         - usd_total
       filter: {}
       allow_aggregations: true
