@@ -36,7 +36,7 @@ const IncomeReport = () => {
       nextEdenDisbursement,
       showElectionRadio,
       incomeClaimedAndUnclaimedList,
-      totalClaimedAndUnclaimedList,
+      totalByCategoryList,
       percentIncomeList
     },
     {
@@ -200,7 +200,7 @@ const IncomeReport = () => {
         />
 
         <IncomePieChart
-          data={totalClaimedAndUnclaimedList}
+          data={totalByCategoryList}
           coinType={typeCurrencySelect}
         />
       </div>

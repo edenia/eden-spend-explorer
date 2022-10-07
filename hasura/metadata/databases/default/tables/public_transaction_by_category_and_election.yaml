@@ -1,0 +1,15 @@
+table:
+  name: transaction_by_category_and_election
+  schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - category
+        - recipient
+        - election
+        - amount
+        - exchange_rate
+        - usd_total
+      filter: {}
+      allow_aggregations: true

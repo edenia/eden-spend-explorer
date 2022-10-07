@@ -6,11 +6,11 @@ import { mainConfig } from '../../config'
 import {
   GET_INCOME_TRANSACTIONS_DELEGATES_QUERY,
   GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY,
-  GET_TOTAL_INCOME_BY_ELECTIONS_QUERY,
+  GET_TOTAL_BY_ELECTIONS_QUERY,
   GET_ELECTIONS_BY_YEAR,
   GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION,
-  GET_TOTAL_CLAIMED_AND_UNCLAIMED,
-  GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION,
+  GET_TOTAL_BY_CATEGORY,
+  GET_TOTAL_BY_CATEGORY_AND_ELECTION,
   GET_PERCENT_ALL_ELECTIONS,
   GET_PERCENT_BY_ELECTIONS,
   GET_PERCENT_BY_DELEGATES
@@ -73,8 +73,7 @@ const useIncomeReportState = () => {
   const [incomeClaimedAndUnclaimedList, setIncomeClaimedAndUnclaimedList] =
     useState([])
 
-  const [totalClaimedAndUnclaimedList, setTotalClaimedAndUnclaimedList] =
-    useState([])
+  const [totalByCategoryList, setTotalByCategoryList] = useState([])
 
   const [percentIncomeList, setPercentIncomeList] = useState([])
 
@@ -194,16 +193,15 @@ const useIncomeReportState = () => {
       setIncomeClaimedAndUnclaimedList(newFormatData)
     }
 
-  const newDataFormatTotalClaimedAndUnclaimed =
-    totalClaimedAndUnclaimedData => {
-      const newFormatData = totalClaimedAndUnclaimedData.map(data => ({
-        name: data.category,
-        EOS: Number(data.amount.toFixed(2)),
-        USD: Number(data.usd_total.toFixed(2))
-      }))
+  const newDataFormatTotalByCategory = totalByCategory => {
+    const newFormatData = totalByCategory.map(data => ({
+      name: data.category,
+      EOS: Number(data.amount.toFixed(2)),
+      USD: Number(data.usd_total.toFixed(2))
+    }))
 
-      setTotalClaimedAndUnclaimedList(newFormatData)
-    }
+    setTotalByCategoryList(newFormatData)
+  }
 
   const newDataFormatPercentAllElections = percentAllElectionData => {
     const newFormatData = percentAllElectionData.map(data => ({
@@ -240,8 +238,8 @@ const useIncomeReportState = () => {
     return yearsList
   }
 
-  const [loadTotalIncomeByElection, { data: totalIncomeByElectionData }] =
-    useLazyQuery(GET_TOTAL_INCOME_BY_ELECTIONS_QUERY)
+  const [loadTotalIncomeByElection, { data: totalByElectionData }] =
+    useLazyQuery(GET_TOTAL_BY_ELECTIONS_QUERY)
 
   const [loadElectionsByYear, { data: electionsByYearData }] = useLazyQuery(
     GET_ELECTIONS_BY_YEAR,
@@ -279,13 +277,13 @@ const useIncomeReportState = () => {
       }
     })
 
-  const [loadTotalClaimedAndUnclaimed, { data: totalClaimedAndUnclaimedData }] =
-    useLazyQuery(GET_TOTAL_CLAIMED_AND_UNCLAIMED)
+  const [loadTotalClaimedAndUnclaimed, { data: totalByCategory }] =
+    useLazyQuery(GET_TOTAL_BY_CATEGORY)
 
   const [
     loadTotalClaimedAndUnclaimedByElection,
-    { data: totalClaimedAndUnclaimedByElectionData }
-  ] = useLazyQuery(GET_TOTAL_CLAIMED_AND_UNCLAIMED_BY_ELECTION, {
+    { data: totalByCategoryAndElectionData }
+  ] = useLazyQuery(GET_TOTAL_BY_CATEGORY_AND_ELECTION, {
     variables: {
       election: electionRoundSelect
     }
@@ -379,37 +377,34 @@ const useIncomeReportState = () => {
 
   useEffect(() => {
     if (showElectionRadio === 'allElections') {
-      totalClaimedAndUnclaimedData?.total_claimed_and_unclaimed &&
-        newDataFormatTotalClaimedAndUnclaimed(
-          totalClaimedAndUnclaimedData.total_claimed_and_unclaimed
-        )
+      totalByCategory?.total_by_category &&
+        newDataFormatTotalByCategory(totalByCategory.total_by_category)
     } else {
-      totalClaimedAndUnclaimedByElectionData?.total_claimed_and_unclaimed_by_election &&
-        newDataFormatTotalClaimedAndUnclaimed(
-          totalClaimedAndUnclaimedByElectionData?.total_claimed_and_unclaimed_by_election
+      totalByCategoryAndElectionData?.total_by_category_and_election &&
+        newDataFormatTotalByCategory(
+          totalByCategoryAndElectionData?.total_by_category_and_election
         )
     }
-  }, [
-    showElectionRadio,
-    totalClaimedAndUnclaimedData,
-    totalClaimedAndUnclaimedByElectionData
-  ])
+  }, [showElectionRadio, totalByCategory, totalByCategoryAndElectionData])
 
   useEffect(() => {
+    console.log(percentAllElectionData)
+    console.log(percentByElectionData)
+    console.log(percentByDelegateData)
     if (showElectionRadio === 'allElections') {
-      percentAllElectionData?.percent_by_all_elections &&
+      percentAllElectionData?.percent_by_all_elections_incomes &&
         newDataFormatPercentAllElections(
-          percentAllElectionData.percent_by_all_elections
+          percentAllElectionData.percent_by_all_elections_incomes
         )
     } else {
       showDelegateRadio === 'allDelegates'
-        ? percentByElectionData?.percent_by_delegates &&
+        ? percentByElectionData?.percent_by_delegates_incomes &&
           newDataFormatPercentByElection(
-            percentByElectionData.percent_by_delegates
+            percentByElectionData.percent_by_delegates_incomes
           )
-        : percentByDelegateData?.percent_by_delegates &&
+        : percentByDelegateData?.percent_by_delegates_incomes &&
           newDataFormatPercentByElection(
-            percentByDelegateData.percent_by_delegates
+            percentByDelegateData.percent_by_delegates_incomes
           )
     }
   }, [
@@ -422,10 +417,8 @@ const useIncomeReportState = () => {
 
   useEffect(() => {
     if (showElectionRadio === 'allElections') {
-      totalIncomeByElectionData?.total_income_by_election[0] &&
-        newDataFormatByElection(
-          totalIncomeByElectionData.total_income_by_election
-        )
+      totalByElectionData?.total_by_election[0] &&
+        newDataFormatByElection(totalByElectionData.total_by_election)
     } else {
       showDelegateRadio === 'allDelegates'
         ? newDataFormatByAllDelegates(incomeByAllDelegatesList)
@@ -433,7 +426,7 @@ const useIncomeReportState = () => {
     }
   }, [
     showElectionRadio,
-    totalIncomeByElectionData,
+    totalByElectionData,
     showDelegateRadio,
     incomeByDelegateAccountList,
     incomeByAllDelegatesList
@@ -454,7 +447,7 @@ const useIncomeReportState = () => {
       nextEdenDisbursement,
       showElectionRadio,
       incomeClaimedAndUnclaimedList,
-      totalClaimedAndUnclaimedList,
+      totalByCategoryList,
       percentIncomeList
     },
     {

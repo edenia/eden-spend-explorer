@@ -1,0 +1,12 @@
+table:
+  name: total_by_category
+  schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - category
+        - amount
+        - usd_total
+      filter: {}
+      allow_aggregations: true
