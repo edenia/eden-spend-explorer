@@ -156,10 +156,10 @@ const LineAreaReportChart = ({ data, coinType, showEosRate }) => {
               </Bar>
             </ComposedChart>
           </ResponsiveContainer>
-          <button onClick={handleBarDownload}>
-            <code>Download Bar Chart</code>
-          </button>
         </div>
+        <button onClick={handleBarDownload}>
+          <code>Download Bar Chart</code>
+        </button>
       </div>
     </>
   )

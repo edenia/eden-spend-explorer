@@ -119,39 +119,27 @@ const IncomePieChart = ({ data, coinType }) => {
 
   return (
     <>
-      <div className={classes.chartContainer}>
-        <div id="chart-scroll-id">
-          <ResponsiveContainer width="50%" height={300}>
-            <PieChart
-              height={300}
-              width="50%"
-              margin={{
-                top: 40,
-                right: 0,
-                bottom: 0,
-                left: 12
-              }}
-              ref={pieRef}
-            >
-              <Pie
-                activeIndex={activeIndex}
-                activeShape={renderActiveShape}
-                data={newData}
-                nameKey={'name'}
-                dataKey={coinType}
-                cx="50%"
-                cy="50%"
-                innerRadius={45}
-                outerRadius={60}
-                fill="#00c2bf"
-                onMouseEnter={onPieEnter}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-          <button onClick={handlePieDownload}>
-            <code>Download Pie Chart</code>
-          </button>
-        </div>
+      <div className={classes.chartSubcontainer}>
+        <ResponsiveContainer height={300}>
+          <PieChart width={500} height={300} ref={pieRef}>
+            <Pie
+              activeIndex={activeIndex}
+              activeShape={renderActiveShape}
+              data={newData}
+              nameKey={'name'}
+              dataKey={coinType}
+              cx="50%"
+              cy="50%"
+              innerRadius={45}
+              outerRadius={60}
+              fill="#00c2bf"
+              onMouseEnter={onPieEnter}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+        <button onClick={handlePieDownload}>
+          <code>Download Pie Chart</code>
+        </button>
       </div>
     </>
   )

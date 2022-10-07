@@ -57,15 +57,18 @@ export default theme => ({
     }
   },
   chartContainer: {
+    marginLeft: '24px',
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'center',
     overflow: 'hidden',
     overflowX: 'hidden',
     with: '100%',
     '& #chart-scroll-id': {
       minWidth: '925px',
       width: '100%'
+    },
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column'
     }
   },
   divider: {
@@ -111,5 +114,15 @@ export default theme => ({
   disableLink: {
     pointerEvents: 'none',
     cursor: 'pointer'
+  },
+  chartSubcontainer: {
+    width: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    marginTop: 24,
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
   }
 })

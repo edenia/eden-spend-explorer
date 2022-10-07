@@ -1,7 +1,7 @@
 export default theme => ({
   chartContainer: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     overflow: 'hidden',
     overflowX: 'hidden',

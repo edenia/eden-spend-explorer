@@ -10,8 +10,8 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
-  Line
+  Line,
+  ResponsiveContainer
 } from 'recharts'
 import { useCurrentPng } from 'recharts-to-png'
 import FileSaver from 'file-saver'
@@ -62,72 +62,60 @@ const IncomeStakedChart = ({ data, coinType, showEosRate }) => {
 
   return (
     <>
-      <div className={classes.chartContainer}>
-        <div id="chart-scroll-id">
-          <ResponsiveContainer width="50%" height={300}>
-            <ComposedChart
-              height={300}
-              data={data}
-              margin={{
-                top: 40,
-                right: 0,
-                bottom: 0,
-                left: 12
+      <div className={classes.chartSubcontainer}>
+        <ResponsiveContainer height={300}>
+          <ComposedChart width={500} height={300} data={data} ref={stackedRef}>
+            <CartesianGrid stroke="#f5f5f5" />
+            <XAxis hide dataKey="name" scale="auto" />
+            <YAxis tick={{ stroke: '#606060', strokeWidth: 0.5 }} />
+            {showEosRate && (
+              <>
+                <YAxis
+                  dataKey="EXCHANGE_RATE"
+                  scale="auto"
+                  yAxisId="right"
+                  orientation="right"
+                  tick={{ fontSize: 14, stroke: '#00c2bf', strokeWidth: 0.5 }}
+                />
+                <Line
+                  yAxisId="right"
+                  type="monotone"
+                  dataKey="EXCHANGE_RATE"
+                  stroke="#00c2bf"
+                  strokeWidth={2}
+                />
+              </>
+            )}
+            <Tooltip
+              wrapperStyle={{
+                outline: 'none',
+                borderRadius: '4px',
+                backgroundColor: '#bfefef',
+                fontSize: '14px',
+                padding: '8px'
               }}
-              ref={stackedRef}
-            >
-              <CartesianGrid stroke="#f5f5f5" />
-              <XAxis hide dataKey="name" scale="auto" />
-              <YAxis tick={{ stroke: '#606060', strokeWidth: 0.5 }} />
-              {showEosRate && (
-                <>
-                  <YAxis
-                    dataKey="EXCHANGE_RATE"
-                    scale="auto"
-                    yAxisId="right"
-                    orientation="right"
-                    tick={{ fontSize: 14, stroke: '#00c2bf', strokeWidth: 0.5 }}
-                  />
-                  <Line
-                    yAxisId="right"
-                    type="monotone"
-                    dataKey="EXCHANGE_RATE"
-                    stroke="#00c2bf"
-                    strokeWidth={2}
-                  />
-                </>
-              )}
-              <Tooltip
-                wrapperStyle={{
-                  outline: 'none',
-                  borderRadius: '4px',
-                  backgroundColor: '#bfefef',
-                  fontSize: '14px',
-                  padding: '8px'
-                }}
-                content={<CustomTooltip />}
-              />
-              <Legend />
-              <Bar
-                legendType="wye"
-                stackId="a"
-                dataKey={`${coinType}_CLAIMED`}
-                barSize={25}
-                fill="#82ca9d"
-              />
-              <Bar
-                legendType="wye"
-                stackId="a"
-                dataKey={`${coinType}_UNCLAIMED`}
-                barSize={25}
-                fill="#8884d8"
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
-          <button onClick={handleStakedDownload}>
-            <code>Download Staked Bar Chart</code>
-          </button>
-        </div>
+              content={<CustomTooltip />}
+            />
+            <Legend />
+            <Bar
+              legendType="wye"
+              stackId="a"
+              dataKey={`${coinType}_CLAIMED`}
+              barSize={25}
+              fill="#82ca9d"
+            />
+            <Bar
+              legendType="wye"
+              stackId="a"
+              dataKey={`${coinType}_UNCLAIMED`}
+              barSize={25}
+              fill="#8884d8"
+            />
+          </ComposedChart>
+        </ResponsiveContainer>
+        <button onClick={handleStakedDownload}>
+          <code>Download Staked Bar Chart</code>
+        </button>
       </div>
     </>
   )
