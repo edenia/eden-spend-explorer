@@ -7,6 +7,7 @@ import {
   Radio,
   RadioGroup,
   Switch,
+  Tooltip,
   Typography
 } from '@mui/material'
 
@@ -20,10 +21,25 @@ import TableReport from '../../components/TableReport'
 import SelectComponent from '../../components/Select'
 
 import styles from './styles'
+import { formatWithThousandSeparator } from '../../utils'
 
 const useStyles = makeStyles(styles)
 
+const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
+
 const IncomeReport = () => {
+  const classes = useStyles()
+
+  const { t } = useTranslation('incomeRoute')
+
+  const { t: t2 } = useTranslation('generalForm')
+
+  const [showEosRateSwitch, setshowEosRateSwitch] = useState(true)
+
+  const [state] = useSharedState()
+
+  const { nextEdenDisbursement = '' } = state.eosTrasuryBalance
+
   const [
     {
       chartTransactionsList,
@@ -50,17 +66,123 @@ const IncomeReport = () => {
     }
   ] = useIncomeReportState()
 
-  const classes = useStyles()
+  const tableData = chartTransactionsList.map(firstObj => ({
+    ...percentIncomeList.find(secondObj => secondObj.name === firstObj.name),
+    ...firstObj
+  }))
 
-  const { t } = useTranslation('incomeRoute')
-
-  const { t: t2 } = useTranslation('generalForm')
-
-  const [showEosRateSwitch, setshowEosRateSwitch] = useState(true)
-
-  const [state] = useSharedState()
-
-  const { nextEdenDisbursement = '' } = state.eosTrasuryBalance
+  const columns = [
+    {
+      field: 'txId',
+      headerName: t('txID'),
+      hide: !tableData[0]?.txId,
+      cellClassName: classes.chartLinks,
+      renderCell: param => (
+        <Tooltip title={param.value}>
+          <a
+            href={
+              param.value.length > 60
+                ? `https://bloks.io/transaction/${param.value}`
+                : `https://bloks.io/account/genesis.eden?loadContract=true&tab=Tables&table=distaccount&account=genesis.eden&scope=&limit=100&lower_bound=${param.value}&upper_bound=${param.value}`
+            }
+          >
+            {param.value.slice(0, 8)}
+          </a>
+        </Tooltip>
+      ),
+      ...rowsCenter
+    },
+    {
+      field: 'name',
+      headerName: tableData[0]?.level ? t('name') : t('election'),
+      cellClassName: classes.chartLinks,
+      renderCell: param => (
+        <a
+          className={tableData[0]?.level ? '' : classes.disableLink}
+          href={`https://eosauthority.com/account/${param.value}?network=eos`}
+        >
+          {param.value}
+        </a>
+      ),
+      ...rowsCenter
+    },
+    {
+      field: 'level',
+      headerName: t('tableHeader3'),
+      hide: !tableData[0]?.level,
+      type: 'number',
+      ...rowsCenter
+    },
+    {
+      field: 'category',
+      headerName: t('Category'),
+      renderCell: param => (
+        <>
+          {param.value === 'claimed'
+            ? t('claimedCategory')
+            : t('unclaimedCategory')}
+        </>
+      ),
+      hide: !tableData[0]?.category,
+      ...rowsCenter
+    },
+    {
+      field: 'EOS',
+      headerName: 'EOS',
+      renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
+      type: 'number',
+      ...rowsCenter
+    },
+    {
+      field: 'USD',
+      headerName: 'USD',
+      renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
+      type: 'number',
+      ...rowsCenter
+    },
+    {
+      field: 'date',
+      headerName: 'Date',
+      hide: !tableData[0]?.date,
+      ...rowsCenter
+    },
+    {
+      field: 'EOS_CLAIMED',
+      headerName: 'EOS claimed',
+      type: 'number',
+      hide:
+        showDelegateRadio === 'oneDelegate' &&
+        showElectionRadio === 'oneElection',
+      ...rowsCenter
+    },
+    {
+      field: 'EOS_UNCLAIMED',
+      headerName: 'EOS unclaimed',
+      type: 'number',
+      hide:
+        showDelegateRadio === 'oneDelegate' &&
+        showElectionRadio === 'oneElection',
+      ...rowsCenter
+    },
+    {
+      field: 'USD_CLAIMED',
+      headerName: 'USD claimed',
+      type: 'number',
+      hide:
+        showDelegateRadio === 'oneDelegate' &&
+        showElectionRadio === 'oneElection',
+      ...rowsCenter
+    },
+    {
+      field: 'USD_UNCLAIMED',
+      headerName: 'USD unclaimed',
+      type: 'number',
+      hide:
+        showDelegateRadio === 'oneDelegate' &&
+        showElectionRadio === 'oneElection',
+      ...rowsCenter
+    }
+  ]
 
   return (
     <div className={classes.root}>
@@ -202,11 +324,7 @@ const IncomeReport = () => {
           </Typography>
 
           <div id="id-table-container">
-            <TableReport
-              data={chartTransactionsList}
-              dataPercent={percentIncomeList}
-              showDelegateRadio={showDelegateRadio}
-            />
+            <TableReport columns={columns} dataPercent={tableData} />
           </div>
         </div>
       </div>

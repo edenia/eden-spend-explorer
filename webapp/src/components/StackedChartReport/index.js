@@ -14,12 +14,10 @@ import {
   ResponsiveContainer
 } from 'recharts'
 import { useCurrentPng } from 'recharts-to-png'
+import { Box } from '@mui/system'
 import FileSaver from 'file-saver'
 
-import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
-
 import styles from './styles'
-import { Box } from '@mui/system'
 
 const useStyles = makeStyles(styles)
 
@@ -42,10 +40,7 @@ const CustomTooltip = ({ payload = [], label = '', typeCurrency = '' }) => {
               ? `${t('categorizedCat')} `
               : data.dataKey === `${typeCurrency}_UNCATEGORIZED` &&
                 t('uncategorizedCat')
-          }: ${formatWithThousandSeparator(
-            data.payload[data.dataKey],
-            4
-          )}`}</div>
+          }: ${data.payload[data.dataKey]}`}</div>
         ))}
     </div>
   )

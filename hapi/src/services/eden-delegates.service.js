@@ -31,6 +31,11 @@ const updateEdenTable = async () => {
   await saveNewHistoricElection()
 
   let nextKey = null
+  const dateActualElection = moment(new Date()).get()
+  const actualElection = await edenHistoricElectionGql.get({
+    date_election: { _lte: dateActualElection }
+  })
+
   while (true) {
     const members = await communityUtil.loadTableData(
       { next_key: nextKey },
@@ -52,9 +57,10 @@ const updateEdenTable = async () => {
 
       const electionData = {
         id_delegate: registeredMember.id,
-        election: parseInt(member[0].slice(8)) + 1,
+        election: actualElection.election,
         delegate_level: member[1].election_rank
       }
+
       const registeredElection = await edenElectionGql.get({
         id_delegate: { _eq: registeredMember.id },
         election: { _eq: electionData.election }
