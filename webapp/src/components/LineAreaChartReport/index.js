@@ -54,7 +54,7 @@ RenderChartLegend.propTypes = {
 }
 
 const CustomTooltip = ({ payload = [], label = '' }) => {
-  const { t } = useTranslation('incomeRoute')
+  const { t } = useTranslation('generalForm')
 
   return (
     <div>
@@ -86,7 +86,7 @@ CustomTooltip.propTypes = {
   label: PropTypes.any
 }
 
-const LineAreaReportChart = ({ data, coinType, showEosRate }) => {
+const LineAreaChartReport = ({ data, coinType, showEosRate }) => {
   const classes = useStyles()
 
   const [getBarPng, { ref: barRef }] = useCurrentPng()
@@ -165,10 +165,10 @@ const LineAreaReportChart = ({ data, coinType, showEosRate }) => {
   )
 }
 
-LineAreaReportChart.propTypes = {
+LineAreaChartReport.propTypes = {
   data: PropTypes.array,
   coinType: PropTypes.string,
   showEosRate: PropTypes.bool
 }
 
-export default memo(LineAreaReportChart)
+export default memo(LineAreaChartReport)

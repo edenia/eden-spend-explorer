@@ -38,7 +38,14 @@
     "AllSelectYear": "All",
     "textElectionSelect": "Election",
     "textCurrencySelect": "Currency",
-    "textDelegateSelect": "Delegate"
+    "textDelegateSelect": "Delegate",
+    "exchangeRate": "Exchange rate",
+    "date": "Date",
+    "tableHeader11": "Category",
+    "unclaimedCat": "Unclaimed",
+    "claimedCat": "Claimed",
+    "categorizedCat": "Categorized",
+    "uncategorizedCat": "Uncategorized"
   },
   "incomeRoute": {
     "title": "Income",
@@ -61,7 +68,6 @@
     "tableHeader11": "Category",
     "claimedCategory": "Claimed",
     "unclaimedCategory": "Unclaimed",
-    "exchangeRate": "Exchange rate",
     "AllSelectYear": "All",
     "date": "Date"
   },

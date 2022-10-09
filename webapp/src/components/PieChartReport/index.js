@@ -94,7 +94,7 @@ const renderActiveShape = props => {
   )
 }
 
-const IncomePieChart = ({ data, coinType }) => {
+const PieChartReport = ({ data, coinType }) => {
   const classes = useStyles()
 
   const [activeIndex, setActiveIndex] = useState(0)
@@ -119,7 +119,7 @@ const IncomePieChart = ({ data, coinType }) => {
 
   return (
     <>
-      <div className={classes.chartSubcontainer}>
+      <div className={classes.chartContainer}>
         <ResponsiveContainer height={300}>
           <PieChart width={500} height={300} ref={pieRef}>
             <Pie
@@ -145,9 +145,9 @@ const IncomePieChart = ({ data, coinType }) => {
   )
 }
 
-IncomePieChart.propTypes = {
+PieChartReport.propTypes = {
   data: PropTypes.array,
   coinType: PropTypes.string
 }
 
-export default memo(IncomePieChart)
+export default memo(PieChartReport)

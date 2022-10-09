@@ -19,11 +19,12 @@ import FileSaver from 'file-saver'
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 
 import styles from './styles'
+import { Box } from '@mui/system'
 
 const useStyles = makeStyles(styles)
 
-const CustomTooltip = ({ payload = [], label = '' }) => {
-  const { t } = useTranslation('incomeRoute')
+const CustomTooltip = ({ payload = [], label = '', typeCurrency = '' }) => {
+  const { t } = useTranslation('generalForm')
 
   return (
     <div>
@@ -31,12 +32,19 @@ const CustomTooltip = ({ payload = [], label = '' }) => {
       {payload &&
         payload.map((data, i) => (
           <div key={`${i}-tooltip`}>{`${
-            data.dataKey === 'EOS_EXCHANGE'
-              ? t('chartExchangeRateEos')
-              : data.dataKey
-          } : ${formatWithThousandSeparator(
+            data.dataKey === 'EXCHANGE_RATE'
+              ? t('exchangeRate')
+              : data.dataKey === `${typeCurrency}_CLAIMED`
+              ? `${t('claimedCat')} `
+              : data.dataKey === `${typeCurrency}_UNCLAIMED`
+              ? `${t('unclaimedCat')} `
+              : data.dataKey === `${typeCurrency}_CATEGORIZED`
+              ? `${t('categorizedCat')} `
+              : data.dataKey === `${typeCurrency}_UNCATEGORIZED` &&
+                t('uncategorizedCat')
+          }: ${formatWithThousandSeparator(
             data.payload[data.dataKey],
-            2
+            4
           )}`}</div>
         ))}
     </div>
@@ -44,10 +52,55 @@ const CustomTooltip = ({ payload = [], label = '' }) => {
 }
 CustomTooltip.propTypes = {
   payload: PropTypes.array,
-  label: PropTypes.any
+  label: PropTypes.any,
+  typeCurrency: PropTypes.any
 }
 
-const IncomeStakedChart = ({ data, coinType, showEosRate }) => {
+const RenderLegend = ({ payload, typeCurrency }) => {
+  const { t } = useTranslation('generalForm')
+
+  const classes = useStyles()
+
+  return (
+    <div className={classes.legendContainer}>
+      {payload.map((data, index) => (
+        <label className={classes.labelContainer} key={`item-${index}`}>
+          <Box
+            width={18}
+            height={18}
+            ml={2}
+            mt={0.5}
+            mr={0.5}
+            bgcolor={data.color}
+          />
+
+          {data.dataKey === 'EXCHANGE_RATE'
+            ? t('exchangeRate')
+            : data.dataKey === `${typeCurrency}_CLAIMED`
+            ? `${t('claimedCat')} `
+            : data.dataKey === `${typeCurrency}_UNCLAIMED`
+            ? `${t('unclaimedCat')} `
+            : data.dataKey === `${typeCurrency}_CATEGORIZED`
+            ? `${t('categorizedCat')} `
+            : data.dataKey === `${typeCurrency}_UNCATEGORIZED` &&
+              t('uncategorizedCat')}
+        </label>
+      ))}
+    </div>
+  )
+}
+
+RenderLegend.propTypes = {
+  payload: PropTypes.array,
+  typeCurrency: PropTypes.string
+}
+const StakedChartReport = ({
+  data,
+  firstCategory,
+  secondCategory,
+  typeCurrency,
+  showEosRate
+}) => {
   const classes = useStyles()
 
   const [getStakedPng, { ref: stackedRef }] = useCurrentPng()
@@ -62,7 +115,7 @@ const IncomeStakedChart = ({ data, coinType, showEosRate }) => {
 
   return (
     <>
-      <div className={classes.chartSubcontainer}>
+      <div className={classes.chartContainer}>
         <ResponsiveContainer height={300}>
           <ComposedChart width={500} height={300} data={data} ref={stackedRef}>
             <CartesianGrid stroke="#f5f5f5" />
@@ -94,20 +147,20 @@ const IncomeStakedChart = ({ data, coinType, showEosRate }) => {
                 fontSize: '14px',
                 padding: '8px'
               }}
-              content={<CustomTooltip />}
+              content={<CustomTooltip typeCurrency={typeCurrency} />}
             />
-            <Legend />
+            <Legend content={<RenderLegend typeCurrency={typeCurrency} />} />
             <Bar
               legendType="wye"
               stackId="a"
-              dataKey={`${coinType}_CLAIMED`}
+              dataKey={`${typeCurrency}_${firstCategory}`}
               barSize={25}
               fill="#82ca9d"
             />
             <Bar
               legendType="wye"
               stackId="a"
-              dataKey={`${coinType}_UNCLAIMED`}
+              dataKey={`${typeCurrency}_${secondCategory}`}
               barSize={25}
               fill="#8884d8"
             />
@@ -121,10 +174,12 @@ const IncomeStakedChart = ({ data, coinType, showEosRate }) => {
   )
 }
 
-IncomeStakedChart.propTypes = {
+StakedChartReport.propTypes = {
   data: PropTypes.array,
-  coinType: PropTypes.string,
+  firstCategory: PropTypes.string,
+  secondCategory: PropTypes.string,
+  typeCurrency: PropTypes.string,
   showEosRate: PropTypes.bool
 }
 
-export default memo(IncomeStakedChart)
+export default memo(StakedChartReport)

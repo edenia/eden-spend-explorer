@@ -10,15 +10,15 @@ import {
   Typography
 } from '@mui/material'
 
-import { useSharedState } from '../../context/state.context'
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
+import LineAreaChartReport from '../../components/LineAreaChartReport'
+import StackedChartReport from '../../components/StackedChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
+import PieChartReport from '../../components/PieChartReport'
+import { useSharedState } from '../../context/state.context'
 import TableReport from '../../components/TableReport'
 import SelectComponent from '../../components/Select'
 
-import LineAreaReportChart from '../../components/LineAreaReportChart'
-import IncomeStackedChart from './IncomeStackedChart'
-import IncomePieChart from './IncomePieChart'
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
@@ -172,20 +172,22 @@ const IncomeReport = () => {
         </div>
       </div>
 
-      <LineAreaReportChart
+      <LineAreaChartReport
         data={chartTransactionsList}
         coinType={typeCurrencySelect}
         showEosRate={showEosRateSwitch}
       />
 
       <div className={classes.chartContainer}>
-        <IncomeStackedChart
+        <StackedChartReport
           data={incomeClaimedAndUnclaimedList}
-          coinType={typeCurrencySelect}
+          firstCategory={`CLAIMED`}
+          secondCategory={`UNCLAIMED`}
+          typeCurrency={typeCurrencySelect}
           showEosRate={showEosRateSwitch}
         />
 
-        <IncomePieChart
+        <PieChartReport
           data={totalByCategoryList}
           coinType={typeCurrencySelect}
         />

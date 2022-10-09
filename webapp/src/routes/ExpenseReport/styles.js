@@ -66,6 +66,9 @@ export default theme => ({
     '& #chart-scroll-id': {
       minWidth: '925px',
       width: '100%'
+    },
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column'
     }
   },
   divider: {

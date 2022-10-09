@@ -11,8 +11,10 @@ import {
 import { useTranslation } from 'react-i18next'
 
 import useExpenseReport from '../../hooks/customHooks/useExpenseReportState'
-import LineAreaReportChart from '../../components/LineAreaReportChart'
+import LineAreaChartReport from '../../components/LineAreaChartReport'
+import StackedChartReport from '../../components/StackedChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
+import PieChartReport from '../../components/PieChartReport'
 import SelectComponent from '../../components/Select'
 import TableReport from '../../components/TableReport'
 
@@ -36,7 +38,10 @@ const ExpenseReport = () => {
       electionRoundSelect,
       electionsByYearList,
       expenseByAllDelegatesList,
-      chartTransactionsList
+      chartTransactionsList,
+      totalByCategoryList,
+      categorizedAndUncategorizedList,
+      percentExpenseList
     },
     {
       setShowElectionRadio,
@@ -49,6 +54,8 @@ const ExpenseReport = () => {
       getListElectionYears
     }
   ] = useExpenseReport()
+
+  console.log(percentExpenseList)
 
   return (
     <div className={classes.root}>
@@ -155,10 +162,24 @@ const ExpenseReport = () => {
         </div>
       </div>
       <div>
-        <LineAreaReportChart
+        <LineAreaChartReport
           data={chartTransactionsList}
           coinType={typeCurrencySelect}
           showEosRate={showEosRateSwitch}
+        />
+      </div>
+      <div className={classes.chartContainer}>
+        <StackedChartReport
+          data={categorizedAndUncategorizedList}
+          firstCategory={'CATEGORIZED'}
+          secondCategory={'UNCATEGORIZED'}
+          typeCurrency={typeCurrencySelect}
+          showEosRate={showEosRateSwitch}
+        />
+
+        <PieChartReport
+          data={totalByCategoryList}
+          coinType={`${typeCurrencySelect}`}
         />
       </div>
       <div className={classes.tableContainer}>

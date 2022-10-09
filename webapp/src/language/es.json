@@ -38,7 +38,13 @@
     "AllSelectYear": "Todos",
     "textElectionSelect": "Elección",
     "textCurrencySelect": "Moneda",
-    "textDelegateSelect": "Delegado"
+    "textDelegateSelect": "Delegado",
+    "exchangeRate": "Tipo de cambio",
+    "date": "Fecha",
+    "unclaimedCat": "No reclamado",
+    "claimedCat": "Reclamado",
+    "categorizedCat": "Categorizado",
+    "uncategorizedCat": "No categorizado"
   },
   "incomeRoute": {
     "title": "Ingresos",
@@ -61,7 +67,6 @@
     "tableHeader11": "Categoría",
     "claimedCategory": "Reclamado",
     "unclaimedCategory": "No reclamado",
-    "exchangeRate": "Tipo de cambio",
     "AllSelectYear": "Todos",
     "date": "Fecha"
   },
