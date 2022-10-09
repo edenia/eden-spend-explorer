@@ -85,7 +85,7 @@ export const newDataFormatPercentByElection = (
   const uppercaseCategory = category.toUpperCase()
 
   return percentByElectionData.map(data => ({
-    name: data.recipient,
+    name: data.delegate_payer,
     election: data.election,
     [`EOS_${uppercaseCategory}`]: Number(data[`eos_${category}`]) * 100,
     [`EOS_UN${uppercaseCategory}`]: Number(data[`eos_un${category}`]) * 100,

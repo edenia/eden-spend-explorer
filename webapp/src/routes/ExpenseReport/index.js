@@ -6,6 +6,7 @@ import {
   Radio,
   RadioGroup,
   Switch,
+  Tooltip,
   Typography
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
@@ -15,12 +16,15 @@ import LineAreaChartReport from '../../components/LineAreaChartReport'
 import StackedChartReport from '../../components/StackedChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
-import SelectComponent from '../../components/Select'
+import { formatWithThousandSeparator } from '../../utils'
 import TableReport from '../../components/TableReport'
+import SelectComponent from '../../components/Select'
 
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
+
+const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
 const ExpenseReport = () => {
   const classes = useStyles()
@@ -55,7 +59,110 @@ const ExpenseReport = () => {
     }
   ] = useExpenseReport()
 
-  console.log(percentExpenseList)
+  const tableData = chartTransactionsList.map(firstObj => ({
+    ...percentExpenseList.find(secondObj => secondObj.name === firstObj.name),
+    ...firstObj
+  }))
+
+  const columns = [
+    {
+      field: 'txId',
+      headerName: t('txID'),
+      hide: !tableData[0]?.txId,
+      cellClassName: classes.Links,
+      renderCell: param => (
+        <Tooltip title={param.value}>
+          <a href={`https://bloks.io/transaction/${param.value}`}>
+            {param.value.slice(0, 8)}
+          </a>
+        </Tooltip>
+      ),
+      ...rowsCenter
+    },
+    {
+      field: 'name',
+      headerName: tableData[0]?.level ? t('name') : t('election'),
+      cellClassName: classes.Links,
+      renderCell: param => (
+        <a
+          className={tableData[0]?.level ? '' : classes.disableLink}
+          href={`https://eosauthority.com/account/${param.value}?network=eos`}
+        >
+          {param.value}
+        </a>
+      ),
+      ...rowsCenter
+    },
+    {
+      field: 'level',
+      headerName: t('tableHeader3'),
+      hide: !tableData[0]?.level,
+      type: 'number',
+      ...rowsCenter
+    },
+    {
+      field: 'category',
+      headerName: 'Category',
+      hide: !tableData[0]?.category,
+      ...rowsCenter
+    },
+    {
+      field: 'EOS',
+      headerName: 'EOS',
+      renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
+      type: 'number',
+      ...rowsCenter
+    },
+    {
+      field: 'USD',
+      headerName: 'USD',
+      renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
+      type: 'number',
+      ...rowsCenter
+    },
+    {
+      field: 'date',
+      headerName: 'Date',
+      hide: !tableData[0]?.date,
+      ...rowsCenter
+    },
+    {
+      field: 'EOS_CATEGORIZED',
+      headerName: 'EOS categorized',
+      type: 'number',
+      hide:
+        showDelegateRadio === 'oneDelegate' &&
+        showElectionRadio === 'oneElection',
+      ...rowsCenter
+    },
+    {
+      field: 'EOS_UNCATEGORIZED',
+      headerName: 'EOS uncategorized',
+      type: 'number',
+      hide:
+        showDelegateRadio === 'oneDelegate' &&
+        showElectionRadio === 'oneElection',
+      ...rowsCenter
+    },
+    {
+      field: 'USD_CATEGORIZED',
+      headerName: 'USD categorized',
+      type: 'number',
+      hide:
+        showDelegateRadio === 'oneDelegate' &&
+        showElectionRadio === 'oneElection',
+      ...rowsCenter
+    },
+    {
+      field: 'USD_UNCATEGORIZED',
+      headerName: 'USD uncategorized',
+      type: 'number',
+      hide:
+        showDelegateRadio === 'oneDelegate' &&
+        showElectionRadio === 'oneElection',
+      ...rowsCenter
+    }
+  ]
 
   return (
     <div className={classes.root}>
@@ -185,11 +292,7 @@ const ExpenseReport = () => {
       <div className={classes.tableContainer}>
         <div className={classes.subTitle}>
           <div id="id-table-container">
-            <TableReport
-              data={[]}
-              dataPercent={chartTransactionsList}
-              showDelegateRadio={showDelegateRadio}
-            />
+            <TableReport columns={columns} dataPercent={tableData} />
           </div>
         </div>
       </div>

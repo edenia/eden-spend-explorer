@@ -21,12 +21,10 @@ const saveNewHistoricElection = async () => {
 
   if (lastElection.date_election.split('T')[0] === nextElection) return
 
-  const newElectionData = {
+  await edenHistoricElectionGql.save({
     election: lastElection.election + 1,
     date_election: nextElection
-  }
-
-  await edenHistoricElectionGql.save(newElectionData)
+  })
 }
 
 const updateEdenTable = async () => {
