@@ -1,7 +1,10 @@
 import React, { memo, useCallback } from 'react'
+import FileSaver from 'file-saver'
 import PropTypes from 'prop-types'
-import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
+import { useCurrentPng } from 'recharts-to-png'
+import { makeStyles } from '@mui/styles'
+import { Box } from '@mui/system'
 import {
   ComposedChart,
   Bar,
@@ -13,9 +16,6 @@ import {
   Line,
   ResponsiveContainer
 } from 'recharts'
-import { useCurrentPng } from 'recharts-to-png'
-import { Box } from '@mui/system'
-import FileSaver from 'file-saver'
 
 import styles from './styles'
 

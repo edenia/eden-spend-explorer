@@ -41,8 +41,8 @@
     "textDelegateSelect": "Delegado",
     "exchangeRate": "Tipo de cambio",
     "date": "Fecha",
-    "unclaimedCat": "No reclamado",
     "claimedCat": "Reclamado",
+    "unclaimedCat": "No reclamado",
     "categorizedCat": "Categorizado",
     "uncategorizedCat": "No categorizado"
   },
@@ -54,7 +54,7 @@
     "titleTable": "Delegados ordenados por ingresos de mayor a menor",
     "titleTable2": "Elecciones ordenadas de la mas antigua a la mas reciente",
     "tableElectionHeader": "Periodo",
-    "tableHeader1": "Nombre",
+    "tableHeader1": "Cuenta",
     "tableHeader2": "ID (caps)",
     "tableHeader3": "Nivel de delegado",
     "tableHeader4": "Total de EOS distribuidos",
@@ -66,15 +66,25 @@
     "tableHeader10": "% USD no reclamado",
     "tableHeader11": "Categoría",
     "claimedCategory": "Reclamado",
-    "unclaimedCategory": "No reclamado",
-    "AllSelectYear": "Todos",
-    "date": "Fecha"
+    "unclaimedCategory": "No reclamado"
   },
   "expenseRoute": {
     "title": "Gastos",
     "subTitle": "Gastos por todas las elecciones, eleciones y delegados",
     "textInformation": "Aquí puedes ver los gastos realizados en cada una de las diferentes elecciones tanto la actual como las anteriores mendiante diferentes gráficos y tablas....",
-    "exchangeRate": "Tipo de cambio"
+    "exchangeRate": "Tipo de cambio",
+    "tableElectionHeader": "Periodo",
+    "tableHeader1": "Cuenta",
+    "tableHeader2": "ID (caps)",
+    "tableHeader3": "Nivel de delegado",
+    "tableHeader4": "Total de EOS categorizados",
+    "tableHeader5": "Total de USD categorizados",
+    "tableHeader6": "Fecha de transacción",
+    "tableHeader7": "% EOS categorizados",
+    "tableHeader8": "% EOS no categorizados",
+    "tableHeader9": "% USD categorizados",
+    "tableHeader10": "% USD no categorizados",
+    "tableHeader11": "Categoría"
   },
   "aboutRoute": {
     "title": "Este proyecto",

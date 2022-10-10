@@ -13,6 +13,7 @@ const SelectComponent = ({
   const { t } = useTranslation('generalForm')
 
   if (disable || !values[0]) return null
+
   return (
     <FormControl sx={{ m: 1, width: 100 }} size="small">
       <InputLabel>{labelSelect}</InputLabel>

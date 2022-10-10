@@ -74,9 +74,9 @@ const IncomeReport = () => {
   const columns = [
     {
       field: 'txId',
-      headerName: t('txID'),
+      headerName: t('tableHeader2'),
       hide: !tableData[0]?.txId,
-      cellClassName: classes.chartLinks,
+      cellClassName: classes.links,
       renderCell: param => (
         <Tooltip title={param.value}>
           <a
@@ -94,8 +94,10 @@ const IncomeReport = () => {
     },
     {
       field: 'name',
-      headerName: tableData[0]?.level ? t('name') : t('election'),
-      cellClassName: classes.chartLinks,
+      headerName: tableData[0]?.level
+        ? t('tableHeader1')
+        : t('tableElectionHeader'),
+      cellClassName: classes.links,
       renderCell: param => (
         <a
           className={tableData[0]?.level ? '' : classes.disableLink}
@@ -115,7 +117,7 @@ const IncomeReport = () => {
     },
     {
       field: 'category',
-      headerName: t('Category'),
+      headerName: t('tableHeader11'),
       renderCell: param => (
         <>
           {param.value === 'claimed'
@@ -142,13 +144,13 @@ const IncomeReport = () => {
     },
     {
       field: 'date',
-      headerName: 'Date',
+      headerName: t('tableHeader6'),
       hide: !tableData[0]?.date,
       ...rowsCenter
     },
     {
       field: 'EOS_CLAIMED',
-      headerName: 'EOS claimed',
+      headerName: t('tableHeader7'),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -157,7 +159,7 @@ const IncomeReport = () => {
     },
     {
       field: 'EOS_UNCLAIMED',
-      headerName: 'EOS unclaimed',
+      headerName: t('tableHeader8'),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -166,7 +168,7 @@ const IncomeReport = () => {
     },
     {
       field: 'USD_CLAIMED',
-      headerName: 'USD claimed',
+      headerName: t('tableHeader9'),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -175,7 +177,7 @@ const IncomeReport = () => {
     },
     {
       field: 'USD_UNCLAIMED',
-      headerName: 'USD unclaimed',
+      headerName: t('tableHeader10'),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&

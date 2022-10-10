@@ -94,12 +94,7 @@ export default theme => ({
       height: 368
     }
   },
-  chartLinks: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    overflowY: 'auto',
-    maxHeight: '400px',
+  links: {
     '& a ': {
       display: 'flex',
       textAlign: 'center',

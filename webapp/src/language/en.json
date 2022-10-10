@@ -41,10 +41,9 @@
     "textDelegateSelect": "Delegate",
     "exchangeRate": "Exchange rate",
     "date": "Date",
-    "tableHeader11": "Category",
-    "unclaimedCat": "Unclaimed",
     "claimedCat": "Claimed",
-    "categorizedCat": "Categorized",
+    "unclaimedCat": "Unclaimed",
+    "categorizedCat": "categorized",
     "uncategorizedCat": "Uncategorized"
   },
   "incomeRoute": {
@@ -55,7 +54,7 @@
     "titleTable": "Delegates ranked in order of income from highest to lowest",
     "titleTable2": "Elections sorted from oldest to newest",
     "tableElectionHeader": "Term",
-    "tableHeader1": "Name",
+    "tableHeader1": "Account",
     "tableHeader2": "ID (caps)",
     "tableHeader3": "Delegate level",
     "tableHeader4": "Total EOS distributed",
@@ -67,15 +66,25 @@
     "tableHeader10": "USD unclaimed %",
     "tableHeader11": "Category",
     "claimedCategory": "Claimed",
-    "unclaimedCategory": "Unclaimed",
-    "AllSelectYear": "All",
-    "date": "Date"
+    "unclaimedCategory": "Unclaimed"
   },
   "expenseRoute": {
     "title": "Expense",
     "subTitle": "Expenses by all elections, elections, and delegates",
     "textInformation": "Here you can see the different expenses incurred in each election, from the first to the current election for different options using charts and graphs....",
-    "exchangeRate": "Exchange rate"
+    "exchangeRate": "Exchange rate",
+    "tableElectionHeader": "Term",
+    "tableHeader1": "Account",
+    "tableHeader2": "ID (caps)",
+    "tableHeader3": "Delegate level",
+    "tableHeader4": "Total EOS categorized",
+    "tableHeader5": "Total USD categorized",
+    "tableHeader6": "Transaction date",
+    "tableHeader7": "EOS categorized %",
+    "tableHeader8": "EOS uncategorized %",
+    "tableHeader9": "USD categorized %",
+    "tableHeader10": "USD uncategorized %",
+    "tableHeader11": "Category"
   },
   "aboutRoute": {
     "title": "This project",

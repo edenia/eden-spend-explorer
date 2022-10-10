@@ -67,9 +67,9 @@ const ExpenseReport = () => {
   const columns = [
     {
       field: 'txId',
-      headerName: t('txID'),
+      headerName: t('tableHeader2'),
       hide: !tableData[0]?.txId,
-      cellClassName: classes.Links,
+      cellClassName: classes.links,
       renderCell: param => (
         <Tooltip title={param.value}>
           <a href={`https://bloks.io/transaction/${param.value}`}>
@@ -81,8 +81,10 @@ const ExpenseReport = () => {
     },
     {
       field: 'name',
-      headerName: tableData[0]?.level ? t('name') : t('election'),
-      cellClassName: classes.Links,
+      headerName: tableData[0]?.level
+        ? t('tableHeader1')
+        : t('tableElectionHeader'),
+      cellClassName: classes.links,
       renderCell: param => (
         <a
           className={tableData[0]?.level ? '' : classes.disableLink}
@@ -102,7 +104,7 @@ const ExpenseReport = () => {
     },
     {
       field: 'category',
-      headerName: 'Category',
+      headerName: t('tableHeader11'),
       hide: !tableData[0]?.category,
       ...rowsCenter
     },
@@ -122,13 +124,13 @@ const ExpenseReport = () => {
     },
     {
       field: 'date',
-      headerName: 'Date',
+      headerName: t('tableHeader6'),
       hide: !tableData[0]?.date,
       ...rowsCenter
     },
     {
       field: 'EOS_CATEGORIZED',
-      headerName: 'EOS categorized',
+      headerName: t('tableHeader7'),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -137,7 +139,7 @@ const ExpenseReport = () => {
     },
     {
       field: 'EOS_UNCATEGORIZED',
-      headerName: 'EOS uncategorized',
+      headerName: t('tableHeader8'),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -146,7 +148,7 @@ const ExpenseReport = () => {
     },
     {
       field: 'USD_CATEGORIZED',
-      headerName: 'USD categorized',
+      headerName: t('tableHeader9'),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -155,7 +157,7 @@ const ExpenseReport = () => {
     },
     {
       field: 'USD_UNCATEGORIZED',
-      headerName: 'USD uncategorized',
+      headerName: t('tableHeader10'),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
