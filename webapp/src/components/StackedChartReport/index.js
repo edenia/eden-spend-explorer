@@ -17,6 +17,8 @@ import {
   ResponsiveContainer
 } from 'recharts'
 
+import { formatWithThousandSeparator } from '../../utils'
+
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
@@ -40,7 +42,10 @@ const CustomTooltip = ({ payload = [], label = '', typeCurrency = '' }) => {
               ? `${t('categorizedCat')} `
               : data.dataKey === `${typeCurrency}_UNCATEGORIZED` &&
                 t('uncategorizedCat')
-          }: ${data.payload[data.dataKey]}`}</div>
+          }: ${formatWithThousandSeparator(
+            data.payload[data.dataKey],
+            2
+          )}`}</div>
         ))}
     </div>
   )
