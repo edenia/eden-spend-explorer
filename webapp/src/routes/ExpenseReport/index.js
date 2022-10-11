@@ -261,7 +261,7 @@ const ExpenseReport = () => {
                 onChangeFunction={setDelegateSelect}
                 labelSelect={t2('textDelegateSelect')}
                 values={expenseByAllDelegatesList.map(
-                  data => data.eden_delegate.account
+                  data => data.delegate_payer
                 )}
                 disable={showDelegateRadio === 'allDelegates'}
                 actualValue={delegateSelect}

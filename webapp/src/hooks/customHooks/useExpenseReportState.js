@@ -120,9 +120,12 @@ const useExpenseReport = () => {
   }, [electionsByYearData])
 
   useEffect(() => {
-    setExpenseByAllDelegatesList(expenseByAllDelegatesData?.eden_election || [])
+    setExpenseByAllDelegatesList(
+      expenseByAllDelegatesData?.categorized_expenses_by_delegate || []
+    )
     setDelegateSelect(
-      expenseByAllDelegatesData?.eden_election[0]?.eden_delegate.account
+      expenseByAllDelegatesData?.categorized_expenses_by_delegate[0]
+        ?.delegate_payer
     )
   }, [expenseByAllDelegatesData])
 
@@ -141,7 +144,7 @@ const useExpenseReport = () => {
   useEffect(() => {
     if (showElectionRadio === 'allElections') {
       setChartTransactionsList(
-        newDataFormatByElection(totalByElectionData?.total_by_election || [])
+        newDataFormatByElection(totalByElectionData?.categorized_expenses || [])
       )
       setTotalByCategoryList(
         newDataFormatTotalByCategory(

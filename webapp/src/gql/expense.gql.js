@@ -12,37 +12,13 @@ export const GET_EXPENSE_ELECTIONS_BY_YEAR = gql`
 `
 export const GET_EXPENSE_TRANSACTIONS_BY_ALL_ACCOUNTS_QUERY = gql`
   query getDelegatesByElectionRound($election: Int!) {
-    eden_election(
-      where: {
-        election: { _eq: $election }
-        eden_transactions: {
-          type: { _eq: "expense" }
-          category: { _neq: "uncategorized" }
-        }
-      }
-    ) {
-      eden_delegate {
-        account
-      }
-      eden_transactions_aggregate(
-        where: {
-          type: { _eq: "expense" }
-          eden_election: { election: { _eq: $election } }
-          category: { _neq: "uncategorized" }
-        }
-      ) {
-        aggregate {
-          sum {
-            amount
-            usd_total
-          }
-          avg {
-            eos_exchange
-          }
-        }
-      }
-      delegate_level
+    categorized_expenses_by_delegate(where: { election: { _eq: $election } }) {
+      amount
+      delegate_payer
       election
+      exchange_rate
+      usd_total
+      delegate_level
     }
   }
 `
@@ -78,10 +54,10 @@ export const GET_EXPENSE_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
 
 export const GET_TOTAL_EXPENSE_BY_ELECTIONS_QUERY = gql`
   query getTotalExpenseByElection {
-    total_by_election(where: { type: { _eq: "expense" } }) {
+    categorized_expenses {
       amount
-      usd_total
       election
+      usd_total
     }
   }
 `
