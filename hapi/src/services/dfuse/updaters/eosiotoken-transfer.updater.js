@@ -15,6 +15,10 @@ module.exports = {
     if (action.json.to === transactionConstant.RECIPIENTS.edenia)
       category = 'infrastructure'
 
+    if (!updaterUtil.isEdenExpense(action.json.memo)) {
+      description = action.json.memo
+    }
+
     try {
       const amount = Number(action.json.quantity.split(' ')[0])
       const transactionData = {
