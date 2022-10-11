@@ -14,8 +14,8 @@ const generateColor = () => {
 export const newDataFormatByElection = electionsList =>
   electionsList.map(data => ({
     name: `Election ${data.election + 1}`,
-    EOS: Number(data.amount).toFixed(2),
-    USD: Number(data.usd_total).toFixed(2),
+    EOS: Number(data.amount),
+    USD: Number(data.usd_total),
     color: generateColor()
   }))
 
@@ -50,17 +50,18 @@ export const newDataFormatTotalByCategory = totalByCategory =>
     USD: Number(data.usd_total)
   }))
 
-export const newDataFormatCategorizedAndUncategorized =
-  claimedAndUnclaimedData =>
-    claimedAndUnclaimedData.map(data => ({
-      name: data.delegate_payer,
-      EOS_UNCATEGORIZED: Number(data.eos_uncategorized),
-      USD_UNCATEGORIZED: Number(data.usd_uncategorized),
-      EOS_CATEGORIZED: Number(data.eos_categorized),
-      USD_CATEGORIZED: Number(data.usd_categorized),
-      EXCHANGE_RATE: Number(data.exchange_rate)
-    }))
+export const newDataFormatByClasification = (dataList, category) => {
+  const uppercaseCategory = category.toUpperCase()
 
+  return dataList.map(data => ({
+    name: data?.delegate_payer || data?.recipient,
+    [`EOS_${uppercaseCategory}`]: Number(data[`eos_${category}`]),
+    [`EOS_UN${uppercaseCategory}`]: Number(data[`eos_un${category}`]),
+    [`USD_${uppercaseCategory}`]: Number(data[`usd_${category}`]),
+    [`USD_UN${uppercaseCategory}`]: Number(data[`usd_un${category}`]),
+    EXCHANGE_RATE: Number(data.exchange_rate)
+  }))
+}
 export const newDataFormatPercentAllElections = (
   percentAllElectionData,
   category
@@ -83,8 +84,7 @@ export const newDataFormatPercentByElection = (
   const uppercaseCategory = category.toUpperCase()
 
   return percentByElectionData.map(data => ({
-    name: data.delegate_payer,
-    election: data.election,
+    name: data?.delegate_payer || data?.recipient,
     [`EOS_${uppercaseCategory}`]: Number(data[`eos_${category}`]) * 100,
     [`EOS_UN${uppercaseCategory}`]: Number(data[`eos_un${category}`]) * 100,
     [`USD_${uppercaseCategory}`]: Number(data[`usd_${category}`]) * 100,

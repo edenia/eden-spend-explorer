@@ -8,31 +8,18 @@ import {
   GET_ELECTIONS_BY_YEAR,
   GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION,
   GET_TOTAL_BY_CATEGORY,
-  GET_TOTAL_BY_CATEGORY_AND_ELECTION,
   GET_PERCENT_ALL_ELECTIONS,
-  GET_PERCENT_BY_ELECTIONS,
-  GET_PERCENT_BY_DELEGATES
+  GET_PERCENT_BY_ELECTIONS
 } from '../../gql'
-import { listChartColors } from '../../constants'
-
-let CURRENT_GRAPHIC_COLOR = 0
-
-const generateColor = () => {
-  if (CURRENT_GRAPHIC_COLOR === 18) CURRENT_GRAPHIC_COLOR = 0
-
-  const color = listChartColors[CURRENT_GRAPHIC_COLOR]
-  CURRENT_GRAPHIC_COLOR++
-
-  return color
-}
-
-const sortDescList = (a, b) => {
-  if (a.EOS > b.EOS) return -1
-
-  if (a.EOS < b.EOS) return 1
-
-  return 0
-}
+import {
+  newDataFormatByAllDelegates,
+  newDataFormatByClasification,
+  newDataFormatByDelegate,
+  newDataFormatByElection,
+  newDataFormatPercentAllElections,
+  newDataFormatPercentByElection,
+  newDataFormatTotalByCategory
+} from '../../utils'
 
 const useIncomeReportState = () => {
   const [typeCurrencySelect, setTypeCurrencySelect] = useState('EOS')
@@ -62,98 +49,6 @@ const useIncomeReportState = () => {
   const [totalByCategoryList, setTotalByCategoryList] = useState([])
 
   const [percentIncomeList, setPercentIncomeList] = useState([])
-
-  const newDataFormatByElection = electionsList => {
-    const newFormatData = electionsList.map(data => ({
-      name: `Election ${data.election + 1}`,
-      EOS: Number(data.amount).toFixed(2),
-      USD: Number(data.usd_total).toFixed(2),
-      color: generateColor()
-    }))
-
-    setChartTransactionsList(newFormatData)
-  }
-
-  const newDataFormatByAllDelegates = transactionsList => {
-    const newFormatData = transactionsList.map(data => ({
-      name: data.eden_delegate.account,
-      EOS: Number(data.eden_transactions_aggregate.aggregate.sum.amount),
-      USD: Number(data.eden_transactions_aggregate.aggregate.sum.usd_total),
-      EXCHANGE_RATE: Number(
-        data.eden_transactions_aggregate.aggregate.avg.eos_exchange
-      ),
-      color: generateColor(),
-      level: data.delegate_level,
-      link: false
-    }))
-
-    setChartTransactionsList(newFormatData.sort(sortDescList))
-  }
-
-  const newDataFormatByDelegate = transactionsList => {
-    const newFormatData = transactionsList.map(data => ({
-      name: delegateSelect,
-      EOS: Number(data.amount),
-      USD: Number(data.usd_total.toFixed(2)),
-      EXCHANGE_RATE: Number(data.eos_exchange),
-      date: new Date(data.date).toLocaleDateString(),
-      color: generateColor(),
-      level: data.eden_election.delegate_level,
-      txId: data.txid,
-      category: data.category
-    }))
-
-    setChartTransactionsList(newFormatData)
-  }
-
-  const newDataFormatClaimedAndUnclaimedByElection =
-    claimedAndUnclaimedData => {
-      const newFormatData = claimedAndUnclaimedData.map(data => ({
-        name: data.recipient,
-        EOS_UNCLAIMED: Number(data.eos_unclaimed),
-        USD_UNCLAIMED: Number(data.usd_unclaimed),
-        EOS_CLAIMED: Number(data.eos_claimed),
-        USD_CLAIMED: Number(data.usd_claimed),
-        EXCHANGE_RATE: Number(data.exchange_rate)
-      }))
-
-      setIncomeClaimedAndUnclaimedList(newFormatData)
-    }
-
-  const newDataFormatTotalByCategory = totalByCategory => {
-    const newFormatData = totalByCategory.map(data => ({
-      name: data.category,
-      EOS: Number(data.amount),
-      USD: Number(data.usd_total)
-    }))
-
-    setTotalByCategoryList(newFormatData)
-  }
-
-  const newDataFormatPercentAllElections = percentAllElectionData => {
-    const newFormatData = percentAllElectionData.map(data => ({
-      name: `Election ${data.election + 1}`,
-      EOS_CLAIMED: Number(data.eos_claimed) * 100,
-      EOS_UNCLAIMED: Number(data.eos_unclaimed) * 100,
-      USD_CLAIMED: Number(data.usd_claimed) * 100,
-      USD_UNCLAIMED: Number(data.usd_unclaimed) * 100
-    }))
-
-    setPercentIncomeList(newFormatData)
-  }
-
-  const newDataFormatPercentByElection = percentByElectionData => {
-    const newFormatData = percentByElectionData.map(data => ({
-      name: data.recipient,
-      election: data.election,
-      EOS_CLAIMED: Number(data.eos_claimed) * 100,
-      EOS_UNCLAIMED: Number(data.eos_unclaimed) * 100,
-      USD_CLAIMED: Number(data.usd_claimed) * 100,
-      USD_UNCLAIMED: Number(data.usd_unclaimed) * 100
-    }))
-
-    setPercentIncomeList(newFormatData)
-  }
 
   const getListElectionYears = () => {
     const yearsList = ['All']
@@ -204,17 +99,8 @@ const useIncomeReportState = () => {
       }
     })
 
-  const [loadTotalClaimedAndUnclaimed, { data: totalByCategory }] =
+  const [loadTotalClaimedAndUnclaimed, { data: totalByCategoryData }] =
     useLazyQuery(GET_TOTAL_BY_CATEGORY)
-
-  const [
-    loadTotalClaimedAndUnclaimedByElection,
-    { data: totalByCategoryAndElectionData }
-  ] = useLazyQuery(GET_TOTAL_BY_CATEGORY_AND_ELECTION, {
-    variables: {
-      election: electionRoundSelect
-    }
-  })
 
   const [loadPercentAllElections, { data: percentAllElectionData }] =
     useLazyQuery(GET_PERCENT_ALL_ELECTIONS)
@@ -228,16 +114,6 @@ const useIncomeReportState = () => {
     }
   )
 
-  const [loadPercentByDelegate, { data: percentByDelegateData }] = useLazyQuery(
-    GET_PERCENT_BY_DELEGATES,
-    {
-      variables: {
-        election: electionRoundSelect,
-        delegate: delegateSelect
-      }
-    }
-  )
-
   useEffect(() => {
     loadElectionsByYear()
     loadIncomeByAllDelegates()
@@ -245,113 +121,89 @@ const useIncomeReportState = () => {
     loadTotalIncomeByElection()
     loadClaimedAndUnclaimedByElection()
     loadTotalClaimedAndUnclaimed()
-    loadTotalClaimedAndUnclaimedByElection()
     loadPercentAllElections()
     loadPercentByElection()
-    loadPercentByDelegate()
   }, [])
 
   useEffect(() => {
-    if (electionsByYearData?.eden_historic_election[0]) {
-      setElectionsByYearList([
-        ...electionsByYearList,
-        ...electionsByYearData.eden_historic_election
-      ])
-
-      setElectionRoundSelect(
-        electionsByYearData.eden_historic_election[0]?.election
-      )
-
-      setElectionsByYearList(electionsByYearData.eden_historic_election)
-    }
-
-    if (electionsByYearList[0]?.election !== electionRoundSelect) {
-      setIncomeByAllDelegatesList([])
-      setIncomeByDelegateAccountList([])
-      setDelegateSelect('')
-    }
+    setElectionRoundSelect(
+      electionsByYearData?.eden_historic_election[0].election
+    )
+    setElectionsByYearList(electionsByYearData?.eden_historic_election || [])
   }, [electionsByYearData])
 
   useEffect(() => {
-    if (icomeByAllDelegatesData?.eden_election) {
-      setIncomeByAllDelegatesList(icomeByAllDelegatesData.eden_election)
-      setDelegateSelect(
-        icomeByAllDelegatesData.eden_election[0]?.eden_delegate.account
-      )
-    }
-
-    if (!icomeByAllDelegatesData?.eden_election[0]) {
-      setIncomeByAllDelegatesList([])
-      setDelegateSelect('')
-    }
+    setIncomeByAllDelegatesList(icomeByAllDelegatesData?.eden_election || [])
+    setDelegateSelect(
+      icomeByAllDelegatesData?.eden_election[0]?.eden_delegate.account
+    )
   }, [icomeByAllDelegatesData])
 
   useEffect(() => {
-    incomeByAccountData?.eden_transaction
-      ? setIncomeByDelegateAccountList(incomeByAccountData.eden_transaction)
-      : setIncomeByDelegateAccountList([])
+    setIncomeByDelegateAccountList(incomeByAccountData?.eden_transaction || [])
   }, [incomeByAccountData])
 
   useEffect(() => {
-    claimedAndUnclaimedData?.historic_incomes &&
-      newDataFormatClaimedAndUnclaimedByElection(
-        claimedAndUnclaimedData.historic_incomes
+    setIncomeClaimedAndUnclaimedList(
+      newDataFormatByClasification(
+        claimedAndUnclaimedData?.historic_incomes || [],
+        'claimed'
       )
+    )
   }, [claimedAndUnclaimedData])
 
   useEffect(() => {
-    if (showElectionRadio === 'allElections') {
-      totalByCategory?.total_by_category &&
-        newDataFormatTotalByCategory(totalByCategory.total_by_category)
-    } else {
-      totalByCategoryAndElectionData?.total_by_category_and_election &&
-        newDataFormatTotalByCategory(
-          totalByCategoryAndElectionData?.total_by_category_and_election
-        )
-    }
-  }, [showElectionRadio, totalByCategory, totalByCategoryAndElectionData])
-
-  useEffect(() => {
-    if (showElectionRadio === 'allElections') {
-      percentAllElectionData?.percent_by_all_elections_incomes &&
+    showElectionRadio === 'allElections' &&
+      setPercentIncomeList(
         newDataFormatPercentAllElections(
-          percentAllElectionData.percent_by_all_elections_incomes
+          percentAllElectionData?.percent_by_all_elections_incomes || [],
+          'claimed'
         )
-    } else {
-      showDelegateRadio === 'allDelegates'
-        ? percentByElectionData?.percent_by_delegates_incomes &&
-          newDataFormatPercentByElection(
-            percentByElectionData.percent_by_delegates_incomes
-          )
-        : percentByDelegateData?.percent_by_delegates_incomes &&
-          newDataFormatPercentByElection(
-            percentByDelegateData.percent_by_delegates_incomes
-          )
-    }
-  }, [
-    showElectionRadio,
-    showDelegateRadio,
-    percentAllElectionData,
-    percentByElectionData,
-    percentByDelegateData
-  ])
+      )
+  }, [percentAllElectionData, showElectionRadio])
 
   useEffect(() => {
-    if (showElectionRadio === 'allElections') {
-      totalByElectionData?.total_by_election[0] &&
-        newDataFormatByElection(totalByElectionData.total_by_election)
-    } else {
-      showDelegateRadio === 'allDelegates'
-        ? newDataFormatByAllDelegates(incomeByAllDelegatesList)
-        : newDataFormatByDelegate(incomeByDelegateAccountList)
-    }
-  }, [
-    showElectionRadio,
-    totalByElectionData,
-    showDelegateRadio,
-    incomeByDelegateAccountList,
-    incomeByAllDelegatesList
-  ])
+    showElectionRadio === 'allElections' &&
+      setTotalByCategoryList(
+        newDataFormatTotalByCategory(
+          totalByCategoryData?.total_by_category || []
+        )
+      )
+  }, [showElectionRadio, totalByCategoryData])
+
+  useEffect(() => {
+    showElectionRadio !== 'allElections' &&
+      showDelegateRadio === 'allDelegates' &&
+      setPercentIncomeList(
+        newDataFormatPercentByElection(
+          percentByElectionData?.percent_by_delegates_incomes || [],
+          'claimed'
+        )
+      )
+  }, [showElectionRadio, showDelegateRadio, percentByElectionData])
+
+  useEffect(() => {
+    showElectionRadio !== 'allElections' &&
+      showDelegateRadio === 'allDelegates' &&
+      setChartTransactionsList(
+        newDataFormatByAllDelegates(incomeByAllDelegatesList || [])
+      )
+  }, [showElectionRadio, showDelegateRadio])
+
+  useEffect(() => {
+    showElectionRadio !== 'allElections' &&
+      showDelegateRadio !== 'allDelegates' &&
+      setChartTransactionsList(
+        newDataFormatByDelegate(incomeByDelegateAccountList, delegateSelect)
+      )
+  }, [showElectionRadio, showDelegateRadio, incomeByDelegateAccountList])
+
+  useEffect(() => {
+    showElectionRadio === 'allElections' &&
+      setChartTransactionsList(
+        newDataFormatByElection(totalByElectionData?.total_by_election || [])
+      )
+  }, [showElectionRadio, totalByElectionData])
 
   return [
     {
