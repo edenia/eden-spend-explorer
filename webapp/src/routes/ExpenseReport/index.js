@@ -28,7 +28,9 @@ const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
 const ExpenseReport = () => {
   const classes = useStyles()
+
   const { t } = useTranslation('expenseRoute')
+
   const { t: t2 } = useTranslation('generalForm')
 
   const [

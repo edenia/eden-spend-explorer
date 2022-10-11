@@ -100,11 +100,17 @@ export const useSharedState = () => {
   }
 
   const [state, dispatch] = context
+
   const setState = payload => dispatch({ type: 'set', payload })
+
   const showMessage = payload => dispatch({ type: 'showMessage', payload })
+
   const hideMessage = () => dispatch({ type: 'hideMessage' })
+
   const login = () => dispatch({ type: 'login' })
+
   const logout = () => dispatch({ type: 'logout' })
+
   const setEOSTrasuryBalance = payload =>
     dispatch({ type: 'setEosTresuryBalance', payload })
 

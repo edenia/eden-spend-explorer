@@ -94,6 +94,7 @@ RenderLegend.propTypes = {
   payload: PropTypes.array,
   typeCurrency: PropTypes.string
 }
+
 const StakedChartReport = ({
   data,
   firstCategory,
