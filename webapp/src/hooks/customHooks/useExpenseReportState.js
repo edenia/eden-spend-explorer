@@ -171,7 +171,7 @@ const useExpenseReport = () => {
     showElectionRadio === 'allElections' &&
       setTotalByCategoryList(
         newDataFormatTotalByCategory(
-          totalByCategoryData?.total_by_category || []
+          totalByCategoryData?.categorized_expenses || []
         )
       )
   }, [showElectionRadio, totalByCategoryData])
@@ -206,7 +206,7 @@ const useExpenseReport = () => {
   useEffect(() => {
     showElectionRadio === 'allElections' &&
       setChartTransactionsList(
-        newDataFormatByElection(totalByElectionData?.total_by_election || [])
+        newDataFormatByElection(totalByElectionData?.categorized_expenses || [])
       )
   }, [showElectionRadio, totalByElectionData])
 
