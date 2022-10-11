@@ -19,6 +19,19 @@ export const newDataFormatByElection = electionsList =>
     color: generateColor()
   }))
 
+export const newDataFormatByAllDelegatesIncome = transactionsList =>
+  transactionsList.map(data => ({
+    name: data.eden_delegate.account,
+    EOS: Number(data.eden_transactions_aggregate.aggregate.sum.amount),
+    USD: Number(data.eden_transactions_aggregate.aggregate.sum.usd_total),
+    EXCHANGE_RATE: Number(
+      data.eden_transactions_aggregate.aggregate.avg.eos_exchange
+    ),
+    color: generateColor(),
+    level: data.delegate_level,
+    link: false
+  }))
+
 export const newDataFormatByAllDelegates = transactionsList =>
   transactionsList.map(data => ({
     name: data.delegate_payer,

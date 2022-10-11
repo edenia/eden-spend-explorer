@@ -12,7 +12,7 @@ import {
   GET_PERCENT_BY_ELECTIONS
 } from '../../gql'
 import {
-  newDataFormatByAllDelegates,
+  newDataFormatByAllDelegatesIncome,
   newDataFormatByClasification,
   newDataFormatByDelegate,
   newDataFormatByElection,
@@ -186,7 +186,7 @@ const useIncomeReportState = () => {
     showElectionRadio !== 'allElections' &&
       showDelegateRadio === 'allDelegates' &&
       setChartTransactionsList(
-        newDataFormatByAllDelegates(incomeByAllDelegatesList || [])
+        newDataFormatByAllDelegatesIncome(incomeByAllDelegatesList || [])
       )
   }, [showElectionRadio, showDelegateRadio])
 
