@@ -171,7 +171,7 @@ const useExpenseReport = () => {
     showElectionRadio === 'allElections' &&
       setTotalByCategoryList(
         newDataFormatTotalByCategory(
-          totalByCategoryData?.categorized_expenses || []
+          totalByCategoryData?.total_by_category || []
         )
       )
   }, [showElectionRadio, totalByCategoryData])
