@@ -47,7 +47,7 @@ spec:
         name: data-directory
       spec:
         accessModes: ['ReadWriteOnce']
-        storageClassName: eden-spending-storage
+        storageClassName: eden-spending
         resources:
           requests:
             storage: 50Gi
