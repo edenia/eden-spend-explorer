@@ -38,7 +38,7 @@ spec:
         name: postgres
       spec:
         accessModes: ['ReadWriteOnce']
-        storageClassName: eden-spending-storage
+        storageClassName: eden-spending
         resources:
           requests:
             storage: 100Gi
