@@ -5,7 +5,8 @@ const SharedStateContext = React.createContext()
 
 const initialValue = {
   useDarkMode: false,
-  user: null
+  user: null,
+  eosTrasuryBalance: {}
 }
 
 const sharedStateReducer = (state, action) => {
@@ -51,6 +52,12 @@ const sharedStateReducer = (state, action) => {
 
       return state
 
+    case 'setEosTresuryBalance':
+      return {
+        ...state,
+        eosTrasuryBalance: action.payload
+      }
+
     default: {
       throw new Error(`Unsupported action type: ${action.type}`)
     }
@@ -87,17 +94,21 @@ SharedStateProvider.propTypes = {
 
 export const useSharedState = () => {
   const context = React.useContext(SharedStateContext)
-
-  if (!context) {
-    throw new Error(`useSharedState must be used within a SharedStateContext`)
-  }
-
   const [state, dispatch] = context
   const setState = payload => dispatch({ type: 'set', payload })
   const showMessage = payload => dispatch({ type: 'showMessage', payload })
   const hideMessage = () => dispatch({ type: 'hideMessage' })
   const login = () => dispatch({ type: 'login' })
   const logout = () => dispatch({ type: 'logout' })
+  const setEOSTrasuryBalance = payload =>
+    dispatch({ type: 'setEosTresuryBalance', payload })
 
-  return [state, { setState, showMessage, hideMessage, login, logout }]
+  if (!context) {
+    throw new Error(`useSharedState must be used within a SharedStateContext`)
+  }
+
+  return [
+    state,
+    { setState, showMessage, hideMessage, login, logout, setEOSTrasuryBalance }
+  ]
 }

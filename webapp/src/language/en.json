@@ -3,13 +3,15 @@
     "login": "Login",
     "signOut": "Logout",
     "lightMode": "Light Mode",
-    "darkMode": "Dark Mode"
+    "darkMode": "Dark Mode",
+    "titleEosBalance": "Eden Treasury Balance"
   },
   "routes": {
     "/>title": "Eden on EOS Accounting Standard",
     "/income>title": "Treasury | Eden on EOS Accounting Standard",
     "/income>sidebar": "Income",
     "/income>heading": "Income",
+    "/expense>sidebar": "Expense",
     "/>sidebar": "Home",
     "/>heading": "Welcome",
     "/about>title": "About | Eden on EOS Accounting Standard",
@@ -27,24 +29,32 @@
   "homeRoute": {
     "welcomeMessage": "The Eden Accounting Standard is a reporting mechanism meant to provide the Eden and EOS community information around how Eden funds are being allocated. Elected delegates may adhere to the standard and easily report their Eden expenses using a specific format for the memo field of the EOS token transfer action."
   },
-  "incomeRoute": {
-    "title": "Income",
-    "subTitle": "Income By Delegate",
-    "titleEosBalance": "Eden Treasury Balance",
-    "textInformation": "Eden delegate disbursements occur monthly and are claimed by the delegate from the contract to their personal EOS accounts...",
-    "nextDisbursement": "Next disbursement date:",
+  "generalForm": {
     "textRadioButton1": "By one delegate",
     "textRadioButton2": "By all delegates",
     "textRadioButton3": "By one election",
     "textRadioButton4": "By all elections",
     "textYearSelect": "Year",
+    "AllSelectYear": "All",
     "textElectionSelect": "Election",
     "textCurrencySelect": "Currency",
     "textDelegateSelect": "Delegate",
+    "exchangeRate": "Exchange rate",
+    "date": "Date",
+    "claimedCat": "Claimed",
+    "unclaimedCat": "Unclaimed",
+    "categorizedCat": "categorized",
+    "uncategorizedCat": "Uncategorized"
+  },
+  "incomeRoute": {
+    "title": "Income",
+    "subTitle": "Income By Delegate",
+    "textInformation": "Eden delegate disbursements occur monthly and are claimed by the delegate from the contract to their personal EOS accounts...",
+    "nextDisbursement": "Next disbursement date:",
     "titleTable": "Delegates ranked in order of income from highest to lowest",
     "titleTable2": "Elections sorted from oldest to newest",
     "tableElectionHeader": "Term",
-    "tableHeader1": "Name",
+    "tableHeader1": "Account",
     "tableHeader2": "ID (caps)",
     "tableHeader3": "Delegate level",
     "tableHeader4": "Total EOS distributed",
@@ -56,10 +66,25 @@
     "tableHeader10": "USD unclaimed %",
     "tableHeader11": "Category",
     "claimedCategory": "Claimed",
-    "unclaimedCategory": "Unclaimed",
+    "unclaimedCategory": "Unclaimed"
+  },
+  "expenseRoute": {
+    "title": "Expense",
+    "subTitle": "Expenses by all elections, elections, and delegates",
+    "textInformation": "Here you can see the different expenses incurred in each election, from the first to the current election for different options using charts and graphs....",
     "exchangeRate": "Exchange rate",
-    "AllSelectYear": "All",
-    "date": "Date"
+    "tableElectionHeader": "Term",
+    "tableHeader1": "Account",
+    "tableHeader2": "ID (caps)",
+    "tableHeader3": "Delegate level",
+    "tableHeader4": "Total EOS categorized",
+    "tableHeader5": "Total USD categorized",
+    "tableHeader6": "Transaction date",
+    "tableHeader7": "EOS categorized %",
+    "tableHeader8": "EOS uncategorized %",
+    "tableHeader9": "USD categorized %",
+    "tableHeader10": "USD uncategorized %",
+    "tableHeader11": "Category"
   },
   "aboutRoute": {
     "title": "This project",

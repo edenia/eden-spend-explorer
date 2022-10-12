@@ -7,12 +7,14 @@ import {
 } from 'react-feather'
 import {
   AddCard as AddCardIcon,
+  AttachMoney as AttachMoneyIcon,
   Home as HomeIcon,
   InfoOutlined as InfoIcon,
   HelpOutlineOutlined as HelpIcon
 } from '@mui/icons-material'
 
 import { mainConfig } from '../config'
+import ExpenseReport from './ExpenseReport'
 
 const IncomeReport = lazy(() => import('./IncomeReport'))
 const Home = lazy(() => import('./Home'))
@@ -33,6 +35,13 @@ const routes = [
     icon: <AddCardIcon />,
     component: IncomeReport,
     path: '/income',
+    exact: true
+  },
+  {
+    name: 'expenses',
+    icon: <AttachMoneyIcon />,
+    component: ExpenseReport,
+    path: '/expense',
     exact: true
   },
   {

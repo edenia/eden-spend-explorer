@@ -1,17 +1,15 @@
 import React, { memo, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles } from '@mui/styles'
+import FileSaver from 'file-saver'
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts'
 import { useCurrentPng } from 'recharts-to-png'
-import FileSaver from 'file-saver'
+import { makeStyles } from '@mui/styles'
+
+import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
-
-const thousandSeparator = number => {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-}
 
 const renderActiveShape = props => {
   const RADIAN = Math.PI / 180
@@ -81,7 +79,7 @@ const renderActiveShape = props => {
         textAnchor={textAnchor}
         fill="#333"
         lengthAdjust="spacingAndGlyphs"
-      >{`${coin}-${thousandSeparator(Number(value))}`}</text>
+      >{`${coin}-${formatWithThousandSeparator(value, 2)}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -96,10 +94,10 @@ const renderActiveShape = props => {
   )
 }
 
-const IncomePieChart = ({ data, coinType }) => {
+const PieChartReport = ({ data, coinType }) => {
   const classes = useStyles()
-
   const [activeIndex, setActiveIndex] = useState(0)
+  const [getPiePng, { ref: pieRef }] = useCurrentPng()
 
   const newData = data.map(info => {
     return { ...info, coin: coinType }
@@ -108,8 +106,6 @@ const IncomePieChart = ({ data, coinType }) => {
   const onPieEnter = (_, index) => {
     setActiveIndex(index)
   }
-
-  const [getPiePng, { ref: pieRef }] = useCurrentPng()
 
   const handlePieDownload = useCallback(async () => {
     const png = await getPiePng()
@@ -122,46 +118,34 @@ const IncomePieChart = ({ data, coinType }) => {
   return (
     <>
       <div className={classes.chartContainer}>
-        <div id="chart-scroll-id">
-          <ResponsiveContainer width="50%" height={300}>
-            <PieChart
-              height={300}
-              width="50%"
-              margin={{
-                top: 40,
-                right: 0,
-                bottom: 0,
-                left: 12
-              }}
-              ref={pieRef}
-            >
-              <Pie
-                activeIndex={activeIndex}
-                activeShape={renderActiveShape}
-                data={newData}
-                nameKey={'name'}
-                dataKey={coinType}
-                cx="50%"
-                cy="50%"
-                innerRadius={45}
-                outerRadius={60}
-                fill="#00c2bf"
-                onMouseEnter={onPieEnter}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-          <button onClick={handlePieDownload}>
-            <code>Download Pie Chart</code>
-          </button>
-        </div>
+        <ResponsiveContainer height={300}>
+          <PieChart width={500} height={300} ref={pieRef}>
+            <Pie
+              activeIndex={activeIndex}
+              activeShape={renderActiveShape}
+              data={newData}
+              nameKey={'name'}
+              dataKey={coinType}
+              cx="50%"
+              cy="50%"
+              innerRadius={45}
+              outerRadius={60}
+              fill="#00c2bf"
+              onMouseEnter={onPieEnter}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+        <button onClick={handlePieDownload}>
+          <code>Download Pie Chart</code>
+        </button>
       </div>
     </>
   )
 }
 
-IncomePieChart.propTypes = {
+PieChartReport.propTypes = {
   data: PropTypes.array,
   coinType: PropTypes.string
 }
 
-export default memo(IncomePieChart)
+export default memo(PieChartReport)

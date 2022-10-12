@@ -1,7 +1,10 @@
 import React, { memo, useCallback } from 'react'
 import PropTypes from 'prop-types'
+import FileSaver from 'file-saver'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
+import { useTranslation } from 'react-i18next'
+import { useCurrentPng } from 'recharts-to-png'
 import {
   ComposedChart,
   Bar,
@@ -14,9 +17,8 @@ import {
   Cell,
   Line
 } from 'recharts'
-import { useTranslation } from 'react-i18next'
-import { useCurrentPng } from 'recharts-to-png'
-import FileSaver from 'file-saver'
+
+import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 
 import styles from './styles'
 
@@ -47,12 +49,13 @@ const RenderChartLegend = ({ data }) => {
     </div>
   )
 }
+
 RenderChartLegend.propTypes = {
   data: PropTypes.array
 }
 
-const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
-  const { t } = useTranslation('incomeRoute')
+const CustomTooltip = ({ payload = [], label = '' }) => {
+  const { t } = useTranslation()
 
   return (
     <div>
@@ -60,15 +63,19 @@ const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
       {payload &&
         payload.map((data, i) => (
           <div key={`${i}-tooltip`}>
-            <div>{`${
-              data.dataKey === 'EXCHANGE_RATE'
-                ? t('exchangeRate')
-                : data.dataKey
-            } : ${thousandSeparator(data.payload[data.dataKey])}`}</div>
+            <div>
+              {`${
+                data.dataKey === 'EXCHANGE_RATE'
+                  ? t('exchangeRate', { ns: 'generalForm' })
+                  : data.dataKey
+              }: ${formatWithThousandSeparator(data.payload[data.dataKey], 3)}`}
+            </div>
             <div>
               {i === 0 &&
                 data.payload?.date &&
-                `${data.payload.date ? t('date') : ''} : ${
+                `${
+                  data.payload.date ? t('date', { ns: 'generalForm' }) : ''
+                }: ${
                   data.payload.date ? data.payload.date.split('T')[0] : ''
                 } `}
             </div>
@@ -77,15 +84,14 @@ const CustomTooltip = ({ payload = [], label = '', thousandSeparator }) => {
     </div>
   )
 }
+
 CustomTooltip.propTypes = {
   payload: PropTypes.array,
-  label: PropTypes.any,
-  thousandSeparator: PropTypes.func
+  label: PropTypes.any
 }
 
-const IncomeChart = ({ data, coinType, showEosRate, thousandSeparator }) => {
+const LineAreaChartReport = ({ data, coinType, showEosRate }) => {
   const classes = useStyles()
-
   const [getBarPng, { ref: barRef }] = useCurrentPng()
 
   const handleBarDownload = useCallback(async () => {
@@ -143,9 +149,7 @@ const IncomeChart = ({ data, coinType, showEosRate, thousandSeparator }) => {
                   fontSize: '14px',
                   padding: '8px'
                 }}
-                content={
-                  <CustomTooltip thousandSeparator={thousandSeparator} />
-                }
+                content={<CustomTooltip />}
               />
               <Legend content={<RenderChartLegend data={data} />} />
               <Bar dataKey={coinType} barSize={25} fill="#606060">
@@ -155,20 +159,19 @@ const IncomeChart = ({ data, coinType, showEosRate, thousandSeparator }) => {
               </Bar>
             </ComposedChart>
           </ResponsiveContainer>
-          <button onClick={handleBarDownload}>
-            <code>Download Bar Chart</code>
-          </button>
         </div>
+        <button onClick={handleBarDownload}>
+          <code>Download Bar Chart</code>
+        </button>
       </div>
     </>
   )
 }
 
-IncomeChart.propTypes = {
+LineAreaChartReport.propTypes = {
   data: PropTypes.array,
   coinType: PropTypes.string,
-  showEosRate: PropTypes.bool,
-  thousandSeparator: PropTypes.func
+  showEosRate: PropTypes.bool
 }
 
-export default memo(IncomeChart)
+export default memo(LineAreaChartReport)
