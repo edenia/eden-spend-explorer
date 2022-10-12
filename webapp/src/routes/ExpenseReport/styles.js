@@ -31,7 +31,7 @@ export default theme => ({
     }
   },
   filtersContainer: {
-    marginTop: '30px',
+    marginTop: '24px',
     '& #id-radio-election-container': {
       display: 'flex',
       marginLeft: '12px',
@@ -57,9 +57,9 @@ export default theme => ({
     }
   },
   chartContainer: {
-    marginLeft: '24px',
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
     overflow: 'hidden',
     overflowX: 'hidden',
     with: '100%',
@@ -92,6 +92,23 @@ export default theme => ({
     '& #id-table-container': {
       marginTop: '16px',
       height: 368
+    }
+  },
+  chartLinks: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    overflowY: 'auto',
+    maxHeight: '400px',
+    '& a ': {
+      display: 'flex',
+      textAlign: 'center',
+      textDecoration: 'none',
+      color: theme.palette.secondary.main,
+      marginTop: '2px'
+    },
+    '& a:hover': {
+      color: 'rgba(0, 194, 191, 0.80)'
     }
   },
   links: {

@@ -2,15 +2,15 @@ const { hasuraUtil } = require('../utils')
 
 const save = async payload => {
   const mutation = `
-    mutation ($payload: eden_election_insert_input!) {
-      insert_eden_election_one(object: $payload) {
+    mutation ($payload: eden_historic_election_insert_input!) {
+      insert_eden_historic_election_one(object: $payload) {
         election
       }
     }
   `
   const data = await hasuraUtil.instance.request(mutation, { payload })
 
-  return data.insert_eden_election_one
+  return data.insert_eden_historic_election_one
 }
 
 const get = async (where, getMany = false) => {

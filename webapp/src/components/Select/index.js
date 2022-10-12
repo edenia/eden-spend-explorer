@@ -3,16 +3,24 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 
-const IncomeSelect = ({
+const SelectComponent = ({
   labelSelect,
   values,
   onChangeFunction,
   actualValue,
   disable
 }) => {
-  const { t } = useTranslation('incomeRoute')
+  const { t } = useTranslation()
 
-  if (disable) return null
+  if (disable || !values[0]) return null
+
+  const selectValue = value => {
+    if (labelSelect === t('textElectionSelect', { ns: 'generalForm' }))
+      return Number(value) + 1
+    else if (value === 'All') return t('AllSelectYear', { ns: 'generalForm' })
+    else return value
+  }
+
   return (
     <FormControl sx={{ m: 1, width: 100 }} size="small">
       <InputLabel>{labelSelect}</InputLabel>
@@ -23,24 +31,17 @@ const IncomeSelect = ({
         label={labelSelect}
         onChange={({ target }) => onChangeFunction(target.value)}
       >
-        {values[0] ? (
-          values.map(value => (
-            <MenuItem key={value} value={value}>
-              {labelSelect === t('textElectionSelect')
-                ? Number(value) + 1
-                : value === 'All'
-                ? t('AllSelectYear')
-                : value}
-            </MenuItem>
-          ))
-        ) : (
-          <MenuItem value=""></MenuItem>
-        )}
+        {values.map(value => (
+          <MenuItem key={value} value={value}>
+            {selectValue(value)}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   )
 }
-IncomeSelect.propTypes = {
+
+SelectComponent.propTypes = {
   labelSelect: PropTypes.string,
   values: PropTypes.array,
   onChangeFunction: PropTypes.func,
@@ -48,4 +49,4 @@ IncomeSelect.propTypes = {
   disable: PropTypes.bool
 }
 
-export default memo(IncomeSelect)
+export default memo(SelectComponent)

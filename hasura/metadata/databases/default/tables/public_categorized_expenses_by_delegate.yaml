@@ -1,18 +1,15 @@
 table:
-  name: transaction_by_category_and_election
+  name: categorized_expenses_by_delegate
   schema: public
 select_permissions:
   - role: guest
     permission:
       columns:
         - amount
-        - category
         - delegate_level
         - delegate_payer
         - election
         - exchange_rate
-        - recipient
-        - type
         - usd_total
       filter: {}
       allow_aggregations: true

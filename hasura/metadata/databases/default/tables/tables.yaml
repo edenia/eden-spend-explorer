@@ -1,3 +1,5 @@
+- "!include public_categorized_expenses.yaml"
+- "!include public_categorized_expenses_by_delegate.yaml"
 - "!include public_dfuse_state.yaml"
 - "!include public_eden_delegates.yaml"
 - "!include public_eden_election.yaml"
