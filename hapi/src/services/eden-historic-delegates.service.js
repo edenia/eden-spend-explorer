@@ -1,11 +1,12 @@
+const moment = require('moment')
+const { edenConfig } = require('../config')
+const { servicesConstant } = require('../constants')
+const { eosUtil, dfuseUtil, communityUtil } = require('../utils')
 const {
   edenDelegatesGql,
   edenHistoricElectionGql,
   edenElectionGql
 } = require('../gql')
-const { servicesConstant } = require('../constants')
-const { eosUtil, dfuseUtil } = require('../utils')
-const { edenConfig } = require('../config')
 
 const historicDelegates = async ({
   next_key: nextKey = null,
@@ -148,10 +149,32 @@ const saveHistoricElection = async () => {
   })
 }
 
+const saveNewHistoricElection = async () => {
+  const currentDate = moment().format()
+  const lastElection = await edenHistoricElectionGql.get({
+    date_election: { _lte: currentDate }
+  })
+
+  const electState = await communityUtil.loadTableData(
+    { next_key: null },
+    'elect.state'
+  )
+  const electStateData = electState.rows[0]
+  const nextElection = electStateData[1].last_election_time.split('T')[0]
+
+  if (lastElection.date_election.split('T')[0] === nextElection) return
+
+  await edenHistoricElectionGql.save({
+    election: lastElection.election + 1,
+    date_election: nextElection
+  })
+}
+
 const updateHistoricDelegate = async () => {
   await saveHistoricElection()
-  await saveDelegateByFundTransfer()
+  await saveNewHistoricElection()
   await saveDelegateByDistAccount()
+  await saveDelegateByFundTransfer()
 }
 
 const updateHistoricDelegatesWorker = () => {
