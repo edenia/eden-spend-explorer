@@ -12,9 +12,7 @@ const useStyles = makeStyles(styles)
 const TrasuryBalance = () => {
   const classes = useStyles()
   const { t } = useTranslation()
-
   const [state] = useSharedState()
-
   const { eosRate = 0, currencyBalance = '' } = state.eosTrasuryBalance
 
   return (

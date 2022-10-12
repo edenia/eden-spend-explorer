@@ -23,15 +23,11 @@ import SelectComponent from '../../components/Select'
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
-
 const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
 const ExpenseReport = () => {
   const classes = useStyles()
-
-  const { t } = useTranslation('expenseRoute')
-
-  const { t: t2 } = useTranslation('generalForm')
+  const { t } = useTranslation()
 
   const [
     {
@@ -69,7 +65,7 @@ const ExpenseReport = () => {
   const columns = [
     {
       field: 'txId',
-      headerName: t('tableHeader2'),
+      headerName: t('tableHeader2', { ns: 'expenseRoute' }),
       hide: !tableData[0]?.txId,
       cellClassName: classes.links,
       renderCell: param => (
@@ -84,8 +80,8 @@ const ExpenseReport = () => {
     {
       field: 'name',
       headerName: tableData[0]?.level
-        ? t('tableHeader1')
-        : t('tableElectionHeader'),
+        ? t('tableHeader1', { ns: 'expenseRoute' })
+        : t('tableElectionHeader', { ns: 'expenseRoute' }),
       cellClassName: classes.links,
       renderCell: param => (
         <a
@@ -99,14 +95,14 @@ const ExpenseReport = () => {
     },
     {
       field: 'level',
-      headerName: t('tableHeader3'),
+      headerName: t('tableHeader3', { ns: 'expenseRoute' }),
       hide: !tableData[0]?.level,
       type: 'number',
       ...rowsCenter
     },
     {
       field: 'category',
-      headerName: t('tableHeader11'),
+      headerName: t('tableHeader11', { ns: 'expenseRoute' }),
       hide: !tableData[0]?.category,
       ...rowsCenter
     },
@@ -126,13 +122,13 @@ const ExpenseReport = () => {
     },
     {
       field: 'date',
-      headerName: t('tableHeader6'),
+      headerName: t('tableHeader6', { ns: 'expenseRoute' }),
       hide: !tableData[0]?.date,
       ...rowsCenter
     },
     {
       field: 'EOS_CATEGORIZED',
-      headerName: t('tableHeader7'),
+      headerName: t('tableHeader7', { ns: 'expenseRoute' }),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -141,7 +137,7 @@ const ExpenseReport = () => {
     },
     {
       field: 'EOS_UNCATEGORIZED',
-      headerName: t('tableHeader8'),
+      headerName: t('tableHeader8', { ns: 'expenseRoute' }),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -150,7 +146,7 @@ const ExpenseReport = () => {
     },
     {
       field: 'USD_CATEGORIZED',
-      headerName: t('tableHeader9'),
+      headerName: t('tableHeader9', { ns: 'expenseRoute' }),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -159,7 +155,7 @@ const ExpenseReport = () => {
     },
     {
       field: 'USD_UNCATEGORIZED',
-      headerName: t('tableHeader10'),
+      headerName: t('tableHeader10', { ns: 'expenseRoute' }),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -174,15 +170,19 @@ const ExpenseReport = () => {
         <div className={classes.titleContainer}>
           <div className={classes.divider} />
           <div className={classes.title}>
-            <Typography variant="span">{t('title')}</Typography>
+            <Typography variant="span">
+              {t('title', { ns: 'expenseRoute' })}
+            </Typography>
           </div>
         </div>
         <TreasuryBalance />
       </div>
       <div className={classes.subTitle}>
-        <Typography variant="span">{t('subTitle')}</Typography>
+        <Typography variant="span">
+          {t('subTitle', { ns: 'expenseRoute' })}
+        </Typography>
         <br />
-        <label>{t('textInformation')}</label>
+        <label>{t('textInformation', { ns: 'expenseRoute' })}</label>
       </div>
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
@@ -195,19 +195,19 @@ const ExpenseReport = () => {
             >
               <FormControlLabel
                 control={<Radio size="small" />}
-                label={t2('textRadioButton4')}
+                label={t('textRadioButton4', { ns: 'generalForm' })}
                 value="allElections"
               />
               <FormControlLabel
                 control={<Radio size="small" />}
-                label={t2('textRadioButton3')}
+                label={t('textRadioButton3', { ns: 'generalForm' })}
                 value="oneElection"
               />
             </RadioGroup>
           </FormControl>
           <SelectComponent
             onChangeFunction={setTypeCurrencySelect}
-            labelSelect={t2('textCurrencySelect')}
+            labelSelect={t('textCurrencySelect', { ns: 'generalForm' })}
             values={['EOS', 'USD']}
             actualValue={typeCurrencySelect}
           />
@@ -237,31 +237,31 @@ const ExpenseReport = () => {
                 >
                   <FormControlLabel
                     control={<Radio size="small" />}
-                    label={t2('textRadioButton2')}
+                    label={t('textRadioButton2', { ns: 'generalForm' })}
                     value="allDelegates"
                   />
                   <FormControlLabel
                     control={<Radio size="small" />}
-                    label={t2('textRadioButton1')}
+                    label={t('textRadioButton1', { ns: 'generalForm' })}
                     value="oneDelegate"
                   />
                 </RadioGroup>
               </FormControl>
               <SelectComponent
                 onChangeFunction={setElectionYearSelect}
-                labelSelect={t2('textYearSelect')}
+                labelSelect={t('textYearSelect', { ns: 'generalForm' })}
                 values={getListElectionYears()}
                 actualValue={electionYearSelect}
               />
               <SelectComponent
                 onChangeFunction={setElectionRoundSelect}
-                labelSelect={t2('textElectionSelect')}
+                labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
                 values={electionsByYearList.map(data => `${data.election}`)}
                 actualValue={electionRoundSelect}
               />
               <SelectComponent
                 onChangeFunction={setDelegateSelect}
-                labelSelect={t2('textDelegateSelect')}
+                labelSelect={t('textDelegateSelect', { ns: 'generalForm' })}
                 values={expenseByAllDelegatesList.map(
                   data => data.delegate_payer
                 )}

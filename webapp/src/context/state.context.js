@@ -94,25 +94,18 @@ SharedStateProvider.propTypes = {
 
 export const useSharedState = () => {
   const context = React.useContext(SharedStateContext)
+  const [state, dispatch] = context
+  const setState = payload => dispatch({ type: 'set', payload })
+  const showMessage = payload => dispatch({ type: 'showMessage', payload })
+  const hideMessage = () => dispatch({ type: 'hideMessage' })
+  const login = () => dispatch({ type: 'login' })
+  const logout = () => dispatch({ type: 'logout' })
+  const setEOSTrasuryBalance = payload =>
+    dispatch({ type: 'setEosTresuryBalance', payload })
 
   if (!context) {
     throw new Error(`useSharedState must be used within a SharedStateContext`)
   }
-
-  const [state, dispatch] = context
-
-  const setState = payload => dispatch({ type: 'set', payload })
-
-  const showMessage = payload => dispatch({ type: 'showMessage', payload })
-
-  const hideMessage = () => dispatch({ type: 'hideMessage' })
-
-  const login = () => dispatch({ type: 'login' })
-
-  const logout = () => dispatch({ type: 'logout' })
-
-  const setEOSTrasuryBalance = payload =>
-    dispatch({ type: 'setEosTresuryBalance', payload })
 
   return [
     state,

@@ -20,9 +20,13 @@ const generateClassName = createGenerateClassName({
 
 const App = () => {
   const [state, { setEOSTrasuryBalance }] = useSharedState()
-
   const [{ eosRate, currencyBalance, nextEdenDisbursement }] =
     useTresuryBalanceState()
+  const theme = useMemo(() => getTheme(state.useDarkMode), [state.useDarkMode])
+  const userRoutes = useMemo(
+    () => routes(state.user?.role || 'guest'),
+    [state.user]
+  )
 
   const renderRoute = ({ component: Component, ...route }, index) => (
     <Route
@@ -32,14 +36,6 @@ const App = () => {
       element={<Component />}
     />
   )
-
-  const userRoutes = useMemo(
-    () => routes(state.user?.role || 'guest'),
-
-    [state.user]
-  )
-
-  const theme = useMemo(() => getTheme(state.useDarkMode), [state.useDarkMode])
 
   useEffect(() => {
     setEOSTrasuryBalance({

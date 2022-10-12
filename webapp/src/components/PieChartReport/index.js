@@ -96,8 +96,8 @@ const renderActiveShape = props => {
 
 const PieChartReport = ({ data, coinType }) => {
   const classes = useStyles()
-
   const [activeIndex, setActiveIndex] = useState(0)
+  const [getPiePng, { ref: pieRef }] = useCurrentPng()
 
   const newData = data.map(info => {
     return { ...info, coin: coinType }
@@ -106,8 +106,6 @@ const PieChartReport = ({ data, coinType }) => {
   const onPieEnter = (_, index) => {
     setActiveIndex(index)
   }
-
-  const [getPiePng, { ref: pieRef }] = useCurrentPng()
 
   const handlePieDownload = useCallback(async () => {
     const png = await getPiePng()

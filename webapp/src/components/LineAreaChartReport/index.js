@@ -49,12 +49,13 @@ const RenderChartLegend = ({ data }) => {
     </div>
   )
 }
+
 RenderChartLegend.propTypes = {
   data: PropTypes.array
 }
 
 const CustomTooltip = ({ payload = [], label = '' }) => {
-  const { t } = useTranslation('generalForm')
+  const { t } = useTranslation()
 
   return (
     <div>
@@ -65,14 +66,16 @@ const CustomTooltip = ({ payload = [], label = '' }) => {
             <div>
               {`${
                 data.dataKey === 'EXCHANGE_RATE'
-                  ? t('exchangeRate')
+                  ? t('exchangeRate', { ns: 'generalForm' })
                   : data.dataKey
               }: ${formatWithThousandSeparator(data.payload[data.dataKey], 3)}`}
             </div>
             <div>
               {i === 0 &&
                 data.payload?.date &&
-                `${data.payload.date ? t('date') : ''}: ${
+                `${
+                  data.payload.date ? t('date', { ns: 'generalForm' }) : ''
+                }: ${
                   data.payload.date ? data.payload.date.split('T')[0] : ''
                 } `}
             </div>
@@ -81,6 +84,7 @@ const CustomTooltip = ({ payload = [], label = '' }) => {
     </div>
   )
 }
+
 CustomTooltip.propTypes = {
   payload: PropTypes.array,
   label: PropTypes.any
@@ -88,7 +92,6 @@ CustomTooltip.propTypes = {
 
 const LineAreaChartReport = ({ data, coinType, showEosRate }) => {
   const classes = useStyles()
-
   const [getBarPng, { ref: barRef }] = useCurrentPng()
 
   const handleBarDownload = useCallback(async () => {

@@ -5,11 +5,11 @@ import { DataGrid, esES, enUS } from '@mui/x-data-grid'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 const TableReport = ({ columns, dataPercent }) => {
+  const { t } = useTranslation()
   const [pagePaginationSize, setPagePaginationSize] = useState(5)
-
-  const { t } = useTranslation('incomeRoute')
-
-  const theme = createTheme(t('tableHeader1') === 'Name' ? enUS : esES)
+  const theme = createTheme(
+    t('tableHeader1', { ns: 'incomeRoute' }) === 'Name' ? enUS : esES
+  )
 
   return (
     <ThemeProvider theme={theme}>

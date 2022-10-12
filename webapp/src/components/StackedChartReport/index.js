@@ -24,25 +24,28 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 
 const CustomTooltip = ({ payload = [], label = '', typeCurrency = '' }) => {
-  const { t } = useTranslation('generalForm')
+  const { t } = useTranslation()
+
+  const selectDataKey = dataKey => {
+    if (dataKey === 'EXCHANGE_RATE') return t('exchangeRate')
+    else if (dataKey === `${typeCurrency}_CLAIMED`)
+      return t('claimedCat', { ns: 'generalForm' })
+    else if (dataKey === `${typeCurrency}_UNCLAIMED`)
+      return t('unclaimedCat', { ns: 'generalForm' })
+    else if (dataKey === `${typeCurrency}_CATEGORIZED`)
+      return t('categorizedCat', { ns: 'generalForm' })
+    else if (dataKey === `${typeCurrency}_UNCATEGORIZED`)
+      return t('uncategorizedCat', { ns: 'generalForm' })
+  }
 
   return (
     <div>
       <strong>{label}</strong>
       {payload &&
         payload.map((data, i) => (
-          <div key={`${i}-tooltip`}>{`${
-            data.dataKey === 'EXCHANGE_RATE'
-              ? t('exchangeRate')
-              : data.dataKey === `${typeCurrency}_CLAIMED`
-              ? `${t('claimedCat')} `
-              : data.dataKey === `${typeCurrency}_UNCLAIMED`
-              ? `${t('unclaimedCat')} `
-              : data.dataKey === `${typeCurrency}_CATEGORIZED`
-              ? `${t('categorizedCat')} `
-              : data.dataKey === `${typeCurrency}_UNCATEGORIZED` &&
-                t('uncategorizedCat')
-          }: ${formatWithThousandSeparator(
+          <div key={`${i}-tooltip`}>{`${selectDataKey(
+            data.dataKey
+          )}: ${formatWithThousandSeparator(
             data.payload[data.dataKey],
             2
           )}`}</div>
@@ -50,6 +53,7 @@ const CustomTooltip = ({ payload = [], label = '', typeCurrency = '' }) => {
     </div>
   )
 }
+
 CustomTooltip.propTypes = {
   payload: PropTypes.array,
   label: PropTypes.any,
@@ -57,9 +61,20 @@ CustomTooltip.propTypes = {
 }
 
 const RenderLegend = ({ payload, typeCurrency }) => {
-  const { t } = useTranslation('generalForm')
-
+  const { t } = useTranslation()
   const classes = useStyles()
+
+  const selectDataKey = dataKey => {
+    if (dataKey === 'EXCHANGE_RATE') return t('exchangeRate')
+    else if (dataKey === `${typeCurrency}_CLAIMED`)
+      return t('claimedCat', { ns: 'generalForm' })
+    else if (dataKey === `${typeCurrency}_UNCLAIMED`)
+      return t('unclaimedCat', { ns: 'generalForm' })
+    else if (dataKey === `${typeCurrency}_CATEGORIZED`)
+      return t('categorizedCat', { ns: 'generalForm' })
+    else if (dataKey === `${typeCurrency}_UNCATEGORIZED`)
+      return t('uncategorizedCat', { ns: 'generalForm' })
+  }
 
   return (
     <div className={classes.legendContainer}>
@@ -74,16 +89,7 @@ const RenderLegend = ({ payload, typeCurrency }) => {
             bgcolor={data.color}
           />
 
-          {data.dataKey === 'EXCHANGE_RATE'
-            ? t('exchangeRate')
-            : data.dataKey === `${typeCurrency}_CLAIMED`
-            ? `${t('claimedCat')} `
-            : data.dataKey === `${typeCurrency}_UNCLAIMED`
-            ? `${t('unclaimedCat')} `
-            : data.dataKey === `${typeCurrency}_CATEGORIZED`
-            ? `${t('categorizedCat')} `
-            : data.dataKey === `${typeCurrency}_UNCATEGORIZED` &&
-              t('uncategorizedCat')}
+          {selectDataKey(data.dataKey)}
         </label>
       ))}
     </div>
@@ -103,7 +109,6 @@ const StakedChartReport = ({
   showEosRate
 }) => {
   const classes = useStyles()
-
   const [getStakedPng, { ref: stackedRef }] = useCurrentPng()
 
   const handleStakedDownload = useCallback(async () => {

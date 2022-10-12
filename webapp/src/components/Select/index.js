@@ -10,9 +10,16 @@ const SelectComponent = ({
   actualValue,
   disable
 }) => {
-  const { t } = useTranslation('generalForm')
+  const { t } = useTranslation()
 
   if (disable || !values[0]) return null
+
+  const selectValue = value => {
+    if (labelSelect === t('textElectionSelect', { ns: 'generalForm' }))
+      return Number(value) + 1
+    else if (value === 'All') return t('AllSelectYear', { ns: 'generalForm' })
+    else return value
+  }
 
   return (
     <FormControl sx={{ m: 1, width: 100 }} size="small">
@@ -26,17 +33,14 @@ const SelectComponent = ({
       >
         {values.map(value => (
           <MenuItem key={value} value={value}>
-            {labelSelect === t('textElectionSelect')
-              ? Number(value) + 1
-              : value === 'All'
-              ? t('AllSelectYear')
-              : value}
+            {selectValue(value)}
           </MenuItem>
         ))}
       </Select>
     </FormControl>
   )
 }
+
 SelectComponent.propTypes = {
   labelSelect: PropTypes.string,
   values: PropTypes.array,

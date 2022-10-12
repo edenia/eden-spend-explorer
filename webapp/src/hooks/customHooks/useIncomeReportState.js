@@ -23,31 +23,19 @@ import {
 
 const useIncomeReportState = () => {
   const [typeCurrencySelect, setTypeCurrencySelect] = useState('EOS')
-
   const [electionYearSelect, setElectionYearSelect] = useState('All')
-
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
-
   const [delegateSelect, setDelegateSelect] = useState('')
-
   const [showDelegateRadio, setShowDelegateRadio] = useState('allDelegates')
-
   const [showElectionRadio, setShowElectionRadio] = useState('allElections')
-
   const [electionsByYearList, setElectionsByYearList] = useState([])
-
   const [chartTransactionsList, setChartTransactionsList] = useState([])
-
   const [incomeByAllDelegatesList, setIncomeByAllDelegatesList] = useState([])
-
   const [incomeByDelegateAccountList, setIncomeByDelegateAccountList] =
     useState([])
-
   const [incomeClaimedAndUnclaimedList, setIncomeClaimedAndUnclaimedList] =
     useState([])
-
   const [totalByCategoryList, setTotalByCategoryList] = useState([])
-
   const [percentIncomeList, setPercentIncomeList] = useState([])
 
   const getListElectionYears = () => {
@@ -188,7 +176,7 @@ const useIncomeReportState = () => {
       setChartTransactionsList(
         newDataFormatByAllDelegatesIncome(incomeByAllDelegatesList || [])
       )
-  }, [showElectionRadio, showDelegateRadio])
+  }, [showElectionRadio, showDelegateRadio, incomeByAllDelegatesList])
 
   useEffect(() => {
     showElectionRadio !== 'allElections' &&

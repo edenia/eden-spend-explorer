@@ -30,14 +30,9 @@ const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 const IncomeReport = () => {
   const classes = useStyles()
 
-  const { t } = useTranslation('incomeRoute')
-
-  const { t: t2 } = useTranslation('generalForm')
-
+  const { t } = useTranslation()
   const [showEosRateSwitch, setshowEosRateSwitch] = useState(true)
-
   const [state] = useSharedState()
-
   const { nextEdenDisbursement = '' } = state.eosTrasuryBalance
 
   const [
@@ -74,7 +69,7 @@ const IncomeReport = () => {
   const columns = [
     {
       field: 'txId',
-      headerName: t('tableHeader2'),
+      headerName: t('tableHeader2', { ns: 'incomeRoute' }),
       hide: !tableData[0]?.txId,
       cellClassName: classes.links,
       renderCell: param => (
@@ -95,8 +90,8 @@ const IncomeReport = () => {
     {
       field: 'name',
       headerName: tableData[0]?.level
-        ? t('tableHeader1')
-        : t('tableElectionHeader'),
+        ? t('tableHeader1', { ns: 'incomeRoute' })
+        : t('tableElectionHeader', { ns: 'incomeRoute' }),
       cellClassName: classes.links,
       renderCell: param => (
         <a
@@ -110,19 +105,19 @@ const IncomeReport = () => {
     },
     {
       field: 'level',
-      headerName: t('tableHeader3'),
+      headerName: t('tableHeader3', { ns: 'incomeRoute' }),
       hide: !tableData[0]?.level,
       type: 'number',
       ...rowsCenter
     },
     {
       field: 'category',
-      headerName: t('tableHeader11'),
+      headerName: t('tableHeader11', { ns: 'incomeRoute' }),
       renderCell: param => (
         <>
           {param.value === 'claimed'
-            ? t('claimedCategory')
-            : t('unclaimedCategory')}
+            ? t('claimedCategory', { ns: 'incomeRoute' })
+            : t('unclaimedCategory', { ns: 'incomeRoute' })}
         </>
       ),
       hide: !tableData[0]?.category,
@@ -144,13 +139,13 @@ const IncomeReport = () => {
     },
     {
       field: 'date',
-      headerName: t('tableHeader6'),
+      headerName: t('tableHeader6', { ns: 'incomeRoute' }),
       hide: !tableData[0]?.date,
       ...rowsCenter
     },
     {
       field: 'EOS_CLAIMED',
-      headerName: t('tableHeader7'),
+      headerName: t('tableHeader7', { ns: 'incomeRoute' }),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -159,7 +154,7 @@ const IncomeReport = () => {
     },
     {
       field: 'EOS_UNCLAIMED',
-      headerName: t('tableHeader8'),
+      headerName: t('tableHeader8', { ns: 'incomeRoute' }),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -168,7 +163,7 @@ const IncomeReport = () => {
     },
     {
       field: 'USD_CLAIMED',
-      headerName: t('tableHeader9'),
+      headerName: t('tableHeader9', { ns: 'incomeRoute' }),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -177,7 +172,7 @@ const IncomeReport = () => {
     },
     {
       field: 'USD_UNCLAIMED',
-      headerName: t('tableHeader10'),
+      headerName: t('tableHeader10', { ns: 'incomeRoute' }),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -192,18 +187,24 @@ const IncomeReport = () => {
         <div className={classes.titleContainer}>
           <div className={classes.divider} />
           <div className={classes.title}>
-            <Typography variant="span">{t('title')}</Typography>
+            <Typography variant="span">
+              {t('title', { ns: 'incomeRoute' })}
+            </Typography>
           </div>
         </div>
         <TreasuryBalance />
       </div>
       <div className={classes.subTitle}>
-        <Typography variant="span">{t('subTitle')}</Typography>
+        <Typography variant="span">
+          {t('subTitle', { ns: 'incomeRoute' })}
+        </Typography>
         <br />
         <label>
-          {t('textInformation')}
+          {t('textInformation', { ns: 'incomeRoute' })}
           <br />
-          <strong>{`${t('nextDisbursement')} ${nextEdenDisbursement}`}</strong>
+          <strong>{`${t('nextDisbursement', {
+            ns: 'incomeRoute'
+          })} ${nextEdenDisbursement}`}</strong>
         </label>
       </div>
 
@@ -218,19 +219,19 @@ const IncomeReport = () => {
             >
               <FormControlLabel
                 control={<Radio size="small" />}
-                label={t2('textRadioButton4')}
+                label={t('textRadioButton4', { ns: 'generalForm' })}
                 value="allElections"
               />
               <FormControlLabel
                 control={<Radio size="small" />}
-                label={t2('textRadioButton3')}
+                label={t('textRadioButton3', { ns: 'generalForm' })}
                 value="oneElection"
               />
             </RadioGroup>
           </FormControl>
           <SelectComponent
             onChangeFunction={setTypeCurrencySelect}
-            labelSelect={t2('textCurrencySelect')}
+            labelSelect={t('textCurrencySelect', { ns: 'generalForm' })}
             values={['EOS', 'USD']}
             actualValue={typeCurrencySelect}
           />
@@ -240,7 +241,7 @@ const IncomeReport = () => {
             <>
               <FormControl>
                 <FormControlLabel
-                  label={t('exchangeRate')}
+                  label={t('exchangeRate', { ns: 'incomeRoute' })}
                   control={
                     <Switch
                       checked={showEosRateSwitch}
@@ -260,31 +261,31 @@ const IncomeReport = () => {
                 >
                   <FormControlLabel
                     control={<Radio size="small" />}
-                    label={t2('textRadioButton2')}
+                    label={t('textRadioButton2', { ns: 'generalForm' })}
                     value="allDelegates"
                   />
                   <FormControlLabel
                     control={<Radio size="small" />}
-                    label={t2('textRadioButton1')}
+                    label={t('textRadioButton1', { ns: 'generalForm' })}
                     value="oneDelegate"
                   />
                 </RadioGroup>
               </FormControl>
               <SelectComponent
                 onChangeFunction={setElectionYearSelect}
-                labelSelect={t2('textYearSelect')}
+                labelSelect={t('textYearSelect', { ns: 'generalForm' })}
                 values={getListElectionYears()}
                 actualValue={electionYearSelect}
               />
               <SelectComponent
                 onChangeFunction={setElectionRoundSelect}
-                labelSelect={t2('textElectionSelect')}
+                labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
                 values={electionsByYearList.map(data => `${data.election}`)}
                 actualValue={electionRoundSelect}
               />
               <SelectComponent
                 onChangeFunction={setDelegateSelect}
-                labelSelect={t2('textDelegateSelect')}
+                labelSelect={t('textDelegateSelect', { ns: 'generalForm' })}
                 values={incomeByAllDelegatesList.map(
                   data => data.eden_delegate.account
                 )}
@@ -321,8 +322,8 @@ const IncomeReport = () => {
         <div className={classes.subTitle}>
           <Typography variant="span">
             {chartTransactionsList[0]?.level
-              ? t('titleTable')
-              : t('titleTable2')}
+              ? t('titleTable', { ns: 'incomeRoute' })
+              : t('titleTable2', { ns: 'incomeRoute' })}
           </Typography>
 
           <div id="id-table-container">
