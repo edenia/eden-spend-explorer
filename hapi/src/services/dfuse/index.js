@@ -131,6 +131,7 @@ const sync = async () => {
   let blockNumber = await getLastSyncedAt()
   try {
     while (hasMore) {
+      console.log(blockNumber)
       ;({ hasMore, actions, blockNumber } = await getActions({
         query: `account:${edenConfig.edenContract} action:fundtransfer OR account:${edenConfig.edenContract} action:withdraw OR account:eosio.token action:transfer`,
         lowBlockNum: blockNumber
