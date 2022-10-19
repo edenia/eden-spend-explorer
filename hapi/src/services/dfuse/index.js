@@ -119,7 +119,7 @@ const sync = async () => {
       while (hasMore) {
         ;({ hasMore, actions, blockNumber } = await getActions({
           query: `account:${edenConfig.edenContract} data.owner:${delegate.account} OR account:${edenConfig.edenContract} data.to:${delegate.account} OR account:eosio.token data.from:${delegate.account} receiver:eosio.token`,
-          lowBlockNum: delegate.last_synced_at
+          lowBlockNum: blockNumber
         }))
 
         await runUpdaters(actions)
@@ -128,11 +128,10 @@ const sync = async () => {
     } catch (error) {
       console.error('dfuse error', error.message)
     }
-
-    await edenDelegatesGql.update(delegate.id, blockNumber)
+    console.log(index, 'index')
   }
 
-  await sleepUtil(5)
+  await sleepUtil(60)
 
   return sync()
 }
