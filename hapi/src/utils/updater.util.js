@@ -8,7 +8,7 @@ const isEdenExpense = memoString => {
 const memoSplit = memoString => {
   const memoSplit = memoString.split('/')
   const category = transactionConstant.CATEGORIES.includes(
-    memoSplit[0].toLowerCase()
+    memoSplit[0].toLowerCase().trim()
   )
     ? memoSplit[0]
     : 'uncategorized'
