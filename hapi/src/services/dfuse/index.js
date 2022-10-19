@@ -1,12 +1,11 @@
 const moment = require('moment')
 
-const dfuseStateService = require('../../gql/dfuse-state.gql')
-const { dfuseConfig, edenConfig } = require('../../config')
-const { transactionConstant } = require('../../constants')
+const { edenConfig } = require('../../config')
 const {
   edenElectionGql,
   edenHistoricElectionGql,
-  edenTransactionGql
+  edenTransactionGql,
+  edenDelegatesGql
 } = require('../../gql')
 const {
   hasuraUtil,
@@ -20,18 +19,6 @@ const updaters = require('./updaters')
 let LASTEST_RATE_DATE_CONSULTED = null
 let LASTEST_RATE_DATA_CONSULTED = null
 
-const getLastSyncedAt = async () => {
-  const state = await dfuseStateService.getState()
-
-  if (state) {
-    return state.lastSyncedAt
-  }
-
-  await dfuseStateService.saveOrUpdate(dfuseConfig.firstBlock)
-
-  return dfuseConfig.firstBlock
-}
-
 const runUpdaters = async actions => {
   for (let index = 0; index < actions.length; index++) {
     const action = actions[index]
@@ -44,9 +31,6 @@ const runUpdaters = async actions => {
       ) {
         const matchingAction = matchingActions[indexMatching]
 
-        if (!transactionConstant.RECEIVER.includes(matchingAction.receiver))
-          continue
-
         const updater = updaters.find(
           item =>
             item.type === `${matchingAction.account}:${matchingAction.name}`
@@ -54,8 +38,6 @@ const runUpdaters = async actions => {
         const electionNumber = await edenHistoricElectionGql.get({
           date_election: { _lte: action.trace.block.timestamp }
         })
-
-        if (!updater || !electionNumber) continue
 
         const edenElectionId =
           matchingAction.name === 'withdraw'
@@ -120,30 +102,36 @@ const getActions = async params => {
   return {
     hasMore: transactionsList.length === 1000,
     actions: transactionsList,
-    blockNumber: transactionsList[transactionsList.length - 1].trace.block.num
+    blockNumber: transactionsList[transactionsList.length - 1]?.trace.block.num
   }
 }
 
 const sync = async () => {
   await hasuraUtil.hasuraAssembled()
-  let hasMore = true
-  let actions = []
-  let blockNumber = await getLastSyncedAt()
-  try {
-    while (hasMore) {
-      ;({ hasMore, actions, blockNumber } = await getActions({
-        query: `account:${edenConfig.edenContract} action:fundtransfer OR account:${edenConfig.edenContract} action:withdraw OR account:eosio.token action:transfer`,
-        lowBlockNum: blockNumber
-      }))
+  const delegatesList = await edenDelegatesGql.get({}, true)
 
-      await runUpdaters(actions)
-      await dfuseStateService.saveOrUpdate(blockNumber)
+  for (let index = 0; index < delegatesList.length; index++) {
+    const delegate = delegatesList[index]
+    let hasMore = true
+    let actions = []
+    let blockNumber = delegate.last_synced_at
+    try {
+      while (hasMore) {
+        ;({ hasMore, actions, blockNumber } = await getActions({
+          query: `account:${edenConfig.edenContract} data.owner:${delegate.account} OR account:${edenConfig.edenContract} data.to:${delegate.account} OR account:eosio.token data.from:${delegate.account} receiver:eosio.token`,
+          lowBlockNum: delegate.last_synced_at
+        }))
+
+        await runUpdaters(actions)
+        await edenDelegatesGql.update(delegate.id, blockNumber)
+      }
+    } catch (error) {
+      console.error('dfuse error', error.message)
     }
-  } catch (error) {
-    console.error('dfuse error', error.message)
+
+    await edenDelegatesGql.update(delegate.id, blockNumber)
   }
 
-  await dfuseStateService.saveOrUpdate(blockNumber)
   await sleepUtil(5)
 
   return sync()

@@ -15,7 +15,15 @@ select_permissions:
       columns:
         - account
         - created_at
-        - updated_at
         - id
+        - last_synced_at
+        - updated_at
       filter: {}
       allow_aggregations: true
+update_permissions:
+  - role: guest
+    permission:
+      columns:
+        - last_synced_at
+      filter: {}
+      check: null
