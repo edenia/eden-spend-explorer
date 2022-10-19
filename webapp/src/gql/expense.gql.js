@@ -72,6 +72,19 @@ export const GET_TOTAL_EXPENSE_BY_CATEGORY = gql`
   }
 `
 
+export const GET_TOTAL_BY_CATEGORY_AND_ELECTION_EXPENSES = gql`
+  query getTotalClaimedAndUnclaimedByElection($election: Int) {
+    total_by_category_and_election(
+      where: { election: { _eq: $election }, type: { _eq: "expense" } }
+    ) {
+      amount
+      category
+      election
+      usd_total
+    }
+  }
+`
+
 export const GET_CATEGORIZED_AND_UNCATEGORIZED_BY_ELECTION = gql`
   query getExpensesClaimedAndUnclaimedByElection($election: Int) {
     historic_expenses(where: { election: { _eq: $election } }) {

@@ -128,7 +128,7 @@ const sync = async () => {
     } catch (error) {
       console.error('dfuse error', error.message)
     }
-    console.log(index, 'index')
+    console.log('Salio:', delegate.account)
   }
 
   await sleepUtil(60)
