@@ -1,7 +1,7 @@
 const moment = require('moment')
 const { edenConfig } = require('../config')
 const { servicesConstant } = require('../constants')
-const { eosUtil, dfuseUtil, communityUtil } = require('../utils')
+const { eosUtil, dfuseUtil, communityUtil, sleepUtil } = require('../utils')
 const {
   edenDelegatesGql,
   edenHistoricElectionGql,
@@ -147,6 +147,8 @@ const saveHistoricElection = async () => {
       date_election: element.date_election
     })
   })
+
+  await sleepUtil(5)
 }
 
 const saveNewHistoricElection = async () => {
