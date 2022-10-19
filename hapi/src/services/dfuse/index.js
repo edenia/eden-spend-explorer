@@ -128,7 +128,6 @@ const sync = async () => {
     } catch (error) {
       console.error('dfuse error', error.message)
     }
-    console.log(index, 'index')
   }
 
   await sleepUtil(60)
