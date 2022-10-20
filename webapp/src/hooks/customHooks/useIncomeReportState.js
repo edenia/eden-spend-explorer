@@ -27,7 +27,7 @@ const useIncomeReportState = () => {
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
   const [delegateSelect, setDelegateSelect] = useState('')
   const [showDelegateRadio, setShowDelegateRadio] = useState('allDelegates')
-  const [showElectionRadio, setShowElectionRadio] = useState('allElections')
+  const [showElectionRadio, setShowElectionRadio] = useState('')
   const [electionsByYearList, setElectionsByYearList] = useState([])
   const [chartTransactionsList, setChartTransactionsList] = useState([])
   const [incomeByAllDelegatesList, setIncomeByAllDelegatesList] = useState([])

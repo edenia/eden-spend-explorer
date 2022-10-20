@@ -1,6 +1,5 @@
-import React, { memo, useState } from 'react'
+import React, { memo } from 'react'
 import { makeStyles } from '@mui/styles'
-import { useTranslation } from 'react-i18next'
 import {
   FormControl,
   FormControlLabel,
@@ -10,77 +9,68 @@ import {
   Tooltip,
   Typography
 } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
-import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
+import useExpenseReport from '../../hooks/customHooks/useExpenseReportState'
 import LineAreaChartReport from '../../components/LineAreaChartReport'
 import StackedChartReport from '../../components/StackedChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
-import { useSharedState } from '../../context/state.context'
+import { formatWithThousandSeparator } from '../../utils'
 import TableReport from '../../components/TableReport'
 import SelectComponent from '../../components/Select'
 
 import styles from './styles'
-import { formatWithThousandSeparator } from '../../utils'
 
 const useStyles = makeStyles(styles)
-
 const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
-const IncomeReport = () => {
+const ExpenseReportGeneral = () => {
   const classes = useStyles()
-
   const { t } = useTranslation()
-  const [showEosRateSwitch, setshowEosRateSwitch] = useState(true)
-  const [state] = useSharedState()
-  const { nextEdenDisbursement = '' } = state.eosTrasuryBalance
 
   const [
     {
-      chartTransactionsList,
-      typeCurrencySelect,
-      electionYearSelect,
-      electionRoundSelect,
-      showDelegateRadio,
-      delegateSelect,
-      incomeByAllDelegatesList,
-      electionsByYearList,
       showElectionRadio,
-      incomeClaimedAndUnclaimedList,
+      showDelegateRadio,
+      typeCurrencySelect,
+      showEosRateSwitch,
+      electionYearSelect,
+      delegateSelect,
+      electionRoundSelect,
+      electionsByYearList,
+      expenseByAllDelegatesList,
+      chartTransactionsList,
       totalByCategoryList,
-      percentIncomeList
+      categorizedAndUncategorizedList,
+      percentExpenseList
     },
     {
-      setTypeCurrencySelect,
-      getListElectionYears,
-      setElectionYearSelect,
-      setElectionRoundSelect,
+      setShowElectionRadio,
       setShowDelegateRadio,
+      setTypeCurrencySelect,
+      setShowEosRateSwitch,
+      setElectionYearSelect,
       setDelegateSelect,
-      setShowElectionRadio
+      setElectionRoundSelect,
+      getListElectionYears
     }
-  ] = useIncomeReportState()
+  ] = useExpenseReport()
 
   const tableData = chartTransactionsList.map(firstObj => ({
-    ...percentIncomeList.find(secondObj => secondObj.name === firstObj.name),
+    ...percentExpenseList.find(secondObj => secondObj.name === firstObj.name),
     ...firstObj
   }))
 
   const columns = [
     {
       field: 'txId',
-      headerName: t('tableHeader2', { ns: 'incomeRoute' }),
+      headerName: t('tableHeader2', { ns: 'expenseRoute' }),
       hide: !tableData[0]?.txId,
       cellClassName: classes.links,
       renderCell: param => (
         <Tooltip title={param.value}>
-          <a
-            href={
-              param.value.length > 60
-                ? `https://bloks.io/transaction/${param.value}`
-                : `https://bloks.io/account/genesis.eden?loadContract=true&tab=Tables&table=distaccount&account=genesis.eden&scope=&limit=100&lower_bound=${param.value}&upper_bound=${param.value}`
-            }
-          >
+          <a href={`https://bloks.io/transaction/${param.value}`}>
             {param.value.slice(0, 8)}
           </a>
         </Tooltip>
@@ -90,8 +80,8 @@ const IncomeReport = () => {
     {
       field: 'name',
       headerName: tableData[0]?.level
-        ? t('tableHeader1', { ns: 'incomeRoute' })
-        : t('tableElectionHeader', { ns: 'incomeRoute' }),
+        ? t('tableHeader1', { ns: 'expenseRoute' })
+        : t('tableElectionHeader', { ns: 'expenseRoute' }),
       cellClassName: classes.links,
       renderCell: param => (
         <a
@@ -105,21 +95,14 @@ const IncomeReport = () => {
     },
     {
       field: 'level',
-      headerName: t('tableHeader3', { ns: 'incomeRoute' }),
+      headerName: t('tableHeader3', { ns: 'expenseRoute' }),
       hide: !tableData[0]?.level,
       type: 'number',
       ...rowsCenter
     },
     {
       field: 'category',
-      headerName: t('tableHeader11', { ns: 'incomeRoute' }),
-      renderCell: param => (
-        <>
-          {param.value === 'claimed'
-            ? t('claimedCategory', { ns: 'incomeRoute' })
-            : t('unclaimedCategory', { ns: 'incomeRoute' })}
-        </>
-      ),
+      headerName: t('tableHeader11', { ns: 'expenseRoute' }),
       hide: !tableData[0]?.category,
       ...rowsCenter
     },
@@ -139,13 +122,13 @@ const IncomeReport = () => {
     },
     {
       field: 'date',
-      headerName: t('tableHeader6', { ns: 'incomeRoute' }),
+      headerName: t('tableHeader6', { ns: 'expenseRoute' }),
       hide: !tableData[0]?.date,
       ...rowsCenter
     },
     {
-      field: 'EOS_CLAIMED',
-      headerName: t('tableHeader7', { ns: 'incomeRoute' }),
+      field: 'EOS_CATEGORIZED',
+      headerName: t('tableHeader7', { ns: 'expenseRoute' }),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -153,8 +136,8 @@ const IncomeReport = () => {
       ...rowsCenter
     },
     {
-      field: 'EOS_UNCLAIMED',
-      headerName: t('tableHeader8', { ns: 'incomeRoute' }),
+      field: 'EOS_UNCATEGORIZED',
+      headerName: t('tableHeader8', { ns: 'expenseRoute' }),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -162,8 +145,8 @@ const IncomeReport = () => {
       ...rowsCenter
     },
     {
-      field: 'USD_CLAIMED',
-      headerName: t('tableHeader9', { ns: 'incomeRoute' }),
+      field: 'USD_CATEGORIZED',
+      headerName: t('tableHeader9', { ns: 'expenseRoute' }),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -171,8 +154,8 @@ const IncomeReport = () => {
       ...rowsCenter
     },
     {
-      field: 'USD_UNCLAIMED',
-      headerName: t('tableHeader10', { ns: 'incomeRoute' }),
+      field: 'USD_UNCATEGORIZED',
+      headerName: t('tableHeader10', { ns: 'expenseRoute' }),
       type: 'number',
       hide:
         showDelegateRadio === 'oneDelegate' &&
@@ -188,7 +171,7 @@ const IncomeReport = () => {
           <div className={classes.divider} />
           <div className={classes.title}>
             <Typography variant="span">
-              {t('title', { ns: 'incomeRoute' })}
+              {t('title', { ns: 'expenseRoute' })}
             </Typography>
           </div>
         </div>
@@ -196,18 +179,11 @@ const IncomeReport = () => {
       </div>
       <div className={classes.subTitle}>
         <Typography variant="span">
-          {t('subTitle', { ns: 'incomeRoute' })}
+          {t('subTitle', { ns: 'expenseRoute' })}
         </Typography>
         <br />
-        <label>
-          {t('textInformation', { ns: 'incomeRoute' })}
-          <br />
-          <strong>{`${t('nextDisbursement', {
-            ns: 'incomeRoute'
-          })} ${nextEdenDisbursement}`}</strong>
-        </label>
+        <label>{t('textInformation', { ns: 'expenseRoute' })}</label>
       </div>
-
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
           <FormControl>
@@ -241,12 +217,12 @@ const IncomeReport = () => {
             <>
               <FormControl>
                 <FormControlLabel
-                  label={t('exchangeRate', { ns: 'incomeRoute' })}
+                  label={t('exchangeRate')}
                   control={
                     <Switch
                       checked={showEosRateSwitch}
                       onChange={({ target }) =>
-                        setshowEosRateSwitch(target.checked)
+                        setShowEosRateSwitch(target.checked)
                       }
                     />
                   }
@@ -286,8 +262,8 @@ const IncomeReport = () => {
               <SelectComponent
                 onChangeFunction={setDelegateSelect}
                 labelSelect={t('textDelegateSelect', { ns: 'generalForm' })}
-                values={incomeByAllDelegatesList.map(
-                  data => data.eden_delegate.account
+                values={expenseByAllDelegatesList.map(
+                  data => data.delegate_payer
                 )}
                 disable={showDelegateRadio === 'allDelegates'}
                 actualValue={delegateSelect}
@@ -296,36 +272,29 @@ const IncomeReport = () => {
           )}
         </div>
       </div>
-
-      <LineAreaChartReport
-        data={chartTransactionsList}
-        coinType={typeCurrencySelect}
-        showEosRate={showEosRateSwitch}
-      />
-
+      <div>
+        <LineAreaChartReport
+          data={chartTransactionsList}
+          coinType={typeCurrencySelect}
+          showEosRate={showEosRateSwitch}
+        />
+      </div>
       <div className={classes.chartContainer}>
         <StackedChartReport
-          data={incomeClaimedAndUnclaimedList}
-          firstCategory={`CLAIMED`}
-          secondCategory={`UNCLAIMED`}
+          data={categorizedAndUncategorizedList}
+          firstCategory={'CATEGORIZED'}
+          secondCategory={'UNCATEGORIZED'}
           typeCurrency={typeCurrencySelect}
           showEosRate={showEosRateSwitch}
         />
 
         <PieChartReport
           data={totalByCategoryList}
-          coinType={typeCurrencySelect}
+          coinType={`${typeCurrencySelect}`}
         />
       </div>
-
       <div className={classes.tableContainer}>
         <div className={classes.subTitle}>
-          <Typography variant="span">
-            {chartTransactionsList[0]?.level
-              ? t('titleTable', { ns: 'incomeRoute' })
-              : t('titleTable2', { ns: 'incomeRoute' })}
-          </Typography>
-
           <div id="id-table-container">
             <TableReport columns={columns} dataPercent={tableData} />
           </div>
@@ -335,6 +304,4 @@ const IncomeReport = () => {
   )
 }
 
-IncomeReport.prototypes = {}
-
-export default memo(IncomeReport)
+export default memo(ExpenseReportGeneral)
