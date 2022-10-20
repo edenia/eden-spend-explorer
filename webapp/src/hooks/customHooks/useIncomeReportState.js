@@ -8,6 +8,7 @@ import {
   GET_ELECTIONS_BY_YEAR,
   GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION,
   GET_TOTAL_BY_CATEGORY,
+  GET_TOTAL_BY_CATEGORY_AND_ELECTION,
   GET_PERCENT_ALL_ELECTIONS,
   GET_PERCENT_BY_ELECTIONS
 } from '../../gql'
@@ -87,6 +88,15 @@ const useIncomeReportState = () => {
       }
     })
 
+  const [
+    loadTotalByCategoryAndElection,
+    { data: totalByCategoryAndElectionData }
+  ] = useLazyQuery(GET_TOTAL_BY_CATEGORY_AND_ELECTION, {
+    variables: {
+      election: electionRoundSelect
+    }
+  })
+
   const [loadTotalClaimedAndUnclaimed, { data: totalByCategoryData }] =
     useLazyQuery(GET_TOTAL_BY_CATEGORY)
 
@@ -107,6 +117,7 @@ const useIncomeReportState = () => {
     loadIncomeByAllDelegates()
     loadIncomeByDelegateAccount()
     loadTotalIncomeByElection()
+    loadTotalByCategoryAndElection()
     loadClaimedAndUnclaimedByElection()
     loadTotalClaimedAndUnclaimed()
     loadPercentAllElections()
@@ -192,6 +203,15 @@ const useIncomeReportState = () => {
         newDataFormatByElection(totalByElectionData?.total_by_election || [])
       )
   }, [showElectionRadio, totalByElectionData])
+
+  useEffect(() => {
+    showElectionRadio !== 'allElections' &&
+      setTotalByCategoryList(
+        newDataFormatTotalByCategory(
+          totalByCategoryAndElectionData?.total_by_category_and_election || []
+        )
+      )
+  }, [showElectionRadio, totalByCategoryAndElectionData])
 
   return [
     {
