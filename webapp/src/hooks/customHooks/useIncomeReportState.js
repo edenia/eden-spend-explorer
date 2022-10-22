@@ -10,7 +10,8 @@ import {
   GET_TOTAL_BY_CATEGORY,
   GET_TOTAL_BY_CATEGORY_AND_ELECTION,
   GET_PERCENT_ALL_ELECTIONS,
-  GET_PERCENT_BY_ELECTIONS
+  GET_PERCENT_BY_ELECTIONS,
+  GET_TOTAL_CLAIMED
 } from '../../gql'
 import {
   newDataFormatByAllDelegatesIncome,
@@ -38,6 +39,7 @@ const useIncomeReportState = () => {
     useState([])
   const [totalByCategoryList, setTotalByCategoryList] = useState([])
   const [percentIncomeList, setPercentIncomeList] = useState([])
+  const [totalClaimedList, setTotalClaimedList] = useState([])
 
   const getListElectionYears = () => {
     const yearsList = ['All']
@@ -112,6 +114,9 @@ const useIncomeReportState = () => {
     }
   )
 
+  const [loadTotalClaimed, { data: totalClaimedData }] =
+    useLazyQuery(GET_TOTAL_CLAIMED)
+
   useEffect(() => {
     loadElectionsByYear()
     loadIncomeByAllDelegates()
@@ -122,6 +127,7 @@ const useIncomeReportState = () => {
     loadTotalClaimedAndUnclaimed()
     loadPercentAllElections()
     loadPercentByElection()
+    loadTotalClaimed()
   }, [])
 
   useEffect(() => {
@@ -213,6 +219,15 @@ const useIncomeReportState = () => {
       )
   }, [showElectionRadio, totalByCategoryAndElectionData])
 
+  useEffect(() => {
+    showElectionRadio === 'allElections' &&
+      setTotalClaimedList(
+        newDataFormatTotalByCategory(
+          totalClaimedData?.total_by_category_and_election || []
+        )
+      )
+  }, [totalClaimedData])
+
   return [
     {
       chartTransactionsList,
@@ -226,7 +241,8 @@ const useIncomeReportState = () => {
       showElectionRadio,
       incomeClaimedAndUnclaimedList,
       totalByCategoryList,
-      percentIncomeList
+      percentIncomeList,
+      totalClaimedList
     },
     {
       setTypeCurrencySelect,

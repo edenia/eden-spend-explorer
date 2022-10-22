@@ -2,7 +2,7 @@ import { listChartColors } from '../constants'
 
 let CURRENT_GRAPHIC_COLOR = 0
 
-const generateColor = () => {
+export const generateColor = () => {
   if (CURRENT_GRAPHIC_COLOR === 18) CURRENT_GRAPHIC_COLOR = 0
 
   const color = listChartColors[CURRENT_GRAPHIC_COLOR]
@@ -58,9 +58,10 @@ export const newDataFormatByDelegate = (transactionsList, delegateSelect) =>
 
 export const newDataFormatTotalByCategory = totalByCategory =>
   totalByCategory.map(data => ({
-    name: data.category,
+    name: data.category ? data.category : `Election ${data.election + 1}`,
     EOS: Number(data.amount),
-    USD: Number(data.usd_total)
+    USD: Number(data.usd_total),
+    color: generateColor()
   }))
 
 export const newDataFormatByClasification = (dataList, category) => {

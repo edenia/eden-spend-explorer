@@ -13,7 +13,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  Line,
+  Scatter,
   ResponsiveContainer
 } from 'recharts'
 
@@ -136,11 +136,11 @@ const StakedChartReport = ({
                   orientation="right"
                   tick={{ fontSize: 14, stroke: '#00c2bf', strokeWidth: 0.5 }}
                 />
-                <Line
+                <Scatter
                   yAxisId="right"
                   type="monotone"
                   dataKey="EXCHANGE_RATE"
-                  stroke="#00c2bf"
+                  fill="#00c2bf"
                   strokeWidth={2}
                 />
               </>

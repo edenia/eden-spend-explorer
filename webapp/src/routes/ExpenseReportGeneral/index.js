@@ -1,19 +1,10 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
-import {
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Switch,
-  Tooltip,
-  Typography
-} from '@mui/material'
+import { Tooltip, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
 import useExpenseReport from '../../hooks/customHooks/useExpenseReportState'
 import LineAreaChartReport from '../../components/LineAreaChartReport'
-import StackedChartReport from '../../components/StackedChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
 import { formatWithThousandSeparator } from '../../utils'
@@ -35,27 +26,17 @@ const ExpenseReportGeneral = () => {
       showDelegateRadio,
       typeCurrencySelect,
       showEosRateSwitch,
-      electionYearSelect,
-      delegateSelect,
-      electionRoundSelect,
-      electionsByYearList,
-      expenseByAllDelegatesList,
       chartTransactionsList,
       totalByCategoryList,
-      categorizedAndUncategorizedList,
-      percentExpenseList
+      percentExpenseList,
+      totalCategorizedList
     },
-    {
-      setShowElectionRadio,
-      setShowDelegateRadio,
-      setTypeCurrencySelect,
-      setShowEosRateSwitch,
-      setElectionYearSelect,
-      setDelegateSelect,
-      setElectionRoundSelect,
-      getListElectionYears
-    }
+    { setShowElectionRadio, setTypeCurrencySelect }
   ] = useExpenseReport()
+
+  useEffect(() => {
+    setShowElectionRadio('allElections')
+  }, [])
 
   const tableData = chartTransactionsList.map(firstObj => ({
     ...percentExpenseList.find(secondObj => secondObj.name === firstObj.name),
@@ -186,90 +167,12 @@ const ExpenseReportGeneral = () => {
       </div>
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
-          <FormControl>
-            <RadioGroup
-              name="election-radio-buttons-group"
-              row
-              onChange={({ target }) => setShowElectionRadio(target.value)}
-              value={showElectionRadio}
-            >
-              <FormControlLabel
-                control={<Radio size="small" />}
-                label={t('textRadioButton4', { ns: 'generalForm' })}
-                value="allElections"
-              />
-              <FormControlLabel
-                control={<Radio size="small" />}
-                label={t('textRadioButton3', { ns: 'generalForm' })}
-                value="oneElection"
-              />
-            </RadioGroup>
-          </FormControl>
           <SelectComponent
             onChangeFunction={setTypeCurrencySelect}
             labelSelect={t('textCurrencySelect', { ns: 'generalForm' })}
             values={['EOS', 'USD']}
             actualValue={typeCurrencySelect}
           />
-        </div>
-        <div id="id-select-election-container">
-          {showElectionRadio === 'oneElection' && (
-            <>
-              <FormControl>
-                <FormControlLabel
-                  label={t('exchangeRate')}
-                  control={
-                    <Switch
-                      checked={showEosRateSwitch}
-                      onChange={({ target }) =>
-                        setShowEosRateSwitch(target.checked)
-                      }
-                    />
-                  }
-                />
-              </FormControl>
-              <FormControl>
-                <RadioGroup
-                  name="controlled-radio-buttons-group"
-                  value={showDelegateRadio}
-                  row
-                  onChange={({ target }) => setShowDelegateRadio(target.value)}
-                >
-                  <FormControlLabel
-                    control={<Radio size="small" />}
-                    label={t('textRadioButton2', { ns: 'generalForm' })}
-                    value="allDelegates"
-                  />
-                  <FormControlLabel
-                    control={<Radio size="small" />}
-                    label={t('textRadioButton1', { ns: 'generalForm' })}
-                    value="oneDelegate"
-                  />
-                </RadioGroup>
-              </FormControl>
-              <SelectComponent
-                onChangeFunction={setElectionYearSelect}
-                labelSelect={t('textYearSelect', { ns: 'generalForm' })}
-                values={getListElectionYears()}
-                actualValue={electionYearSelect}
-              />
-              <SelectComponent
-                onChangeFunction={setElectionRoundSelect}
-                labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
-                values={electionsByYearList.map(data => `${data.election}`)}
-                actualValue={electionRoundSelect}
-              />
-              <SelectComponent
-                onChangeFunction={setDelegateSelect}
-                labelSelect={t('textDelegateSelect', { ns: 'generalForm' })}
-                values={expenseByAllDelegatesList.map(
-                  data => data.delegate_payer
-                )}
-                disable={showDelegateRadio === 'allDelegates'}
-                actualValue={delegateSelect}
-              />
-            </>
-          )}
         </div>
       </div>
       <div>
@@ -280,16 +183,13 @@ const ExpenseReportGeneral = () => {
         />
       </div>
       <div className={classes.chartContainer}>
-        <StackedChartReport
-          data={categorizedAndUncategorizedList}
-          firstCategory={'CATEGORIZED'}
-          secondCategory={'UNCATEGORIZED'}
-          typeCurrency={typeCurrencySelect}
-          showEosRate={showEosRateSwitch}
+        <PieChartReport
+          data={totalByCategoryList}
+          coinType={`${typeCurrencySelect}`}
         />
 
         <PieChartReport
-          data={totalByCategoryList}
+          data={totalCategorizedList}
           coinType={`${typeCurrencySelect}`}
         />
       </div>

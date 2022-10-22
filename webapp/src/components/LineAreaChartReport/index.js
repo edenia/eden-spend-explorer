@@ -15,7 +15,7 @@ import {
   Legend,
   ResponsiveContainer,
   Cell,
-  Line
+  Scatter
 } from 'recharts'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
@@ -132,11 +132,11 @@ const LineAreaChartReport = ({ data, coinType, showEosRate }) => {
                     orientation="right"
                     tick={{ fontSize: 14, stroke: '#00c2bf', strokeWidth: 0.5 }}
                   />
-                  <Line
+                  <Scatter
                     yAxisId="right"
                     type="monotone"
                     dataKey="EXCHANGE_RATE"
-                    stroke="#00c2bf"
+                    fill="#00c2bf"
                     strokeWidth={2}
                   />
                 </>

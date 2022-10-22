@@ -99,6 +99,37 @@ export const GET_CATEGORIZED_AND_UNCATEGORIZED_BY_ELECTION = gql`
   }
 `
 
+export const GET_TOTAL_CATEGORIZED = gql`
+  query getTotalCategorized {
+    total_by_category(
+      where: { category: { _neq: "uncategorized" }, type: { _eq: "expense" } }
+    ) {
+      amount
+      category
+      type
+      usd_total
+    }
+  }
+`
+
+export const GET_TOTAL_CATEGORIZED_BY_ELECTION = gql`
+  query getTotalCategorizedByElection($election: Int) {
+    total_by_category_and_election(
+      where: {
+        category: { _neq: "uncategorized" }
+        type: { _eq: "expense" }
+        election: { _eq: $election }
+      }
+    ) {
+      amount
+      category
+      election
+      type
+      usd_total
+    }
+  }
+`
+
 export const GET_PERCENT_EXPENSES_ALL_ELECTIONS = gql`
   query getPercentAllElections {
     percent_by_all_elections_expenses {

@@ -11,7 +11,6 @@ import {
 
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
 import LineAreaChartReport from '../../components/LineAreaChartReport'
-import StackedChartReport from '../../components/StackedChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
 import { useSharedState } from '../../context/state.context'
@@ -39,9 +38,9 @@ const IncomeReportGeneral = () => {
       typeCurrencySelect,
       showDelegateRadio,
       showElectionRadio,
-      incomeClaimedAndUnclaimedList,
       totalByCategoryList,
-      percentIncomeList
+      percentIncomeList,
+      totalClaimedList
     },
     { setTypeCurrencySelect, setShowElectionRadio }
   ] = useIncomeReportState()
@@ -228,18 +227,12 @@ const IncomeReportGeneral = () => {
       />
 
       <div className={classes.chartContainer}>
-        <StackedChartReport
-          data={incomeClaimedAndUnclaimedList}
-          firstCategory={`CLAIMED`}
-          secondCategory={`UNCLAIMED`}
-          typeCurrency={typeCurrencySelect}
-          showEosRate={showEosRateSwitch}
-        />
-
         <PieChartReport
           data={totalByCategoryList}
           coinType={typeCurrencySelect}
         />
+
+        <PieChartReport data={totalClaimedList} coinType={typeCurrencySelect} />
       </div>
 
       <div className={classes.tableContainer}>
