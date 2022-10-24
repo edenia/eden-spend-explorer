@@ -59,7 +59,8 @@ export default theme => ({
   chartContainer: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'stretch',
+    justifyContent: 'space-around',
     overflow: 'hidden',
     overflowX: 'hidden',
     with: '100%',

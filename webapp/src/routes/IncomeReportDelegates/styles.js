@@ -57,9 +57,10 @@ export default theme => ({
     }
   },
   chartContainer: {
-    marginLeft: '24px',
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'space-around',
     overflow: 'hidden',
     overflowX: 'hidden',
     with: '100%',

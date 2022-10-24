@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import FileSaver from 'file-saver'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
+import { IconButton } from '@mui/material'
+import DownloadIcon from '@mui/icons-material/Download'
 import { useTranslation } from 'react-i18next'
 import { useCurrentPng } from 'recharts-to-png'
 import {
@@ -105,6 +107,9 @@ const LineAreaChartReport = ({ data, coinType, showEosRate }) => {
   return (
     <>
       <div className={classes.chartContainer}>
+        <IconButton onClick={handleBarDownload}>
+          <DownloadIcon />
+        </IconButton>
         <div id="chart-scroll-id">
           <ResponsiveContainer width="100%" height={450}>
             <ComposedChart
@@ -160,9 +165,6 @@ const LineAreaChartReport = ({ data, coinType, showEosRate }) => {
             </ComposedChart>
           </ResponsiveContainer>
         </div>
-        <button onClick={handleBarDownload}>
-          <code>Download Bar Chart</code>
-        </button>
       </div>
     </>
   )

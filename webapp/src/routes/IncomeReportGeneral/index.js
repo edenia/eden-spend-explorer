@@ -220,19 +220,36 @@ const IncomeReportGeneral = () => {
         </div>
       </div>
 
-      <LineAreaChartReport
-        data={chartTransactionsList}
-        coinType={typeCurrencySelect}
-        showEosRate={showEosRateSwitch}
-      />
+      <div>
+        <Typography variant="h5">
+          {t('titleComposeChartGeneral', { ns: 'incomeRoute' })}
+        </Typography>
+        <LineAreaChartReport
+          data={chartTransactionsList}
+          coinType={typeCurrencySelect}
+          showEosRate={showEosRateSwitch}
+        />
+      </div>
 
       <div className={classes.chartContainer}>
-        <PieChartReport
-          data={totalByCategoryList}
-          coinType={typeCurrencySelect}
-        />
-
-        <PieChartReport data={totalClaimedList} coinType={typeCurrencySelect} />
+        <div>
+          <Typography variant="h6">
+            {t('titlePieChartGeneral1', { ns: 'incomeRoute' })}
+          </Typography>
+          <PieChartReport
+            data={totalByCategoryList}
+            coinType={typeCurrencySelect}
+          />
+        </div>
+        <div>
+          <Typography variant="h6">
+            {t('titlePieChartGeneral2', { ns: 'incomeRoute' })}
+          </Typography>
+          <PieChartReport
+            data={totalClaimedList}
+            coinType={typeCurrencySelect}
+          />
+        </div>
       </div>
 
       <div className={classes.tableContainer}>

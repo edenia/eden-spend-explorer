@@ -1,6 +1,6 @@
 export default theme => ({
   chartContainer: {
-    width: '50%',
+    width: '100%',
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',

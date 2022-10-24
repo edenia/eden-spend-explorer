@@ -4,6 +4,8 @@ import FileSaver from 'file-saver'
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts'
 import { useCurrentPng } from 'recharts-to-png'
 import { makeStyles } from '@mui/styles'
+import { IconButton } from '@mui/material'
+import DownloadIcon from '@mui/icons-material/Download'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 
@@ -118,8 +120,11 @@ const PieChartReport = ({ data, coinType }) => {
   return (
     <>
       <div className={classes.chartContainer}>
-        <ResponsiveContainer height={300}>
-          <PieChart width={500} height={300} ref={pieRef}>
+        <IconButton onClick={handlePieDownload}>
+          <DownloadIcon />
+        </IconButton>
+        <ResponsiveContainer height={300} width={600}>
+          <PieChart width={600} height={300} ref={pieRef}>
             <Pie
               activeIndex={activeIndex}
               activeShape={renderActiveShape}
@@ -134,9 +139,6 @@ const PieChartReport = ({ data, coinType }) => {
             />
           </PieChart>
         </ResponsiveContainer>
-        <button onClick={handlePieDownload}>
-          <code>Download Pie Chart</code>
-        </button>
       </div>
     </>
   )

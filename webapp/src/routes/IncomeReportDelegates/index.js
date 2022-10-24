@@ -280,25 +280,39 @@ const IncomeReport = () => {
         </div>
       </div>
 
-      <LineAreaChartReport
-        data={chartTransactionsList}
-        coinType={typeCurrencySelect}
-        showEosRate={showEosRateSwitch}
-      />
-
-      <div className={classes.chartContainer}>
-        <StackedChartReport
-          data={incomeClaimedAndUnclaimedList}
-          firstCategory={`CLAIMED`}
-          secondCategory={`UNCLAIMED`}
-          typeCurrency={typeCurrencySelect}
+      <div>
+        <Typography variant="h5">
+          {t('titleComposeChartDelegate', { ns: 'incomeRoute' })}
+        </Typography>
+        <LineAreaChartReport
+          data={chartTransactionsList}
+          coinType={typeCurrencySelect}
           showEosRate={showEosRateSwitch}
         />
+      </div>
 
-        <PieChartReport
-          data={totalByCategoryList}
-          coinType={typeCurrencySelect}
-        />
+      <div className={classes.chartContainer}>
+        <div>
+          <Typography variant="h6">
+            {t('titleStackedChartDelegate', { ns: 'incomeRoute' })}
+          </Typography>
+          <StackedChartReport
+            data={incomeClaimedAndUnclaimedList}
+            firstCategory={`CLAIMED`}
+            secondCategory={`UNCLAIMED`}
+            typeCurrency={typeCurrencySelect}
+            showEosRate={showEosRateSwitch}
+          />
+        </div>
+        <div>
+          <Typography variant="h6">
+            {t('titlePieChartDelegate', { ns: 'incomeRoute' })}
+          </Typography>
+          <PieChartReport
+            data={totalByCategoryList}
+            coinType={typeCurrencySelect}
+          />
+        </div>
       </div>
 
       <div className={classes.tableContainer}>

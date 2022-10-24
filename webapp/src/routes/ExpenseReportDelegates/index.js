@@ -256,6 +256,9 @@ const ExpenseReport = () => {
         </div>
       </div>
       <div>
+        <Typography variant="h5">
+          {t('titleComposeChartDelegate', { ns: 'expenseRoute' })}
+        </Typography>
         <LineAreaChartReport
           data={chartTransactionsList}
           coinType={typeCurrencySelect}
@@ -263,18 +266,27 @@ const ExpenseReport = () => {
         />
       </div>
       <div className={classes.chartContainer}>
-        <StackedChartReport
-          data={categorizedAndUncategorizedList}
-          firstCategory={'CATEGORIZED'}
-          secondCategory={'UNCATEGORIZED'}
-          typeCurrency={typeCurrencySelect}
-          showEosRate={showEosRateSwitch}
-        />
-
-        <PieChartReport
-          data={totalCategorizedList}
-          coinType={`${typeCurrencySelect}`}
-        />
+        <div>
+          <Typography variant="h6">
+            {t('titleStackedChartDelegate', { ns: 'expenseRoute' })}
+          </Typography>
+          <StackedChartReport
+            data={categorizedAndUncategorizedList}
+            firstCategory={'CATEGORIZED'}
+            secondCategory={'UNCATEGORIZED'}
+            typeCurrency={typeCurrencySelect}
+            showEosRate={showEosRateSwitch}
+          />
+        </div>
+        <div>
+          <Typography variant="h6">
+            {t('titlePieChartDelegate', { ns: 'expenseRoute' })}
+          </Typography>
+          <PieChartReport
+            data={totalCategorizedList}
+            coinType={`${typeCurrencySelect}`}
+          />
+        </div>
       </div>
       <div className={classes.tableContainer}>
         <div className={classes.subTitle}>

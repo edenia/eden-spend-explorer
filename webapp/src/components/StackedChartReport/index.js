@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useCurrentPng } from 'recharts-to-png'
 import { makeStyles } from '@mui/styles'
+import { IconButton } from '@mui/material'
+import DownloadIcon from '@mui/icons-material/Download'
 import { Box } from '@mui/system'
 import {
   ComposedChart,
@@ -122,7 +124,10 @@ const StakedChartReport = ({
   return (
     <>
       <div className={classes.chartContainer}>
-        <ResponsiveContainer height={300}>
+        <IconButton onClick={handleStakedDownload}>
+          <DownloadIcon />
+        </IconButton>
+        <ResponsiveContainer height={300} width={600}>
           <ComposedChart width={500} height={300} data={data} ref={stackedRef}>
             <CartesianGrid stroke="#f5f5f5" />
             <XAxis hide dataKey="name" scale="auto" />
@@ -172,9 +177,6 @@ const StakedChartReport = ({
             />
           </ComposedChart>
         </ResponsiveContainer>
-        <button onClick={handleStakedDownload}>
-          <code>Download Staked Bar Chart</code>
-        </button>
       </div>
     </>
   )
