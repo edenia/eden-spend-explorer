@@ -35,9 +35,14 @@ const runUpdaters = async actions => {
           item =>
             item.type === `${matchingAction.account}:${matchingAction.name}`
         )
-        const electionNumber = await edenHistoricElectionGql.get({
-          date_election: { _lte: action.trace.block.timestamp }
-        })
+        const electionNumber =
+          matchingAction.name === 'fundtransfer'
+            ? await edenHistoricElectionGql.get({
+                date_election: { _lte: matchingAction.json.distribution_time }
+              })
+            : await edenHistoricElectionGql.get({
+                date_election: { _lte: action.trace.block.timestamp }
+              })
 
         const edenElectionId =
           matchingAction.name === 'withdraw'
