@@ -15,6 +15,8 @@ void edenexplorer_setup( test_chain &t ) {
 
 struct tester {
   test_chain   chain;
+  user_context edenexplorer = chain.as( "edenexplorer"_n );
+
   user_context alice = chain.as( "alice"_n );
   user_context bob = chain.as( "bob"_n );
   user_context pip = chain.as( "pip"_n );
