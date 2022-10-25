@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
 import {
@@ -60,6 +60,10 @@ const IncomeReport = () => {
       setShowElectionRadio
     }
   ] = useIncomeReportState()
+
+  useEffect(() => {
+    setShowElectionRadio('oneElection')
+  }, [])
 
   const tableData = chartTransactionsList.map(firstObj => ({
     ...percentIncomeList.find(secondObj => secondObj.name === firstObj.name),
@@ -210,25 +214,6 @@ const IncomeReport = () => {
 
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
-          <FormControl>
-            <RadioGroup
-              name="election-radio-buttons-group"
-              row
-              onChange={({ target }) => setShowElectionRadio(target.value)}
-              value={showElectionRadio}
-            >
-              <FormControlLabel
-                control={<Radio size="small" />}
-                label={t('textRadioButton4', { ns: 'generalForm' })}
-                value="allElections"
-              />
-              <FormControlLabel
-                control={<Radio size="small" />}
-                label={t('textRadioButton3', { ns: 'generalForm' })}
-                value="oneElection"
-              />
-            </RadioGroup>
-          </FormControl>
           <SelectComponent
             onChangeFunction={setTypeCurrencySelect}
             labelSelect={t('textCurrencySelect', { ns: 'generalForm' })}
@@ -237,85 +222,97 @@ const IncomeReport = () => {
           />
         </div>
         <div id="id-select-election-container">
-          {showElectionRadio === 'oneElection' && (
-            <>
-              <FormControl>
+          <>
+            <FormControl>
+              <FormControlLabel
+                label={t('exchangeRate', { ns: 'incomeRoute' })}
+                control={
+                  <Switch
+                    checked={showEosRateSwitch}
+                    onChange={({ target }) =>
+                      setshowEosRateSwitch(target.checked)
+                    }
+                  />
+                }
+              />
+            </FormControl>
+            <FormControl>
+              <RadioGroup
+                name="controlled-radio-buttons-group"
+                value={showDelegateRadio}
+                row
+                onChange={({ target }) => setShowDelegateRadio(target.value)}
+              >
                 <FormControlLabel
-                  label={t('exchangeRate', { ns: 'incomeRoute' })}
-                  control={
-                    <Switch
-                      checked={showEosRateSwitch}
-                      onChange={({ target }) =>
-                        setshowEosRateSwitch(target.checked)
-                      }
-                    />
-                  }
+                  control={<Radio size="small" />}
+                  label={t('textRadioButton2', { ns: 'generalForm' })}
+                  value="allDelegates"
                 />
-              </FormControl>
-              <FormControl>
-                <RadioGroup
-                  name="controlled-radio-buttons-group"
-                  value={showDelegateRadio}
-                  row
-                  onChange={({ target }) => setShowDelegateRadio(target.value)}
-                >
-                  <FormControlLabel
-                    control={<Radio size="small" />}
-                    label={t('textRadioButton2', { ns: 'generalForm' })}
-                    value="allDelegates"
-                  />
-                  <FormControlLabel
-                    control={<Radio size="small" />}
-                    label={t('textRadioButton1', { ns: 'generalForm' })}
-                    value="oneDelegate"
-                  />
-                </RadioGroup>
-              </FormControl>
-              <SelectComponent
-                onChangeFunction={setElectionYearSelect}
-                labelSelect={t('textYearSelect', { ns: 'generalForm' })}
-                values={getListElectionYears()}
-                actualValue={electionYearSelect}
-              />
-              <SelectComponent
-                onChangeFunction={setElectionRoundSelect}
-                labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
-                values={electionsByYearList.map(data => `${data.election}`)}
-                actualValue={electionRoundSelect}
-              />
-              <SelectComponent
-                onChangeFunction={setDelegateSelect}
-                labelSelect={t('textDelegateSelect', { ns: 'generalForm' })}
-                values={incomeByAllDelegatesList.map(
-                  data => data.eden_delegate.account
-                )}
-                disable={showDelegateRadio === 'allDelegates'}
-                actualValue={delegateSelect}
-              />
-            </>
-          )}
+                <FormControlLabel
+                  control={<Radio size="small" />}
+                  label={t('textRadioButton1', { ns: 'generalForm' })}
+                  value="oneDelegate"
+                />
+              </RadioGroup>
+            </FormControl>
+            <SelectComponent
+              onChangeFunction={setElectionYearSelect}
+              labelSelect={t('textYearSelect', { ns: 'generalForm' })}
+              values={getListElectionYears()}
+              actualValue={electionYearSelect}
+            />
+            <SelectComponent
+              onChangeFunction={setElectionRoundSelect}
+              labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
+              values={electionsByYearList.map(data => `${data.election}`)}
+              actualValue={electionRoundSelect}
+            />
+            <SelectComponent
+              onChangeFunction={setDelegateSelect}
+              labelSelect={t('textDelegateSelect', { ns: 'generalForm' })}
+              values={incomeByAllDelegatesList.map(
+                data => data.eden_delegate.account
+              )}
+              disable={showDelegateRadio === 'allDelegates'}
+              actualValue={delegateSelect}
+            />
+          </>
         </div>
       </div>
 
-      <LineAreaChartReport
-        data={chartTransactionsList}
-        coinType={typeCurrencySelect}
-        showEosRate={showEosRateSwitch}
-      />
-
-      <div className={classes.chartContainer}>
-        <StackedChartReport
-          data={incomeClaimedAndUnclaimedList}
-          firstCategory={`CLAIMED`}
-          secondCategory={`UNCLAIMED`}
-          typeCurrency={typeCurrencySelect}
+      <div>
+        <Typography variant="h5">
+          {t('titleComposeChartDelegate', { ns: 'incomeRoute' })}
+        </Typography>
+        <LineAreaChartReport
+          data={chartTransactionsList}
+          coinType={typeCurrencySelect}
           showEosRate={showEosRateSwitch}
         />
+      </div>
 
-        <PieChartReport
-          data={totalByCategoryList}
-          coinType={typeCurrencySelect}
-        />
+      <div className={classes.chartContainer}>
+        <div>
+          <Typography variant="h6">
+            {t('titleStackedChartDelegate', { ns: 'incomeRoute' })}
+          </Typography>
+          <StackedChartReport
+            data={incomeClaimedAndUnclaimedList}
+            firstCategory={`CLAIMED`}
+            secondCategory={`UNCLAIMED`}
+            typeCurrency={typeCurrencySelect}
+            showEosRate={showEosRateSwitch}
+          />
+        </div>
+        <div>
+          <Typography variant="h6">
+            {t('titlePieChartDelegate', { ns: 'incomeRoute' })}
+          </Typography>
+          <PieChartReport
+            data={totalByCategoryList}
+            coinType={typeCurrencySelect}
+          />
+        </div>
       </div>
 
       <div className={classes.tableContainer}>

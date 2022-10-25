@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import FileSaver from 'file-saver'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
+import { IconButton } from '@mui/material'
+import DownloadIcon from '@mui/icons-material/Download'
 import { useTranslation } from 'react-i18next'
 import { useCurrentPng } from 'recharts-to-png'
 import {
@@ -15,7 +17,7 @@ import {
   Legend,
   ResponsiveContainer,
   Cell,
-  Line
+  Scatter
 } from 'recharts'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
@@ -105,6 +107,9 @@ const LineAreaChartReport = ({ data, coinType, showEosRate }) => {
   return (
     <>
       <div className={classes.chartContainer}>
+        <IconButton onClick={handleBarDownload}>
+          <DownloadIcon />
+        </IconButton>
         <div id="chart-scroll-id">
           <ResponsiveContainer width="100%" height={450}>
             <ComposedChart
@@ -132,11 +137,11 @@ const LineAreaChartReport = ({ data, coinType, showEosRate }) => {
                     orientation="right"
                     tick={{ fontSize: 14, stroke: '#00c2bf', strokeWidth: 0.5 }}
                   />
-                  <Line
+                  <Scatter
                     yAxisId="right"
                     type="monotone"
                     dataKey="EXCHANGE_RATE"
-                    stroke="#00c2bf"
+                    fill="#00c2bf"
                     strokeWidth={2}
                   />
                 </>
@@ -160,9 +165,6 @@ const LineAreaChartReport = ({ data, coinType, showEosRate }) => {
             </ComposedChart>
           </ResponsiveContainer>
         </div>
-        <button onClick={handleBarDownload}>
-          <code>Download Bar Chart</code>
-        </button>
       </div>
     </>
   )

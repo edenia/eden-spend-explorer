@@ -19,7 +19,9 @@ import {
   GET_PERCENT_EXPENSES_BY_ELECTION,
   GET_EXPENSE_ELECTIONS_BY_YEAR,
   GET_TOTAL_EXPENSE_BY_CATEGORY,
-  GET_TOTAL_BY_CATEGORY_AND_ELECTION_EXPENSES
+  GET_TOTAL_BY_CATEGORY_AND_ELECTION_EXPENSES,
+  GET_TOTAL_CATEGORIZED,
+  GET_TOTAL_CATEGORIZED_BY_ELECTION
 } from '../../gql'
 
 const useExpenseReport = () => {
@@ -38,6 +40,7 @@ const useExpenseReport = () => {
   const [percentExpenseList, setPercentExpenseList] = useState([])
   const [categorizedAndUncategorizedList, setCategorizedAndUncategorizedList] =
     useState([])
+  const [totalCategorizedList, setTotalCategorizedList] = useState([])
 
   const getListElectionYears = () => {
     const yearsList = ['All']
@@ -113,6 +116,19 @@ const useExpenseReport = () => {
     }
   )
 
+  const [loadTotalCategorized, { data: totalCategorizedData }] = useLazyQuery(
+    GET_TOTAL_CATEGORIZED
+  )
+
+  const [
+    loadTotalCategorizedByElection,
+    { data: totalCategorizedByElectionData }
+  ] = useLazyQuery(GET_TOTAL_CATEGORIZED_BY_ELECTION, {
+    variables: {
+      election: electionRoundSelect
+    }
+  })
+
   useEffect(() => {
     loadElectionsByYear()
     loadExpenseByAllDelegates()
@@ -123,6 +139,8 @@ const useExpenseReport = () => {
     loadClaimedAndUnclaimed()
     loadPercentAllElections()
     loadPercentByElection()
+    loadTotalCategorized()
+    loadTotalCategorizedByElection()
   }, [])
 
   useEffect(() => {
@@ -217,6 +235,24 @@ const useExpenseReport = () => {
       )
   }, [showElectionRadio, totalByElectionData])
 
+  useEffect(() => {
+    showElectionRadio === 'allElections' &&
+      setTotalCategorizedList(
+        newDataFormatTotalByCategory(
+          totalCategorizedData?.total_by_category || []
+        )
+      )
+  }, [showElectionRadio, totalCategorizedData])
+
+  useEffect(() => {
+    showElectionRadio !== 'allElections' &&
+      setTotalCategorizedList(
+        newDataFormatTotalByCategory(
+          totalCategorizedByElectionData?.total_by_category_and_election || []
+        )
+      )
+  }, [showElectionRadio, totalCategorizedByElectionData])
+
   return [
     {
       showElectionRadio,
@@ -231,7 +267,8 @@ const useExpenseReport = () => {
       chartTransactionsList,
       totalByCategoryList,
       categorizedAndUncategorizedList,
-      percentExpenseList
+      percentExpenseList,
+      totalCategorizedList
     },
     {
       setShowElectionRadio,

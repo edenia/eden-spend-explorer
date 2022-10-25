@@ -4,6 +4,8 @@ import FileSaver from 'file-saver'
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts'
 import { useCurrentPng } from 'recharts-to-png'
 import { makeStyles } from '@mui/styles'
+import { IconButton } from '@mui/material'
+import DownloadIcon from '@mui/icons-material/Download'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 
@@ -21,7 +23,6 @@ const renderActiveShape = props => {
     outerRadius,
     startAngle,
     endAngle,
-    fill,
     payload,
     percent,
     value,
@@ -43,8 +44,9 @@ const renderActiveShape = props => {
         x={cx}
         y={cy}
         dy={8}
+        textLength="15%"
         textAnchor="middle"
-        fill={fill}
+        fill={payload.color}
         lengthAdjust="spacingAndGlyphs"
       >
         {payload.name}
@@ -56,7 +58,7 @@ const renderActiveShape = props => {
         outerRadius={outerRadius}
         startAngle={startAngle}
         endAngle={endAngle}
-        fill={fill}
+        fill={payload.color}
       />
       <Sector
         cx={cx}
@@ -65,14 +67,14 @@ const renderActiveShape = props => {
         endAngle={endAngle}
         innerRadius={outerRadius + 6}
         outerRadius={outerRadius + 10}
-        fill={fill}
+        fill={payload.color}
       />
       <path
         d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-        stroke={fill}
+        stroke={payload.color}
         fill="none"
       />
-      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+      <circle cx={ex} cy={ey} r={2} fill={payload.color} stroke="none" />
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -88,7 +90,7 @@ const renderActiveShape = props => {
         fill="#999"
         lengthAdjust="spacingAndGlyphs"
       >
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
+        {`${(percent * 100).toFixed(2)}%`}
       </text>
     </g>
   )
@@ -118,8 +120,11 @@ const PieChartReport = ({ data, coinType }) => {
   return (
     <>
       <div className={classes.chartContainer}>
-        <ResponsiveContainer height={300}>
-          <PieChart width={500} height={300} ref={pieRef}>
+        <IconButton onClick={handlePieDownload}>
+          <DownloadIcon />
+        </IconButton>
+        <ResponsiveContainer height={300} width={600}>
+          <PieChart width={600} height={300} ref={pieRef}>
             <Pie
               activeIndex={activeIndex}
               activeShape={renderActiveShape}
@@ -130,14 +135,10 @@ const PieChartReport = ({ data, coinType }) => {
               cy="50%"
               innerRadius={45}
               outerRadius={60}
-              fill="#00c2bf"
               onMouseEnter={onPieEnter}
             />
           </PieChart>
         </ResponsiveContainer>
-        <button onClick={handlePieDownload}>
-          <code>Download Pie Chart</code>
-        </button>
       </div>
     </>
   )

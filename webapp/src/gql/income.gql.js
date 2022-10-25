@@ -119,6 +119,18 @@ export const GET_TOTAL_BY_CATEGORY = gql`
   }
 `
 
+export const GET_TOTAL_CLAIMED = gql`
+  query getTotalClaimed {
+    total_by_category_and_election(
+      where: { type: { _eq: "income" }, category: { _eq: "claimed" } }
+    ) {
+      election
+      amount
+      usd_total
+    }
+  }
+`
+
 export const GET_TOTAL_BY_CATEGORY_AND_ELECTION = gql`
   query getTotalClaimedAndUnclaimedByElection($election: Int) {
     total_by_category_and_election(
