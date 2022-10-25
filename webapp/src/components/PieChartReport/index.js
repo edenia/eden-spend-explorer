@@ -3,9 +3,11 @@ import PropTypes from 'prop-types'
 import FileSaver from 'file-saver'
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts'
 import { useCurrentPng } from 'recharts-to-png'
+import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@mui/styles'
-import { IconButton } from '@mui/material'
+import { IconButton, Typography } from '@mui/material'
 import DownloadIcon from '@mui/icons-material/Download'
+import TooltipDownload from '@mui/material/Tooltip'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 
@@ -96,10 +98,16 @@ const renderActiveShape = props => {
   )
 }
 
-const PieChartReport = ({ data, coinType }) => {
+const PieChartReport = ({
+  data,
+  coinType,
+  keyTranslation,
+  pathTranslation
+}) => {
   const classes = useStyles()
   const [activeIndex, setActiveIndex] = useState(0)
   const [getPiePng, { ref: pieRef }] = useCurrentPng()
+  const { t } = useTranslation()
 
   const newData = data.map(info => {
     return { ...info, coin: coinType }
@@ -120,9 +128,16 @@ const PieChartReport = ({ data, coinType }) => {
   return (
     <>
       <div className={classes.chartContainer}>
-        <IconButton onClick={handlePieDownload}>
-          <DownloadIcon />
-        </IconButton>
+        <div className={classes.textContainer}>
+          <Typography variant="h6" marginLeft={10}>
+            {t(keyTranslation, { ns: pathTranslation })}
+          </Typography>
+          <TooltipDownload title="Donwload">
+            <IconButton onClick={handlePieDownload}>
+              <DownloadIcon />
+            </IconButton>
+          </TooltipDownload>
+        </div>
         <ResponsiveContainer height={300} width={600}>
           <PieChart width={600} height={300} ref={pieRef}>
             <Pie
@@ -146,7 +161,9 @@ const PieChartReport = ({ data, coinType }) => {
 
 PieChartReport.propTypes = {
   data: PropTypes.array,
-  coinType: PropTypes.string
+  coinType: PropTypes.string,
+  keyTranslation: PropTypes.string,
+  pathTranslation: PropTypes.string
 }
 
 export default memo(PieChartReport)

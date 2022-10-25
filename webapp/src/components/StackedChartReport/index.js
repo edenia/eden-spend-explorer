@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useCurrentPng } from 'recharts-to-png'
 import { makeStyles } from '@mui/styles'
-import { IconButton } from '@mui/material'
+import { IconButton, Typography } from '@mui/material'
+import TooltipDownload from '@mui/material/Tooltip'
 import DownloadIcon from '@mui/icons-material/Download'
 import { Box } from '@mui/system'
 import {
@@ -108,10 +109,13 @@ const StakedChartReport = ({
   firstCategory,
   secondCategory,
   typeCurrency,
-  showEosRate
+  showEosRate,
+  keyTranslation,
+  pathTranslation
 }) => {
   const classes = useStyles()
   const [getStakedPng, { ref: stackedRef }] = useCurrentPng()
+  const { t } = useTranslation()
 
   const handleStakedDownload = useCallback(async () => {
     const png = await getStakedPng()
@@ -124,9 +128,16 @@ const StakedChartReport = ({
   return (
     <>
       <div className={classes.chartContainer}>
-        <IconButton onClick={handleStakedDownload}>
-          <DownloadIcon />
-        </IconButton>
+        <div className={classes.textContainer}>
+          <Typography variant="h6" marginLeft={10}>
+            {t(keyTranslation, { ns: pathTranslation })}
+          </Typography>
+          <TooltipDownload title="Donwload">
+            <IconButton onClick={handleStakedDownload}>
+              <DownloadIcon />
+            </IconButton>
+          </TooltipDownload>
+        </div>
         <ResponsiveContainer height={300} width={600}>
           <ComposedChart width={500} height={300} data={data} ref={stackedRef}>
             <CartesianGrid stroke="#f5f5f5" />
@@ -187,7 +198,9 @@ StakedChartReport.propTypes = {
   firstCategory: PropTypes.string,
   secondCategory: PropTypes.string,
   typeCurrency: PropTypes.string,
-  showEosRate: PropTypes.bool
+  showEosRate: PropTypes.bool,
+  keyTranslation: PropTypes.string,
+  pathTranslation: PropTypes.string
 }
 
 export default memo(StakedChartReport)

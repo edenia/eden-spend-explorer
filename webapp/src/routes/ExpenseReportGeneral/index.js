@@ -175,35 +175,31 @@ const ExpenseReportGeneral = () => {
           />
         </div>
       </div>
+
       <div>
-        <Typography variant="h5">
-          {t('titleComposeChartGeneral', { ns: 'expenseRoute' })}
-        </Typography>
         <LineAreaChartReport
           data={chartTransactionsList}
           coinType={typeCurrencySelect}
           showEosRate={showEosRateSwitch}
+          keyTranslation={'titleComposeChartGeneral'}
+          pathTranslation={'expenseRoute'}
         />
       </div>
+
       <div className={classes.chartContainer}>
-        <div>
-          <Typography variant="h6">
-            {t('titlePieChartGeneral1', { ns: 'expenseRoute' })}
-          </Typography>
-          <PieChartReport
-            data={totalByCategoryList}
-            coinType={`${typeCurrencySelect}`}
-          />
-        </div>
-        <div>
-          <Typography variant="h6">
-            {t('titlePieChartGeneral2', { ns: 'expenseRoute' })}
-          </Typography>
-          <PieChartReport
-            data={totalCategorizedList}
-            coinType={`${typeCurrencySelect}`}
-          />
-        </div>
+        <PieChartReport
+          data={totalByCategoryList}
+          coinType={`${typeCurrencySelect}`}
+          keyTranslation={'titlePieChartGeneral1'}
+          pathTranslation={'expenseRoute'}
+        />
+
+        <PieChartReport
+          data={totalCategorizedList}
+          coinType={`${typeCurrencySelect}`}
+          keyTranslation={'titlePieChartGeneral2'}
+          pathTranslation={'expenseRoute'}
+        />
       </div>
       <div className={classes.tableContainer}>
         <div className={classes.subTitle}>
