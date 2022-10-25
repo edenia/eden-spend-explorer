@@ -37,7 +37,10 @@ namespace eden {
     std::string description =
         split_memo.substr( pos_backslash + 1, split_memo.length() );
 
-    return category.length() < 4 || description.length() < 4;
+    if ( category.length() < 4 || description.length() < 4 )
+      return false;
+
+    return true;
   }
 } // namespace eden
 

@@ -16,6 +16,7 @@ void edenexplorer_setup( test_chain &t ) {
 struct tester {
   test_chain   chain;
   user_context edenexplorer = chain.as( "edenexplorer"_n );
+  user_context isedenmember = chain.as( "isedenmember"_n );
 
   user_context alice = chain.as( "alice"_n );
   user_context bob = chain.as( "bob"_n );
@@ -26,6 +27,7 @@ struct tester {
 
   tester() {
     chain.create_code_account( "edenexplorer"_n );
+    chain.create_code_account( "isedenmember"_n );
     edenexplorer_setup( chain );
     for ( auto account :
           { "alice"_n, "bob"_n, "pip"_n, "egeon"_n, "bertie"_n, "ahab"_n } ) {
