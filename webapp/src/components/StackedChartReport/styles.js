@@ -15,5 +15,9 @@ export default theme => ({
   },
   labelContainer: {
     display: 'flex'
+  },
+  textContainer: {
+    display: 'flex',
+    justifyContent: 'center'
   }
 })

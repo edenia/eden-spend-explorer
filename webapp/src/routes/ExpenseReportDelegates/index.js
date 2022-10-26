@@ -256,37 +256,32 @@ const ExpenseReport = () => {
         </div>
       </div>
       <div>
-        <Typography variant="h5">
-          {t('titleComposeChartDelegate', { ns: 'expenseRoute' })}
-        </Typography>
         <LineAreaChartReport
           data={chartTransactionsList}
           coinType={typeCurrencySelect}
           showEosRate={showEosRateSwitch}
+          keyTranslation={'titleComposeChartDelegate'}
+          pathTranslation={'expenseRoute'}
         />
       </div>
+
       <div className={classes.chartContainer}>
-        <div>
-          <Typography variant="h6">
-            {t('titleStackedChartDelegate', { ns: 'expenseRoute' })}
-          </Typography>
-          <StackedChartReport
-            data={categorizedAndUncategorizedList}
-            firstCategory={'CATEGORIZED'}
-            secondCategory={'UNCATEGORIZED'}
-            typeCurrency={typeCurrencySelect}
-            showEosRate={showEosRateSwitch}
-          />
-        </div>
-        <div>
-          <Typography variant="h6">
-            {t('titlePieChartDelegate', { ns: 'expenseRoute' })}
-          </Typography>
-          <PieChartReport
-            data={totalCategorizedList}
-            coinType={`${typeCurrencySelect}`}
-          />
-        </div>
+        <StackedChartReport
+          data={categorizedAndUncategorizedList}
+          firstCategory={'CATEGORIZED'}
+          secondCategory={'UNCATEGORIZED'}
+          typeCurrency={typeCurrencySelect}
+          showEosRate={showEosRateSwitch}
+          keyTranslation={'titleStackedChartDelegate'}
+          pathTranslation={'expenseRoute'}
+        />
+
+        <PieChartReport
+          data={totalCategorizedList}
+          coinType={`${typeCurrencySelect}`}
+          keyTranslation={'titlePieChartDelegate'}
+          pathTranslation={'expenseRoute'}
+        />
       </div>
       <div className={classes.tableContainer}>
         <div className={classes.subTitle}>

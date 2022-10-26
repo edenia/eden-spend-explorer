@@ -3,8 +3,6 @@ export default theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    overflow: 'hidden',
-    overflowX: 'hidden',
     with: '100%',
     '& #chart-scroll-id': {
       minWidth: '925px',
@@ -32,5 +30,10 @@ export default theme => ({
   disableLink: {
     pointerEvents: 'none',
     cursor: 'pointer'
+  },
+  textContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'stretch'
   }
 })

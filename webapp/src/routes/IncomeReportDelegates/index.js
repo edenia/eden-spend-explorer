@@ -281,38 +281,32 @@ const IncomeReport = () => {
       </div>
 
       <div>
-        <Typography variant="h5">
-          {t('titleComposeChartDelegate', { ns: 'incomeRoute' })}
-        </Typography>
         <LineAreaChartReport
           data={chartTransactionsList}
           coinType={typeCurrencySelect}
           showEosRate={showEosRateSwitch}
+          keyTranslation={'titleComposeChartDelegate'}
+          pathTranslation={'incomeRoute'}
         />
       </div>
 
       <div className={classes.chartContainer}>
-        <div>
-          <Typography variant="h6">
-            {t('titleStackedChartDelegate', { ns: 'incomeRoute' })}
-          </Typography>
-          <StackedChartReport
-            data={incomeClaimedAndUnclaimedList}
-            firstCategory={`CLAIMED`}
-            secondCategory={`UNCLAIMED`}
-            typeCurrency={typeCurrencySelect}
-            showEosRate={showEosRateSwitch}
-          />
-        </div>
-        <div>
-          <Typography variant="h6">
-            {t('titlePieChartDelegate', { ns: 'incomeRoute' })}
-          </Typography>
-          <PieChartReport
-            data={totalByCategoryList}
-            coinType={typeCurrencySelect}
-          />
-        </div>
+        <StackedChartReport
+          data={incomeClaimedAndUnclaimedList}
+          firstCategory={`CLAIMED`}
+          secondCategory={`UNCLAIMED`}
+          typeCurrency={typeCurrencySelect}
+          showEosRate={showEosRateSwitch}
+          keyTranslation={'titleStackedChartDelegate'}
+          pathTranslation={'incomeRoute'}
+        />
+
+        <PieChartReport
+          data={totalByCategoryList}
+          coinType={typeCurrencySelect}
+          keyTranslation={'titlePieChartDelegate'}
+          pathTranslation={'incomeRoute'}
+        />
       </div>
 
       <div className={classes.tableContainer}>

@@ -8,5 +8,10 @@ export default theme => ({
     [theme.breakpoints.down('md')]: {
       width: '100%'
     }
+  },
+  textContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'stretch'
   }
 })

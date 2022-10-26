@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import FileSaver from 'file-saver'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
-import { IconButton } from '@mui/material'
+import { IconButton, Typography } from '@mui/material'
+import TooltipDownload from '@mui/material/Tooltip'
 import DownloadIcon from '@mui/icons-material/Download'
 import { useTranslation } from 'react-i18next'
 import { useCurrentPng } from 'recharts-to-png'
@@ -92,9 +93,16 @@ CustomTooltip.propTypes = {
   label: PropTypes.any
 }
 
-const LineAreaChartReport = ({ data, coinType, showEosRate }) => {
+const LineAreaChartReport = ({
+  data,
+  coinType,
+  showEosRate,
+  keyTranslation,
+  pathTranslation
+}) => {
   const classes = useStyles()
   const [getBarPng, { ref: barRef }] = useCurrentPng()
+  const { t } = useTranslation()
 
   const handleBarDownload = useCallback(async () => {
     const png = await getBarPng()
@@ -107,9 +115,16 @@ const LineAreaChartReport = ({ data, coinType, showEosRate }) => {
   return (
     <>
       <div className={classes.chartContainer}>
-        <IconButton onClick={handleBarDownload}>
-          <DownloadIcon />
-        </IconButton>
+        <div className={classes.textContainer}>
+          <Typography variant="h4">
+            {t(keyTranslation, { ns: pathTranslation })}
+          </Typography>
+          <TooltipDownload title="Download">
+            <IconButton onClick={handleBarDownload}>
+              <DownloadIcon />
+            </IconButton>
+          </TooltipDownload>
+        </div>
         <div id="chart-scroll-id">
           <ResponsiveContainer width="100%" height={450}>
             <ComposedChart
@@ -173,7 +188,9 @@ const LineAreaChartReport = ({ data, coinType, showEosRate }) => {
 LineAreaChartReport.propTypes = {
   data: PropTypes.array,
   coinType: PropTypes.string,
-  showEosRate: PropTypes.bool
+  showEosRate: PropTypes.bool,
+  keyTranslation: PropTypes.string,
+  pathTranslation: PropTypes.string
 }
 
 export default memo(LineAreaChartReport)
