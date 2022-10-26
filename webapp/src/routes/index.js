@@ -17,6 +17,7 @@ import {
 
 import { mainConfig } from '../config'
 
+const SpendTools = lazy(() => import('./SpendTools'))
 const ExpenseReportDelegates = lazy(() => import('./ExpenseReportDelegates'))
 const ExpenseReportGeneral = lazy(() => import('./ExpenseReportGeneral'))
 const IncomeReportDelegates = lazy(() => import('./IncomeReportDelegates'))
@@ -60,6 +61,13 @@ const routes = [
     icon: <PriceCheck />,
     component: ExpenseReportDelegates,
     path: '/delegateExpenses',
+    exact: true
+  },
+  {
+    name: 'Spend Tool',
+    icon: <PriceCheck />,
+    component: SpendTools,
+    path: '/spendTools',
     exact: true
   },
   {
