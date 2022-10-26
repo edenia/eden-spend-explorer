@@ -12,6 +12,8 @@ namespace eden {
 
     bool parse_memo( std::string &memo );
 
+    bool exist_category( std::string &category );
+
   private:
     const eosio::name DEFAULT_ACCOUNT = eosio::name( "edenexplorer" );
   };

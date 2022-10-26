@@ -18,7 +18,18 @@ TEST_CASE( "Requiere the right memo format" ) {
   expect( t.edenexplorer.trace< eden::actions::categorize >( "edenexplorer"_n,
                                                              "testing",
                                                              "testing" ),
-          "assertion failure with message: Incorrect format, use: "
+          "assertion failure with message: Incorrect format or category, use: "
+          "'eden_expense: <category>/<description>'" );
+}
+
+TEST_CASE( "Requiere a right category" ) {
+  tester t;
+
+  expect( t.edenexplorer.trace< eden::actions::categorize >(
+              "edenexplorer"_n,
+              "eden_expense: testing/expense for pay EOSIO developers",
+              "testing" ),
+          "assertion failure with message: Incorrect format or category, use: "
           "'eden_expense: <category>/<description>'" );
 }
 
@@ -27,7 +38,7 @@ TEST_CASE( "Requiere the right length for tx_id" ) {
 
   expect( t.bob.trace< eden::actions::categorize >(
               "bob"_n,
-              "eden_expense: develop/expense for pay EOSIO developers",
+              "eden_expense: development/expense for pay EOSIO developers",
               "testing" ),
           "assertion failure with message: Incorrect length transaction id" );
 }
@@ -37,6 +48,6 @@ TEST_CASE( "Succes action" ) {
 
   expect( t.bob.trace< eden::actions::categorize >(
       "bob"_n,
-      "eden_expense: develop/expense for pay EOSIO developers",
+      "eden_expense: infrastructure/expense for pay EOSIO developers",
       "96dda25da00b945e5b696a8a4b01453c97973c78dc766a885b73e28bd42f6cc5" ) );
 }

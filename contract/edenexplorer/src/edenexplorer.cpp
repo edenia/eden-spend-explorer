@@ -5,6 +5,21 @@
 
 namespace eden {
 
+  const std::vector< std::string > categories = { "admin",
+                                                  "charity",
+                                                  "development",
+                                                  "dues",
+                                                  "education",
+                                                  "hardware",
+                                                  "infrastructure",
+                                                  "legal",
+                                                  "marketing",
+                                                  "pomelo",
+                                                  "salaries",
+                                                  "software",
+                                                  "travel",
+                                                  "uncategorized" };
+
   void edenexplorer_contract::categorize( eosio::name  account,
                                           std::string &new_memo,
                                           std::string &tx_id ) {
@@ -16,10 +31,21 @@ namespace eden {
                    std::tuple{ account } }
         .send();
 
-    eosio::check(
-        parse_memo( new_memo ),
-        "Incorrect format, use: 'eden_expense: <category>/<description>'" );
+    eosio::check( parse_memo( new_memo ),
+                  "Incorrect format or category, use: 'eden_expense: "
+                  "<category>/<description>'" );
     eosio::check( tx_id.length() == 64, "Incorrect length transaction id" );
+  }
+
+  bool edenexplorer_contract::exist_category( std::string &category_name ) {
+    int         pos_space = category_name.find( " " );
+    std::string category =
+        pos_space == -1
+            ? category_name
+            : category_name.substr( pos_space + 1, category_name.length() );
+
+    return ( std::find( categories.begin(), categories.end(), category ) !=
+             categories.end() );
   }
 
   bool edenexplorer_contract::parse_memo( std::string &memo ) {
@@ -34,14 +60,10 @@ namespace eden {
     std::string split_memo = memo.substr( 13, memo.length() );
     pos_backslash = split_memo.find( "/" );
     std::string category = split_memo.substr( 0, pos_backslash );
-    std::string description =
-        split_memo.substr( pos_backslash + 1, split_memo.length() );
 
-    if ( category.length() < 4 || description.length() < 4 )
-      return false;
-
-    return true;
+    return exist_category( category );
   }
+
 } // namespace eden
 
 EOSIO_ACTION_DISPATCHER( eden::actions )
