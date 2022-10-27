@@ -32,6 +32,24 @@ export const newDataFormatByAllDelegatesIncome = transactionsList =>
     link: false
   }))
 
+export const newDataFormatByDelegateAcrossElections = (
+  transactionsList,
+  isClaimed
+) =>
+  isClaimed
+    ? transactionsList.map(data => ({
+        name: data.recipient,
+        EOS: Number(data.eos_claimed),
+        USD: Number(data.usd_claimed),
+        color: generateColor()
+      }))
+    : transactionsList.map(data => ({
+        name: data.recipient,
+        EOS: Number(data.eos_claimed + data.eos_unclaimed),
+        USD: Number(data.usd_claimed + data.usd_unclaimed),
+        color: generateColor()
+      }))
+
 export const newDataFormatByAllDelegates = transactionsList =>
   transactionsList.map(data => ({
     name: data.delegate_payer,
@@ -64,18 +82,6 @@ export const newDataFormatTotalByCategory = totalByCategory =>
     color: generateColor()
   }))
 
-export const newDataFormatByClasification = (dataList, category) => {
-  const uppercaseCategory = category.toUpperCase()
-
-  return dataList.map(data => ({
-    name: data?.delegate_payer || data?.recipient,
-    [`EOS_${uppercaseCategory}`]: Number(data[`eos_${category}`]),
-    [`EOS_UN${uppercaseCategory}`]: Number(data[`eos_un${category}`]),
-    [`USD_${uppercaseCategory}`]: Number(data[`usd_${category}`]),
-    [`USD_UN${uppercaseCategory}`]: Number(data[`usd_un${category}`]),
-    EXCHANGE_RATE: Number(data.exchange_rate)
-  }))
-}
 export const newDataFormatPercentAllElections = (
   percentAllElectionData,
   category
@@ -105,3 +111,31 @@ export const newDataFormatPercentByElection = (
     [`USD_UN${uppercaseCategory}`]: Number(data[`usd_un${category}`]) * 100
   }))
 }
+
+export const newDataFormatExpensesAcrossElections = transactionsList =>
+  transactionsList.map(data => ({
+    name: data.delegate_payer,
+    EOS: Number(data.amount),
+    USD: Number(data.usd_total),
+    color: generateColor()
+  }))
+
+export const newDataFormatByElectionAndDelegate = (
+  transactionsList,
+  isIncome
+) =>
+  isIncome
+    ? transactionsList.map(data => ({
+        name: data.recipient,
+        EOS_CLAIMED: Number(data.eos_claimed),
+        USD_CLAIMED: Number(data.usd_claimed),
+        EOS_UNCLAIMED: Number(data.eos_unclaimed),
+        USD_UNCLAIMED: Number(data.usd_unclaimed)
+      }))
+    : transactionsList.map(data => ({
+        name: data.delegate_payer,
+        EOS_CATEGORIZED: Number(data.eos_categorized),
+        USD_CATEGORIZED: Number(data.usd_categorized),
+        EOS_UNCATEGORIZED: Number(data.eos_uncategorized),
+        USD_UNCATEGORIZED: Number(data.usd_uncategorized)
+      }))

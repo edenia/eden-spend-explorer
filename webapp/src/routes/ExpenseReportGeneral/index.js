@@ -1,6 +1,13 @@
 import React, { memo, useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
-import { Tooltip, Typography } from '@mui/material'
+import {
+  Tooltip,
+  Typography,
+  FormControl,
+  FormControlLabel,
+  RadioGroup,
+  Radio
+} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
 import useExpenseReport from '../../hooks/customHooks/useExpenseReportState'
@@ -25,13 +32,22 @@ const ExpenseReportGeneral = () => {
       showElectionRadio,
       showDelegateRadio,
       typeCurrencySelect,
-      showEosRateSwitch,
       chartTransactionsList,
       totalByCategoryList,
       percentExpenseList,
-      totalCategorizedList
+      totalCategorizedList,
+      electionYearSelect,
+      electionRoundSelect,
+      electionsByYearList,
+      expenseByDelegatesList
     },
-    { setShowElectionRadio, setTypeCurrencySelect }
+    {
+      setShowElectionRadio,
+      setTypeCurrencySelect,
+      getListElectionYears,
+      setElectionYearSelect,
+      setElectionRoundSelect
+    }
   ] = useExpenseReport()
 
   useEffect(() => {
@@ -167,6 +183,25 @@ const ExpenseReportGeneral = () => {
       </div>
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
+          <FormControl>
+            <RadioGroup
+              name="election-radio-buttons-group"
+              row
+              onChange={({ target }) => setShowElectionRadio(target.value)}
+              value={showElectionRadio}
+            >
+              <FormControlLabel
+                control={<Radio size="small" />}
+                label={t('textRadioButton4', { ns: 'generalForm' })}
+                value="allElections"
+              />
+              <FormControlLabel
+                control={<Radio size="small" />}
+                label={t('textRadioButton3', { ns: 'generalForm' })}
+                value="oneElection"
+              />
+            </RadioGroup>
+          </FormControl>
           <SelectComponent
             onChangeFunction={setTypeCurrencySelect}
             labelSelect={t('textCurrencySelect', { ns: 'generalForm' })}
@@ -174,15 +209,33 @@ const ExpenseReportGeneral = () => {
             actualValue={typeCurrencySelect}
           />
         </div>
+        <div id="id-radio-election-container">
+          {showElectionRadio === 'oneElection' && (
+            <>
+              <SelectComponent
+                onChangeFunction={setElectionYearSelect}
+                labelSelect={t('textYearSelect', { ns: 'generalForm' })}
+                values={getListElectionYears()}
+                actualValue={electionYearSelect}
+              />
+              <SelectComponent
+                onChangeFunction={setElectionRoundSelect}
+                labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
+                values={electionsByYearList.map(data => `${data.election}`)}
+                actualValue={electionRoundSelect}
+              />
+            </>
+          )}
+        </div>
       </div>
 
       <div>
         <LineAreaChartReport
           data={chartTransactionsList}
           coinType={typeCurrencySelect}
-          showEosRate={showEosRateSwitch}
-          keyTranslation={'titleComposeChartGeneral'}
+          keyTranslation={'titleAreaChartGeneral1'}
           pathTranslation={'expenseRoute'}
+          showLegend={true}
         />
       </div>
 
@@ -199,6 +252,15 @@ const ExpenseReportGeneral = () => {
           coinType={`${typeCurrencySelect}`}
           keyTranslation={'titlePieChartGeneral2'}
           pathTranslation={'expenseRoute'}
+        />
+      </div>
+      <div>
+        <LineAreaChartReport
+          data={expenseByDelegatesList}
+          coinType={typeCurrencySelect}
+          keyTranslation={'titleAreaChartGeneral2'}
+          pathTranslation={'expenseRoute'}
+          showLegend={false}
         />
       </div>
       <div className={classes.tableContainer}>

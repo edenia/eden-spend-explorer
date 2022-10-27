@@ -16,7 +16,6 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  Scatter,
   ResponsiveContainer
 } from 'recharts'
 
@@ -109,7 +108,6 @@ const StakedChartReport = ({
   firstCategory,
   secondCategory,
   typeCurrency,
-  showEosRate,
   keyTranslation,
   pathTranslation
 }) => {
@@ -143,24 +141,6 @@ const StakedChartReport = ({
             <CartesianGrid stroke="#f5f5f5" />
             <XAxis hide dataKey="name" scale="auto" />
             <YAxis tick={{ stroke: '#606060', strokeWidth: 0.5 }} />
-            {showEosRate && (
-              <>
-                <YAxis
-                  dataKey="EXCHANGE_RATE"
-                  scale="auto"
-                  yAxisId="right"
-                  orientation="right"
-                  tick={{ fontSize: 14, stroke: '#00c2bf', strokeWidth: 0.5 }}
-                />
-                <Scatter
-                  yAxisId="right"
-                  type="monotone"
-                  dataKey="EXCHANGE_RATE"
-                  fill="#00c2bf"
-                  strokeWidth={2}
-                />
-              </>
-            )}
             <Tooltip
               wrapperStyle={{
                 outline: 'none',
@@ -198,7 +178,6 @@ StakedChartReport.propTypes = {
   firstCategory: PropTypes.string,
   secondCategory: PropTypes.string,
   typeCurrency: PropTypes.string,
-  showEosRate: PropTypes.bool,
   keyTranslation: PropTypes.string,
   pathTranslation: PropTypes.string
 }

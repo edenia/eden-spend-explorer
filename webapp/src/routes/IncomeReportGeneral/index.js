@@ -1,12 +1,13 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
 import {
   FormControl,
   FormControlLabel,
-  Switch,
   Tooltip,
-  Typography
+  Typography,
+  RadioGroup,
+  Radio
 } from '@mui/material'
 
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
@@ -28,7 +29,6 @@ const IncomeReportGeneral = () => {
   const classes = useStyles()
 
   const { t } = useTranslation()
-  const [showEosRateSwitch, setshowEosRateSwitch] = useState(true)
   const [state] = useSharedState()
   const { nextEdenDisbursement = '' } = state.eosTrasuryBalance
 
@@ -40,9 +40,20 @@ const IncomeReportGeneral = () => {
       showElectionRadio,
       totalByCategoryList,
       percentIncomeList,
-      totalClaimedList
+      totalClaimedList,
+      electionYearSelect,
+      electionRoundSelect,
+      electionsByYearList,
+      incomeByDelegate,
+      claimedIncomeByDelegate
     },
-    { setTypeCurrencySelect, setShowElectionRadio }
+    {
+      setTypeCurrencySelect,
+      setShowElectionRadio,
+      getListElectionYears,
+      setElectionYearSelect,
+      setElectionRoundSelect
+    }
   ] = useIncomeReportState()
 
   useEffect(() => {
@@ -198,25 +209,49 @@ const IncomeReportGeneral = () => {
 
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
+          <FormControl>
+            <RadioGroup
+              name="election-radio-buttons-group"
+              row
+              onChange={({ target }) => setShowElectionRadio(target.value)}
+              value={showElectionRadio}
+            >
+              <FormControlLabel
+                control={<Radio size="small" />}
+                label={t('textRadioButton4', { ns: 'generalForm' })}
+                value="allElections"
+              />
+              <FormControlLabel
+                control={<Radio size="small" />}
+                label={t('textRadioButton3', { ns: 'generalForm' })}
+                value="oneElection"
+              />
+            </RadioGroup>
+          </FormControl>
           <SelectComponent
             onChangeFunction={setTypeCurrencySelect}
             labelSelect={t('textCurrencySelect', { ns: 'generalForm' })}
             values={['EOS', 'USD']}
             actualValue={typeCurrencySelect}
           />
-          <FormControl>
-            <FormControlLabel
-              label={t('exchangeRate', { ns: 'incomeRoute' })}
-              control={
-                <Switch
-                  checked={showEosRateSwitch}
-                  onChange={({ target }) =>
-                    setshowEosRateSwitch(target.checked)
-                  }
-                />
-              }
-            />
-          </FormControl>
+        </div>
+        <div id="id-radio-election-container">
+          {showElectionRadio === 'oneElection' && (
+            <>
+              <SelectComponent
+                onChangeFunction={setElectionYearSelect}
+                labelSelect={t('textYearSelect', { ns: 'generalForm' })}
+                values={getListElectionYears()}
+                actualValue={electionYearSelect}
+              />
+              <SelectComponent
+                onChangeFunction={setElectionRoundSelect}
+                labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
+                values={electionsByYearList.map(data => `${data.election}`)}
+                actualValue={electionRoundSelect}
+              />
+            </>
+          )}
         </div>
       </div>
 
@@ -224,9 +259,9 @@ const IncomeReportGeneral = () => {
         <LineAreaChartReport
           data={chartTransactionsList}
           coinType={typeCurrencySelect}
-          showEosRate={showEosRateSwitch}
-          keyTranslation={'titleComposeChartGeneral'}
+          keyTranslation={'titleAreaChartGeneral1'}
           pathTranslation={'incomeRoute'}
+          showLegend={true}
         />
       </div>
 
@@ -243,6 +278,26 @@ const IncomeReportGeneral = () => {
           coinType={typeCurrencySelect}
           keyTranslation={'titlePieChartGeneral2'}
           pathTranslation={'incomeRoute'}
+        />
+      </div>
+
+      <div>
+        <LineAreaChartReport
+          data={incomeByDelegate}
+          coinType={typeCurrencySelect}
+          keyTranslation={'titleAreaChartGeneral2'}
+          pathTranslation={'incomeRoute'}
+          showLegend={false}
+        />
+      </div>
+
+      <div>
+        <LineAreaChartReport
+          data={claimedIncomeByDelegate}
+          coinType={typeCurrencySelect}
+          keyTranslation={'titleAreaChartGeneral3'}
+          pathTranslation={'incomeRoute'}
+          showLegend={false}
         />
       </div>
 

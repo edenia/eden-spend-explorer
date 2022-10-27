@@ -1,0 +1,3 @@
+table:
+  name: expenses_by_delegate
+  schema: public
