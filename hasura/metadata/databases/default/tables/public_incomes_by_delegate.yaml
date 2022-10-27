@@ -1,0 +1,3 @@
+table:
+  name: incomes_by_delegate
+  schema: public

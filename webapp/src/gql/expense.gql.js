@@ -85,20 +85,6 @@ export const GET_TOTAL_BY_CATEGORY_AND_ELECTION_EXPENSES = gql`
   }
 `
 
-export const GET_CATEGORIZED_AND_UNCATEGORIZED_BY_ELECTION = gql`
-  query getExpensesClaimedAndUnclaimedByElection($election: Int) {
-    historic_expenses(where: { election: { _eq: $election } }) {
-      usd_categorized
-      usd_uncategorized
-      eos_categorized
-      eos_uncategorized
-      exchange_rate
-      election
-      delegate_payer
-    }
-  }
-`
-
 export const GET_TOTAL_CATEGORIZED = gql`
   query getTotalCategorized {
     total_by_category(
@@ -150,6 +136,51 @@ export const GET_PERCENT_EXPENSES_BY_ELECTION = gql`
       usd_categorized
       usd_uncategorized
       delegate_payer
+    }
+  }
+`
+
+export const GET_EXPENSE_BY_DELEGATES = gql`
+  query getExpenseByDelegates {
+    expenses_by_delegate {
+      delegate_payer
+      amount
+      usd_total
+    }
+  }
+`
+
+export const GET_EXPENSE_BY_ELECTION_AND_DELEGATE = gql`
+  query getExpenseByElectionAndDelegate($delegate: String, $election: Int) {
+    historic_expenses(
+      where: {
+        election: { _eq: $election }
+        delegate_payer: { _eq: $delegate }
+      }
+    ) {
+      eos_categorized
+      eos_uncategorized
+      usd_categorized
+      usd_uncategorized
+    }
+  }
+`
+
+export const GET_EXPENSE_CATEGORIES_BY_ELECTION_AND_DELEGATE = gql`
+  query getExpenseCategoriesByElectionAndDelegate(
+    $delegate: String
+    $election: Int
+  ) {
+    transaction_by_category_and_election(
+      where: {
+        delegate_payer: { _eq: $delegate }
+        election: { _eq: $election }
+        type: { _eq: "expense" }
+      }
+    ) {
+      amount
+      usd_total
+      category
     }
   }
 `

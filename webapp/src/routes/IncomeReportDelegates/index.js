@@ -1,15 +1,9 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
-import {
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Switch,
-  Tooltip,
-  Typography
-} from '@mui/material'
+import { Tooltip, Typography } from '@mui/material'
+import TextField from '@mui/material/TextField'
+import Autocomplete from '@mui/material/Autocomplete'
 
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
 import LineAreaChartReport from '../../components/LineAreaChartReport'
@@ -31,7 +25,6 @@ const IncomeReport = () => {
   const classes = useStyles()
 
   const { t } = useTranslation()
-  const [showEosRateSwitch, setshowEosRateSwitch] = useState(true)
   const [state] = useSharedState()
   const { nextEdenDisbursement = '' } = state.eosTrasuryBalance
 
@@ -39,20 +32,17 @@ const IncomeReport = () => {
     {
       chartTransactionsList,
       typeCurrencySelect,
-      electionYearSelect,
       electionRoundSelect,
       showDelegateRadio,
-      delegateSelect,
       incomeByAllDelegatesList,
       electionsByYearList,
       showElectionRadio,
-      incomeClaimedAndUnclaimedList,
+      incomeByElectionAndDelegateList,
       totalByCategoryList,
       percentIncomeList
     },
     {
       setTypeCurrencySelect,
-      getListElectionYears,
       setElectionYearSelect,
       setElectionRoundSelect,
       setShowDelegateRadio,
@@ -63,6 +53,14 @@ const IncomeReport = () => {
 
   useEffect(() => {
     setShowElectionRadio('oneElection')
+  }, [])
+
+  useEffect(() => {
+    setShowDelegateRadio('oneDelegate')
+  }, [])
+
+  useEffect(() => {
+    setElectionYearSelect('All')
   }, [])
 
   const tableData = chartTransactionsList.map(firstObj => ({
@@ -223,58 +221,26 @@ const IncomeReport = () => {
         </div>
         <div id="id-select-election-container">
           <>
-            <FormControl>
-              <FormControlLabel
-                label={t('exchangeRate', { ns: 'incomeRoute' })}
-                control={
-                  <Switch
-                    checked={showEosRateSwitch}
-                    onChange={({ target }) =>
-                      setshowEosRateSwitch(target.checked)
-                    }
-                  />
-                }
-              />
-            </FormControl>
-            <FormControl>
-              <RadioGroup
-                name="controlled-radio-buttons-group"
-                value={showDelegateRadio}
-                row
-                onChange={({ target }) => setShowDelegateRadio(target.value)}
-              >
-                <FormControlLabel
-                  control={<Radio size="small" />}
-                  label={t('textRadioButton2', { ns: 'generalForm' })}
-                  value="allDelegates"
-                />
-                <FormControlLabel
-                  control={<Radio size="small" />}
-                  label={t('textRadioButton1', { ns: 'generalForm' })}
-                  value="oneDelegate"
-                />
-              </RadioGroup>
-            </FormControl>
-            <SelectComponent
-              onChangeFunction={setElectionYearSelect}
-              labelSelect={t('textYearSelect', { ns: 'generalForm' })}
-              values={getListElectionYears()}
-              actualValue={electionYearSelect}
-            />
             <SelectComponent
               onChangeFunction={setElectionRoundSelect}
               labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
               values={electionsByYearList.map(data => `${data.election}`)}
               actualValue={electionRoundSelect}
             />
-            <SelectComponent
-              onChangeFunction={setDelegateSelect}
-              labelSelect={t('textDelegateSelect', { ns: 'generalForm' })}
-              values={incomeByAllDelegatesList.map(
+            <Autocomplete
+              id="combo-box-demo"
+              sx={{ width: 300 }}
+              options={incomeByAllDelegatesList.map(
                 data => data.eden_delegate.account
               )}
-              disable={showDelegateRadio === 'allDelegates'}
-              actualValue={delegateSelect}
+              onInputChange={(event, newInputValue) => {
+                setDelegateSelect(newInputValue)
+              }}
+              autoHighlight
+              clearOnEscape
+              renderInput={params => (
+                <TextField {...params} label="Delegate" variant="standard" />
+              )}
             />
           </>
         </div>
@@ -284,19 +250,17 @@ const IncomeReport = () => {
         <LineAreaChartReport
           data={chartTransactionsList}
           coinType={typeCurrencySelect}
-          showEosRate={showEosRateSwitch}
-          keyTranslation={'titleComposeChartDelegate'}
+          keyTranslation={'titleAreaChartDelegate'}
           pathTranslation={'incomeRoute'}
         />
       </div>
 
       <div className={classes.chartContainer}>
         <StackedChartReport
-          data={incomeClaimedAndUnclaimedList}
+          data={incomeByElectionAndDelegateList}
           firstCategory={`CLAIMED`}
           secondCategory={`UNCLAIMED`}
           typeCurrency={typeCurrencySelect}
-          showEosRate={showEosRateSwitch}
           keyTranslation={'titleStackedChartDelegate'}
           pathTranslation={'incomeRoute'}
         />

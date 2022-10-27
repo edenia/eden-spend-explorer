@@ -168,3 +168,47 @@ export const GET_PERCENT_BY_ELECTIONS = gql`
     }
   }
 `
+
+export const GET_INCOME_BY_DELEGATES = gql`
+  query getIncomeByDelegates {
+    incomes_by_delegate {
+      recipient
+      eos_claimed
+      eos_unclaimed
+      usd_claimed
+      usd_unclaimed
+    }
+  }
+`
+
+export const GET_INCOME_BY_ELECTION_AND_DELEGATE = gql`
+  query getIncomeByElectionAndDelegate($delegate: String, $election: Int) {
+    historic_incomes(
+      where: { recipient: { _eq: $delegate }, election: { _eq: $election } }
+    ) {
+      eos_claimed
+      eos_unclaimed
+      usd_claimed
+      usd_unclaimed
+    }
+  }
+`
+
+export const GET_INCOME_CATEGORIES_BY_ELECTION_AND_DELEGATE = gql`
+  query getIncomeCategoriesByElectionAndDelegate(
+    $delegate: String
+    $election: Int
+  ) {
+    transaction_by_category_and_election(
+      where: {
+        delegate_payer: { _eq: $delegate }
+        election: { _eq: $election }
+        type: { _eq: "income" }
+      }
+    ) {
+      amount
+      usd_total
+      category
+    }
+  }
+`

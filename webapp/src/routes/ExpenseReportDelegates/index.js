@@ -1,14 +1,8 @@
 import React, { memo, useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
-import {
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Switch,
-  Tooltip,
-  Typography
-} from '@mui/material'
+import { Tooltip, Typography } from '@mui/material'
+import TextField from '@mui/material/TextField'
+import Autocomplete from '@mui/material/Autocomplete'
 import { useTranslation } from 'react-i18next'
 
 import useExpenseReport from '../../hooks/customHooks/useExpenseReportState'
@@ -31,34 +25,37 @@ const ExpenseReport = () => {
 
   const [
     {
-      showElectionRadio,
-      showDelegateRadio,
-      typeCurrencySelect,
-      showEosRateSwitch,
-      electionYearSelect,
-      delegateSelect,
-      electionRoundSelect,
-      electionsByYearList,
-      expenseByAllDelegatesList,
       chartTransactionsList,
-      categorizedAndUncategorizedList,
-      percentExpenseList,
-      totalCategorizedList
+      typeCurrencySelect,
+      electionRoundSelect,
+      showDelegateRadio,
+      expenseByAllDelegatesList,
+      electionsByYearList,
+      showElectionRadio,
+      expenseByElectionAndDelegateList,
+      totalCategorizedList,
+      percentExpenseList
     },
     {
-      setShowElectionRadio,
-      setShowDelegateRadio,
       setTypeCurrencySelect,
-      setShowEosRateSwitch,
       setElectionYearSelect,
-      setDelegateSelect,
       setElectionRoundSelect,
-      getListElectionYears
+      setShowDelegateRadio,
+      setDelegateSelect,
+      setShowElectionRadio
     }
   ] = useExpenseReport()
 
   useEffect(() => {
     setShowElectionRadio('oneElection')
+  }, [])
+
+  useEffect(() => {
+    setShowDelegateRadio('oneDelegate')
+  }, [])
+
+  useEffect(() => {
+    setElectionYearSelect('All')
   }, [])
 
   const tableData = chartTransactionsList.map(firstObj => ({
@@ -199,58 +196,26 @@ const ExpenseReport = () => {
         </div>
         <div id="id-select-election-container">
           <>
-            <FormControl>
-              <FormControlLabel
-                label={t('exchangeRate')}
-                control={
-                  <Switch
-                    checked={showEosRateSwitch}
-                    onChange={({ target }) =>
-                      setShowEosRateSwitch(target.checked)
-                    }
-                  />
-                }
-              />
-            </FormControl>
-            <FormControl>
-              <RadioGroup
-                name="controlled-radio-buttons-group"
-                value={showDelegateRadio}
-                row
-                onChange={({ target }) => setShowDelegateRadio(target.value)}
-              >
-                <FormControlLabel
-                  control={<Radio size="small" />}
-                  label={t('textRadioButton2', { ns: 'generalForm' })}
-                  value="allDelegates"
-                />
-                <FormControlLabel
-                  control={<Radio size="small" />}
-                  label={t('textRadioButton1', { ns: 'generalForm' })}
-                  value="oneDelegate"
-                />
-              </RadioGroup>
-            </FormControl>
-            <SelectComponent
-              onChangeFunction={setElectionYearSelect}
-              labelSelect={t('textYearSelect', { ns: 'generalForm' })}
-              values={getListElectionYears()}
-              actualValue={electionYearSelect}
-            />
             <SelectComponent
               onChangeFunction={setElectionRoundSelect}
               labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
               values={electionsByYearList.map(data => `${data.election}`)}
               actualValue={electionRoundSelect}
             />
-            <SelectComponent
-              onChangeFunction={setDelegateSelect}
-              labelSelect={t('textDelegateSelect', { ns: 'generalForm' })}
-              values={expenseByAllDelegatesList.map(
+            <Autocomplete
+              id="combo-box-demo"
+              sx={{ width: 300 }}
+              options={expenseByAllDelegatesList.map(
                 data => data.delegate_payer
               )}
-              disable={showDelegateRadio === 'allDelegates'}
-              actualValue={delegateSelect}
+              onInputChange={(event, newInputValue) => {
+                setDelegateSelect(newInputValue)
+              }}
+              autoHighlight
+              clearOnEscape
+              renderInput={params => (
+                <TextField {...params} label="Delegate" variant="standard" />
+              )}
             />
           </>
         </div>
@@ -259,19 +224,17 @@ const ExpenseReport = () => {
         <LineAreaChartReport
           data={chartTransactionsList}
           coinType={typeCurrencySelect}
-          showEosRate={showEosRateSwitch}
-          keyTranslation={'titleComposeChartDelegate'}
+          keyTranslation={'titleAreaChartDelegate'}
           pathTranslation={'expenseRoute'}
         />
       </div>
 
       <div className={classes.chartContainer}>
         <StackedChartReport
-          data={categorizedAndUncategorizedList}
+          data={expenseByElectionAndDelegateList}
           firstCategory={'CATEGORIZED'}
           secondCategory={'UNCATEGORIZED'}
           typeCurrency={typeCurrencySelect}
-          showEosRate={showEosRateSwitch}
           keyTranslation={'titleStackedChartDelegate'}
           pathTranslation={'expenseRoute'}
         />

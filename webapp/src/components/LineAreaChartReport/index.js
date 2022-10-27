@@ -17,8 +17,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Cell,
-  Scatter
+  Cell
 } from 'recharts'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
@@ -96,9 +95,9 @@ CustomTooltip.propTypes = {
 const LineAreaChartReport = ({
   data,
   coinType,
-  showEosRate,
   keyTranslation,
-  pathTranslation
+  pathTranslation,
+  showLegend
 }) => {
   const classes = useStyles()
   const [getBarPng, { ref: barRef }] = useCurrentPng()
@@ -143,24 +142,7 @@ const LineAreaChartReport = ({
               <YAxis
                 tick={{ fontSize: 14, stroke: '#00c2bf', strokeWidth: 0.5 }}
               />
-              {showEosRate && (
-                <>
-                  <YAxis
-                    dataKey="EXCHANGE_RATE"
-                    scale="auto"
-                    yAxisId="right"
-                    orientation="right"
-                    tick={{ fontSize: 14, stroke: '#00c2bf', strokeWidth: 0.5 }}
-                  />
-                  <Scatter
-                    yAxisId="right"
-                    type="monotone"
-                    dataKey="EXCHANGE_RATE"
-                    fill="#00c2bf"
-                    strokeWidth={2}
-                  />
-                </>
-              )}
+
               <Tooltip
                 wrapperStyle={{
                   outline: 'none',
@@ -171,7 +153,9 @@ const LineAreaChartReport = ({
                 }}
                 content={<CustomTooltip />}
               />
-              <Legend content={<RenderChartLegend data={data} />} />
+              {showLegend && (
+                <Legend content={<RenderChartLegend data={data} />} />
+              )}
               <Bar dataKey={coinType} barSize={25} fill="#606060">
                 {data.map(({ name, color }) => (
                   <Cell key={`cell-${name}`} fill={color} />
@@ -188,9 +172,9 @@ const LineAreaChartReport = ({
 LineAreaChartReport.propTypes = {
   data: PropTypes.array,
   coinType: PropTypes.string,
-  showEosRate: PropTypes.bool,
   keyTranslation: PropTypes.string,
-  pathTranslation: PropTypes.string
+  pathTranslation: PropTypes.string,
+  showLegend: PropTypes.bool
 }
 
 export default memo(LineAreaChartReport)
