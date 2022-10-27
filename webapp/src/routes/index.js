@@ -65,7 +65,7 @@ const routes = [
   },
   {
     name: 'Spend Tool',
-    icon: <PriceCheck />,
+    icon: <img src={`${process.env.PUBLIC_URL}/icons/edit tool.png`} />,
     component: SpendTools,
     path: '/spendTools',
     exact: true
