@@ -1,3 +1,11 @@
 table:
   name: expenses_by_delegate
   schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - delegate_payer
+        - amount
+        - usd_total
+      filter: {}

@@ -1,3 +1,13 @@
 table:
   name: incomes_by_delegate
   schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - recipient
+        - eos_claimed
+        - eos_unclaimed
+        - usd_claimed
+        - usd_unclaimed
+      filter: {}
