@@ -16,7 +16,7 @@ const typography = {
   body1: {
     fontWeight: 400,
     letterSpacing: 0.44,
-    color: '#606060'
+    color: '#000'
   },
   overline: {
     letterSpacing: 1.5,

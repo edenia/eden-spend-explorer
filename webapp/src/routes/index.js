@@ -65,7 +65,7 @@ const routes = [
   },
   {
     name: 'Spend Tool',
-    icon: <img src={`${process.env.PUBLIC_URL}/icons/edit tool.png`} />,
+    icon: <img src={`${process.env.PUBLIC_URL}/icons/edit_tool.svg`} />,
     component: SpendTools,
     path: '/spendTools',
     exact: true
