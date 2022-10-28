@@ -5,21 +5,6 @@
 
 namespace eden {
 
-  const std::vector< std::string > categories = { "admin",
-                                                  "charity",
-                                                  "development",
-                                                  "dues",
-                                                  "education",
-                                                  "hardware",
-                                                  "infrastructure",
-                                                  "legal",
-                                                  "marketing",
-                                                  "pomelo",
-                                                  "salaries",
-                                                  "software",
-                                                  "travel",
-                                                  "uncategorized" };
-
   void edenexplorer_contract::categorize( eosio::name  account,
                                           std::string &new_memo,
                                           std::string &tx_id ) {
