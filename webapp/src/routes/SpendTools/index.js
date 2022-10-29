@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo } from 'react'
 import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
 import Button from '@mui/material/Button'
@@ -6,6 +6,7 @@ import { IconButton, MenuItem, Modal, TextField, Tooltip } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 
 import useSpendTools from '../../hooks/customHooks/useSpendToolsState'
+import { useSharedState } from '../../context/state.context'
 import TableReport from '../../components/TableReport'
 import styles from './styles'
 
@@ -15,10 +16,66 @@ const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
 const SpendTools = () => {
   const classes = useStyles()
-  const [{ transactionsList }] = useSpendTools()
-  const [openModal, setOpenModal] = useState(false)
-  const handleOpenModal = transaction => setOpenModal(true)
-  const handleCloseModal = () => setOpenModal(false)
+  const [state] = useSharedState()
+
+  const [
+    { transactionsList, formValues, errors, openModal, formValuesModal },
+    {
+      handleInputChange,
+      reset,
+      validateForm,
+      handleCloseModal,
+      handleOpenModal,
+      resetModal,
+      handleInputChangeModal
+    }
+  ] = useSpendTools()
+
+  const { to, amount, category, description } = formValues
+  const { newCategory, newDescription } = formValuesModal
+
+  const handleEosTransfer = async e => {
+    e.preventDefault()
+
+    if (openModal) {
+      if (Object.keys(validateForm(formValuesModal)).length > 0) return
+
+      const transaction = {
+        actions: [
+          {
+            authorization: [
+              {
+                actor: state.user?.accountName,
+                permission: 'active'
+              }
+            ],
+            account: 'edenexplorer',
+            name: 'categorize',
+            data: {
+              account: state.user?.accountName,
+              new_memo: `eden_expense:${newCategory}/${newDescription}`,
+              tx_id:
+                '69a1a965830582e7297cda011d7681235f759f23991e95e7d2017e47f14bd9d2'
+            }
+          }
+        ]
+      }
+
+      const result = await state.ual.activeUser.signTransaction(transaction, {
+        broadcast: true
+      })
+
+      console.log(result)
+
+      resetModal()
+    } else {
+      if (Object.keys(validateForm(formValues)).length > 0) return
+      console.log(formValues)
+      reset()
+    }
+
+    reset()
+  }
 
   const columns = [
     {
@@ -121,72 +178,125 @@ const SpendTools = () => {
               <strong>Memo: </strong> The memo here
             </span>
           </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginTop: '32px'
-            }}
-          >
-            <div className={classes.rowFormContainer}>
-              <div className={classes.inputContainer}>
-                <InputLabel>Category</InputLabel>
-                <Select className={classes.selectForm}>
-                  <MenuItem>Holi</MenuItem>
-                </Select>
-              </div>
-              <div className={classes.inputContainer}>
-                <InputLabel>Description</InputLabel>
-                <TextField fullWidth />
+          <form onSubmit={handleEosTransfer}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '32px'
+              }}
+            >
+              <div className={classes.rowFormContainer}>
+                <div className={classes.inputContainer}>
+                  <InputLabel>Category</InputLabel>
+                  <Select
+                    name="newCategory"
+                    value={newCategory}
+                    onChange={handleInputChangeModal}
+                    type="text"
+                    className={classes.selectForm}
+                    error={errors?.newCategory}
+                  >
+                    <MenuItem value="Development">Development</MenuItem>
+                    <MenuItem value="Education">Education</MenuItem>
+                    <MenuItem value="Salary">Salary</MenuItem>
+                  </Select>
+                </div>
+                <div className={classes.inputContainer}>
+                  <InputLabel>Description</InputLabel>
+                  <TextField
+                    name="newDescription"
+                    value={newDescription}
+                    onChange={handleInputChangeModal}
+                    type="text"
+                    error={errors?.newDescription}
+                    placeholder="Add a description"
+                    fullWidth
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div className={classes.buttonContainer}>
-            <Button>
-              <span className={classes.labelButtonTransfer}>Append Memo</span>
-            </Button>
-          </div>
+            <div className={classes.buttonContainer}>
+              <br />
+              <Button type="submit">
+                <span className={classes.labelButtonTransfer}>Append Memo</span>
+              </Button>
+            </div>
+          </form>
         </div>
       </Modal>
       <div>A set of tools that will help you perform new transactions with</div>
-
       <div className={classes.toolInformation}>
         Here you can send tokens related with Eden funds.
       </div>
-
-      <div className={classes.formContainer}>
-        <div className={classes.rowFormContainer}>
-          <div className={classes.inputContainer}>
-            <InputLabel>Send Tokens To</InputLabel>
-            <TextField fullWidth />
-          </div>
-          <div className={classes.specialInput}>
-            <div id="labels-id">
-              <label id="amount-id">Amount</label>
-              <label id="available-id">Available: 1,250.54 EOS</label>
+      <form onSubmit={handleEosTransfer}>
+        <div className={classes.formContainer}>
+          <div className={classes.rowFormContainer}>
+            <div className={classes.inputContainer}>
+              <InputLabel>Send Tokens To</InputLabel>
+              <TextField
+                name="to"
+                type="text"
+                value={to}
+                onChange={handleInputChange}
+                placeholder="Enter account name..."
+                error={errors?.to}
+                id="outlined-error"
+                fullWidth
+              />
             </div>
-            <TextField fullWidth helperText="Some important text" />
+            <div className={classes.specialInput}>
+              <div id="labels-id">
+                <label id="amount-id">Amount</label>
+                <label id="available-id">Available: 1,250.54 EOS</label>
+              </div>
+              <TextField
+                name="amount"
+                type="text"
+                value={amount}
+                onChange={handleInputChange}
+                placeholder="0.0000 SYMBOL"
+                fullWidth
+                error={errors?.amount}
+              />
+            </div>
+          </div>
+          <div className={classes.rowFormContainer}>
+            <div className={classes.inputContainer}>
+              <InputLabel>Category</InputLabel>
+              <Select
+                name="category"
+                type="text"
+                value={category}
+                onChange={handleInputChange}
+                className={classes.selectForm}
+                error={errors?.category}
+              >
+                <MenuItem value="Development">Development</MenuItem>
+                <MenuItem value="Education">Education</MenuItem>
+                <MenuItem value="Salary">Salary</MenuItem>
+              </Select>
+            </div>
+            <div className={classes.inputContainer}>
+              <InputLabel>Description</InputLabel>
+              <TextField
+                name="description"
+                type="text"
+                value={description}
+                onChange={handleInputChange}
+                placeholder="Add a description"
+                fullWidth
+                error={errors?.description}
+              />
+            </div>
           </div>
         </div>
-        <div className={classes.rowFormContainer}>
-          <div className={classes.inputContainer}>
-            <InputLabel>Category</InputLabel>
-            <Select className={classes.selectForm}>
-              <MenuItem>Holi</MenuItem>
-            </Select>
-          </div>
-          <div className={classes.inputContainer}>
-            <InputLabel>Description</InputLabel>
-            <TextField fullWidth />
-          </div>
+        <div className={classes.buttonContainer}>
+          <Button type="submit">
+            <span className={classes.labelButtonTransfer}>Transfer EOS</span>
+          </Button>
         </div>
-      </div>
-
-      <div className={classes.buttonContainer}>
-        <Button>
-          <span className={classes.labelButtonTransfer}>Transfer EOS</span>
-        </Button>
-      </div>
+      </form>
       <div className={classes.divShadow}>
         <div className={classes.tableContainer}>
           <div

@@ -38,6 +38,9 @@ export default theme => ({
     },
     '& .MuiOutlinedInput-notchedOutline': {
       border: 'solid 1px #667080'
+    },
+    '& small': {
+      color: 'red'
     }
   },
   specialInput: {
@@ -62,6 +65,9 @@ export default theme => ({
     },
     '& .MuiOutlinedInput-notchedOutline': {
       border: 'solid 1px #667080'
+    },
+    '& small': {
+      color: 'red'
     }
   },
   rowFormContainer: {
