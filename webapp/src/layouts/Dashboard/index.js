@@ -7,7 +7,7 @@ import { Toolbar } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
 import Header from '../../components/Header'
 import Message from '../../components/Message'
-import Footer from '../../components/Footer'
+import FooterComp from '../../components/Footer'
 
 import styles from './styles'
 
@@ -51,7 +51,7 @@ const Dashboard = ({ children, routes }) => {
         <Toolbar />
         <div className={classes.childContent}>{children}</div>
         <Message />
-        <Footer />
+        <FooterComp />
       </div>
     </div>
   )
