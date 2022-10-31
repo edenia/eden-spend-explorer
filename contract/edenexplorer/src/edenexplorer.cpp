@@ -29,8 +29,10 @@ namespace eden {
             ? category_name
             : category_name.substr( pos_space + 1, category_name.length() );
 
-    return ( std::find( categories.begin(), categories.end(), category ) !=
-             categories.end() );
+    return (
+        std::any_of( categories.begin(),
+                     categories.end(),
+                     [category]( std::string i ) { return i == category; } ) );
   }
 
   bool edenexplorer_contract::parse_memo( std::string &memo ) {
