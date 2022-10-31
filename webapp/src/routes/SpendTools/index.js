@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import InputLabel from '@mui/material/InputLabel'
 import { IconButton, MenuItem, Modal, TextField, Tooltip } from '@mui/material'
 
+import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 import useSpendTools from '../../hooks/customHooks/useSpendToolsState'
 import { CATEGORIES } from '../../constants/income.constants'
 import { useSharedState } from '../../context/state.context'
@@ -97,6 +98,7 @@ const SpendTools = () => {
       field: 'amount',
       headerName: t('headerTable3'),
       type: 'number',
+      renderCell: param => <>{formatWithThousandSeparator(param.value, 4)}</>,
       ...rowsCenter
     },
     {
@@ -146,29 +148,23 @@ const SpendTools = () => {
             <span>{t('modalAbout')}</span>
           </div>
           <div>
-            <span className={classes.links}>
-              <strong>{t('transactionInfo')} </strong>
-              <a href={`https://bloks.io/transaction/${modalData?.txid}`}>
-                {modalData?.txid}
-              </a>
-            </span>
-            <span>
-              <strong>{t('blockTime')} </strong>{' '}
-              {new Date(modalData?.date?.split('T')[0]).toLocaleDateString()}
-            </span>
+            <strong>{t('transactionInfo')} </strong>
+            <Tooltip title={modalData?.txid || ''}>
+              <label>{modalData?.txid?.slice(0, 8)}...</label>
+            </Tooltip>
             <br />
-            <span>
-              <strong>{t('action')} </strong> transfer{' '}
-              <strong>{t('data')} </strong>
-              {state.user?.accountName} {'->'} {modalData?.recipient}{' '}
-              <strong>{t('quantity')} </strong>
-              {modalData?.amount}
-              EOS
-            </span>
+            <strong>{t('blockTime')} </strong>{' '}
+            {new Date(modalData?.date?.split('T')[0]).toLocaleDateString()}
             <br />
-            <span>
-              <strong>Memo: </strong> {modalData?.description || t('memo')}
-            </span>
+            <strong>{t('action')} </strong> transfer{' '}
+            <strong>{t('data')} </strong>
+            {state.user?.accountName} {'->'} {modalData?.recipient}
+            <br />
+            <strong>{t('quantity')} </strong>
+            {formatWithThousandSeparator(modalData?.amount, 4)}
+            EOS
+            <br />
+            <strong>Memo: </strong> {modalData?.description || t('memo')}
           </div>
           <form onSubmit={handleEosTransfer}>
             <div className={classes.formModalContainer}>

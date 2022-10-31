@@ -8,6 +8,6 @@ export const formatWithThousandSeparator = (value, precision) => {
   if (precision >= 0) {
     newValue = newValue.toFixed(precision)
   }
-
-  return newValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  const comma = newValue.toString().split('.')
+  return `${comma[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')}.${comma[1]}`
 }
