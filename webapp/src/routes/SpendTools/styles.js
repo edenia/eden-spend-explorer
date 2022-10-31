@@ -154,13 +154,46 @@ export default theme => ({
     transform: 'translate(-50%, -50%)',
     [theme.breakpoints.down('sm')]: {
       width: '80vw'
+    },
+    '& #close-modal-button-id': {
+      position: 'absolute',
+      right: 8,
+      top: 8
     }
   },
   titleModal: {
-    fontFamily: 'Inter',
     fontSize: '30px',
     fontWeight: '600',
     lineHeight: '1.2',
     letterSpacing: '-0.23px'
+  },
+  formModalContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '32px'
+  },
+  titleTable: {
+    marginLeft: '5%',
+    marginTop: '24px',
+    fontSize: '18px',
+    fontWeight: '500',
+    letterSpacing: '-0.4px',
+    color: 'rgba(0, 0, 0, 0.87)'
+  },
+  dangerText: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '8px',
+    '& small': {
+      color: 'red'
+    }
+  },
+  textModalContainer: {
+    marginTop: '24px',
+    fontSize: '16px',
+    lineHeight: 1.25,
+    letterSpacing: '-0.4px',
+    color: 'rgba(0, 0, 0, 0.87)',
+    marginBottom: '36px'
   }
 })

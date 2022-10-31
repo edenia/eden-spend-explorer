@@ -1,13 +1,16 @@
 import React, { memo } from 'react'
-import Select from '@mui/material/Select'
-import InputLabel from '@mui/material/InputLabel'
-import Button from '@mui/material/Button'
-import { IconButton, MenuItem, Modal, TextField, Tooltip } from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import Select from '@mui/material/Select'
+import Button from '@mui/material/Button'
+import { useTranslation } from 'react-i18next'
+import InputLabel from '@mui/material/InputLabel'
+import { IconButton, MenuItem, Modal, TextField, Tooltip } from '@mui/material'
 
 import useSpendTools from '../../hooks/customHooks/useSpendToolsState'
+import { CATEGORIES } from '../../constants/income.constants'
 import { useSharedState } from '../../context/state.context'
 import TableReport from '../../components/TableReport'
+
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
@@ -17,17 +20,24 @@ const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 const SpendTools = () => {
   const classes = useStyles()
   const [state] = useSharedState()
-
+  const { t } = useTranslation('spendToolsRoute')
   const [
-    { transactionsList, formValues, errors, openModal, formValuesModal },
+    {
+      transactionsList,
+      formValues,
+      errors,
+      openModal,
+      formValuesModal,
+      errorMessage,
+      modalData
+    },
     {
       handleInputChange,
-      reset,
+      handleInputChangeModal,
       validateForm,
       handleCloseModal,
       handleOpenModal,
-      resetModal,
-      handleInputChangeModal
+      executeAction
     }
   ] = useSpendTools()
 
@@ -40,47 +50,31 @@ const SpendTools = () => {
     if (openModal) {
       if (Object.keys(validateForm(formValuesModal)).length > 0) return
 
-      const transaction = {
-        actions: [
-          {
-            authorization: [
-              {
-                actor: state.user?.accountName,
-                permission: 'active'
-              }
-            ],
-            account: 'edenexplorer',
-            name: 'categorize',
-            data: {
-              account: state.user?.accountName,
-              new_memo: `eden_expense:${newCategory}/${newDescription}`,
-              tx_id:
-                '69a1a965830582e7297cda011d7681235f759f23991e95e7d2017e47f14bd9d2'
-            }
-          }
-        ]
+      const dataAction = {
+        account: state.user?.accountName,
+        new_memo: `eden_expense:${newCategory}/${newDescription}`,
+        tx_id: modalData?.txid
       }
 
-      const result = await state.ual.activeUser.signTransaction(transaction, {
-        broadcast: true
-      })
-
-      console.log(result)
-
-      resetModal()
+      await executeAction(dataAction, 'edenexplorer', 'categorize', state)
     } else {
       if (Object.keys(validateForm(formValues)).length > 0) return
-      console.log(formValues)
-      reset()
-    }
 
-    reset()
+      const dataAction = {
+        from: state.user?.accountName,
+        to,
+        quantity: amount,
+        memo: `eden_spend:${category}/${description}`
+      }
+
+      await executeAction(dataAction, 'eosio.token', 'transfer', state)
+    }
   }
 
   const columns = [
     {
       field: 'txid',
-      headerName: 'TX HASH',
+      headerName: t('headerTable1'),
       cellClassName: classes.links,
       renderCell: param => (
         <Tooltip title={param.value}>
@@ -93,28 +87,34 @@ const SpendTools = () => {
     },
     {
       field: 'date',
-      headerName: 'BLOCK TIME',
+      headerName: t('headerTable2'),
+      renderCell: param => (
+        <>{new Date(param.value.split('T')[0]).toLocaleDateString()}</>
+      ),
       ...rowsCenter
     },
     {
       field: 'amount',
-      headerName: 'AMOUNT',
+      headerName: t('headerTable3'),
       type: 'number',
       ...rowsCenter
     },
     {
       field: 'recipient',
-      headerName: 'SENT TO',
+      headerName: t('headerTable4'),
       ...rowsCenter
     },
     {
-      field: 'description',
-      headerName: 'MEMO',
+      field: 'category',
+      headerName: t('headerTable5'),
+      renderCell: param => (
+        <>{param.value === 'uncategorized' ? 'No' : 'Yes'}</>
+      ),
       ...rowsCenter
     },
     {
       field: 'action',
-      headerName: 'APPEND',
+      headerName: t('headerTable6'),
       sortable: false,
       renderCell: params => {
         const onClick = () => {
@@ -136,59 +136,45 @@ const SpendTools = () => {
     <div className={classes.root}>
       <Modal open={openModal} onClose={handleCloseModal}>
         <div className={classes.modalDimentions}>
-          <IconButton
-            onClick={handleCloseModal}
-            style={{ position: 'absolute', right: 8, top: 8 }}
-          >
+          <IconButton onClick={handleCloseModal} id="close-modal-button-id">
             <img src={`${process.env.PUBLIC_URL}/icons/close.svg`} />
           </IconButton>
           <div>
-            <span className={classes.titleModal}>Append Memo</span>
+            <span className={classes.titleModal}>{t('modalTitle')}</span>
           </div>
-          <div
-            style={{
-              marginTop: '24px',
-              fontSize: '16px',
-              lineHeight: 1.25,
-              letterSpacing: '-0.4px',
-              color: 'rgba(0, 0, 0, 0.87)'
-            }}
-          >
-            <span>
-              A set of instructions to help users. Ut eget massa sed metus
-              pellentesque vestibulum ut at enim. Curabitur varius nisi augue.
-            </span>
+          <div className={classes.textModalContainer}>
+            <span>{t('modalAbout')}</span>
           </div>
-          <div style={{ marginTop: '36px' }}>
+          <div>
+            <span className={classes.links}>
+              <strong>{t('transactionInfo')} </strong>
+              <a href={`https://bloks.io/transaction/${modalData?.txid}`}>
+                {modalData?.txid}
+              </a>
+            </span>
             <span>
-              <strong>Transaction: </strong> Transaction number
+              <strong>{t('blockTime')} </strong>{' '}
+              {new Date(modalData?.date?.split('T')[0]).toLocaleDateString()}
             </span>
             <br />
             <span>
-              <strong>Block Time: </strong> Date
+              <strong>{t('action')} </strong> transfer{' '}
+              <strong>{t('data')} </strong>
+              {state.user?.accountName} {'->'} {modalData?.recipient}{' '}
+              <strong>{t('quantity')} </strong>
+              {modalData?.amount}
+              EOS
             </span>
             <br />
             <span>
-              <strong>Action: </strong>el action <strong>Data: </strong>
-              {'test ->'}
-              test 100EOS
-            </span>
-            <br />
-            <span>
-              <strong>Memo: </strong> The memo here
+              <strong>Memo: </strong> {modalData?.description || t('memo')}
             </span>
           </div>
           <form onSubmit={handleEosTransfer}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                marginTop: '32px'
-              }}
-            >
+            <div className={classes.formModalContainer}>
               <div className={classes.rowFormContainer}>
                 <div className={classes.inputContainer}>
-                  <InputLabel>Category</InputLabel>
+                  <InputLabel>{t('categoryInput')}</InputLabel>
                   <Select
                     name="newCategory"
                     value={newCategory}
@@ -197,21 +183,23 @@ const SpendTools = () => {
                     className={classes.selectForm}
                     error={errors?.newCategory}
                   >
-                    <MenuItem value="Development">Development</MenuItem>
-                    <MenuItem value="Education">Education</MenuItem>
-                    <MenuItem value="Salary">Salary</MenuItem>
+                    {CATEGORIES.map(category => (
+                      <MenuItem key={`${category}-transfer`} value={category}>
+                        {category}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </div>
                 <div className={classes.inputContainer}>
-                  <InputLabel>Description</InputLabel>
+                  <InputLabel>{t('descriptionInput')}</InputLabel>
                   <TextField
                     name="newDescription"
                     value={newDescription}
                     onChange={handleInputChangeModal}
                     type="text"
                     error={errors?.newDescription}
-                    placeholder="Add a description"
                     fullWidth
+                    autoComplete="off"
                   />
                 </div>
               </div>
@@ -219,21 +207,24 @@ const SpendTools = () => {
             <div className={classes.buttonContainer}>
               <br />
               <Button type="submit">
-                <span className={classes.labelButtonTransfer}>Append Memo</span>
+                <span className={classes.labelButtonTransfer}>
+                  {t('appendButton')}
+                </span>
               </Button>
+            </div>
+            <div className={classes.dangerText}>
+              <small>{errorMessage}</small>
             </div>
           </form>
         </div>
       </Modal>
-      <div>A set of tools that will help you perform new transactions with</div>
-      <div className={classes.toolInformation}>
-        Here you can send tokens related with Eden funds.
-      </div>
+      <div>{t('viewAbout')}</div>
+      <div className={classes.toolInformation}>{t('transferInformation')}</div>
       <form onSubmit={handleEosTransfer}>
         <div className={classes.formContainer}>
           <div className={classes.rowFormContainer}>
             <div className={classes.inputContainer}>
-              <InputLabel>Send Tokens To</InputLabel>
+              <InputLabel>{t('toInput')}</InputLabel>
               <TextField
                 name="to"
                 type="text"
@@ -242,12 +233,13 @@ const SpendTools = () => {
                 placeholder="Enter account name..."
                 error={errors?.to}
                 id="outlined-error"
+                autoComplete="off"
                 fullWidth
               />
             </div>
             <div className={classes.specialInput}>
               <div id="labels-id">
-                <label id="amount-id">Amount</label>
+                <label id="amount-id">{t('amountInput')}</label>
                 <label id="available-id">Available: 1,250.54 EOS</label>
               </div>
               <TextField
@@ -257,13 +249,14 @@ const SpendTools = () => {
                 onChange={handleInputChange}
                 placeholder="0.0000 SYMBOL"
                 fullWidth
+                autoComplete="off"
                 error={errors?.amount}
               />
             </div>
           </div>
           <div className={classes.rowFormContainer}>
             <div className={classes.inputContainer}>
-              <InputLabel>Category</InputLabel>
+              <InputLabel>{t('categoryInput')}</InputLabel>
               <Select
                 name="category"
                 type="text"
@@ -272,13 +265,15 @@ const SpendTools = () => {
                 className={classes.selectForm}
                 error={errors?.category}
               >
-                <MenuItem value="Development">Development</MenuItem>
-                <MenuItem value="Education">Education</MenuItem>
-                <MenuItem value="Salary">Salary</MenuItem>
+                {CATEGORIES.map(category => (
+                  <MenuItem key={`${category}-categorize`} value={category}>
+                    {category}
+                  </MenuItem>
+                ))}
               </Select>
             </div>
             <div className={classes.inputContainer}>
-              <InputLabel>Description</InputLabel>
+              <InputLabel>{t('descriptionInput')}</InputLabel>
               <TextField
                 name="description"
                 type="text"
@@ -287,30 +282,25 @@ const SpendTools = () => {
                 placeholder="Add a description"
                 fullWidth
                 error={errors?.description}
+                autoComplete="off"
               />
             </div>
           </div>
         </div>
         <div className={classes.buttonContainer}>
           <Button type="submit">
-            <span className={classes.labelButtonTransfer}>Transfer EOS</span>
+            <span className={classes.labelButtonTransfer}>
+              {t('transferButton')}
+            </span>
           </Button>
+        </div>
+        <div className={classes.dangerText}>
+          <small>{errorMessage}</small>
         </div>
       </form>
       <div className={classes.divShadow}>
         <div className={classes.tableContainer}>
-          <div
-            style={{
-              marginLeft: '5%',
-              marginTop: '24px',
-              fontSize: '18px',
-              fontWeight: '500',
-              letterSpacing: '-0.4px',
-              color: 'rgba(0, 0, 0, 0.87)'
-            }}
-          >
-            Tokens Sent By Your Account
-          </div>
+          <div className={classes.titleTable}>Tokens Sent By Your Account</div>
           <div id="id-table-container">
             <TableReport columns={columns} dataPercent={transactionsList} />
           </div>

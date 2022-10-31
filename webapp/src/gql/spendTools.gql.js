@@ -5,7 +5,6 @@ export const GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
     eden_transaction(
       where: {
         type: { _eq: "expense" }
-        category: { _eq: "uncategorized" }
         eden_election: { eden_delegate: { account: { _eq: $account } } }
       }
     ) {
@@ -14,6 +13,7 @@ export const GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
       description
       recipient
       txid
+      category
       eden_election {
         election
       }
