@@ -11,6 +11,27 @@ export const generateColor = () => {
   return color
 }
 
+export const newDataFormatByElections = electionsList => {
+  const elections = []
+  for (let pos = 0; pos < electionsList.length; pos = pos + 2) {
+    const election = {
+      election: `Election ${electionsList[pos].election + 1}`,
+      EOS_CLAIMED: Number(electionsList[pos].amount),
+      EOS_UNCLAIMED: Number(electionsList[pos + 1].amount),
+      USD_CLAIMED: Number(electionsList[pos].usd_total),
+      USD_UNCLAIMED: Number(electionsList[pos + 1].usd_total),
+      EOS_TOTAL: Number(
+        electionsList[pos].amount + electionsList[pos + 1].amount
+      ),
+      USD_TOTAL: Number(
+        electionsList[pos].usd_total + electionsList[pos + 1].usd_total
+      )
+    }
+    elections.push(election)
+  }
+  return elections
+}
+
 export const newDataFormatByElection = electionsList =>
   electionsList.map(data => ({
     name: `Election ${data.election + 1}`,
@@ -120,22 +141,22 @@ export const newDataFormatExpensesAcrossElections = transactionsList =>
     color: generateColor()
   }))
 
-export const newDataFormatByElectionAndDelegate = (
-  transactionsList,
-  isIncome
-) =>
-  isIncome
-    ? transactionsList.map(data => ({
-        name: data.recipient,
-        EOS_CLAIMED: Number(data.eos_claimed),
-        USD_CLAIMED: Number(data.usd_claimed),
-        EOS_UNCLAIMED: Number(data.eos_unclaimed),
-        USD_UNCLAIMED: Number(data.usd_unclaimed)
-      }))
-    : transactionsList.map(data => ({
-        name: data.delegate_payer,
-        EOS_CATEGORIZED: Number(data.eos_categorized),
-        USD_CATEGORIZED: Number(data.usd_categorized),
-        EOS_UNCATEGORIZED: Number(data.eos_uncategorized),
-        USD_UNCATEGORIZED: Number(data.usd_uncategorized)
-      }))
+export const newDataFormatByDelegates = transactionsList =>
+  transactionsList.map(data => ({
+    name: data.recipient,
+    EOS_CLAIMED: Number(data.eos_claimed),
+    USD_CLAIMED: Number(data.usd_claimed),
+    EOS_UNCLAIMED: Number(data.eos_unclaimed),
+    USD_UNCLAIMED: Number(data.usd_unclaimed),
+    color: generateColor()
+  }))
+
+export const newDataFormatByElectionAndDelegate = transactionsList =>
+  transactionsList.map(data => ({
+    name: data.delegate_payer,
+    EOS_CATEGORIZED: Number(data.eos_categorized),
+    USD_CATEGORIZED: Number(data.usd_categorized),
+    EOS_UNCATEGORIZED: Number(data.eos_uncategorized),
+    USD_UNCATEGORIZED: Number(data.usd_uncategorized),
+    color: generateColor()
+  }))

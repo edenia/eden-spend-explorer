@@ -2,7 +2,7 @@ export default theme => ({
   chartContainer: {
     width: '100%',
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'left',
     flexDirection: 'column',
     marginTop: 24,
     [theme.breakpoints.down('md')]: {

@@ -1,7 +1,7 @@
 import React, { memo, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import FileSaver from 'file-saver'
-import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts'
+import { PieChart, Pie, Sector, ResponsiveContainer, Cell } from 'recharts'
 import { useCurrentPng } from 'recharts-to-png'
 import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@mui/styles'
@@ -46,7 +46,7 @@ const renderActiveShape = props => {
         x={cx}
         y={cy}
         dy={8}
-        textLength="15%"
+        textLength="10%"
         textAnchor="middle"
         fill={payload.color}
         lengthAdjust="spacingAndGlyphs"
@@ -138,20 +138,24 @@ const PieChartReport = ({
             </IconButton>
           </TooltipDownload>
         </div>
-        <ResponsiveContainer height={300} width={600}>
-          <PieChart width={600} height={300} ref={pieRef}>
+        <ResponsiveContainer height={400} width={'100%'}>
+          <PieChart width={'100%'} height={250} ref={pieRef}>
             <Pie
               activeIndex={activeIndex}
               activeShape={renderActiveShape}
               data={newData}
               nameKey={'name'}
-              dataKey={coinType}
+              dataKey={`${coinType}_CLAIMED`}
               cx="50%"
               cy="50%"
-              innerRadius={45}
-              outerRadius={60}
+              innerRadius={'40%'}
+              outerRadius={'70%'}
               onMouseEnter={onPieEnter}
-            />
+            >
+              {data.map(data => (
+                <Cell key={`cell-${data.election}`} fill={data.color} />
+              ))}
+            </Pie>
           </PieChart>
         </ResponsiveContainer>
       </div>

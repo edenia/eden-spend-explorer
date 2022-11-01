@@ -1,37 +1,16 @@
 import gql from 'graphql-tag'
 
-export const GET_INCOME_TRANSACTIONS_DELEGATES_QUERY = gql`
-  query getDelegatesByElectionRound($election: Int!) {
-    eden_election(
-      where: {
-        election: { _eq: $election }
-        eden_transactions: { type: { _eq: "income" } }
-      }
+export const GET_ELECTIONS_BY_YEAR = gql`
+  query getElectionsBydate($minDate: timestamptz!, $maxDate: timestamptz!) {
+    eden_historic_election(
+      where: { date_election: { _gte: $minDate, _lt: $maxDate } }
+      distinct_on: election
     ) {
-      eden_delegate {
-        account
-      }
-      eden_transactions_aggregate(
-        where: {
-          type: { _eq: "income" }
-          eden_election: { election: { _eq: $election } }
-        }
-      ) {
-        aggregate {
-          sum {
-            amount
-            usd_total
-          }
-          avg {
-            eos_exchange
-          }
-        }
-      }
-      delegate_level
       election
     }
   }
 `
+
 export const GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
   query getTransactionsByDelegateAccount($election: Int!, $account: String!) {
     eden_transaction(
@@ -76,16 +55,6 @@ export const GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY = gql`
   }
 `
 
-export const GET_ELECTIONS_BY_YEAR = gql`
-  query getElectionsBydate($minDate: timestamptz!, $maxDate: timestamptz!) {
-    eden_historic_election(
-      where: { date_election: { _gte: $minDate, _lt: $maxDate } }
-      distinct_on: election
-    ) {
-      election
-    }
-  }
-`
 export const GET_TOTAL_BY_ELECTIONS_QUERY = gql`
   query getTotalIncomeByElection {
     total_by_election(where: { type: { _eq: "income" } }) {
@@ -99,12 +68,11 @@ export const GET_TOTAL_BY_ELECTIONS_QUERY = gql`
 export const GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION = gql`
   query getIncomesClaimedAndUnclaimedByElection($election: Int) {
     historic_incomes(where: { election: { _eq: $election } }) {
-      usd_claimed
-      usd_unclaimed
       recipient
       eos_claimed
+      usd_claimed
       eos_unclaimed
-      exchange_rate
+      usd_unclaimed
     }
   }
 `
@@ -163,18 +131,6 @@ export const GET_PERCENT_BY_ELECTIONS = gql`
       eos_claimed
       eos_unclaimed
       recipient
-      usd_claimed
-      usd_unclaimed
-    }
-  }
-`
-
-export const GET_INCOME_BY_DELEGATES = gql`
-  query getIncomeByDelegates {
-    incomes_by_delegate {
-      recipient
-      eos_claimed
-      eos_unclaimed
       usd_claimed
       usd_unclaimed
     }

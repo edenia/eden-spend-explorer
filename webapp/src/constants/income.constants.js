@@ -5,7 +5,6 @@ export const listChartColors = [
   '#fcd04f',
   '#4285f4',
   '#ea4335',
-  '#000000',
   '#673ab7',
   '#009688',
   '#e81e63',
