@@ -139,9 +139,6 @@ const Header = memo(({ onDrawerToggle }) => {
               />
               <LanguageSelector />
             </div>
-            {/* <div className={classes.languageBox}>
-              <div className={classes.paddingLenguajeSelector}></div>
-            </div> */}
           </div>
           <div
             className={clsx(classes.drawerContainer, classes.drawerShowMobile)}

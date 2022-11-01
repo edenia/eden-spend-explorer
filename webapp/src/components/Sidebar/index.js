@@ -3,15 +3,24 @@ import { Link } from '@mui/material'
 // import { makeStyles, useTheme } from '@mui/styles'
 import { Sidebar, MenuOption, PreviewProfile } from '@edenia/ui-kit'
 import { useSharedState } from '../../context/state.context'
+// import { useLazyQuery } from '@apollo/client'
 
 // import styles from './styles'
 // const useStyles = makeStyles(styles)
 import { sideBarItems } from '../../constants/sidebar.constants'
+// import { GET_MEMBERS_DATA } from '../../gql/eden_member.gql'
 
 const SidebarComp = () => {
   // const classes = useStyles()
   // const theme = useTheme()
   const [state] = useSharedState()
+
+  // const [getMembers, { loading, data }] = useLazyQuery(GET_MEMBERS_DATA)
+
+  // useEffect(getMembers(), [])
+
+  // console.log(loading)
+  // console.log(data)
 
   return (
     <Sidebar

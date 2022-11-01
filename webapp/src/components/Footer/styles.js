@@ -1,6 +1,7 @@
 export default theme => ({
   footerRoot: {
     width: '100%',
+    borderTop: '1px solid black',
     backgroundColor: theme.palette.grey[600],
     '& .footer-item-style': {
       color: 'rgba(163,163,163,1) !important',
