@@ -14,6 +14,7 @@ const FooterComp = () => {
   return (
     <div className={classes.footerRoot}>
       <Footer
+        bgColor={'white'}
         buttomContent={
           <div className={classes.footerContainer}>
             <Typography

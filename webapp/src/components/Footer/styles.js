@@ -15,7 +15,7 @@ export default theme => ({
     }
   },
   footerContainer: {
-    border: '1px solid red',
+    display: 'grid',
     justifyContent: 'center',
     alignItems: 'center',
     '& .MuiTypography-caption': {

@@ -1,27 +1,22 @@
-import React, { memo, useEffect, useState } from 'react'
-import { makeStyles } from '@mui/styles'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect, memo } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
-import Hidden from '@mui/material/Hidden'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import AppBar from '@mui/material/AppBar'
-import IconButton from '@mui/material/IconButton'
-import Button from '@mui/material/Button'
-import Toolbar from '@mui/material/Toolbar'
-import MenuIcon from '@mui/icons-material/Menu'
-import LanguageIcon from '@mui/icons-material/Language'
 import FingerprintIcon from '@mui/icons-material/Fingerprint'
 import AccountIcon from '@mui/icons-material/AccountCircle'
 import ExitIcon from '@mui/icons-material/ExitToApp'
-import MoreIcon from '@mui/icons-material/MoreVert'
+import IconButton from '@mui/material/IconButton'
+import MenuIcon from '@mui/icons-material/Menu'
+import { Button } from '@mui/material'
+import Toolbar from '@mui/material/Toolbar'
+import AppBar from '@mui/material/AppBar'
+import { makeStyles } from '@mui/styles'
 import { Sun as SunIcon, Moon as MoonIcon } from 'react-feather'
+import PropTypes from 'prop-types'
+import clsx from 'clsx'
+
+import LanguageSelector from '../LanguageSelector'
 
 import { useSharedState } from '../../context/state.context'
-import { mainConfig } from '../../config'
-import PageTitle from '../PageTitle'
-
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
@@ -45,61 +40,6 @@ SwitchThemeModeButton.displayName = 'SwitchThemeModeButton'
 SwitchThemeModeButton.propTypes = {
   useDarkMode: PropTypes.bool,
   onSwitch: PropTypes.func
-}
-
-const LanguageButton = ({ current, onChange }) => {
-  const [languageAnchorEl, setLanguageAnchorEl] = useState(null)
-  const languages = [
-    {
-      value: 'en',
-      label: 'EN'
-    },
-    {
-      value: 'es',
-      label: 'ES'
-    }
-  ]
-
-  const handleLanguajeMenuOpen = event => {
-    setLanguageAnchorEl(event.currentTarget)
-  }
-
-  const handleLanguajeMenuClose = language => {
-    setLanguageAnchorEl(null)
-    typeof language === 'string' && onChange && onChange(language)
-  }
-
-  return (
-    <>
-      <Button
-        color="secondary"
-        startIcon={<LanguageIcon />}
-        onClick={handleLanguajeMenuOpen}
-      >
-        {(current || '').toUpperCase()}
-      </Button>
-      <Menu
-        keepMounted
-        anchorEl={languageAnchorEl}
-        open={!!languageAnchorEl}
-        onClose={handleLanguajeMenuClose}
-      >
-        {languages.map(language => (
-          <MenuItem
-            key={`language-menu-${language.value}`}
-            onClick={() => handleLanguajeMenuClose(language.value)}
-          >
-            {language.label}
-          </MenuItem>
-        ))}
-      </Menu>
-    </>
-  )
-}
-
-LanguageButton.propTypes = {
-  current: PropTypes.string,
-  onChange: PropTypes.func
 }
 
 const UserButton = memo(({ user }) => (
@@ -150,20 +90,16 @@ AuthButton.propTypes = {
 }
 
 const Header = memo(({ onDrawerToggle }) => {
+  const { t } = useTranslation()
   const classes = useStyles()
-  const { t } = useTranslation('routes')
-  const navigate = useNavigate()
-  const location = useLocation()
   const [state, { setState, login, logout }] = useSharedState()
-  const { i18n } = useTranslation('translations')
-  const [currentLanguaje, setCurrentLanguaje] = useState()
-  const [menuAnchorEl, setMenuAnchorEl] = useState()
+  const router = useLocation()
+  const { pathname: asPath } = router
+  const [pathName, setPathName] = useState()
 
   const handleSwitchThemeMode = useDarkMode => {
     setState({ useDarkMode })
   }
-
-  const handleChangeLanguage = languaje => i18n.changeLanguage(languaje)
 
   const handleLogin = () => {
     login()
@@ -171,102 +107,62 @@ const Header = memo(({ onDrawerToggle }) => {
 
   const handleSignOut = () => {
     logout()
-    navigate('/')
-  }
-
-  const handleOpenMenu = event => {
-    setMenuAnchorEl(event.currentTarget)
-  }
-
-  const handleCloseMenu = () => {
-    setMenuAnchorEl(null)
+    setPathName('/')
   }
 
   useEffect(() => {
-    setCurrentLanguaje(i18n.language?.substring(0, 2) || 'en')
-  }, [i18n.language])
+    setPathName(asPath.replace('/', ''))
+  }, [asPath, setPathName])
 
   return (
-    <div>
-      <AppBar
-        color="primaryLight"
-        className={classes.appBar}
-        sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}
-        elevation={1}
-      >
-        <Toolbar className={classes.toolbar}>
-          <Hidden mdUp>
-            <IconButton aria-label="Open drawer" onClick={onDrawerToggle}>
-              <MenuIcon />
-            </IconButton>
-          </Hidden>
-          <div className={classes.typography}>
-            <img
-              height={47}
-              src={`${process.env.PUBLIC_URL}/images/EOS-Spend-Explorer.png`}
-            />
-          </div>
-          <PageTitle
-            title={t(`${location.pathname}>title`, mainConfig.title)}
-          />
-          <div className={classes.desktopSection}>
-            <SwitchThemeModeButton
-              useDarkMode={state.useDarkMode}
-              onSwitch={handleSwitchThemeMode}
-            />
-            <LanguageButton
-              current={currentLanguaje}
-              onChange={handleChangeLanguage}
-            />
-            <UserButton user={state.user} />
-            <AuthButton
-              user={state.user}
-              onLogin={handleLogin}
-              onSignOut={handleSignOut}
-            />
-          </div>
-          <div className={classes.mobileSection}>
-            <IconButton
-              aria-label="show more"
-              aria-haspopup="true"
-              onClick={handleOpenMenu}
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
-        <Menu
-          anchorEl={menuAnchorEl}
-          open={!!menuAnchorEl}
-          onClose={handleCloseMenu}
-        >
-          <MenuItem>
-            <SwitchThemeModeButton
-              useDarkMode={state.useDarkMode}
-              onSwitch={handleSwitchThemeMode}
-            />
-          </MenuItem>
-          <MenuItem>
-            <LanguageButton
-              current={currentLanguaje}
-              onChange={handleChangeLanguage}
-            />
-          </MenuItem>
-          {state.user && (
-            <MenuItem>
+    <AppBar className={classes.appBar}>
+      <Toolbar className={clsx(classes.drawerPaper, classes.topBarStyle)}>
+        <div className={classes.menuContainer}>
+          <div
+            className={clsx(classes.drawerContainer, classes.drawerShowDesktop)}
+          >
+            <div className={classes.logoAndMenu}>
+              <span className={classes.routeLabel}>
+                {t(`routes.${pathName}`)}
+              </span>
+            </div>
+            <div className={classes.desktopSection}>
+              <SwitchThemeModeButton
+                useDarkMode={state.useDarkMode}
+                onSwitch={handleSwitchThemeMode}
+              />
               <UserButton user={state.user} />
-            </MenuItem>
-          )}
-          <MenuItem>
-            <AuthButton
-              user={state.user}
-              onLogin={handleLogin}
-              onSignOut={handleSignOut}
-            />
-          </MenuItem>
-        </Menu>
-      </AppBar>
-    </div>
+              <AuthButton
+                user={state.user}
+                onLogin={handleLogin}
+                onSignOut={handleSignOut}
+              />
+              <LanguageSelector />
+            </div>
+            {/* <div className={classes.languageBox}>
+              <div className={classes.paddingLenguajeSelector}></div>
+            </div> */}
+          </div>
+          <div
+            className={clsx(classes.drawerContainer, classes.drawerShowMobile)}
+          >
+            <div className={classes.logoAppbar}>
+              <IconButton onClick={onDrawerToggle}>
+                <MenuIcon fontSize="large" className={classes.menuIconColor} />
+              </IconButton>
+              <span className={classes.routeLabel}>
+                {t(`routes.${pathName}`)}
+              </span>
+            </div>
+            <div className={classes.leftBox}>
+              <div className={classes.languageBox}>
+                <LanguageSelector />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Toolbar>
+    </AppBar>
   )
 })
 
