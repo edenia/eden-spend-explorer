@@ -1,6 +1,7 @@
 import React, { memo } from 'react'
 import { Button } from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import styles from './styles'
@@ -9,7 +10,15 @@ const useStyles = makeStyles(styles)
 
 const Home = () => {
   const classes = useStyles()
+  const navigate = useNavigate()
+
   const { t } = useTranslation('homeRoute')
+
+  const handleStartButton = () => {
+    navigate('generalIncomes/', {
+      replace: true
+    })
+  }
 
   return (
     <div>
@@ -21,7 +30,7 @@ const Home = () => {
           <span>{t('viewDescription')}</span>
         </div>
         <div className={classes.buttonContainer}>
-          <Button type="submit">
+          <Button type="submit" onClick={handleStartButton}>
             <span className={classes.labelButton}>
               <svg
                 style={{ marginRight: '8px' }}
