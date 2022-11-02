@@ -115,7 +115,8 @@
     "headerTable3": "MONTO",
     "headerTable4": "ENVIADO A",
     "headerTable5": "MEMO",
-    "headerTable6": "CATEGORIZAR",
+    "headerTable6": "CATEGORIZADO",
+    "headerTable7": "CATEGORIZAR",
     "modalTitle": "Adjuntar Memo",
     "modalAbout": "Aquí puede agregar o cambiar la categoría y descripción de transacciones anteriores. Primero, seleccione el motivo de su gasto en la selección, luego ingrese su descripción o motivo.",
     "transactionInfo": "Transacción:",
@@ -124,7 +125,9 @@
     "data": "Data:",
     "quantity": "Cantidad:",
     "appendButton": "Adjuntar Memo",
-    "memo": "La transacción no tiene memo"
+    "memo": "La transacción no tiene memo",
+    "snackbarMessage": "Transacción existosa!",
+    "snackbarButton": "Entendido"
   },
   "aboutRoute": {
     "title": "Este proyecto",

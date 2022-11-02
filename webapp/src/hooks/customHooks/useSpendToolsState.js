@@ -1,25 +1,40 @@
 import { useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
+import { useSharedState } from '../../context/state.context'
 
-import { GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY } from '../../gql'
+import {
+  GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
+  GET_CATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
+  GET_ACTUAL_ELECTION_QUERY
+} from '../../gql'
 
 import useForm from './useForm'
 
 const useSpendTools = () => {
+  const [state] = useSharedState()
   const [authenticatedUser, setAuthenticatedUser] = useState('')
+  const [amountCategorized, setAmountCategorized] = useState(0)
   const [transactionsList, setTransactionsList] = useState([])
-  const [errors, setErrors] = useState({})
-  const [openModal, setOpenModal] = useState(false)
+  const [currentElection, setCurrentElection] = useState(0)
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+  const [amountClaimed, setAmountClaimed] = useState(0)
   const [errorMessage, setErrorMessage] = useState('')
+  const [openModal, setOpenModal] = useState(false)
   const [modalData, setModalData] = useState({})
 
-  const [formValues, handleInputChange, reset] = useForm({
+  const [formValues, handleInputChange, reset, errors, validateForm] = useForm({
     to: '',
     amount: '',
     category: '',
     description: ''
   })
-  const [formValuesModal, handleInputChangeModal, resetModal] = useForm({
+  const [
+    formValuesModal,
+    handleInputChangeModal,
+    resetModal,
+    errorsModal,
+    validateFormModal
+  ] = useForm({
     newCategory: '',
     newDescription: ''
   })
@@ -43,33 +58,16 @@ const useSpendTools = () => {
     }
 
     try {
-      const result = await state.ual.activeUser.signTransaction(transaction, {
+      await state.ual.activeUser.signTransaction(transaction, {
         broadcast: true
       })
 
-      console.log(result, 'the result')
+      setOpenSnackbar(true)
 
       openModal ? resetModal() : reset()
     } catch (error) {
-      console.log(error)
-
       setErrorMessage(error.message)
     }
-  }
-
-  const validateForm = form => {
-    let formErrors = {}
-    Object.keys(form).forEach(key => {
-      if (form[key].length < 1) {
-        formErrors = { ...formErrors, [key]: true }
-      } else {
-        const newErrors = { ...formErrors }
-        delete newErrors[key]
-        formErrors = { ...newErrors }
-      }
-    })
-    setErrors(formErrors)
-    return formErrors
   }
 
   const handleCloseModal = () => {
@@ -83,31 +81,85 @@ const useSpendTools = () => {
     setErrorMessage('')
   }
 
-  const [loadUncaterizedTransactions, { data: uncategorizedTxData }] =
+  const [loadUncategorizedTransactions, { data: uncategorizedTxData }] =
     useLazyQuery(GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY, {
       variables: {
         account: authenticatedUser
       }
     })
 
+  const [loadCategorizedAmount, { data: categorizedTxData }] = useLazyQuery(
+    GET_CATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
+    {
+      variables: {
+        account: authenticatedUser,
+        category: 'uncategorized',
+        election: currentElection
+      }
+    }
+  )
+
+  const [loadClaimedAmount, { data: claimedTxData }] = useLazyQuery(
+    GET_CATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
+    {
+      variables: {
+        account: authenticatedUser,
+        category: 'unclaimed',
+        election: currentElection
+      }
+    }
+  )
+
+  const [loadCurrentElection, { data: currentElectionData }] = useLazyQuery(
+    GET_ACTUAL_ELECTION_QUERY
+  )
+
   useEffect(() => {
-    loadUncaterizedTransactions()
-    setAuthenticatedUser('xavieredenia')
+    loadUncategorizedTransactions()
+    loadCategorizedAmount()
+    loadClaimedAmount()
+    loadCurrentElection()
   }, [])
 
   useEffect(() => {
     setTransactionsList(uncategorizedTxData?.eden_transaction || [])
   }, [uncategorizedTxData])
 
+  useEffect(() => {
+    setAmountCategorized(
+      categorizedTxData?.eden_transaction_aggregate?.aggregate?.sum?.amount || 0
+    )
+  }, [categorizedTxData])
+
+  useEffect(() => {
+    setAmountClaimed(
+      claimedTxData?.eden_transaction_aggregate?.aggregate?.sum?.amount || 0
+    )
+  }, [categorizedTxData])
+
+  useEffect(() => {
+    setCurrentElection(
+      currentElectionData?.eden_historic_election[0]?.election || 0
+    )
+  }, [currentElectionData])
+
+  useEffect(() => {
+    setAuthenticatedUser(state.user?.accountName)
+  }, [state.user?.accountName])
+
   return [
     {
       transactionsList,
       formValues,
       errors,
+      errorsModal,
       openModal,
       formValuesModal,
       errorMessage,
-      modalData
+      modalData,
+      amountCategorized,
+      amountClaimed,
+      openSnackbar
     },
     {
       handleInputChange,
@@ -115,9 +167,11 @@ const useSpendTools = () => {
       handleInputChangeModal,
       resetModal,
       validateForm,
+      validateFormModal,
       handleCloseModal,
       handleOpenModal,
-      executeAction
+      executeAction,
+      setOpenSnackbar
     }
   ]
 }

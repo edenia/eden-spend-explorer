@@ -8,6 +8,7 @@ import { IconButton, MenuItem, Modal, TextField, Tooltip } from '@mui/material'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 import useSpendTools from '../../hooks/customHooks/useSpendToolsState'
+import SnackbarComponent from '../../components/Snackbar'
 import { CATEGORIES } from '../../constants/income.constants'
 import { useSharedState } from '../../context/state.context'
 import TableReport from '../../components/TableReport'
@@ -22,23 +23,30 @@ const SpendTools = () => {
   const classes = useStyles()
   const [state] = useSharedState()
   const { t } = useTranslation('spendToolsRoute')
+  const { eosRate } = state.eosTrasuryBalance
   const [
     {
       transactionsList,
       formValues,
       errors,
+      errorsModal,
       openModal,
       formValuesModal,
       errorMessage,
-      modalData
+      modalData,
+      amountClaimed,
+      amountCategorized,
+      openSnackbar
     },
     {
       handleInputChange,
       handleInputChangeModal,
       validateForm,
+      validateFormModal,
       handleCloseModal,
       handleOpenModal,
-      executeAction
+      executeAction,
+      setOpenSnackbar
     }
   ] = useSpendTools()
 
@@ -49,7 +57,7 @@ const SpendTools = () => {
     e.preventDefault()
 
     if (openModal) {
-      if (Object.keys(validateForm(formValuesModal)).length > 0) return
+      if (Object.keys(validateFormModal(formValuesModal)).length > 0) return
 
       const dataAction = {
         account: state.user?.accountName,
@@ -57,7 +65,7 @@ const SpendTools = () => {
         tx_id: modalData?.txid
       }
 
-      await executeAction(dataAction, 'edenexplorer', 'categorize', state)
+      await executeAction(dataAction, 'edenexplorer', 'categorize')
     } else {
       if (Object.keys(validateForm(formValues)).length > 0) return
 
@@ -65,12 +73,19 @@ const SpendTools = () => {
         from: state.user?.accountName,
         to,
         quantity: amount,
-        memo: `eden_spend:${category}/${description}`
+        memo: `eden_expense:${category}/${description}`
       }
 
-      await executeAction(dataAction, 'eosio.token', 'transfer', state)
+      await executeAction(dataAction, 'eosio.token', 'transfer')
     }
   }
+
+  const getTotalUSD = () =>
+    `Aprox. $${
+      isNaN(Number(amount.split(' ')[0]))
+        ? 0
+        : (Number(amount.split(' ')[0]) * eosRate).toFixed(4)
+    } @ $${eosRate.toFixed(2)}/EOS`
 
   const columns = [
     {
@@ -107,8 +122,13 @@ const SpendTools = () => {
       ...rowsCenter
     },
     {
-      field: 'category',
+      field: 'description',
       headerName: t('headerTable5'),
+      ...rowsCenter
+    },
+    {
+      field: 'category',
+      headerName: t('headerTable6'),
       renderCell: param => (
         <>{param.value === 'uncategorized' ? 'No' : 'Yes'}</>
       ),
@@ -116,7 +136,7 @@ const SpendTools = () => {
     },
     {
       field: 'action',
-      headerName: t('headerTable6'),
+      headerName: t('headerTable7'),
       sortable: false,
       renderCell: params => {
         const onClick = () => {
@@ -136,6 +156,12 @@ const SpendTools = () => {
 
   return (
     <div className={classes.root}>
+      <SnackbarComponent
+        open={openSnackbar}
+        setOpen={setOpenSnackbar}
+        message={t('snackbarMessage')}
+        buttonMessage={t('snackbarButton')}
+      />
       <Modal open={openModal} onClose={handleCloseModal}>
         <div className={classes.modalDimentions}>
           <IconButton onClick={handleCloseModal} id="close-modal-button-id">
@@ -162,7 +188,7 @@ const SpendTools = () => {
             <br />
             <strong>{t('quantity')} </strong>
             {formatWithThousandSeparator(modalData?.amount, 4)}
-            EOS
+            /EOS
             <br />
             <strong>Memo: </strong> {modalData?.description || t('memo')}
           </div>
@@ -177,7 +203,7 @@ const SpendTools = () => {
                     onChange={handleInputChangeModal}
                     type="text"
                     className={classes.selectForm}
-                    error={errors?.newCategory}
+                    error={errorsModal?.newCategory}
                   >
                     {CATEGORIES.map(category => (
                       <MenuItem key={`${category}-transfer`} value={category}>
@@ -193,7 +219,7 @@ const SpendTools = () => {
                     value={newDescription}
                     onChange={handleInputChangeModal}
                     type="text"
-                    error={errors?.newDescription}
+                    error={errorsModal?.newDescription}
                     fullWidth
                     autoComplete="off"
                   />
@@ -236,17 +262,30 @@ const SpendTools = () => {
             <div className={classes.specialInput}>
               <div id="labels-id">
                 <label id="amount-id">{t('amountInput')}</label>
-                <label id="available-id">Available: 1,250.54 EOS</label>
+                <label id="available-id">
+                  Available:{' '}
+                  {formatWithThousandSeparator(
+                    isNaN(amountClaimed - amountCategorized)
+                      ? 0
+                      : amountClaimed - amountCategorized,
+                    4
+                  )}{' '}
+                  EOS
+                </label>
               </div>
               <TextField
                 name="amount"
                 type="text"
                 value={amount}
                 onChange={handleInputChange}
-                placeholder="0.0000 SYMBOL"
+                placeholder="0.0000 EOS"
                 fullWidth
                 autoComplete="off"
                 error={errors?.amount}
+                helperText={getTotalUSD()}
+                inputProps={{
+                  pattern: '(([0-9]{1,9}.[0-9]{1,4})|([0-9]{1,9})) [E][O][S]'
+                }}
               />
             </div>
           </div>
@@ -260,6 +299,16 @@ const SpendTools = () => {
                 onChange={handleInputChange}
                 className={classes.selectForm}
                 error={errors?.category}
+                displayEmpty
+                renderValue={
+                  category !== ''
+                    ? undefined
+                    : () => (
+                        <MenuItem id="placeholder-select">
+                          Select category
+                        </MenuItem>
+                      )
+                }
               >
                 {CATEGORIES.map(category => (
                   <MenuItem key={`${category}-categorize`} value={category}>
@@ -291,7 +340,7 @@ const SpendTools = () => {
           </Button>
         </div>
         <div className={classes.dangerText}>
-          <small>{errorMessage}</small>
+          <small>{!openModal && errorMessage}</small>
         </div>
       </form>
       <div className={classes.divShadow}>

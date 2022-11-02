@@ -68,6 +68,9 @@ export default theme => ({
     },
     '& small': {
       color: 'red'
+    },
+    '& .css-c8obxa-MuiFormHelperText-root': {
+      color: '#000'
     }
   },
   rowFormContainer: {
@@ -90,6 +93,9 @@ export default theme => ({
     borderRadius: '6px',
     '& .css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
       borderColor: '#667080'
+    },
+    '& #placeholder-select': {
+      color: '#aaa'
     }
   },
   tableContainer: {
@@ -183,7 +189,7 @@ export default theme => ({
   dangerText: {
     display: 'flex',
     justifyContent: 'center',
-    marginTop: '8px',
+    marginTop: '16px',
     '& small': {
       color: 'red'
     }
