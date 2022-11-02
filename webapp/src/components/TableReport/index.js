@@ -22,7 +22,9 @@ const TableReport = ({ columns, dataPercent }) => {
         onPageSizeChange={newPageSize => setPagePaginationSize(newPageSize)}
         rowsPerPageOptions={[5, 10, 20]}
         pagination
-        getRowId={row => `${row.name}-${row.txId}-${row.color}-${row.EOS}`}
+        getRowId={row =>
+          `${row.name}-${row.txId}-${row.color}-${row.EOS}-${row.election}`
+        }
       />
     </ThemeProvider>
   )

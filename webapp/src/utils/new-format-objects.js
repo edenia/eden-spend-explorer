@@ -111,10 +111,12 @@ export const newDataFormatPercentAllElections = (
 
   return percentAllElectionData.map(data => ({
     name: `Election ${data.election + 1}`,
-    [`EOS_${uppercaseCategory}`]: Number(data[`eos_${category}`]) * 100,
-    [`EOS_UN${uppercaseCategory}`]: Number(data[`eos_un${category}`]) * 100,
-    [`USD_${uppercaseCategory}`]: Number(data[`usd_${category}`]) * 100,
-    [`USD_UN${uppercaseCategory}`]: Number(data[`usd_un${category}`]) * 100
+    [`EOS_${uppercaseCategory}_PERCENT`]: Number(data[`eos_${category}`]) * 100,
+    [`EOS_UN${uppercaseCategory}_PERCENT`]:
+      Number(data[`eos_un${category}`]) * 100,
+    [`USD_${uppercaseCategory}_PERCENT`]: Number(data[`usd_${category}`]) * 100,
+    [`USD_UN${uppercaseCategory}_PERCENT`]:
+      Number(data[`usd_un${category}`]) * 100
   }))
 }
 
@@ -126,10 +128,12 @@ export const newDataFormatPercentByElection = (
 
   return percentByElectionData.map(data => ({
     name: data?.delegate_payer || data?.recipient,
-    [`EOS_${uppercaseCategory}`]: Number(data[`eos_${category}`]) * 100,
-    [`EOS_UN${uppercaseCategory}`]: Number(data[`eos_un${category}`]) * 100,
-    [`USD_${uppercaseCategory}`]: Number(data[`usd_${category}`]) * 100,
-    [`USD_UN${uppercaseCategory}`]: Number(data[`usd_un${category}`]) * 100
+    [`EOS_${uppercaseCategory}_PERCENT`]: Number(data[`eos_${category}`]) * 100,
+    [`EOS_UN${uppercaseCategory}_PERCENT`]:
+      Number(data[`eos_un${category}`]) * 100,
+    [`USD_${uppercaseCategory}_PERCENT`]: Number(data[`usd_${category}`]) * 100,
+    [`USD_UN${uppercaseCategory}_PERCENT`]:
+      Number(data[`usd_un${category}`]) * 100
   }))
 }
 

@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 
-import { GET_ELECTIONS_BY_YEAR } from '../../gql/income.gql'
+import {
+  GET_ELECTIONS_BY_YEAR,
+  GET_PERCENT_ALL_ELECTIONS,
+  GET_PERCENT_BY_ELECTIONS
+} from '../../gql/income.gql'
 import {
   GET_TOTAL_INCOME_BY_DELEGATE,
   GET_DELEGATES_BY_ELECTION,
@@ -9,7 +13,9 @@ import {
 } from '../../gql/incomeGeneral.gql'
 import {
   newDataFormatByElections,
-  newDataFormatByDelegates
+  newDataFormatByDelegates,
+  newDataFormatPercentAllElections,
+  newDataFormatPercentByElection
 } from '../../utils/new-format-objects'
 
 const useIncomeGeneralReportState = () => {
@@ -20,6 +26,7 @@ const useIncomeGeneralReportState = () => {
   const [electionsByYearList, setElectionsByYearList] = useState([])
   const [incomeByElectionsList, setIncomeByElectionsList] = useState([])
   const [delegatesList, setDelegatesList] = useState([])
+  const [percentIncomeList, setPercentIncomeList] = useState([])
 
   const getListElectionYears = () => {
     const yearsList = ['All']
@@ -61,10 +68,24 @@ const useIncomeGeneralReportState = () => {
       }
     })
 
+  const [loadPercentAllElections, { data: percentAllElectionData }] =
+    useLazyQuery(GET_PERCENT_ALL_ELECTIONS)
+
+  const [loadPercentByElection, { data: percentByElectionData }] = useLazyQuery(
+    GET_PERCENT_BY_ELECTIONS,
+    {
+      variables: {
+        election: electionRoundSelect
+      }
+    }
+  )
+
   useEffect(() => {
     loadTotalIncomeByDelegate()
+    loadPercentAllElections()
     loadDelegatesByElection()
     loadIncomeByElections()
+    loadPercentByElection()
     loadElectionsByYear()
   }, [])
 
@@ -101,10 +122,31 @@ const useIncomeGeneralReportState = () => {
       )
   }, [showElectionRadio, delegatesByElectionData])
 
+  useEffect(() => {
+    showElectionRadio === 'allElections' &&
+      setPercentIncomeList(
+        newDataFormatPercentAllElections(
+          percentAllElectionData?.percent_by_all_elections_incomes || [],
+          'claimed'
+        )
+      )
+  }, [showElectionRadio, percentAllElectionData])
+
+  useEffect(() => {
+    showElectionRadio !== 'allElections' &&
+      setPercentIncomeList(
+        newDataFormatPercentByElection(
+          percentByElectionData?.percent_by_delegates_incomes || [],
+          'claimed'
+        )
+      )
+  }, [showElectionRadio, percentByElectionData])
+
   return [
     {
       incomeByElectionsList,
       electionsByYearList,
+      percentIncomeList,
       delegatesList,
       electionRoundSelect,
       typeCurrencySelect,

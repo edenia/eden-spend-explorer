@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import {
   FormControl,
   FormControlLabel,
-  // Tooltip,
   Typography,
   RadioGroup,
   Radio
@@ -15,15 +14,15 @@ import BarChartGeneralReport from '../../components/BarChartGeneralReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
 import { useSharedState } from '../../context/state.context'
-// import TableReport from '../../components/TableReport'
+import TableReport from '../../components/TableReport'
 import SelectComponent from '../../components/Select'
 
 import styles from './styles'
-// import { formatWithThousandSeparator } from '../../utils'
+import { formatWithThousandSeparator } from '../../utils'
 
 const useStyles = makeStyles(styles)
 
-// const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
+const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
 const IncomeReportGeneral = () => {
   const classes = useStyles()
@@ -36,6 +35,7 @@ const IncomeReportGeneral = () => {
     {
       incomeByElectionsList,
       electionsByYearList,
+      percentIncomeList,
       delegatesList,
       electionRoundSelect,
       typeCurrencySelect,
@@ -55,125 +55,61 @@ const IncomeReportGeneral = () => {
     setShowElectionRadio('allElections')
   }, [])
 
-  // const tableData = chartTransactionsList.map(firstObj => ({
-  //   ...percentIncomeList.find(secondObj => secondObj.name === firstObj.name),
-  //   ...firstObj
-  // }))
+  const tableData = incomeByElectionsList.map(firstObj => ({
+    ...percentIncomeList.find(
+      secondObj => secondObj.name === firstObj.election
+    ),
+    ...firstObj
+  }))
 
-  // const columns = [
-  //   {
-  //     field: 'txId',
-  //     headerName: t('tableHeader2', { ns: 'incomeRoute' }),
-  //     hide: !tableData[0]?.txId,
-  //     cellClassName: classes.links,
-  //     renderCell: param => (
-  //       <Tooltip title={param.value}>
-  //         <a
-  //           href={
-  //             param.value.length > 60
-  //               ? `https://bloks.io/transaction/${param.value}`
-  //               : `https://bloks.io/account/genesis.eden?loadContract=true&tab=Tables&table=distaccount&account=genesis.eden&scope=&limit=100&lower_bound=${param.value}&upper_bound=${param.value}`
-  //           }
-  //         >
-  //           {param.value.slice(0, 8)}
-  //         </a>
-  //       </Tooltip>
-  //     ),
-  //     ...rowsCenter
-  //   },
-  //   {
-  //     field: 'name',
-  //     headerName: tableData[0]?.level
-  //       ? t('tableHeader1', { ns: 'incomeRoute' })
-  //       : t('tableElectionHeader', { ns: 'incomeRoute' }),
-  //     cellClassName: classes.links,
-  //     renderCell: param => (
-  //       <a
-  //         className={tableData[0]?.level ? '' : classes.disableLink}
-  //         href={`https://eosauthority.com/account/${param.value}?network=eos`}
-  //       >
-  //         {param.value}
-  //       </a>
-  //     ),
-  //     ...rowsCenter
-  //   },
-  //   {
-  //     field: 'level',
-  //     headerName: t('tableHeader3', { ns: 'incomeRoute' }),
-  //     hide: !tableData[0]?.level,
-  //     type: 'number',
-  //     ...rowsCenter
-  //   },
-  //   {
-  //     field: 'category',
-  //     headerName: t('tableHeader11', { ns: 'incomeRoute' }),
-  //     renderCell: param => (
-  //       <>
-  //         {param.value === 'claimed'
-  //           ? t('claimedCategory', { ns: 'incomeRoute' })
-  //           : t('unclaimedCategory', { ns: 'incomeRoute' })}
-  //       </>
-  //     ),
-  //     hide: !tableData[0]?.category,
-  //     ...rowsCenter
-  //   },
-  //   {
-  //     field: 'EOS',
-  //     headerName: 'EOS',
-  //     renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
-  //     type: 'number',
-  //     ...rowsCenter
-  //   },
-  //   {
-  //     field: 'USD',
-  //     headerName: 'USD',
-  //     renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
-  //     type: 'number',
-  //     ...rowsCenter
-  //   },
-  //   {
-  //     field: 'date',
-  //     headerName: t('tableHeader6', { ns: 'incomeRoute' }),
-  //     hide: !tableData[0]?.date,
-  //     ...rowsCenter
-  //   },
-  //   {
-  //     field: 'EOS_CLAIMED',
-  //     headerName: t('tableHeader7', { ns: 'incomeRoute' }),
-  //     type: 'number',
-  //     hide:
-  //       showDelegateRadio === 'oneDelegate' &&
-  //       showElectionRadio === 'oneElection',
-  //     ...rowsCenter
-  //   },
-  //   {
-  //     field: 'EOS_UNCLAIMED',
-  //     headerName: t('tableHeader8', { ns: 'incomeRoute' }),
-  //     type: 'number',
-  //     hide:
-  //       showDelegateRadio === 'oneDelegate' &&
-  //       showElectionRadio === 'oneElection',
-  //     ...rowsCenter
-  //   },
-  //   {
-  //     field: 'USD_CLAIMED',
-  //     headerName: t('tableHeader9', { ns: 'incomeRoute' }),
-  //     type: 'number',
-  //     hide:
-  //       showDelegateRadio === 'oneDelegate' &&
-  //       showElectionRadio === 'oneElection',
-  //     ...rowsCenter
-  //   },
-  //   {
-  //     field: 'USD_UNCLAIMED',
-  //     headerName: t('tableHeader10', { ns: 'incomeRoute' }),
-  //     type: 'number',
-  //     hide:
-  //       showDelegateRadio === 'oneDelegate' &&
-  //       showElectionRadio === 'oneElection',
-  //     ...rowsCenter
-  //   }
-  // ]
+  console.log(percentIncomeList)
+
+  const columns = [
+    {
+      field: 'election',
+      headerName: t('tableElectionHeader', { ns: 'incomeRoute' }),
+      cellClassName: classes.links,
+      ...rowsCenter
+    },
+    {
+      field: 'EOS_TOTAL',
+      headerName: 'EOS',
+      renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
+      type: 'number',
+      ...rowsCenter
+    },
+    {
+      field: 'USD_TOTAL',
+      headerName: 'USD',
+      renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
+      type: 'number',
+      ...rowsCenter
+    },
+    {
+      field: 'EOS_CLAIMED_PERCENT',
+      headerName: t('tableHeader7', { ns: 'incomeRoute' }),
+      type: 'number',
+      ...rowsCenter
+    },
+    {
+      field: 'EOS_UNCLAIMED_PERCENT',
+      headerName: t('tableHeader8', { ns: 'incomeRoute' }),
+      type: 'number',
+      ...rowsCenter
+    },
+    {
+      field: 'USD_CLAIMED_PERCENT',
+      headerName: t('tableHeader9', { ns: 'incomeRoute' }),
+      type: 'number',
+      ...rowsCenter
+    },
+    {
+      field: 'USD_UNCLAIMED_PERCENT',
+      headerName: t('tableHeader10', { ns: 'incomeRoute' }),
+      type: 'number',
+      ...rowsCenter
+    }
+  ]
 
   return (
     <div className={classes.root}>
@@ -269,10 +205,10 @@ const IncomeReportGeneral = () => {
           />
         </div>
       </>
-      {/* <div className={classes.tableContainer}>
+      <div className={classes.tableContainer}>
         <div className={classes.subTitle}>
           <Typography variant="span">
-            {chartTransactionsList[0]?.level
+            {incomeByElectionsList[0]?.level
               ? t('titleTable', { ns: 'incomeRoute' })
               : t('titleTable2', { ns: 'incomeRoute' })}
           </Typography>
@@ -281,7 +217,7 @@ const IncomeReportGeneral = () => {
             <TableReport columns={columns} dataPercent={tableData} />
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   )
 }
