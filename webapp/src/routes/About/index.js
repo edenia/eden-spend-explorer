@@ -1,9 +1,6 @@
 import React from 'react'
-import Typography from '@mui/material/Typography'
 import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
 
 import styles from './styles'
 
@@ -14,39 +11,32 @@ const About = () => {
   const { t } = useTranslation('aboutRoute')
 
   return (
-    <Box>
-      <Grid container direction="column">
-        <Grid item xs>
-          <Grid container direction="column">
-            <Typography variant="h3" className={classes.title}>
-              {t('title')}
-            </Typography>
-            <Typography variant="h4">{t('subtitle1')}</Typography>
-            <Typography variant="body2" align="justify" paragraph>
-              {t('paragraph1')}
-            </Typography>
-          </Grid>
-        </Grid>
-
-        <Grid item xs>
-          <Grid container direction="column">
-            <Typography variant="h4">{t('subtitle2')}</Typography>
-            <Typography variant="body2" align="justify" paragraph>
-              {t('paragraph2')}
-            </Typography>
-          </Grid>
-        </Grid>
-
-        <Grid item xs>
-          <Grid container direction="column">
-            <Typography variant="h4">{t('subtitle3')}</Typography>
-            <Typography variant="body2" align="justify" paragraph>
-              {t('paragraph3')}
-            </Typography>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Box>
+    <div className={classes.root}>
+      <div className={classes.paragraphContainer}>
+        <div className={classes.title}>
+          <span>{t('subtitle1')}</span>
+        </div>
+        <div className={classes.paragraph}>
+          <span>{t('paragraph1')}</span>
+        </div>
+      </div>
+      <div className={classes.paragraphContainer}>
+        <div className={classes.title}>
+          <span>{t('subtitle2')}</span>
+        </div>
+        <div className={classes.paragraph}>
+          <span>{t('paragraph2')}</span>
+        </div>
+      </div>
+      <div className={classes.paragraphContainer}>
+        <div className={classes.title}>
+          <span>{t('subtitle3')}</span>
+        </div>
+        <div className={classes.paragraph}>
+          <span>{t('paragraph3')}</span>
+        </div>
+      </div>
+    </div>
   )
 }
 

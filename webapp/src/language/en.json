@@ -104,13 +104,12 @@
     "tableHeader11": "Category"
   },
   "aboutRoute": {
-    "title": "This project",
-    "subtitle1": "What is it?",
-    "paragraph1": "<!-- >",
+    "subtitle1": "What is EDAS?",
+    "paragraph1": "The Eden Spend Explorer is a reporting mechanism intended to provide the Eden community in EOS with information on how Eden funds are allocated. Elected delegates can adhere to the standard and easily report their Eden expenditures using a specific format for the EOS token transfer action memo field.",
     "subtitle2": "Why is it important?",
-    "paragraph2": "<!-- >",
+    "paragraph2": "The Eden Spend Explorer system is of great importance as it offers the possibility for the elected delegates of the Eden community to justify the funds they are granted for the implementation of new projects and ideas for the benefit of the community. The system listens to the events of the blockchain network and records the events that are of interest to generate reports about the funds of the network, what is their destination and how they are used.",
     "subtitle3": "Where does the data come from?",
-    "paragraph3": "<!-- >"
+    "paragraph3": "This system uses technologies that are in trend, such as Web 3.0. This is because the system makes use of information that is hosted within the EOSIO blockchain. To make this possible, different architectures were implemented to listen to events from the blockchain and store them in a database. The information is stored within the database to facilitate the search, as this can be very cumbersome to do directly to the blockchain, because there are millions of data and this would make the query very inefficient."
   },
   "helpRoute": {
     "title": "Thank you for your interest!",
