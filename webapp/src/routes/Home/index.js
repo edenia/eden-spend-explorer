@@ -12,49 +12,15 @@ const Home = () => {
   const { t } = useTranslation('homeRoute')
 
   return (
-    <div style={{ border: '1px solid' }}>
-      <div
-        style={{
-          height: '316px',
-          border: '1px solid red',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-          margin: '16px'
-        }}
-      >
+    <div>
+      <div className={classes.titleContainer}>
         <div>
-          <span
-            style={{
-              fontSize: '32px',
-              fontWeight: 600,
-              lineHeight: 1.25,
-              letterSpacing: '-0.6px',
-              color: '#000',
-              border: '1px solid blue',
-              marginTop: '16px'
-            }}
-          >
-            Eden Expend Explorer
-          </span>
+          <span className={classes.titleStyles}>Eden Expend Explorer</span>
         </div>
-        <div
-          style={{
-            marginTop: '16px',
-            border: '1px solid blue',
-            maxWidth: '450px',
-            textAlign: 'center',
-            letterSpacing: '0.15px',
-            color: '#000'
-          }}
-        >
+        <div className={classes.subtitleStyles}>
           <span>{t('viewDescription')}</span>
         </div>
-        <div
-          style={{ border: '1px solid blue', marginTop: '16px' }}
-          className={classes.buttonContainer}
-        >
+        <div className={classes.buttonContainer}>
           <Button type="submit">
             <span className={classes.labelButton}>
               <svg
@@ -83,85 +49,28 @@ const Home = () => {
           </Button>
         </div>
       </div>
-      <div
-        style={{
-          border: '1px solid green',
-          display: 'flex',
-          justifyContent: 'center'
-        }}
-      >
-        <div
-          style={{ border: '1px solid yellow', width: '323px', margin: '16px' }}
-        >
-          <div
-            style={{
-              fontWeight: 500,
-              fontSize: '18px',
-              color: '#000',
-              lineHeight: 1.56,
-              letterSpacing: '-0.4px'
-            }}
-          >
+      <div className={classes.boxesContainer}>
+        <div className={classes.frameContainer}>
+          <div className={classes.titleFrame}>
             <span>EDAS</span>
           </div>
-          <div
-            style={{
-              fontSize: '16px',
-              color: '#667080',
-              lineHeight: 1.56,
-              letterSpacing: '-0.4px'
-            }}
-          >
+          <div className={classes.bodyFrame}>
             <span>{t('edasDescription')}</span>
           </div>
         </div>
-        <div
-          style={{ border: '1px solid yellow', width: '323px', margin: '16px' }}
-        >
-          <div
-            style={{
-              fontWeight: 500,
-              fontSize: '18px',
-              color: '#000',
-              lineHeight: 1.56,
-              letterSpacing: '-0.4px'
-            }}
-          >
+        <div className={classes.frameContainer}>
+          <div className={classes.titleFrame}>
             <span>{t('transparent')}</span>
           </div>
-          <div
-            style={{
-              fontSize: '16px',
-              color: '#667080',
-              lineHeight: 1.56,
-              letterSpacing: '-0.4px'
-            }}
-          >
+          <div className={classes.bodyFrame}>
             <span>{t('transparentDescription')}</span>
           </div>
         </div>
-        <div
-          style={{ border: '1px solid yellow', width: '323px', margin: '16px' }}
-        >
-          <div
-            style={{
-              fontWeight: 500,
-              fontSize: '18px',
-              color: '#000',
-              lineHeight: 1.56,
-              letterSpacing: '-0.4px'
-            }}
-          >
+        <div className={classes.frameContainer}>
+          <div className={classes.titleFrame}>
             <span>Eden</span>
           </div>
-          <div
-            style={{
-              fontSize: '16px',
-              color: '#667080',
-              lineHeight: 1.56,
-              letterSpacing: '-0.4px'
-            }}
-          >
+          <div className={classes.bodyFrame}>
             <span>{t('edenDescription')}</span>
           </div>
         </div>

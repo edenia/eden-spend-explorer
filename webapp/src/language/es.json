@@ -29,7 +29,12 @@
     "telegram": "Grupo en Telegram"
   },
   "homeRoute": {
-    "welcomeMessage": "El estándar de contabilidad de Eden es un mecanismo de informes destinado a proporcionar a la comunidad de Eden y EOS información sobre cómo se asignan los fondos de Eden. Los delegados electos pueden adherirse al estándar y reportar fácilmente sus gastos de Eden utilizando un formato específico para el campo de memo de la acción de transferencia de token EOS."
+    "viewDescription": "Una forma fácil de entender y estandarizar el uso de los fondos Eden y cómo se beneficia la comunidad.",
+    "button": "iniciar con EDAS",
+    "edasDescription": "El Explorador de Gastos de Eden es un mecanismo de información destinado a proporcionar a la comunidad de Eden en EOS información sobre cómo se están asignando los fondos de Eden.",
+    "transparent": "Transparencia",
+    "transparentDescription": "Los delegados elegidos pueden adherirse a la norma y notificar fácilmente sus gastos de Eden utilizando un formato específico para el campo memo de la acción de transferencia de fichas EOS.",
+    "edenDescription": "Eden es una comunidad que trabaja para maximizar el poder y la independencia de sus miembros y así asegurar la vida, la libertad, la propiedad y la justicia para todos."
   },
   "generalForm": {
     "textRadioButton1": "Por un delegado",
