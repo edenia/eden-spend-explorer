@@ -39,7 +39,7 @@ const useSpendTools = () => {
     newDescription: ''
   })
 
-  const executeAction = async (data, account, name, state) => {
+  const executeAction = async (data, account, name) => {
     setErrorMessage('')
     const transaction = {
       actions: [

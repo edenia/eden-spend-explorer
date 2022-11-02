@@ -8,9 +8,9 @@ import { IconButton, MenuItem, Modal, TextField, Tooltip } from '@mui/material'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 import useSpendTools from '../../hooks/customHooks/useSpendToolsState'
-import SnackbarComponent from '../../components/Snackbar'
 import { CATEGORIES } from '../../constants/income.constants'
 import { useSharedState } from '../../context/state.context'
+import SnackbarComponent from '../../components/Snackbar'
 import TableReport from '../../components/TableReport'
 
 import styles from './styles'
