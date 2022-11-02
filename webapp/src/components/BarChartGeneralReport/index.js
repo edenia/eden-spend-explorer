@@ -3,9 +3,15 @@ import PropTypes from 'prop-types'
 import FileSaver from 'file-saver'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
-import { IconButton, Typography } from '@mui/material'
+import {
+  IconButton,
+  Typography,
+  FormControlLabel,
+  Switch,
+  FormGroup
+} from '@mui/material'
 import TooltipDownload from '@mui/material/Tooltip'
-import DownloadIcon from '@mui/icons-material/Download'
+import DownloadOutlined from '@mui/icons-material/DownloadOutlined'
 import { useTranslation } from 'react-i18next'
 import { useCurrentPng } from 'recharts-to-png'
 import {
@@ -119,7 +125,6 @@ CustomTooltip.propTypes = {
 
 const BarChartGeneralReport = ({
   data,
-  coinType,
   keyTranslation,
   pathTranslation,
   showLegend,
@@ -129,6 +134,12 @@ const BarChartGeneralReport = ({
   const [getBarPng, { ref: barRef }] = useCurrentPng()
   const [category, setCategory] = useState('')
   const { t } = useTranslation()
+  const [selectedUSD, setSelected] = useState(false)
+  const [coinType, setCoinType] = useState('EOS')
+
+  const handleChange = event => {
+    setSelected(event.target.checked)
+  }
 
   const handleBarDownload = useCallback(async () => {
     const png = await getBarPng()
@@ -142,6 +153,10 @@ const BarChartGeneralReport = ({
     typeData === 'income' ? setCategory('Claimed') : setCategory('Categorized')
   }, [typeData])
 
+  useEffect(() => {
+    selectedUSD ? setCoinType('USD') : setCoinType('EOS')
+  }, [selectedUSD])
+
   return (
     <>
       <div className={classes.chartContainer}>
@@ -151,9 +166,20 @@ const BarChartGeneralReport = ({
           </Typography>
           <TooltipDownload title="Download">
             <IconButton onClick={handleBarDownload}>
-              <DownloadIcon />
+              <DownloadOutlined />
             </IconButton>
           </TooltipDownload>
+          <div className={classes.filtersChartContainer}>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch checked={selectedUSD} onChange={handleChange} />
+                }
+                label="Convert to USD"
+                labelPlacement="start"
+              />
+            </FormGroup>
+          </div>
         </div>
         <div id="chart-scroll-id">
           <ResponsiveContainer width="100%" height={400}>
@@ -220,7 +246,6 @@ const BarChartGeneralReport = ({
 
 BarChartGeneralReport.propTypes = {
   data: PropTypes.array,
-  coinType: PropTypes.string,
   keyTranslation: PropTypes.string,
   pathTranslation: PropTypes.string,
   showLegend: PropTypes.bool,

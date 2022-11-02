@@ -1,9 +1,10 @@
 export default theme => ({
   chartContainer: {
+    width: '100%',
     display: 'flex',
+    alignItems: 'flex-start',
     flexDirection: 'column',
-    alignItems: 'left',
-    with: '100%',
+    marginTop: 24,
     '& #chart-scroll-id': {
       minWidth: '925px',
       width: '100%'
@@ -33,7 +34,11 @@ export default theme => ({
   },
   textContainer: {
     display: 'flex',
-    justifyContent: 'left',
-    alignItems: 'stretch'
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start'
+  },
+  filtersChartContainer: {
+    display: 'flex',
+    marginLeft: '400px'
   }
 })

@@ -250,26 +250,26 @@ const IncomeReportGeneral = () => {
         </div>
       </div>
 
-      <div>
-        <BarChartGeneralReport
-          data={incomeByElectionsList}
-          coinType={typeCurrencySelect}
-          keyTranslation={'titleAreaChartGeneral1'}
-          pathTranslation={'incomeRoute'}
-          showLegend={true}
-          typeData={'income'}
-        />
-      </div>
+      <>
+        <div className={classes.chartContainer}>
+          <BarChartGeneralReport
+            data={incomeByElectionsList}
+            keyTranslation={'titleAreaChartGeneral1'}
+            pathTranslation={'incomeRoute'}
+            showLegend={true}
+            typeData={'income'}
+          />
+        </div>
 
-      <div className={classes.chartContainer}>
-        <PieChartReport
-          data={delegatesList}
-          coinType={typeCurrencySelect}
-          keyTranslation={'titlePieChartGeneral1'}
-          pathTranslation={'incomeRoute'}
-        />
-      </div>
-
+        <div className={classes.chartContainer}>
+          <PieChartReport
+            data={delegatesList}
+            coinType={typeCurrencySelect}
+            keyTranslation={'titlePieChartGeneral1'}
+            pathTranslation={'incomeRoute'}
+          />
+        </div>
+      </>
       {/* <div className={classes.tableContainer}>
         <div className={classes.subTitle}>
           <Typography variant="span">

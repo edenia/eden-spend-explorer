@@ -57,13 +57,11 @@ export default theme => ({
     }
   },
   chartContainer: {
+    width: '100%',
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    overflowX: 'hidden',
-    with: '100%',
+    alignItems: 'flex-start',
+    flexDirection: 'column',
+    marginTop: 24,
     '& #chart-scroll-id': {
       minWidth: '925px',
       width: '100%'

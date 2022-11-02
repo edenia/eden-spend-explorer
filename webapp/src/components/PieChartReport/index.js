@@ -6,7 +6,7 @@ import { useCurrentPng } from 'recharts-to-png'
 import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@mui/styles'
 import { IconButton, Typography } from '@mui/material'
-import DownloadIcon from '@mui/icons-material/Download'
+import DownloadOutlined from '@mui/icons-material/DownloadOutlined'
 import TooltipDownload from '@mui/material/Tooltip'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
@@ -129,17 +129,17 @@ const PieChartReport = ({
     <>
       <div className={classes.chartContainer}>
         <div className={classes.textContainer}>
-          <Typography variant="h6" marginLeft={10}>
+          <Typography variant="h4">
             {t(keyTranslation, { ns: pathTranslation })}
           </Typography>
           <TooltipDownload title="Donwload">
             <IconButton onClick={handlePieDownload}>
-              <DownloadIcon />
+              <DownloadOutlined />
             </IconButton>
           </TooltipDownload>
         </div>
-        <ResponsiveContainer height={400} width={'100%'}>
-          <PieChart width={'100%'} height={250} ref={pieRef}>
+        <ResponsiveContainer height={400}>
+          <PieChart height={250} ref={pieRef}>
             <Pie
               activeIndex={activeIndex}
               activeShape={renderActiveShape}

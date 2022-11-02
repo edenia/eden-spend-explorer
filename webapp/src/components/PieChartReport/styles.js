@@ -2,7 +2,7 @@ export default theme => ({
   chartContainer: {
     width: '100%',
     display: 'flex',
-    alignItems: 'left',
+    alignItems: 'flex-start',
     flexDirection: 'column',
     marginTop: 24,
     [theme.breakpoints.down('md')]: {
@@ -11,7 +11,7 @@ export default theme => ({
   },
   textContainer: {
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'stretch'
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start'
   }
 })
