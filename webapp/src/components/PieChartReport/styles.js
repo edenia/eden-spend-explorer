@@ -13,5 +13,9 @@ export default theme => ({
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'flex-start'
+  },
+  filtersChartContainer: {
+    display: 'flex',
+    marginLeft: '70px'
   }
 })

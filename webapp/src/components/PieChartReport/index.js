@@ -1,11 +1,17 @@
-import React, { memo, useState, useCallback } from 'react'
+import React, { memo, useState, useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import FileSaver from 'file-saver'
 import { PieChart, Pie, Sector, ResponsiveContainer, Cell } from 'recharts'
 import { useCurrentPng } from 'recharts-to-png'
 import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@mui/styles'
-import { IconButton, Typography } from '@mui/material'
+import {
+  IconButton,
+  Typography,
+  FormControlLabel,
+  Switch,
+  FormGroup
+} from '@mui/material'
 import DownloadOutlined from '@mui/icons-material/DownloadOutlined'
 import TooltipDownload from '@mui/material/Tooltip'
 
@@ -98,16 +104,17 @@ const renderActiveShape = props => {
   )
 }
 
-const PieChartReport = ({
-  data,
-  coinType,
-  keyTranslation,
-  pathTranslation
-}) => {
+const PieChartReport = ({ data, keyTranslation, pathTranslation }) => {
   const classes = useStyles()
   const [activeIndex, setActiveIndex] = useState(0)
   const [getPiePng, { ref: pieRef }] = useCurrentPng()
   const { t } = useTranslation()
+  const [selectedUSD, setSelected] = useState(false)
+  const [coinType, setCoinType] = useState('EOS')
+
+  const handleChange = event => {
+    setSelected(event.target.checked)
+  }
 
   const newData = data.map(info => {
     return { ...info, coin: coinType }
@@ -125,6 +132,10 @@ const PieChartReport = ({
     }
   }, [getPiePng])
 
+  useEffect(() => {
+    selectedUSD ? setCoinType('USD') : setCoinType('EOS')
+  }, [selectedUSD])
+
   return (
     <>
       <div className={classes.chartContainer}>
@@ -137,6 +148,17 @@ const PieChartReport = ({
               <DownloadOutlined />
             </IconButton>
           </TooltipDownload>
+          <div className={classes.filtersChartContainer}>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch checked={selectedUSD} onChange={handleChange} />
+                }
+                label="Convert to USD"
+                labelPlacement="start"
+              />
+            </FormGroup>
+          </div>
         </div>
         <ResponsiveContainer height={400}>
           <PieChart height={250} ref={pieRef}>
@@ -165,7 +187,6 @@ const PieChartReport = ({
 
 PieChartReport.propTypes = {
   data: PropTypes.array,
-  coinType: PropTypes.string,
   keyTranslation: PropTypes.string,
   pathTranslation: PropTypes.string
 }

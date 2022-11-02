@@ -264,7 +264,6 @@ const IncomeReportGeneral = () => {
         <div className={classes.chartContainer}>
           <PieChartReport
             data={delegatesList}
-            coinType={typeCurrencySelect}
             keyTranslation={'titlePieChartGeneral1'}
             pathTranslation={'incomeRoute'}
           />
