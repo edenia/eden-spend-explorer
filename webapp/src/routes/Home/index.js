@@ -24,7 +24,7 @@ const Home = () => {
     <div>
       <div className={classes.titleContainer}>
         <div>
-          <span className={classes.titleStyles}>Eden Expend Explorer</span>
+          <span className={classes.titleStyles}>Eden Spend Explorer</span>
         </div>
         <div className={classes.subtitleStyles}>
           <span>{t('viewDescription')}</span>
