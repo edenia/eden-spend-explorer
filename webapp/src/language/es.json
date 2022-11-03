@@ -105,13 +105,12 @@
     "tableHeader11": "Categoría"
   },
   "aboutRoute": {
-    "title": "Este proyecto",
-    "subtitle1": "Ques es?",
-    "paragraph1": "<!-- >",
-    "subtitle2": "Por que es importante?",
-    "paragraph2": "<!-- >",
-    "subtitle3": "De donde vienen los datos?",
-    "paragraph3": "<!-- >"
+    "subtitle1": "¿Qué es EDAS?",
+    "paragraph1": "El Explorador de Gastos de Edén es un mecanismo de información destinado a proporcionar a la comunidad de Edén en EOS información sobre cómo se asignan los fondos de Edén. Los delegados elegidos pueden adherirse al estándar e informar fácilmente de sus gastos en Eden utilizando un formato específico para el campo de memo de acción de transferencia de fichas de EOS.",
+    "subtitle2": "¿Por qué es importante?",
+    "paragraph2": "El sistema Eden Spend Explorer es de gran importancia ya que ofrece la posibilidad a los delegados elegidos de la comunidad Eden de justificar los fondos que se les conceden para la realización de nuevos proyectos e ideas en beneficio de la comunidad. El sistema escucha los eventos de la red blockchain y registra los eventos que son de interés para generar informes sobre los fondos de la red, cuál es su destino y cómo se utilizan.",
+    "subtitle3": "¿De dónde vienen los datos?",
+    "paragraph3": "Este sistema utiliza tecnologías que están en tendencia, como la Web 3.0. Esto se debe a que el sistema hace uso de la información que se aloja dentro del blockchain de EOSIO. Para hacer esto posible, se implementaron diferentes arquitecturas para escuchar los eventos de la blockchain y almacenarlos en una base de datos. La información se almacena dentro de la base de datos para facilitar la búsqueda, ya que puede ser muy engorroso hacerla directamente a la blockchain, porque hay millones de datos y esto haría la consulta muy ineficiente."
   },
   "helpRoute": {
     "title": "Gracias por su interés!",
