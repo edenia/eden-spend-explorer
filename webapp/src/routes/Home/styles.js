@@ -3,7 +3,7 @@ export default theme => ({
     display: 'flex',
     justifyContent: 'center',
     marginTop: '16px',
-    '& .css-1exfphm-MuiButtonBase-root-MuiButton-root': {
+    '& .MuiButton-root': {
       width: '191px',
       height: '36px',
       backgroundColor: '#2563eb',
@@ -11,7 +11,7 @@ export default theme => ({
       padding: '6px 12px',
       textTransform: 'none'
     },
-    '& .css-1exfphm-MuiButtonBase-root-MuiButton-root:hover': {
+    '& .MuiButton-root:hover': {
       backgroundColor: '#3866eb'
     }
   },

@@ -11,7 +11,6 @@ const useStyles = makeStyles(styles)
 const Home = () => {
   const classes = useStyles()
   const navigate = useNavigate()
-
   const { t } = useTranslation('homeRoute')
 
   const handleStartButton = () => {
@@ -23,9 +22,7 @@ const Home = () => {
   return (
     <div>
       <div className={classes.titleContainer}>
-        <div>
-          <span className={classes.titleStyles}>Eden Spend Explorer</span>
-        </div>
+        <span className={classes.titleStyles}>Eden Spend Explorer</span>
         <div className={classes.subtitleStyles}>
           <span>{t('viewDescription')}</span>
         </div>
