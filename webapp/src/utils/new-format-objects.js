@@ -11,6 +11,44 @@ export const generateColor = () => {
   return color
 }
 
+// General
+
+export const newDataFormatPercentAllElections = (
+  percentAllElectionData,
+  category
+) => {
+  const uppercaseCategory = category.toUpperCase()
+
+  return percentAllElectionData.map(data => ({
+    name: `Election ${data.election + 1}`,
+    [`EOS_${uppercaseCategory}_PERCENT`]: Number(data[`eos_${category}`]) * 100,
+    [`EOS_UN${uppercaseCategory}_PERCENT`]:
+      Number(data[`eos_un${category}`]) * 100,
+    [`USD_${uppercaseCategory}_PERCENT`]: Number(data[`usd_${category}`]) * 100,
+    [`USD_UN${uppercaseCategory}_PERCENT`]:
+      Number(data[`usd_un${category}`]) * 100
+  }))
+}
+
+export const newDataFormatPercentByElection = (
+  percentByElectionData,
+  category
+) => {
+  const uppercaseCategory = category.toUpperCase()
+
+  return percentByElectionData.map(data => ({
+    name: data?.delegate_payer || data?.recipient,
+    [`EOS_${uppercaseCategory}_PERCENT`]: Number(data[`eos_${category}`]) * 100,
+    [`EOS_UN${uppercaseCategory}_PERCENT`]:
+      Number(data[`eos_un${category}`]) * 100,
+    [`USD_${uppercaseCategory}_PERCENT`]: Number(data[`usd_${category}`]) * 100,
+    [`USD_UN${uppercaseCategory}_PERCENT`]:
+      Number(data[`usd_un${category}`]) * 100
+  }))
+}
+
+// Income
+
 export const newDataFormatByElections = electionsList => {
   const elections = []
   for (let pos = 0; pos < electionsList.length; pos = pos + 2) {
@@ -32,6 +70,21 @@ export const newDataFormatByElections = electionsList => {
   return elections
 }
 
+export const newDataFormatByDelegates = transactionsList =>
+  transactionsList.map(data => ({
+    name: data.recipient,
+    EOS_CLAIMED: Number(data.eos_claimed),
+    USD_CLAIMED: Number(data.usd_claimed),
+    EOS_UNCLAIMED: Number(data.eos_unclaimed),
+    USD_UNCLAIMED: Number(data.usd_unclaimed),
+    color: generateColor()
+  }))
+
+// Expense
+
+// Delegate
+
+// After this line maybe need deleted this
 export const newDataFormatByElection = electionsList =>
   electionsList.map(data => ({
     name: `Election ${data.election + 1}`,
@@ -103,55 +156,11 @@ export const newDataFormatTotalByCategory = totalByCategory =>
     color: generateColor()
   }))
 
-export const newDataFormatPercentAllElections = (
-  percentAllElectionData,
-  category
-) => {
-  const uppercaseCategory = category.toUpperCase()
-
-  return percentAllElectionData.map(data => ({
-    name: `Election ${data.election + 1}`,
-    [`EOS_${uppercaseCategory}_PERCENT`]: Number(data[`eos_${category}`]) * 100,
-    [`EOS_UN${uppercaseCategory}_PERCENT`]:
-      Number(data[`eos_un${category}`]) * 100,
-    [`USD_${uppercaseCategory}_PERCENT`]: Number(data[`usd_${category}`]) * 100,
-    [`USD_UN${uppercaseCategory}_PERCENT`]:
-      Number(data[`usd_un${category}`]) * 100
-  }))
-}
-
-export const newDataFormatPercentByElection = (
-  percentByElectionData,
-  category
-) => {
-  const uppercaseCategory = category.toUpperCase()
-
-  return percentByElectionData.map(data => ({
-    name: data?.delegate_payer || data?.recipient,
-    [`EOS_${uppercaseCategory}_PERCENT`]: Number(data[`eos_${category}`]) * 100,
-    [`EOS_UN${uppercaseCategory}_PERCENT`]:
-      Number(data[`eos_un${category}`]) * 100,
-    [`USD_${uppercaseCategory}_PERCENT`]: Number(data[`usd_${category}`]) * 100,
-    [`USD_UN${uppercaseCategory}_PERCENT`]:
-      Number(data[`usd_un${category}`]) * 100
-  }))
-}
-
 export const newDataFormatExpensesAcrossElections = transactionsList =>
   transactionsList.map(data => ({
     name: data.delegate_payer,
     EOS: Number(data.amount),
     USD: Number(data.usd_total),
-    color: generateColor()
-  }))
-
-export const newDataFormatByDelegates = transactionsList =>
-  transactionsList.map(data => ({
-    name: data.recipient,
-    EOS_CLAIMED: Number(data.eos_claimed),
-    USD_CLAIMED: Number(data.usd_claimed),
-    EOS_UNCLAIMED: Number(data.eos_unclaimed),
-    USD_UNCLAIMED: Number(data.usd_unclaimed),
     color: generateColor()
   }))
 

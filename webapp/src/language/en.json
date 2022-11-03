@@ -9,7 +9,7 @@
   "routes": {
     "/>title": "Eden on EOS Accounting Standard",
     "/income>title": "Treasury | Eden on EOS Accounting Standard",
-    "/generalIncomes>sidebar": "General Incomes",
+    "/Income>sidebar": "Income",
     "/delegateIncomes>sidebar": "Delegate Incomes",
     "/income>heading": "Income",
     "/generalExpenses>sidebar": "General Expenses",

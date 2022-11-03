@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 
+import { GET_ELECTIONS_BY_YEAR } from '../../gql/general.gql'
 import {
   GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY,
   GET_TOTAL_BY_ELECTIONS_QUERY,
-  GET_ELECTIONS_BY_YEAR,
   GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION,
   GET_TOTAL_BY_CATEGORY,
   GET_TOTAL_BY_CATEGORY_AND_ELECTION,

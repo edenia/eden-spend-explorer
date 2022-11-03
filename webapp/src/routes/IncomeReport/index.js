@@ -24,7 +24,7 @@ const useStyles = makeStyles(styles)
 
 const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
-const IncomeReportGeneral = () => {
+const IncomeReport = () => {
   const classes = useStyles()
 
   const { t } = useTranslation()
@@ -55,25 +55,50 @@ const IncomeReportGeneral = () => {
     setShowElectionRadio('allElections')
   }, [])
 
-  const tableData = incomeByElectionsList.map(firstObj => ({
-    ...percentIncomeList.find(
-      secondObj => secondObj.name === firstObj.election
-    ),
-    ...firstObj
-  }))
-
-  console.log(percentIncomeList)
+  const tableData =
+    showElectionRadio === 'allElections'
+      ? incomeByElectionsList.map(firstObj => ({
+          ...percentIncomeList.find(
+            secondObj => secondObj.name === firstObj.election
+          ),
+          ...firstObj
+        }))
+      : delegatesList.map(firstObj => ({
+          ...percentIncomeList.find(
+            secondObj => secondObj.name === firstObj.name
+          ),
+          ...firstObj
+        }))
 
   const columns = [
     {
       field: 'election',
+      hide: !tableData[0]?.election,
       headerName: t('tableElectionHeader', { ns: 'incomeRoute' }),
       cellClassName: classes.links,
       ...rowsCenter
     },
     {
+      field: 'name',
+      hide: !tableData[0]?.color,
+      headerName: tableData[0]?.name
+        ? t('tableHeader1', { ns: 'incomeRoute' })
+        : t('tableElectionHeader', { ns: 'incomeRoute' }),
+      cellClassName: classes.links,
+      renderCell: param => (
+        <a
+          className={tableData[0]?.name ? '' : classes.disableLink}
+          href={`https://eosauthority.com/account/${param.value}?network=eos`}
+        >
+          {param.value}
+        </a>
+      ),
+      ...rowsCenter
+    },
+    {
       field: 'EOS_TOTAL',
       headerName: 'EOS',
+      hide: !tableData[0]?.election,
       renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
@@ -81,6 +106,7 @@ const IncomeReportGeneral = () => {
     {
       field: 'USD_TOTAL',
       headerName: 'USD',
+      hide: !tableData[0]?.election,
       renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
@@ -222,6 +248,6 @@ const IncomeReportGeneral = () => {
   )
 }
 
-IncomeReportGeneral.prototypes = {}
+IncomeReport.prototypes = {}
 
-export default memo(IncomeReportGeneral)
+export default memo(IncomeReport)

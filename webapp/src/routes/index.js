@@ -20,7 +20,7 @@ import { mainConfig } from '../config'
 const ExpenseReportDelegates = lazy(() => import('./ExpenseReportDelegates'))
 const ExpenseReportGeneral = lazy(() => import('./ExpenseReportGeneral'))
 const IncomeReportDelegates = lazy(() => import('./IncomeReportDelegates'))
-const IncomeReportGeneral = lazy(() => import('./IncomeReportGeneral'))
+const IncomeReport = lazy(() => import('./IncomeReport'))
 const Home = lazy(() => import('./Home'))
 const About = lazy(() => import('./About'))
 const Help = lazy(() => import('./Help'))
@@ -35,10 +35,10 @@ const routes = [
     exact: true
   },
   {
-    name: 'General Incomes',
+    name: 'Income',
     icon: <AddCardIcon />,
-    component: IncomeReportGeneral,
-    path: '/generalIncomes',
+    component: IncomeReport,
+    path: '/Income',
     exact: true
   },
   {
