@@ -8,15 +8,29 @@ import { useSharedState } from '../../context/state.context'
 // import styles from './styles'
 // const useStyles = makeStyles(styles)
 import { sideBarItems } from '../../constants/sidebar.constants'
-// import { GET_MEMBERS_DATA } from '../../gql/eden_member.gql'
+import { GET_MEMBERS_DATA } from '../../gql/eden_member.gql'
+import { request } from 'graphql-request'
 
 const SidebarComp = () => {
   // const classes = useStyles()
   // const theme = useTheme()
   const [state] = useSharedState()
 
-  // const [getMembers, { loading, data }] = useLazyQuery(GET_MEMBERS_DATA)
+  const variable = {
+    value: 'xavieredenia',
+    orderBy: {
+      election_rank: 'desc'
+    },
+    limit: 50
+  }
 
+  // const [getMembers, { loading, data }] = useLazyQuery(GET_MEMBERS_DATA)
+  const data = request({
+    endpoint: 'https://eden-api.edenia.cloud/v1/graphql',
+    document: GET_MEMBERS_DATA,
+    variables: variable
+  })
+  console.log(data)
   // useEffect(getMembers(), [])
 
   // console.log(loading)

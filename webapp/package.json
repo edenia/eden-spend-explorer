@@ -45,6 +45,7 @@
     "eslint-import-resolver-node": "^0.3.6",
     "file-saver": "^2.0.5",
     "graphql": "^16.2.0",
+    "graphql-request": "^5.0.0",
     "graphql-tag": "^2.12.6",
     "history": "^5.2.0",
     "i18next": "^21.6.7",

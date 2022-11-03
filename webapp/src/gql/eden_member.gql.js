@@ -1,7 +1,7 @@
-import gql from 'graphql-tag'
+import gql from 'graphql-request'
 
 export const GET_MEMBERS_DATA = gql`
-  query getMembers($value: String, $orderBy: [member_order_by!], $limit: Int) {
+  {
     memberPag: member_aggregate(
       order_by: $orderBy
       where: { name: { _ilike: $value } }
