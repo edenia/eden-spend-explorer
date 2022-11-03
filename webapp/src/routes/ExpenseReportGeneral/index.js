@@ -1,7 +1,6 @@
 import React, { memo, useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
 import {
-  Tooltip,
   Typography,
   FormControl,
   FormControlLabel,
@@ -10,8 +9,8 @@ import {
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
-import useExpenseReport from '../../hooks/customHooks/useExpenseReportState'
-import LineAreaChartReport from '../../components/LineAreaChartReport'
+import useExpenseGeneralReportState from '../../hooks/customHooks/useExpenseGeneralReportState'
+import BarChartGeneralReport from '../../components/BarChartGeneralReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
 import { formatWithThousandSeparator } from '../../utils'
@@ -29,60 +28,60 @@ const ExpenseReportGeneral = () => {
 
   const [
     {
-      showElectionRadio,
-      showDelegateRadio,
-      typeCurrencySelect,
-      chartTransactionsList,
-      totalByCategoryList,
-      percentExpenseList,
-      totalCategorizedList,
-      electionYearSelect,
-      electionRoundSelect,
+      expenseByElectionsList,
       electionsByYearList,
-      expenseByDelegatesList
+      percentExpenseList,
+      delegatesList,
+      // categoryList,
+      electionRoundSelect,
+      electionYearSelect,
+      showElectionRadio
     },
     {
-      setShowElectionRadio,
-      setTypeCurrencySelect,
-      getListElectionYears,
+      setElectionRoundSelect,
       setElectionYearSelect,
-      setElectionRoundSelect
+      getListElectionYears,
+      setShowElectionRadio
     }
-  ] = useExpenseReport()
+  ] = useExpenseGeneralReportState()
 
   useEffect(() => {
     setShowElectionRadio('allElections')
   }, [])
 
-  const tableData = chartTransactionsList.map(firstObj => ({
-    ...percentExpenseList.find(secondObj => secondObj.name === firstObj.name),
-    ...firstObj
-  }))
+  const tableData =
+    showElectionRadio === 'allElections'
+      ? expenseByElectionsList.map(firstObj => ({
+          ...percentExpenseList.find(
+            secondObj => secondObj.name === firstObj.election
+          ),
+          ...firstObj
+        }))
+      : delegatesList.map(firstObj => ({
+          ...percentExpenseList.find(
+            secondObj => secondObj.name === firstObj.name
+          ),
+          ...firstObj
+        }))
 
   const columns = [
     {
-      field: 'txId',
-      headerName: t('tableHeader2', { ns: 'expenseRoute' }),
-      hide: !tableData[0]?.txId,
+      field: 'election',
+      hide: !tableData[0]?.election,
+      headerName: t('tableElectionHeader', { ns: 'expenseRoute' }),
       cellClassName: classes.links,
-      renderCell: param => (
-        <Tooltip title={param.value}>
-          <a href={`https://bloks.io/transaction/${param.value}`}>
-            {param.value.slice(0, 8)}
-          </a>
-        </Tooltip>
-      ),
       ...rowsCenter
     },
     {
       field: 'name',
-      headerName: tableData[0]?.level
+      hide: !tableData[0]?.color,
+      headerName: tableData[0]?.name
         ? t('tableHeader1', { ns: 'expenseRoute' })
         : t('tableElectionHeader', { ns: 'expenseRoute' }),
       cellClassName: classes.links,
       renderCell: param => (
         <a
-          className={tableData[0]?.level ? '' : classes.disableLink}
+          className={tableData[0]?.name ? '' : classes.disableLink}
           href={`https://eosauthority.com/account/${param.value}?network=eos`}
         >
           {param.value}
@@ -91,72 +90,43 @@ const ExpenseReportGeneral = () => {
       ...rowsCenter
     },
     {
-      field: 'level',
-      headerName: t('tableHeader3', { ns: 'expenseRoute' }),
-      hide: !tableData[0]?.level,
-      type: 'number',
-      ...rowsCenter
-    },
-    {
-      field: 'category',
-      headerName: t('tableHeader11', { ns: 'expenseRoute' }),
-      hide: !tableData[0]?.category,
-      ...rowsCenter
-    },
-    {
-      field: 'EOS',
+      field: 'EOS_TOTAL',
       headerName: 'EOS',
+      hide: !tableData[0]?.election,
       renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
     },
     {
-      field: 'USD',
+      field: 'USD_TOTAL',
       headerName: 'USD',
+      hide: !tableData[0]?.election,
       renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
     },
     {
-      field: 'date',
-      headerName: t('tableHeader6', { ns: 'expenseRoute' }),
-      hide: !tableData[0]?.date,
-      ...rowsCenter
-    },
-    {
-      field: 'EOS_CATEGORIZED',
+      field: 'EOS_CATEGORIZED_PERCENT',
       headerName: t('tableHeader7', { ns: 'expenseRoute' }),
       type: 'number',
-      hide:
-        showDelegateRadio === 'oneDelegate' &&
-        showElectionRadio === 'oneElection',
       ...rowsCenter
     },
     {
-      field: 'EOS_UNCATEGORIZED',
+      field: 'EOS_UNCATEGORIZED_PERCENT',
       headerName: t('tableHeader8', { ns: 'expenseRoute' }),
       type: 'number',
-      hide:
-        showDelegateRadio === 'oneDelegate' &&
-        showElectionRadio === 'oneElection',
       ...rowsCenter
     },
     {
-      field: 'USD_CATEGORIZED',
+      field: 'USD_CATEGORIZED_PERCENT',
       headerName: t('tableHeader9', { ns: 'expenseRoute' }),
       type: 'number',
-      hide:
-        showDelegateRadio === 'oneDelegate' &&
-        showElectionRadio === 'oneElection',
       ...rowsCenter
     },
     {
-      field: 'USD_UNCATEGORIZED',
+      field: 'USD_UNCATEGORIZED_PERCENT',
       headerName: t('tableHeader10', { ns: 'expenseRoute' }),
       type: 'number',
-      hide:
-        showDelegateRadio === 'oneDelegate' &&
-        showElectionRadio === 'oneElection',
       ...rowsCenter
     }
   ]
@@ -202,12 +172,6 @@ const ExpenseReportGeneral = () => {
               />
             </RadioGroup>
           </FormControl>
-          <SelectComponent
-            onChangeFunction={setTypeCurrencySelect}
-            labelSelect={t('textCurrencySelect', { ns: 'generalForm' })}
-            values={['EOS', 'USD']}
-            actualValue={typeCurrencySelect}
-          />
         </div>
         <div id="id-radio-election-container">
           {showElectionRadio === 'oneElection' && (
@@ -230,38 +194,29 @@ const ExpenseReportGeneral = () => {
       </div>
 
       <div>
-        <LineAreaChartReport
-          data={chartTransactionsList}
-          coinType={typeCurrencySelect}
+        <BarChartGeneralReport
+          data={expenseByElectionsList}
           keyTranslation={'titleAreaChartGeneral1'}
           pathTranslation={'expenseRoute'}
           showLegend={true}
+          typeData={'expense'}
         />
       </div>
 
       <div className={classes.chartContainer}>
         <PieChartReport
-          data={totalByCategoryList}
-          coinType={`${typeCurrencySelect}`}
+          data={delegatesList}
           keyTranslation={'titlePieChartGeneral1'}
           pathTranslation={'expenseRoute'}
+          typeData={'expense'}
         />
 
-        <PieChartReport
+        {/* <PieChartReport
           data={totalCategorizedList}
           coinType={`${typeCurrencySelect}`}
           keyTranslation={'titlePieChartGeneral2'}
           pathTranslation={'expenseRoute'}
-        />
-      </div>
-      <div>
-        <LineAreaChartReport
-          data={expenseByDelegatesList}
-          coinType={typeCurrencySelect}
-          keyTranslation={'titleAreaChartGeneral2'}
-          pathTranslation={'expenseRoute'}
-          showLegend={false}
-        />
+        /> */}
       </div>
       <div className={classes.tableContainer}>
         <div className={classes.subTitle}>

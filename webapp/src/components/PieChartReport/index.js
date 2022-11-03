@@ -104,13 +104,19 @@ const renderActiveShape = props => {
   )
 }
 
-const PieChartReport = ({ data, keyTranslation, pathTranslation }) => {
+const PieChartReport = ({
+  data,
+  keyTranslation,
+  pathTranslation,
+  typeData
+}) => {
   const classes = useStyles()
   const [activeIndex, setActiveIndex] = useState(0)
   const [getPiePng, { ref: pieRef }] = useCurrentPng()
   const { t } = useTranslation()
   const [selectedUSD, setSelected] = useState(false)
   const [coinType, setCoinType] = useState('EOS')
+  const [category, setCategory] = useState('')
 
   const handleChange = event => {
     setSelected(event.target.checked)
@@ -131,6 +137,10 @@ const PieChartReport = ({ data, keyTranslation, pathTranslation }) => {
       FileSaver.saveAs(png, 'pie-chart.png')
     }
   }, [getPiePng])
+
+  useEffect(() => {
+    typeData === 'income' ? setCategory('Claimed') : setCategory('Categorized')
+  }, [typeData])
 
   useEffect(() => {
     selectedUSD ? setCoinType('USD') : setCoinType('EOS')
@@ -167,7 +177,7 @@ const PieChartReport = ({ data, keyTranslation, pathTranslation }) => {
               activeShape={renderActiveShape}
               data={newData}
               nameKey={'name'}
-              dataKey={`${coinType}_CLAIMED`}
+              dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
               cx="50%"
               cy="50%"
               innerRadius={'40%'}
@@ -188,7 +198,8 @@ const PieChartReport = ({ data, keyTranslation, pathTranslation }) => {
 PieChartReport.propTypes = {
   data: PropTypes.array,
   keyTranslation: PropTypes.string,
-  pathTranslation: PropTypes.string
+  pathTranslation: PropTypes.string,
+  typeData: PropTypes.string
 }
 
 export default memo(PieChartReport)

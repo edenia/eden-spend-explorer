@@ -38,13 +38,11 @@ const IncomeReport = () => {
       percentIncomeList,
       delegatesList,
       electionRoundSelect,
-      typeCurrencySelect,
       electionYearSelect,
       showElectionRadio
     },
     {
       setElectionRoundSelect,
-      setTypeCurrencySelect,
       setElectionYearSelect,
       getListElectionYears,
       setShowElectionRadio
@@ -185,12 +183,6 @@ const IncomeReport = () => {
               />
             </RadioGroup>
           </FormControl>
-          <SelectComponent
-            onChangeFunction={setTypeCurrencySelect}
-            labelSelect={t('textCurrencySelect', { ns: 'generalForm' })}
-            values={['EOS', 'USD']}
-            actualValue={typeCurrencySelect}
-          />
         </div>
         <div id="id-radio-election-container">
           {showElectionRadio === 'oneElection' && (
@@ -228,6 +220,7 @@ const IncomeReport = () => {
             data={delegatesList}
             keyTranslation={'titlePieChartGeneral1'}
             pathTranslation={'incomeRoute'}
+            typeData={'income'}
           />
         </div>
       </>

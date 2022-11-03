@@ -17,7 +17,6 @@ import {
 } from '../../utils/new-format-objects'
 
 const useIncomeGeneralReportState = () => {
-  const [typeCurrencySelect, setTypeCurrencySelect] = useState('EOS')
   const [electionYearSelect, setElectionYearSelect] = useState('All')
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
   const [showElectionRadio, setShowElectionRadio] = useState('')
@@ -147,13 +146,11 @@ const useIncomeGeneralReportState = () => {
       percentIncomeList,
       delegatesList,
       electionRoundSelect,
-      typeCurrencySelect,
       electionYearSelect,
       showElectionRadio
     },
     {
       setElectionRoundSelect,
-      setTypeCurrencySelect,
       setElectionYearSelect,
       getListElectionYears,
       setShowElectionRadio

@@ -82,6 +82,76 @@ export const newDataFormatByDelegates = transactionsList =>
 
 // Expense
 
+export const newDataFormatByCategorizedElections = electionsList => {
+  const elections = []
+  let electionNum = 0
+  let usdTotal = 0
+  let eosTotal = 0
+  for (let pos = 0; pos < electionsList.length; pos++) {
+    if (electionsList[pos].election === electionNum) {
+      if (electionsList[pos].category !== 'uncategorized') {
+        usdTotal += electionsList[pos].usd_total
+        eosTotal += electionsList[pos].amount
+      } else {
+        const election = {
+          election: `Election ${electionsList[pos].election + 1}`,
+          EOS_TOTAL: Number(eosTotal + electionsList[pos].amount),
+          USD_TOTAL: Number(usdTotal + electionsList[pos].usd_total),
+          EOS_CATEGORIZED: Number(eosTotal),
+          USD_CATEGORIZED: Number(usdTotal),
+          EOS_UNCATEGORIZED: Number(electionsList[pos].amount),
+          USD_UNCATEGORIZED: Number(electionsList[pos].usd_total)
+        }
+        elections.push(election)
+        eosTotal = 0
+        usdTotal = 0
+        electionNum++
+      }
+    } else {
+      const election = {
+        election: `Election ${electionsList[pos].electionNum + 1}`,
+        EOS_TOTAL: Number(eosTotal + electionsList[pos].amount),
+        USD_TOTAL: Number(usdTotal + electionsList[pos].usd_total),
+        EOS_CATEGORIZED: Number(eosTotal),
+        USD_CATEGORIZED: Number(usdTotal),
+        EOS_UNCATEGORIZED: Number(electionsList[pos].amount),
+        USD_UNCATEGORIZED: Number(electionsList[pos].usd_total)
+      }
+      elections.push(election)
+      eosTotal = 0
+      usdTotal = 0
+      electionNum++
+      pos--
+    }
+  }
+}
+
+export const newDataFormatByAllDelegates = transactionsList =>
+  transactionsList.map(data => ({
+    name: data.delegate_payer,
+    EOS: Number(data.amount),
+    USD: Number(data.usd_total),
+    color: generateColor()
+  }))
+
+export const newDataFormatByElectionAndDelegate = transactionsList =>
+  transactionsList.map(data => ({
+    name: data.delegate_payer,
+    EOS_CATEGORIZED: Number(data.eos_categorized),
+    USD_CATEGORIZED: Number(data.usd_categorized),
+    EOS_UNCATEGORIZED: Number(data.eos_uncategorized),
+    USD_UNCATEGORIZED: Number(data.usd_uncategorized),
+    color: generateColor()
+  }))
+
+export const newDataFormatTotalByCategory = totalByCategory =>
+  totalByCategory.map(data => ({
+    name: data.category ? data.category : `Election ${data.election + 1}`,
+    EOS: Number(data.amount),
+    USD: Number(data.usd_total),
+    color: generateColor()
+  }))
+
 // Delegate
 
 // After this line maybe need deleted this
@@ -124,17 +194,6 @@ export const newDataFormatByDelegateAcrossElections = (
         color: generateColor()
       }))
 
-export const newDataFormatByAllDelegates = transactionsList =>
-  transactionsList.map(data => ({
-    name: data.delegate_payer,
-    EOS: Number(data.amount),
-    USD: Number(data.usd_total),
-    EXCHANGE_RATE: Number(data.exchange_rate),
-    color: generateColor(),
-    level: data.delegate_level,
-    link: false
-  }))
-
 export const newDataFormatByDelegate = (transactionsList, delegateSelect) =>
   transactionsList.map(data => ({
     name: delegateSelect,
@@ -148,28 +207,10 @@ export const newDataFormatByDelegate = (transactionsList, delegateSelect) =>
     category: data.category
   }))
 
-export const newDataFormatTotalByCategory = totalByCategory =>
-  totalByCategory.map(data => ({
-    name: data.category ? data.category : `Election ${data.election + 1}`,
-    EOS: Number(data.amount),
-    USD: Number(data.usd_total),
-    color: generateColor()
-  }))
-
 export const newDataFormatExpensesAcrossElections = transactionsList =>
   transactionsList.map(data => ({
     name: data.delegate_payer,
     EOS: Number(data.amount),
     USD: Number(data.usd_total),
-    color: generateColor()
-  }))
-
-export const newDataFormatByElectionAndDelegate = transactionsList =>
-  transactionsList.map(data => ({
-    name: data.delegate_payer,
-    EOS_CATEGORIZED: Number(data.eos_categorized),
-    USD_CATEGORIZED: Number(data.usd_categorized),
-    EOS_UNCATEGORIZED: Number(data.eos_uncategorized),
-    USD_UNCATEGORIZED: Number(data.usd_uncategorized),
     color: generateColor()
   }))
