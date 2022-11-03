@@ -15,7 +15,9 @@ const useForm = (initialState = {}) => {
 
     if (target.value.length > 0) {
       const newErrors = { ...errors }
+
       delete newErrors[target.name]
+
       setErrors({ ...newErrors })
     } else {
       setErrors({ ...errors, [target.name]: true })
@@ -24,16 +26,20 @@ const useForm = (initialState = {}) => {
 
   const validateForm = form => {
     let formErrors = {}
+
     Object.keys(form).forEach(key => {
       if (form[key].length < 1) {
         formErrors = { ...formErrors, [key]: true }
       } else {
         const newErrors = { ...formErrors }
+
         delete newErrors[key]
+
         formErrors = { ...newErrors }
       }
     })
     setErrors(formErrors)
+
     return formErrors
   }
 

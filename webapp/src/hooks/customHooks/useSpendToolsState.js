@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
-import { useSharedState } from '../../context/state.context'
 
+import { useSharedState } from '../../context/state.context'
 import {
   GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
   GET_CATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
@@ -41,6 +41,7 @@ const useSpendTools = () => {
 
   const executeAction = async (data, account, name) => {
     setErrorMessage('')
+
     const transaction = {
       actions: [
         {
@@ -135,7 +136,7 @@ const useSpendTools = () => {
     setAmountClaimed(
       claimedTxData?.eden_transaction_aggregate?.aggregate?.sum?.amount || 0
     )
-  }, [categorizedTxData])
+  }, [claimedTxData])
 
   useEffect(() => {
     setCurrentElection(

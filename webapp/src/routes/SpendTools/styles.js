@@ -69,7 +69,7 @@ export default theme => ({
     '& small': {
       color: 'red'
     },
-    '& .css-c8obxa-MuiFormHelperText-root': {
+    '& .MuiFormHelperText-root': {
       color: '#000'
     }
   },
@@ -91,7 +91,7 @@ export default theme => ({
     alignSelf: 'stretch',
     height: '48px',
     borderRadius: '6px',
-    '& .css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
+    '& .MuiOutlinedInput-notchedOutline': {
       borderColor: '#667080'
     },
     '& #placeholder-select': {
@@ -112,7 +112,7 @@ export default theme => ({
   buttonContainer: {
     display: 'flex',
     justifyContent: 'center',
-    '& .css-1exfphm-MuiButtonBase-root-MuiButton-root': {
+    '& .MuiButtonBase-root': {
       width: '345px',
       height: '48px',
       backgroundColor: '#2563eb',
@@ -120,7 +120,7 @@ export default theme => ({
       padding: '0 16px',
       textTransform: 'none'
     },
-    '& .css-1exfphm-MuiButtonBase-root-MuiButton-root:hover': {
+    '& .MuiButtonBase-root:hover': {
       backgroundColor: '#3866eb'
     }
   },
