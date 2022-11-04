@@ -1,7 +1,7 @@
 export default theme => ({
   footerRoot: {
     width: '100%',
-    borderTop: '1px solid black',
+    borderTop: `1px solid ${theme.palette.grey[300]}`,
     backgroundColor: theme.palette.grey[600],
     '& .footer-item-style': {
       color: 'rgba(163,163,163,1) !important',
@@ -16,7 +16,8 @@ export default theme => ({
     }
   },
   footerContainer: {
-    display: 'grid',
+    display: 'flex',
+    paddingTop: theme.spacing(1),
     justifyContent: 'center',
     alignItems: 'center',
     '& .MuiTypography-caption': {

@@ -1,81 +1,114 @@
-import React, { memo } from 'react'
-import { Link } from '@mui/material'
-// import { makeStyles, useTheme } from '@mui/styles'
+import React, { memo, useEffect, useState } from 'react'
 import { Sidebar, MenuOption, PreviewProfile } from '@edenia/ui-kit'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { gql, GraphQLClient } from 'graphql-request'
+import { Link, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { makeStyles } from '@mui/styles'
+import PropTypes from 'prop-types'
+
 import { useSharedState } from '../../context/state.context'
-// import { useLazyQuery } from '@apollo/client'
+import { GET_MEMBERS_DATA } from '../../gql'
 
-// import styles from './styles'
-// const useStyles = makeStyles(styles)
-import { sideBarItems } from '../../constants/sidebar.constants'
-import { GET_MEMBERS_DATA } from '../../gql/eden_member.gql'
-import { request } from 'graphql-request'
+import styles from './styles'
 
-const SidebarComp = () => {
-  // const classes = useStyles()
-  // const theme = useTheme()
-  const [state] = useSharedState()
+const useStyles = makeStyles(styles)
 
-  const variable = {
-    value: 'xavieredenia',
-    orderBy: {
-      election_rank: 'desc'
-    },
-    limit: 50
-  }
-
-  // const [getMembers, { loading, data }] = useLazyQuery(GET_MEMBERS_DATA)
-  const data = request({
-    endpoint: 'https://eden-api.edenia.cloud/v1/graphql',
-    document: GET_MEMBERS_DATA,
-    variables: variable
+const SidebarComp = ({ routes, open, onClose }) => {
+  const classes = useStyles()
+  const { t } = useTranslation('routes')
+  const [state, { logout, showMessage }] = useSharedState()
+  const router = useLocation()
+  const { pathname } = router
+  const [userData, setUSerData] = useState()
+  const client = new GraphQLClient('https://eden-api.edenia.cloud/v1/graphql', {
+    headers: {}
   })
-  console.log(data)
-  // useEffect(getMembers(), [])
 
-  // console.log(loading)
-  // console.log(data)
+  useEffect(async () => {
+    if (!state?.ual?.activeUser?.accountName) return
+
+    const variables = {
+      value: 'xavieredenia',
+      orderBy: {
+        election_rank: 'desc'
+      },
+      limit: 50
+    }
+    const response = await client.request(
+      gql`
+        ${GET_MEMBERS_DATA}
+      `,
+      variables
+    )
+
+    if (response?.members.length > 0) setUSerData(response?.members[0])
+    else {
+      showMessage({
+        type: 'warning',
+        content: t('invalidEdenMember')
+      })
+      logout()
+    }
+  }, [state?.ual?.activeUser])
 
   return (
     <Sidebar
+      open={open}
+      close={onClose}
+      logo="/logos/eden-spend-explorer-logo.png"
       menuOptions={
-        <>
-          {sideBarItems.map(data => (
-            <div key={data.text} style={{ marginTop: '4px' }}>
-              <Link href="google.com" underline="none">
-                <MenuOption
-                  text={data.text}
-                  icon={data.icon}
-                  isSelected={data.isSelected}
-                />
-              </Link>
-            </div>
-          ))}
-        </>
+        <div className={classes.spacinTopSidebarItems}>
+          {routes.map(data => {
+            if (!data.component) return <></>
+
+            return (
+              <div key={data.name} className={classes.marginTopItemsSidebar}>
+                <Link to={data.path} underline="none" component={RouterLink}>
+                  <MenuOption
+                    text={t(`${data.path}>sidebar`)}
+                    icon={data.icon}
+                    isSelected={pathname === data.path}
+                  />
+                </Link>
+              </div>
+            )
+          })}
+        </div>
       }
       profileComponent={
-        <PreviewProfile
-          name={state?.ual?.activeUser?.accountName}
-          nameSize="12px"
-          nameFontWeight="600"
-          // selectableItems={
-          //   <div>
-          //     <Typography variant="caption">
-          //       <Link
-          //         href={`https://genesis.eden.eoscommunity.org/`}
-          //         rel="noreferrer"
-          //         underline="none"
-          //         target="_blank"
-          //       >
-          //         @ {state?.ual?.activeUser?.accountName}
-          //       </Link>
-          //     </Typography>
-          //   </div>
-          // }
-        />
+        state.ual.activeUser ? (
+          <PreviewProfile
+            name={userData?.name}
+            nameSize="14px"
+            image={`https://eden-genesis.mypinata.cloud/ipfs/${userData?.profile?.image}`}
+            nameFontWeight="600"
+            selectableItems={
+              <div className={classes.centerSelectableItems}>
+                <Typography variant="caption">
+                  <Link
+                    color="black"
+                    href={`https://genesis.eden.eoscommunity.org/${state?.ual?.activeUser?.accountName}`}
+                    rel="noreferrer"
+                    underline="none"
+                    target="_blank"
+                  >
+                    @ {state?.ual?.activeUser?.accountName}
+                  </Link>
+                </Typography>
+              </div>
+            }
+          />
+        ) : undefined
       }
     />
   )
+}
+
+SidebarComp.propTypes = {
+  routes: PropTypes.array,
+  onClose: PropTypes.func,
+  open: PropTypes.bool
 }
 
 export default memo(SidebarComp)

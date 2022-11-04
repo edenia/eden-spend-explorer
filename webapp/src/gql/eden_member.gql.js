@@ -1,10 +1,8 @@
-import gql from 'graphql-request'
-
-export const GET_MEMBERS_DATA = gql`
-  {
+export const GET_MEMBERS_DATA = `
+  query getMembers($value: String, $orderBy: [member_order_by!], $limit: Int) {
     memberPag: member_aggregate(
       order_by: $orderBy
-      where: { name: { _ilike: $value } }
+      where: { account: { _eq: $value } }
     ) {
       aggregate {
         count
@@ -13,7 +11,7 @@ export const GET_MEMBERS_DATA = gql`
     members: member(
       limit: $limit
       order_by: $orderBy
-      where: { name: { _ilike: $value } }
+      where: { account: { _eq: $value } }
     ) {
       account
       election_participation_status
