@@ -2,7 +2,7 @@
   "editor.tabSize": 2,
   "editor.renderWhitespace": "all",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "search.exclude": {
     "**/.yarn": true,
     "**/.pnp.*": true
