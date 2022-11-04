@@ -5,11 +5,9 @@ import { DataGrid, esES, enUS } from '@mui/x-data-grid'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 const TableReport = ({ columns, dataPercent }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation('generalForm')
   const [pagePaginationSize, setPagePaginationSize] = useState(5)
-  const theme = createTheme(
-    t('tableHeader1', { ns: 'incomeRoute' }) === 'Name' ? enUS : esES
-  )
+  const theme = createTheme(t('date') === 'Date' ? enUS : esES)
 
   return (
     <ThemeProvider theme={theme}>
@@ -22,7 +20,9 @@ const TableReport = ({ columns, dataPercent }) => {
         onPageSizeChange={newPageSize => setPagePaginationSize(newPageSize)}
         rowsPerPageOptions={[5, 10, 20]}
         pagination
-        getRowId={row => `${row.name}-${row.txId}-${row.color}-${row.EOS}`}
+        getRowId={row =>
+          `${row.name}-${row.txId}-${row.color}-${row.EOS}-${row.txid}`
+        }
       />
     </ThemeProvider>
   )

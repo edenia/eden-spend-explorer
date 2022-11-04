@@ -18,3 +18,19 @@ export const listChartColors = [
   '#ffc107',
   '#3f51b5'
 ]
+
+export const CATEGORIES = [
+  'admin',
+  'charity',
+  'development',
+  'dues',
+  'education',
+  'hardware',
+  'infrastructure',
+  'legal',
+  'marketing',
+  'pomelo',
+  'salaries',
+  'software',
+  'travel'
+]
