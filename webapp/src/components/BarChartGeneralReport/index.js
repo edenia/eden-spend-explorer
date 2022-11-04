@@ -87,7 +87,7 @@ RenderChartLegend.propTypes = {
   data: PropTypes.string
 }
 
-const CustomTooltip = ({ payload = [], label = '' }) => {
+const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
   const { t } = useTranslation()
   return (
     <div>
@@ -101,7 +101,7 @@ const CustomTooltip = ({ payload = [], label = '' }) => {
               )}: ${formatWithThousandSeparator(
                 data.payload[data.dataKey],
                 4
-              )}`}
+              )}-${coinType}`}
             </div>
             <div>
               {i === 0 &&
@@ -120,7 +120,8 @@ const CustomTooltip = ({ payload = [], label = '' }) => {
 
 CustomTooltip.propTypes = {
   payload: PropTypes.array,
-  label: PropTypes.any
+  label: PropTypes.any,
+  coinType: PropTypes.string
 }
 
 const BarChartGeneralReport = ({
@@ -208,7 +209,7 @@ const BarChartGeneralReport = ({
                   fontSize: '14px',
                   padding: '8px'
                 }}
-                content={<CustomTooltip />}
+                content={<CustomTooltip coinType={coinType} />}
               />
               {showLegend && (
                 <Legend content={<RenderChartLegend data={category} />} />

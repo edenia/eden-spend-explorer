@@ -54,7 +54,7 @@ const renderActiveShape = props => {
         dy={8}
         textLength="10%"
         textAnchor="middle"
-        fill={payload.color}
+        fill={'#000'}
         lengthAdjust="spacingAndGlyphs"
       >
         {payload.name}
@@ -89,7 +89,7 @@ const renderActiveShape = props => {
         textAnchor={textAnchor}
         fill="#333"
         lengthAdjust="spacingAndGlyphs"
-      >{`${coin}-${formatWithThousandSeparator(value, 2)}`}</text>
+      >{`${formatWithThousandSeparator(value, 2)}-${coin}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}

@@ -22,7 +22,7 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
-const ExpenseReportGeneral = () => {
+const ExpenseReport = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 
@@ -32,7 +32,7 @@ const ExpenseReportGeneral = () => {
       electionsByYearList,
       percentExpenseList,
       delegatesList,
-      // categoryList,
+      categoryList,
       electionRoundSelect,
       electionYearSelect,
       showElectionRadio
@@ -48,6 +48,8 @@ const ExpenseReportGeneral = () => {
   useEffect(() => {
     setShowElectionRadio('allElections')
   }, [])
+
+  console.log(categoryList)
 
   const tableData =
     showElectionRadio === 'allElections'
@@ -211,12 +213,12 @@ const ExpenseReportGeneral = () => {
           typeData={'expense'}
         />
 
-        {/* <PieChartReport
-          data={totalCategorizedList}
-          coinType={`${typeCurrencySelect}`}
+        <PieChartReport
+          data={categoryList}
           keyTranslation={'titlePieChartGeneral2'}
           pathTranslation={'expenseRoute'}
-        /> */}
+          typeData={'expense'}
+        />
       </div>
       <div className={classes.tableContainer}>
         <div className={classes.subTitle}>
@@ -229,4 +231,4 @@ const ExpenseReportGeneral = () => {
   )
 }
 
-export default memo(ExpenseReportGeneral)
+export default memo(ExpenseReport)

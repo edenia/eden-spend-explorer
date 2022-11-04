@@ -3,14 +3,14 @@ import { useLazyQuery } from '@apollo/client'
 
 import { GET_ELECTIONS_BY_YEAR } from '../../gql/general.gql'
 import {
-  GET_PERCENT_ALL_ELECTIONS,
-  GET_PERCENT_BY_ELECTION,
+  GET_PERCENT_ALL_ELECTIONS_EXPENSE,
+  GET_PERCENT_BY_ELECTION_EXPENSE,
   GET_EXPENSE_BY_ELECTIONS,
   GET_TOTAL_EXPENSE_BY_DELEGATE,
-  GET_DELEGATES_BY_ELECTION,
-  GET_TOTAL_BY_CATEGORY_AND_ELECTION,
-  GET_TOTAL_BY_CATEGORY
-} from '../../gql/expenseGeneral.gql'
+  GET_DELEGATES_BY_ELECTION_EXPENSE,
+  GET_TOTAL_BY_CATEGORY_AND_ELECTION_EXPENSE,
+  GET_TOTAL_BY_CATEGORY_EXPENSE
+} from '../../gql/expense.gql'
 import {
   newDataFormatByCategorizedElections,
   newDataFormatByAllDelegates,
@@ -63,17 +63,17 @@ const useExpenseGeneralReportState = () => {
   )
 
   const [loadDelegatesByElection, { data: delegatesByElectionData }] =
-    useLazyQuery(GET_DELEGATES_BY_ELECTION, {
+    useLazyQuery(GET_DELEGATES_BY_ELECTION_EXPENSE, {
       variables: {
         election: electionRoundSelect
       }
     })
 
   const [loadPercentAllElections, { data: percentAllElectionData }] =
-    useLazyQuery(GET_PERCENT_ALL_ELECTIONS)
+    useLazyQuery(GET_PERCENT_ALL_ELECTIONS_EXPENSE)
 
   const [loadPercentByElection, { data: percentByElectionData }] = useLazyQuery(
-    GET_PERCENT_BY_ELECTION,
+    GET_PERCENT_BY_ELECTION_EXPENSE,
     {
       variables: {
         election: electionRoundSelect
@@ -82,13 +82,13 @@ const useExpenseGeneralReportState = () => {
   )
 
   const [loadTotalByCategory, { data: totalByCategoryData }] = useLazyQuery(
-    GET_TOTAL_BY_CATEGORY
+    GET_TOTAL_BY_CATEGORY_EXPENSE
   )
 
   const [
     loadTotalByCategoryAndElection,
     { data: totalByCategoryAndElectionData }
-  ] = useLazyQuery(GET_TOTAL_BY_CATEGORY_AND_ELECTION, {
+  ] = useLazyQuery(GET_TOTAL_BY_CATEGORY_AND_ELECTION_EXPENSE, {
     variables: {
       election: electionRoundSelect
     }
@@ -113,11 +113,10 @@ const useExpenseGeneralReportState = () => {
   }, [electionsByYearData])
 
   useEffect(() => {
-    console.log(expenseByElectionsList)
     setExpenseByElectionsList(
       newDataFormatByCategorizedElections(
         expenseByElectionsData?.total_by_category_and_election || []
-      )
+      ) || []
     )
   }, [expenseByElectionsData])
 
@@ -126,7 +125,7 @@ const useExpenseGeneralReportState = () => {
       setDelegatesList(
         newDataFormatByAllDelegates(
           totalExpenseByDelegateData?.expenses_by_delegate || []
-        )
+        ) || []
       )
   }, [showElectionRadio, totalExpenseByDelegateData])
 
@@ -135,7 +134,7 @@ const useExpenseGeneralReportState = () => {
       setDelegatesList(
         newDataFormatByElectionAndDelegate(
           delegatesByElectionData?.historic_expenses || []
-        )
+        ) || []
       )
   }, [showElectionRadio, delegatesByElectionData])
 
@@ -145,7 +144,7 @@ const useExpenseGeneralReportState = () => {
         newDataFormatPercentAllElections(
           percentAllElectionData?.percent_by_all_elections_expenses || [],
           'categorized'
-        )
+        ) || []
       )
   }, [showElectionRadio, percentAllElectionData])
 
@@ -155,7 +154,7 @@ const useExpenseGeneralReportState = () => {
         newDataFormatPercentByElection(
           percentByElectionData?.percent_by_delegates_expenses || [],
           'categorized'
-        )
+        ) || []
       )
   }, [showElectionRadio, percentByElectionData])
 
@@ -165,7 +164,7 @@ const useExpenseGeneralReportState = () => {
         newDataFormatTotalByCategory(
           totalByCategoryData?.total_by_category || [],
           'categorized'
-        )
+        ) || []
       )
   }, [showElectionRadio, totalByCategoryData])
 
@@ -175,7 +174,7 @@ const useExpenseGeneralReportState = () => {
         newDataFormatTotalByCategory(
           totalByCategoryAndElectionData?.total_by_category_and_election || [],
           'categorized'
-        )
+        ) || []
       )
   }, [showElectionRadio, totalByCategoryAndElectionData])
 

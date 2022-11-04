@@ -97,7 +97,7 @@ const useIncomeGeneralReportState = () => {
     setIncomeByElectionsList(
       newDataFormatByElections(
         incomeByElectionsData?.total_by_category_and_election || []
-      )
+      ) || []
     )
   }, [incomeByElectionsData])
 
@@ -106,7 +106,7 @@ const useIncomeGeneralReportState = () => {
       setDelegatesList(
         newDataFormatByDelegates(
           totalIncomeByDelegateData?.incomes_by_delegate || []
-        )
+        ) || []
       )
   }, [showElectionRadio, totalIncomeByDelegateData])
 
@@ -115,7 +115,7 @@ const useIncomeGeneralReportState = () => {
       setDelegatesList(
         newDataFormatByDelegates(
           delegatesByElectionData?.historic_incomes || []
-        )
+        ) || []
       )
   }, [showElectionRadio, delegatesByElectionData])
 
@@ -125,7 +125,7 @@ const useIncomeGeneralReportState = () => {
         newDataFormatPercentAllElections(
           percentAllElectionData?.percent_by_all_elections_incomes || [],
           'claimed'
-        )
+        ) || []
       )
   }, [showElectionRadio, percentAllElectionData])
 
@@ -135,7 +135,7 @@ const useIncomeGeneralReportState = () => {
         newDataFormatPercentByElection(
           percentByElectionData?.percent_by_delegates_incomes || [],
           'claimed'
-        )
+        ) || []
       )
   }, [showElectionRadio, percentByElectionData])
 

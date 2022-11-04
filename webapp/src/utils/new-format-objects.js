@@ -124,13 +124,14 @@ export const newDataFormatByCategorizedElections = electionsList => {
       pos--
     }
   }
+  return elections
 }
 
 export const newDataFormatByAllDelegates = transactionsList =>
   transactionsList.map(data => ({
     name: data.delegate_payer,
-    EOS: Number(data.amount),
-    USD: Number(data.usd_total),
+    EOS_CATEGORIZED: Number(data.amount),
+    USD_CATEGORIZED: Number(data.usd_total),
     color: generateColor()
   }))
 
@@ -147,8 +148,8 @@ export const newDataFormatByElectionAndDelegate = transactionsList =>
 export const newDataFormatTotalByCategory = totalByCategory =>
   totalByCategory.map(data => ({
     name: data.category ? data.category : `Election ${data.election + 1}`,
-    EOS: Number(data.amount),
-    USD: Number(data.usd_total),
+    EOS_CATEGORIZED: Number(data.amount),
+    USD_CATEGORIZED: Number(data.usd_total),
     color: generateColor()
   }))
 

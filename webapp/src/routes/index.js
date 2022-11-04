@@ -11,15 +11,14 @@ import {
   Home as HomeIcon,
   InfoOutlined as InfoIcon,
   HelpOutlineOutlined as HelpIcon,
-  PersonAdd,
-  PriceCheck
+  PersonOutline as PersonOutlineIcon
 } from '@mui/icons-material'
 
 import { mainConfig } from '../config'
 
 const ExpenseReportDelegates = lazy(() => import('./ExpenseReportDelegates'))
-const ExpenseReportGeneral = lazy(() => import('./ExpenseReportGeneral'))
 const IncomeReportDelegates = lazy(() => import('./IncomeReportDelegates'))
+const ExpenseReport = lazy(() => import('./ExpenseReport'))
 const IncomeReport = lazy(() => import('./IncomeReport'))
 const Home = lazy(() => import('./Home'))
 const About = lazy(() => import('./About'))
@@ -38,26 +37,26 @@ const routes = [
     name: 'Income',
     icon: <AddCardIcon />,
     component: IncomeReport,
-    path: '/Income',
+    path: '/income',
     exact: true
   },
   {
     name: 'Delegate Incomes',
-    icon: <PersonAdd />,
+    icon: <PersonOutlineIcon />,
     component: IncomeReportDelegates,
     path: '/delegateIncomes',
     exact: true
   },
   {
-    name: 'General Expenses',
+    name: 'Expense',
     icon: <AttachMoneyIcon />,
-    component: ExpenseReportGeneral,
-    path: '/generalExpenses',
+    component: ExpenseReport,
+    path: '/expense',
     exact: true
   },
   {
     name: 'Delegate Expenses',
-    icon: <PriceCheck />,
+    icon: <PersonOutlineIcon />,
     component: ExpenseReportDelegates,
     path: '/delegateExpenses',
     exact: true
