@@ -29,7 +29,7 @@ const SidebarComp = ({ routes, open, onClose }) => {
     if (!state?.ual?.activeUser?.accountName) return
 
     const variables = {
-      value: 'xavieredenia',
+      value: state?.ual?.activeUser?.accountName,
       orderBy: {
         election_rank: 'desc'
       },
