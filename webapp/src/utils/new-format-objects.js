@@ -11,6 +11,25 @@ export const generateColor = () => {
   return color
 }
 
+export const generateDelegateData = (
+  type,
+  category,
+  eos,
+  usd,
+  eosUnclass,
+  usdUnclass
+) => {
+  const delegateData = {
+    type: type,
+    category: category,
+    EOS_: Number(eos),
+    USD_: Number(usd),
+    EOS_UN: Number(eosUnclass),
+    USD_UN: Number(usdUnclass)
+  }
+  return delegateData
+}
+
 // General
 
 export const newDataFormatPercentAllElections = (
@@ -154,6 +173,31 @@ export const newDataFormatTotalByCategory = totalByCategory =>
   }))
 
 // Delegate
+
+export const newDataFormatByType = (incomeList, expenseList) => {
+  const transactions = []
+  transactions.push(
+    generateDelegateData(
+      'income',
+      'Claimed',
+      incomeList[0]?.eos_claimed,
+      incomeList[0]?.usd_claimed,
+      incomeList[0]?.eos_unclaimed,
+      incomeList[0]?.usd_unclaimed
+    )
+  )
+  transactions.push(
+    generateDelegateData(
+      'expense',
+      'Categorized',
+      expenseList[0]?.eos_categorized,
+      expenseList[0]?.usd_categorized,
+      expenseList[0]?.eos_uncategorized,
+      expenseList[0]?.usd_uncategorized
+    )
+  )
+  return transactions
+}
 
 // After this line maybe need deleted this
 export const newDataFormatByElection = electionsList =>

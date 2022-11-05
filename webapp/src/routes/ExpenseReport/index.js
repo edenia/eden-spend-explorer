@@ -49,8 +49,6 @@ const ExpenseReport = () => {
     setShowElectionRadio('allElections')
   }, [])
 
-  console.log(categoryList)
-
   const tableData =
     showElectionRadio === 'allElections'
       ? expenseByElectionsList.map(firstObj => ({

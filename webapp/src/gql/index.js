@@ -1,5 +1,4 @@
 export * from './general.gql'
 export * from './income.gql'
-export * from './delegate2.gql'
 export * from './expense.gql'
 export * from './delegate.gql'

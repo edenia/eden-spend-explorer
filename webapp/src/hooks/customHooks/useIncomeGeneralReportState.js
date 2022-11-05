@@ -4,9 +4,9 @@ import { useLazyQuery } from '@apollo/client'
 import { GET_ELECTIONS_BY_YEAR } from '../../gql/general.gql'
 import {
   GET_TOTAL_INCOME_BY_DELEGATE,
-  GET_DELEGATES_BY_ELECTION,
-  GET_PERCENT_ALL_ELECTIONS,
-  GET_PERCENT_BY_ELECTIONS,
+  GET_DELEGATES_BY_ELECTION_INCOME,
+  GET_PERCENT_ALL_ELECTIONS_INCOME,
+  GET_PERCENT_BY_ELECTIONS_INCOME,
   GET_INCOME_BY_ELECTIONS
 } from '../../gql/income.gql'
 import {
@@ -59,17 +59,17 @@ const useIncomeGeneralReportState = () => {
   )
 
   const [loadDelegatesByElection, { data: delegatesByElectionData }] =
-    useLazyQuery(GET_DELEGATES_BY_ELECTION, {
+    useLazyQuery(GET_DELEGATES_BY_ELECTION_INCOME, {
       variables: {
         election: electionRoundSelect
       }
     })
 
   const [loadPercentAllElections, { data: percentAllElectionData }] =
-    useLazyQuery(GET_PERCENT_ALL_ELECTIONS)
+    useLazyQuery(GET_PERCENT_ALL_ELECTIONS_INCOME)
 
   const [loadPercentByElection, { data: percentByElectionData }] = useLazyQuery(
-    GET_PERCENT_BY_ELECTIONS,
+    GET_PERCENT_BY_ELECTIONS_INCOME,
     {
       variables: {
         election: electionRoundSelect

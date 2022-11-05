@@ -32,63 +32,96 @@ import styles from './styles'
 
 const useStyles = makeStyles(styles)
 
-const lowerCaseAllWordsExceptFirstLetters = string =>
+const lowerCaseAllWordsExceptFirstLetters = (string = ' ') =>
   string.replaceAll(
     /\S*/g,
     word => `${word.slice(0, 1)}${word.slice(1).toLowerCase()}`
   )
 
-const RenderChartLegend = ({ data }) => {
+const RenderChartLegend = ({ data, isDelegate }) => {
   const classes = useStyles()
 
   return (
     <div className={classes.chartLinks}>
-      <a key={`key-Un${data.toLocaleLowerCase()}-link-chart`}>
-        <Box
-          width={12}
-          height={12}
-          ml={2}
-          mt={0.5}
-          mr={0.5}
-          bgcolor="#f4d35e"
-          borderRadius={5}
-        />
-        {`Un${data.toLocaleLowerCase()}`}
-      </a>
-      <a key={`key-total-link-chart`}>
-        <Box
-          width={12}
-          height={12}
-          ml={2}
-          mt={0.5}
-          mr={0.5}
-          bgcolor="#19647e"
-          borderRadius={5}
-        />
-        {`Total`}
-      </a>
-      <a key={`key-${data}-link-chart`}>
-        <Box
-          width={12}
-          height={12}
-          ml={2}
-          mt={0.5}
-          mr={0.5}
-          bgcolor="#ee964b"
-          borderRadius={5}
-        />
-        {data}
-      </a>
+      {!isDelegate ? (
+        <>
+          <a key={`key-Un${data.toLocaleLowerCase()}-link-chart`}>
+            <Box
+              width={12}
+              height={12}
+              ml={2}
+              mt={0.5}
+              mr={0.5}
+              bgcolor="#f4d35e"
+              borderRadius={5}
+            />
+            {`Un${data.toLocaleLowerCase()}`}
+          </a>
+          <a key={`key-total-link-chart`}>
+            <Box
+              width={12}
+              height={12}
+              ml={2}
+              mt={0.5}
+              mr={0.5}
+              bgcolor="#19647e"
+              borderRadius={5}
+            />
+            {`Total`}
+          </a>
+          <a key={`key-${data}-link-chart`}>
+            <Box
+              width={12}
+              height={12}
+              ml={2}
+              mt={0.5}
+              mr={0.5}
+              bgcolor="#ee964b"
+              borderRadius={5}
+            />
+            {data}
+          </a>
+        </>
+      ) : (
+        <>
+          <a key={`key-total-link-chart`}>
+            <Box
+              width={12}
+              height={12}
+              ml={2}
+              mt={0.5}
+              mr={0.5}
+              bgcolor="#19647e"
+              borderRadius={5}
+            />
+            {`Categorized / Claimed`}
+          </a>
+          <a key={`key-${data}-link-chart`}>
+            <Box
+              width={12}
+              height={12}
+              ml={2}
+              mt={0.5}
+              mr={0.5}
+              bgcolor="#ee964b"
+              borderRadius={5}
+            />
+            {`Uncategorized / Unclaimed`}
+          </a>
+        </>
+      )}
     </div>
   )
 }
 
 RenderChartLegend.propTypes = {
-  data: PropTypes.string
+  data: PropTypes.string,
+  isDelegate: PropTypes.bool
 }
 
 const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
   const { t } = useTranslation()
+
   return (
     <div>
       <strong>{label}</strong>
@@ -97,11 +130,11 @@ const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
           <div key={`${i}-tooltip`}>
             <div>
               {`${lowerCaseAllWordsExceptFirstLetters(
-                data.dataKey.split('_')[1]
+                data.dataKey.split('_')[1] + data.payload.category
               )}: ${formatWithThousandSeparator(
                 data.payload[data.dataKey],
                 4
-              )}-${coinType}`}
+              )} ${coinType}`}
             </div>
             <div>
               {i === 0 &&
@@ -136,6 +169,7 @@ const BarChartGeneralReport = ({
   const [category, setCategory] = useState('')
   const { t } = useTranslation()
   const [selectedUSD, setSelected] = useState(false)
+  const [isDelegate, setIsDelegate] = useState(false)
   const [coinType, setCoinType] = useState('EOS')
 
   const handleChange = event => {
@@ -151,7 +185,11 @@ const BarChartGeneralReport = ({
   }, [getBarPng])
 
   useEffect(() => {
-    typeData === 'income' ? setCategory('Claimed') : setCategory('Categorized')
+    typeData === 'income'
+      ? setCategory('Claimed')
+      : typeData === 'expense'
+      ? setCategory('Categorized')
+      : setIsDelegate(true)
   }, [typeData])
 
   useEffect(() => {
@@ -196,7 +234,15 @@ const BarChartGeneralReport = ({
               ref={barRef}
             >
               <CartesianGrid stroke="#f5f5f5" />
-              <XAxis tick={{ fontSize: 10 }} dataKey="election" scale="auto" />
+              {!isDelegate ? (
+                <XAxis
+                  tick={{ fontSize: 10 }}
+                  dataKey="election"
+                  scale="auto"
+                />
+              ) : (
+                <XAxis tick={{ fontSize: 10 }} dataKey="type" scale="auto" />
+              )}
               <YAxis
                 tick={{ fontSize: 14, stroke: '#000000', strokeWidth: 0.5 }}
               />
@@ -212,31 +258,59 @@ const BarChartGeneralReport = ({
                 content={<CustomTooltip coinType={coinType} />}
               />
               {showLegend && (
-                <Legend content={<RenderChartLegend data={category} />} />
+                <Legend
+                  content={
+                    <RenderChartLegend
+                      data={category}
+                      isDelegate={isDelegate}
+                    />
+                  }
+                />
               )}
-              <Bar
-                dataKey={`${coinType}_UN${category.toLocaleUpperCase()}`}
-                barSize={35}
-                fill="#f4d35e"
-              >
-                {data.map(({ election }) => (
-                  <Cell key={`cell-${election}`} />
-                ))}
-              </Bar>
-              <Bar dataKey={`${coinType}_TOTAL`} barSize={35} fill="#19647e">
-                {data.map(({ election }) => (
-                  <Cell key={`cell-${election}`} />
-                ))}
-              </Bar>
-              <Bar
-                dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
-                barSize={35}
-                fill="#ee964b"
-              >
-                {data.map(({ election }) => (
-                  <Cell key={`cell-${election}`} />
-                ))}
-              </Bar>
+              {!isDelegate ? (
+                <>
+                  <Bar
+                    dataKey={`${coinType}_UN${category.toLocaleUpperCase()}`}
+                    barSize={35}
+                    fill="#f4d35e"
+                  >
+                    {data.map(({ election }) => (
+                      <Cell key={`cell-${election}`} />
+                    ))}
+                  </Bar>
+                  <Bar
+                    dataKey={`${coinType}_TOTAL`}
+                    barSize={35}
+                    fill="#19647e"
+                  >
+                    {data.map(({ election }) => (
+                      <Cell key={`cell-${election}`} />
+                    ))}
+                  </Bar>
+                  <Bar
+                    dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
+                    barSize={35}
+                    fill="#ee964b"
+                  >
+                    {data.map(({ election }) => (
+                      <Cell key={`cell-${election}`} />
+                    ))}
+                  </Bar>
+                </>
+              ) : (
+                <>
+                  <Bar dataKey={`${coinType}_`} barSize={35} fill="#19647e">
+                    {data.map(({ type }) => (
+                      <Cell key={`cell-${type}`} />
+                    ))}
+                  </Bar>
+                  <Bar dataKey={`${coinType}_UN`} barSize={35} fill="#ee964b">
+                    {data.map(({ type }) => (
+                      <Cell key={`cell-${type}`} />
+                    ))}
+                  </Bar>
+                </>
+              )}
             </ComposedChart>
           </ResponsiveContainer>
         </div>
