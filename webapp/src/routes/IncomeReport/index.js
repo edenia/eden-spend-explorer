@@ -9,7 +9,7 @@ import {
   Radio
 } from '@mui/material'
 
-import useIncomeGeneralReportState from '../../hooks/customHooks/useIncomeGeneralReportState'
+import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
 import BarChartGeneralReport from '../../components/BarChartGeneralReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
@@ -47,7 +47,7 @@ const IncomeReport = () => {
       getListElectionYears,
       setShowElectionRadio
     }
-  ] = useIncomeGeneralReportState()
+  ] = useIncomeReportState()
 
   useEffect(() => {
     setShowElectionRadio('allElections')

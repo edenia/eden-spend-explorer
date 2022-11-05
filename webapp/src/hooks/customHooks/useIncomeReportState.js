@@ -3,41 +3,27 @@ import { useLazyQuery } from '@apollo/client'
 
 import { GET_ELECTIONS_BY_YEAR } from '../../gql/general.gql'
 import {
-  GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY,
-  GET_TOTAL_BY_ELECTIONS_QUERY,
-  GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION,
-  GET_TOTAL_BY_CATEGORY,
-  GET_TOTAL_BY_CATEGORY_AND_ELECTION,
-  GET_PERCENT_ALL_ELECTIONS,
-  GET_PERCENT_BY_ELECTIONS,
-  GET_TOTAL_CLAIMED,
-  GET_INCOME_CATEGORIES_BY_ELECTION_AND_DELEGATE
-} from '../../gql'
-
+  GET_TOTAL_INCOME_BY_DELEGATE,
+  GET_DELEGATES_BY_ELECTION_INCOME,
+  GET_PERCENT_ALL_ELECTIONS_INCOME,
+  GET_PERCENT_BY_ELECTIONS_INCOME,
+  GET_INCOME_BY_ELECTIONS
+} from '../../gql/income.gql'
 import {
-  newDataFormatByDelegate,
-  newDataFormatByElection,
+  newDataFormatByElections,
+  newDataFormatByDelegates,
   newDataFormatPercentAllElections,
-  newDataFormatPercentByElection,
-  newDataFormatTotalByCategory,
-  newDataFormatByDelegateAcrossElections
-} from '../../utils'
+  newDataFormatPercentByElection
+} from '../../utils/new-format-objects'
 
 const useIncomeReportState = () => {
-  const [typeCurrencySelect, setTypeCurrencySelect] = useState('EOS')
   const [electionYearSelect, setElectionYearSelect] = useState('All')
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
-  const [delegateSelect, setDelegateSelect] = useState('')
-  const [showDelegateRadio, setShowDelegateRadio] = useState('allDelegates')
   const [showElectionRadio, setShowElectionRadio] = useState('')
   const [electionsByYearList, setElectionsByYearList] = useState([])
-  const [chartTransactionsList, setChartTransactionsList] = useState([])
-  const [incomeByDelegateAccountList, setIncomeByDelegateAccountList] =
-    useState([])
-  const [totalByCategoryList, setTotalByCategoryList] = useState([])
+  const [incomeByElectionsList, setIncomeByElectionsList] = useState([])
+  const [delegatesList, setDelegatesList] = useState([])
   const [percentIncomeList, setPercentIncomeList] = useState([])
-  const [totalClaimedList, setTotalClaimedList] = useState([])
-  const [claimedIncomeByDelegate, setClaimedIncomeByDelegate] = useState([])
 
   const getListElectionYears = () => {
     const yearsList = ['All']
@@ -49,8 +35,12 @@ const useIncomeReportState = () => {
     return yearsList
   }
 
-  const [loadTotalIncomeByElection, { data: totalByElectionData }] =
-    useLazyQuery(GET_TOTAL_BY_ELECTIONS_QUERY)
+  const [loadTotalIncomeByDelegate, { data: totalIncomeByDelegateData }] =
+    useLazyQuery(GET_TOTAL_INCOME_BY_DELEGATE)
+
+  const [loadIncomeByElections, { data: incomeByElectionsData }] = useLazyQuery(
+    GET_INCOME_BY_ELECTIONS
+  )
 
   const [loadElectionsByYear, { data: electionsByYearData }] = useLazyQuery(
     GET_ELECTIONS_BY_YEAR,
@@ -68,38 +58,18 @@ const useIncomeReportState = () => {
     }
   )
 
-  const [loadIncomeByDelegateAccount, { data: incomeByAccountData }] =
-    useLazyQuery(GET_INCOME_TRANSACTIONS_BY_ACCOUNT_QUERY, {
-      variables: {
-        election: electionRoundSelect,
-        account: delegateSelect
-      }
-    })
-
-  const [loadClaimedAndUnclaimedByElection, { data: claimedAndUnclaimedData }] =
-    useLazyQuery(GET_INCOMES_CLAIMED_AND_UNCLAIMED_BY_ELECTION, {
+  const [loadDelegatesByElection, { data: delegatesByElectionData }] =
+    useLazyQuery(GET_DELEGATES_BY_ELECTION_INCOME, {
       variables: {
         election: electionRoundSelect
       }
     })
 
-  const [
-    loadTotalByCategoryAndElection,
-    { data: totalByCategoryAndElectionData }
-  ] = useLazyQuery(GET_TOTAL_BY_CATEGORY_AND_ELECTION, {
-    variables: {
-      election: electionRoundSelect
-    }
-  })
-
-  const [loadTotalClaimedAndUnclaimed, { data: totalByCategoryData }] =
-    useLazyQuery(GET_TOTAL_BY_CATEGORY)
-
   const [loadPercentAllElections, { data: percentAllElectionData }] =
-    useLazyQuery(GET_PERCENT_ALL_ELECTIONS)
+    useLazyQuery(GET_PERCENT_ALL_ELECTIONS_INCOME)
 
   const [loadPercentByElection, { data: percentByElectionData }] = useLazyQuery(
-    GET_PERCENT_BY_ELECTIONS,
+    GET_PERCENT_BY_ELECTIONS_INCOME,
     {
       variables: {
         election: electionRoundSelect
@@ -107,30 +77,13 @@ const useIncomeReportState = () => {
     }
   )
 
-  const [loadTotalClaimed, { data: totalClaimedData }] =
-    useLazyQuery(GET_TOTAL_CLAIMED)
-
-  const [
-    loadIncomeCategoriesByElectionAndDelegate,
-    { data: incomeCategoriesByElectionAndDelegateData }
-  ] = useLazyQuery(GET_INCOME_CATEGORIES_BY_ELECTION_AND_DELEGATE, {
-    variables: {
-      election: electionRoundSelect,
-      delegate: delegateSelect
-    }
-  })
-
   useEffect(() => {
-    loadElectionsByYear()
-    loadIncomeByDelegateAccount()
-    loadTotalIncomeByElection()
-    loadTotalByCategoryAndElection()
-    loadClaimedAndUnclaimedByElection()
-    loadTotalClaimedAndUnclaimed()
+    loadTotalIncomeByDelegate()
     loadPercentAllElections()
+    loadDelegatesByElection()
+    loadIncomeByElections()
     loadPercentByElection()
-    loadTotalClaimed()
-    loadIncomeCategoriesByElectionAndDelegate()
+    loadElectionsByYear()
   }, [])
 
   useEffect(() => {
@@ -141,8 +94,30 @@ const useIncomeReportState = () => {
   }, [electionsByYearData])
 
   useEffect(() => {
-    setIncomeByDelegateAccountList(incomeByAccountData?.eden_transaction || [])
-  }, [incomeByAccountData])
+    setIncomeByElectionsList(
+      newDataFormatByElections(
+        incomeByElectionsData?.total_by_category_and_election || []
+      ) || []
+    )
+  }, [incomeByElectionsData])
+
+  useEffect(() => {
+    showElectionRadio === 'allElections' &&
+      setDelegatesList(
+        newDataFormatByDelegates(
+          totalIncomeByDelegateData?.incomes_by_delegate || []
+        ) || []
+      )
+  }, [showElectionRadio, totalIncomeByDelegateData])
+
+  useEffect(() => {
+    showElectionRadio !== 'allElections' &&
+      setDelegatesList(
+        newDataFormatByDelegates(
+          delegatesByElectionData?.historic_incomes || []
+        ) || []
+      )
+  }, [showElectionRadio, delegatesByElectionData])
 
   useEffect(() => {
     showElectionRadio === 'allElections' &&
@@ -150,110 +125,34 @@ const useIncomeReportState = () => {
         newDataFormatPercentAllElections(
           percentAllElectionData?.percent_by_all_elections_incomes || [],
           'claimed'
-        )
+        ) || []
       )
-  }, [percentAllElectionData, showElectionRadio])
-
-  useEffect(() => {
-    showElectionRadio === 'allElections' &&
-      setTotalByCategoryList(
-        newDataFormatTotalByCategory(
-          totalByCategoryData?.total_by_category || []
-        )
-      )
-  }, [showElectionRadio, totalByCategoryData])
+  }, [showElectionRadio, percentAllElectionData])
 
   useEffect(() => {
     showElectionRadio !== 'allElections' &&
-      showDelegateRadio === 'allDelegates' &&
       setPercentIncomeList(
         newDataFormatPercentByElection(
           percentByElectionData?.percent_by_delegates_incomes || [],
           'claimed'
-        )
+        ) || []
       )
-  }, [showElectionRadio, showDelegateRadio, percentByElectionData])
-
-  useEffect(() => {
-    showElectionRadio !== 'allElections' &&
-      showDelegateRadio !== 'allDelegates' &&
-      setChartTransactionsList(
-        newDataFormatByDelegate(incomeByDelegateAccountList, delegateSelect)
-      )
-  }, [showElectionRadio, showDelegateRadio, incomeByDelegateAccountList])
-
-  useEffect(() => {
-    showElectionRadio === 'allElections' &&
-      setChartTransactionsList(
-        newDataFormatByElection(totalByElectionData?.total_by_election || [])
-      )
-  }, [showElectionRadio, totalByElectionData])
-
-  useEffect(() => {
-    showElectionRadio !== 'allElections' &&
-      setTotalByCategoryList(
-        newDataFormatTotalByCategory(
-          totalByCategoryAndElectionData?.total_by_category_and_election || []
-        )
-      )
-  }, [showElectionRadio, totalByCategoryAndElectionData])
-
-  useEffect(() => {
-    showElectionRadio === 'allElections' &&
-      setTotalClaimedList(
-        newDataFormatTotalByCategory(
-          totalClaimedData?.total_by_category_and_election || []
-        )
-      )
-  }, [showElectionRadio, totalClaimedData])
-
-  useEffect(() => {
-    showElectionRadio !== 'allElections' &&
-      setClaimedIncomeByDelegate(
-        newDataFormatByDelegateAcrossElections(
-          claimedAndUnclaimedData?.historic_incomes || [],
-          true
-        )
-      )
-  }, [showElectionRadio, claimedAndUnclaimedData])
-
-  useEffect(() => {
-    showElectionRadio !== 'allElections' &&
-      showDelegateRadio !== 'allDelegates' &&
-      setTotalByCategoryList(
-        newDataFormatTotalByCategory(
-          incomeCategoriesByElectionAndDelegateData?.transaction_by_category_and_election ||
-            []
-        )
-      )
-  }, [
-    showElectionRadio,
-    showDelegateRadio,
-    incomeCategoriesByElectionAndDelegateData
-  ])
+  }, [showElectionRadio, percentByElectionData])
 
   return [
     {
-      chartTransactionsList,
-      typeCurrencySelect,
-      electionYearSelect,
-      electionRoundSelect,
-      showDelegateRadio,
-      delegateSelect,
+      incomeByElectionsList,
       electionsByYearList,
-      showElectionRadio,
-      totalByCategoryList,
       percentIncomeList,
-      totalClaimedList,
-      claimedIncomeByDelegate
+      delegatesList,
+      electionRoundSelect,
+      electionYearSelect,
+      showElectionRadio
     },
     {
-      setTypeCurrencySelect,
-      getListElectionYears,
-      setElectionYearSelect,
       setElectionRoundSelect,
-      setShowDelegateRadio,
-      setDelegateSelect,
+      setElectionYearSelect,
+      getListElectionYears,
       setShowElectionRadio
     }
   ]

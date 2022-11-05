@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
-import useExpenseGeneralReportState from '../../hooks/customHooks/useExpenseGeneralReportState'
+import useExpenseReportState from '../../hooks/customHooks/useExpenseReportState'
 import BarChartGeneralReport from '../../components/BarChartGeneralReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
@@ -43,7 +43,7 @@ const ExpenseReport = () => {
       getListElectionYears,
       setShowElectionRadio
     }
-  ] = useExpenseGeneralReportState()
+  ] = useExpenseReportState()
 
   useEffect(() => {
     setShowElectionRadio('allElections')

@@ -84,6 +84,7 @@ const useDelegateReportState = () => {
   return [
     {
       electionRoundSelect,
+      delegateSelect,
       electionsByYearList,
       transactionList,
       delegateList

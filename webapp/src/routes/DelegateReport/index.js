@@ -19,7 +19,13 @@ const DelegateReport = () => {
   const { t } = useTranslation()
 
   const [
-    { electionRoundSelect, electionsByYearList, transactionList, delegateList },
+    {
+      electionRoundSelect,
+      delegateSelect,
+      electionsByYearList,
+      transactionList,
+      delegateList
+    },
     { setElectionRoundSelect, setElectionYearSelect, setDelegateSelect }
   ] = useDelegateReportState()
 
@@ -58,6 +64,7 @@ const DelegateReport = () => {
             />
             <Autocomplete
               id="combo-box-demo"
+              value={delegateSelect}
               sx={{ width: 300 }}
               options={delegateList.map(data => data.delegate_payer)}
               onInputChange={(event, newInputValue) => {
