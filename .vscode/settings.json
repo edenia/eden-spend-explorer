@@ -8,5 +8,12 @@
     "**/.pnp.*": true
   },
   "prettier.prettierPath": "./webapp/.yarn/sdks/prettier/index.js",
-  "eslint.workingDirectories": [{ "mode": "auto" }]
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  }
 }

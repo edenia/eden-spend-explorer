@@ -130,7 +130,9 @@ const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
           <div key={`${i}-tooltip`}>
             <div>
               {`${lowerCaseAllWordsExceptFirstLetters(
-                data.dataKey.split('_')[1] + data.payload.category
+                data.payload.category
+                  ? data.dataKey.split('_')[1] + data.payload.category
+                  : data.dataKey.split('_')[1]
               )}: ${formatWithThousandSeparator(
                 data.payload[data.dataKey],
                 4

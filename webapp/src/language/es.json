@@ -10,10 +10,10 @@
     "/>title": "Eden on EOS Accounting Standard",
     "/income>title": "Ingresos | Eden on EOS Accounting Standard",
     "/income>sidebar": "Ingresos",
-    "/delegateIncomes>sidebar": "Ingresos Delegados",
     "/income>heading": "Ingresos",
     "/expense>sidebar": "Gastos",
     "/delegate>sidebar": "Delegado",
+    "/spendTools>sidebar": "Herramientas de gasto",
     "/>sidebar": "Inicio",
     "/>heading": "Inicio",
     "/about>title": "Acerca de | Eden on EOS Accounting Standard",
@@ -29,7 +29,12 @@
     "telegram": "Grupo en Telegram"
   },
   "homeRoute": {
-    "welcomeMessage": "El estándar de contabilidad de Eden es un mecanismo de informes destinado a proporcionar a la comunidad de Eden y EOS información sobre cómo se asignan los fondos de Eden. Los delegados electos pueden adherirse al estándar y reportar fácilmente sus gastos de Eden utilizando un formato específico para el campo de memo de la acción de transferencia de token EOS."
+    "viewDescription": "Una forma fácil de entender y estandarizar el uso de los fondos Eden y cómo se beneficia la comunidad.",
+    "button": "iniciar con EDAS",
+    "edasDescription": "El Explorador de Gastos de Eden es un mecanismo de información destinado a proporcionar a la comunidad de Eden en EOS información sobre cómo se están asignando los fondos de Eden.",
+    "transparent": "Transparencia",
+    "transparentDescription": "Los delegados elegidos pueden adherirse a la norma y notificar fácilmente sus gastos de Eden utilizando un formato específico para el campo memo de la acción de transferencia de fichas EOS.",
+    "edenDescription": "Eden es una comunidad que trabaja para maximizar el poder y la independencia de sus miembros y así asegurar la vida, la libertad, la propiedad y la justicia para todos."
   },
   "generalForm": {
     "textRadioButton1": "Por un delegado",
@@ -104,14 +109,41 @@
     "tableHeader10": "% USD no categorizados",
     "tableHeader11": "Categoría"
   },
+  "spendToolsRoute": {
+    "viewAbout": "Un conjunto de herramientas que le ayudarán a realizar nuevas transacciones o a editarlas.",
+    "transferInformation": "Aquí puedes enviar tokens relacionados con los fondos de Eden",
+    "toInput": "Enviar Tokens A",
+    "categoryInput": "Categoría",
+    "amountInput": "Monto",
+    "descriptionInput": "Descripción",
+    "transferButton": "Transferir EOS",
+    "titleTable": "Tokens enviados por tu cuenta",
+    "headerTable1": "TX HASH",
+    "headerTable2": "FECHA DE BLOQUE",
+    "headerTable3": "MONTO",
+    "headerTable4": "ENVIADO A",
+    "headerTable5": "MEMO",
+    "headerTable6": "CATEGORIZADO",
+    "headerTable7": "CATEGORIZAR",
+    "modalTitle": "Adjuntar Memo",
+    "modalAbout": "Aquí puede agregar o cambiar la categoría y descripción de transacciones anteriores. Primero, seleccione el motivo de su gasto en la selección, luego ingrese su descripción o motivo.",
+    "transactionInfo": "Transacción:",
+    "blockTime": "Fecha de bloque:",
+    "action": "Acción:",
+    "data": "Data:",
+    "quantity": "Cantidad:",
+    "appendButton": "Adjuntar Memo",
+    "memo": "La transacción no tiene memo",
+    "snackbarMessage": "Transacción existosa!",
+    "snackbarButton": "Entendido"
+  },
   "aboutRoute": {
-    "title": "Este proyecto",
-    "subtitle1": "Ques es?",
-    "paragraph1": "<!-- >",
-    "subtitle2": "Por que es importante?",
-    "paragraph2": "<!-- >",
-    "subtitle3": "De donde vienen los datos?",
-    "paragraph3": "<!-- >"
+    "subtitle1": "¿Qué es EDAS?",
+    "paragraph1": "El Explorador de Gastos de Edén es un mecanismo de información destinado a proporcionar a la comunidad de Edén en EOS información sobre cómo se asignan los fondos de Edén. Los delegados elegidos pueden adherirse al estándar e informar fácilmente de sus gastos en Eden utilizando un formato específico para el campo de memo de acción de transferencia de fichas de EOS.",
+    "subtitle2": "¿Por qué es importante?",
+    "paragraph2": "El sistema Eden Spend Explorer es de gran importancia ya que ofrece la posibilidad a los delegados elegidos de la comunidad Eden de justificar los fondos que se les conceden para la realización de nuevos proyectos e ideas en beneficio de la comunidad. El sistema escucha los eventos de la red blockchain y registra los eventos que son de interés para generar informes sobre los fondos de la red, cuál es su destino y cómo se utilizan.",
+    "subtitle3": "¿De dónde vienen los datos?",
+    "paragraph3": "Este sistema utiliza tecnologías que están en tendencia, como la Web 3.0. Esto se debe a que el sistema hace uso de la información que se aloja dentro del blockchain de EOSIO. Para hacer esto posible, se implementaron diferentes arquitecturas para escuchar los eventos de la blockchain y almacenarlos en una base de datos. La información se almacena dentro de la base de datos para facilitar la búsqueda, ya que puede ser muy engorroso hacerla directamente a la blockchain, porque hay millones de datos y esto haría la consulta muy ineficiente."
   },
   "helpRoute": {
     "title": "Gracias por su interés!",

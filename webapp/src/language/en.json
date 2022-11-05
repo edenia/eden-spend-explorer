@@ -10,10 +10,10 @@
     "/>title": "Eden on EOS Accounting Standard",
     "/income>title": "Treasury | Eden on EOS Accounting Standard",
     "/income>sidebar": "Income",
-    "/delegateIncomes>sidebar": "Delegate Incomes",
     "/income>heading": "Income",
     "/expense>sidebar": "Expense",
     "/delegate>sidebar": "Delegate",
+    "/spendTools>sidebar": "Spend Tools",
     "/>sidebar": "Home",
     "/>heading": "Welcome",
     "/about>title": "About | Eden on EOS Accounting Standard",
@@ -29,7 +29,12 @@
     "telegram": "Telegram Channel"
   },
   "homeRoute": {
-    "welcomeMessage": "The Eden Accounting Standard is a reporting mechanism meant to provide the Eden and EOS community information around how Eden funds are being allocated. Elected delegates may adhere to the standard and easily report their Eden expenses using a specific format for the memo field of the EOS token transfer action."
+    "viewDescription": "An easy way to understand and standarize the use of Eden funds and how the community benefits from it.",
+    "button": "Start Using EDAS",
+    "edasDescription": "The Eden Spend Explorer is a reporting mechanism meant to provide the Eden on EOS community information around how Eden funds are being allocated.",
+    "transparent": "Transparent",
+    "transparentDescription": "Elected delegates may adhere to the standard and easily report their Eden expenses using a specific format for the memo field of the EOS token transfer action.",
+    "edenDescription": "Eden is a community working to maximize the power and independence of its members and thereby securing life, liberty, property, and justice for all."
   },
   "generalForm": {
     "textRadioButton1": "By one delegate",
@@ -103,14 +108,41 @@
     "tableHeader10": "USD uncategorized %",
     "tableHeader11": "Category"
   },
+  "spendToolsRoute": {
+    "viewAbout": "A set of tools that will help you perform new transactions or edit them.",
+    "transferInformation": "Here you can send tokens related with Eden funds.",
+    "toInput": "Send Tokens To",
+    "categoryInput": "Category",
+    "amountInput": "Amount",
+    "descriptionInput": "Description",
+    "transferButton": "Transfer EOS",
+    "titleTable": "Tokens Sent By Your Account",
+    "headerTable1": "TX HASH",
+    "headerTable2": "BLOCK TIME",
+    "headerTable3": "AMOUNT",
+    "headerTable4": "SENT TO",
+    "headerTable5": "MEMO",
+    "headerTable6": "CATEGORIZED",
+    "headerTable7": "APPEND",
+    "modalTitle": "Append Memo",
+    "modalAbout": "Here you can add or change the category and description of previous transactions. First, select the reason for your expense in the selection, then enter your description or reason.",
+    "transactionInfo": "Transaction:",
+    "blockTime": "Block Time:",
+    "action": "Action:",
+    "data": "Data:",
+    "quantity": "Quantity:",
+    "appendButton": "Append Memo",
+    "memo": "The transaction does not have memo",
+    "snackbarMessage": "Transaction succesful!",
+    "snackbarButton": "I understand"
+  },
   "aboutRoute": {
-    "title": "This project",
-    "subtitle1": "What is it?",
-    "paragraph1": "<!-- >",
+    "subtitle1": "What is EDAS?",
+    "paragraph1": "The Eden Spend Explorer is a reporting mechanism intended to provide the Eden community in EOS with information on how Eden funds are allocated. Elected delegates can adhere to the standard and easily report their Eden expenditures using a specific format for the EOS token transfer action memo field.",
     "subtitle2": "Why is it important?",
-    "paragraph2": "<!-- >",
+    "paragraph2": "The Eden Spend Explorer system is of great importance as it offers the possibility for the elected delegates of the Eden community to justify the funds they are granted for the implementation of new projects and ideas for the benefit of the community. The system listens to the events of the blockchain network and records the events that are of interest to generate reports about the funds of the network, what is their destination and how they are used.",
     "subtitle3": "Where does the data come from?",
-    "paragraph3": "<!-- >"
+    "paragraph3": "This system uses technologies that are in trend, such as Web 3.0. This is because the system makes use of information that is hosted within the EOSIO blockchain. To make this possible, different architectures were implemented to listen to events from the blockchain and store them in a database. The information is stored within the database to facilitate the search, as this can be very cumbersome to do directly to the blockchain, because there are millions of data and this would make the query very inefficient."
   },
   "helpRoute": {
     "title": "Thank you for your interest!",
