@@ -30,8 +30,6 @@ export const generateDelegateData = (
   return delegateData
 }
 
-// General
-
 export const newDataFormatPercentAllElections = (
   percentAllElectionData,
   category
@@ -66,9 +64,7 @@ export const newDataFormatPercentByElection = (
   }))
 }
 
-// Income
-
-export const newDataFormatByElections = electionsList => {
+export const newDataFormatByElectionsIncome = electionsList => {
   const elections = []
   for (let pos = 0; pos < electionsList.length; pos = pos + 2) {
     const election = {
@@ -89,7 +85,7 @@ export const newDataFormatByElections = electionsList => {
   return elections
 }
 
-export const newDataFormatByDelegates = transactionsList =>
+export const newDataFormatByDelegatesIncome = transactionsList =>
   transactionsList.map(data => ({
     name: data.recipient,
     EOS_CLAIMED: Number(data.eos_claimed),
@@ -99,9 +95,7 @@ export const newDataFormatByDelegates = transactionsList =>
     color: generateColor()
   }))
 
-// Expense
-
-export const newDataFormatByCategorizedElections = electionsList => {
+export const newDataFormatByCategorizedElectionsExpense = electionsList => {
   const elections = []
   let electionNum = 0
   let usdTotal = 0
@@ -146,7 +140,7 @@ export const newDataFormatByCategorizedElections = electionsList => {
   return elections
 }
 
-export const newDataFormatByAllDelegates = transactionsList =>
+export const newDataFormatByAllDelegatesExpense = transactionsList =>
   transactionsList.map(data => ({
     name: data.delegate_payer,
     EOS_CATEGORIZED: Number(data.amount),
@@ -154,7 +148,7 @@ export const newDataFormatByAllDelegates = transactionsList =>
     color: generateColor()
   }))
 
-export const newDataFormatByElectionAndDelegate = transactionsList =>
+export const newDataFormatByElectionAndDelegateExpense = transactionsList =>
   transactionsList.map(data => ({
     name: data.delegate_payer,
     EOS_CATEGORIZED: Number(data.eos_categorized),
@@ -164,7 +158,7 @@ export const newDataFormatByElectionAndDelegate = transactionsList =>
     color: generateColor()
   }))
 
-export const newDataFormatTotalByCategory = totalByCategory =>
+export const newDataFormatTotalByCategoryExpense = totalByCategory =>
   totalByCategory.map(data => ({
     name: data.category ? data.category : `Election ${data.election + 1}`,
     EOS_CATEGORIZED: Number(data.amount),
@@ -172,9 +166,7 @@ export const newDataFormatTotalByCategory = totalByCategory =>
     color: generateColor()
   }))
 
-// Delegate
-
-export const newDataFormatByType = (incomeList, expenseList) => {
+export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
   const transactions = []
   transactions.push(
     generateDelegateData(

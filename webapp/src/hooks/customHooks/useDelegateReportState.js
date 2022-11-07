@@ -6,7 +6,7 @@ import {
   GET_DELEGATES_BY_ELECTION,
   GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION
 } from '../../gql/delegate.gql'
-import { newDataFormatByType } from '../../utils/new-format-objects'
+import { newDataFormatByTypeDelegate } from '../../utils/new-format-objects'
 
 const useDelegateReportState = () => {
   const [electionYearSelect, setElectionYearSelect] = useState('All')
@@ -74,7 +74,7 @@ const useDelegateReportState = () => {
 
   useEffect(() => {
     setTransactionList(
-      newDataFormatByType(
+      newDataFormatByTypeDelegate(
         transactionsData?.historic_incomes || [],
         transactionsData?.historic_expenses || []
       ) || []

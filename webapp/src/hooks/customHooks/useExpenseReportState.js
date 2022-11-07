@@ -12,12 +12,12 @@ import {
   GET_TOTAL_BY_CATEGORY_EXPENSE
 } from '../../gql/expense.gql'
 import {
-  newDataFormatByCategorizedElections,
-  newDataFormatByAllDelegates,
-  newDataFormatByElectionAndDelegate,
+  newDataFormatByCategorizedElectionsExpense,
+  newDataFormatByAllDelegatesExpense,
+  newDataFormatByElectionAndDelegateExpense,
   newDataFormatPercentAllElections,
   newDataFormatPercentByElection,
-  newDataFormatTotalByCategory
+  newDataFormatTotalByCategoryExpense
 } from '../../utils/new-format-objects'
 
 const useExpenseReportState = () => {
@@ -114,7 +114,7 @@ const useExpenseReportState = () => {
 
   useEffect(() => {
     setExpenseByElectionsList(
-      newDataFormatByCategorizedElections(
+      newDataFormatByCategorizedElectionsExpense(
         expenseByElectionsData?.total_by_category_and_election || []
       ) || []
     )
@@ -123,7 +123,7 @@ const useExpenseReportState = () => {
   useEffect(() => {
     showElectionRadio === 'allElections' &&
       setDelegatesList(
-        newDataFormatByAllDelegates(
+        newDataFormatByAllDelegatesExpense(
           totalExpenseByDelegateData?.expenses_by_delegate || []
         ) || []
       )
@@ -132,7 +132,7 @@ const useExpenseReportState = () => {
   useEffect(() => {
     showElectionRadio !== 'allElections' &&
       setDelegatesList(
-        newDataFormatByElectionAndDelegate(
+        newDataFormatByElectionAndDelegateExpense(
           delegatesByElectionData?.historic_expenses || []
         ) || []
       )
@@ -161,7 +161,7 @@ const useExpenseReportState = () => {
   useEffect(() => {
     showElectionRadio === 'allElections' &&
       setCategoryList(
-        newDataFormatTotalByCategory(
+        newDataFormatTotalByCategoryExpense(
           totalByCategoryData?.total_by_category || [],
           'categorized'
         ) || []
@@ -171,7 +171,7 @@ const useExpenseReportState = () => {
   useEffect(() => {
     showElectionRadio !== 'allElections' &&
       setCategoryList(
-        newDataFormatTotalByCategory(
+        newDataFormatTotalByCategoryExpense(
           totalByCategoryAndElectionData?.total_by_category_and_election || [],
           'categorized'
         ) || []

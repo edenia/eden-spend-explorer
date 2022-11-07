@@ -10,8 +10,8 @@ import {
   GET_INCOME_BY_ELECTIONS
 } from '../../gql/income.gql'
 import {
-  newDataFormatByElections,
-  newDataFormatByDelegates,
+  newDataFormatByElectionsIncome,
+  newDataFormatByDelegatesIncome,
   newDataFormatPercentAllElections,
   newDataFormatPercentByElection
 } from '../../utils/new-format-objects'
@@ -95,7 +95,7 @@ const useIncomeReportState = () => {
 
   useEffect(() => {
     setIncomeByElectionsList(
-      newDataFormatByElections(
+      newDataFormatByElectionsIncome(
         incomeByElectionsData?.total_by_category_and_election || []
       ) || []
     )
@@ -104,7 +104,7 @@ const useIncomeReportState = () => {
   useEffect(() => {
     showElectionRadio === 'allElections' &&
       setDelegatesList(
-        newDataFormatByDelegates(
+        newDataFormatByDelegatesIncome(
           totalIncomeByDelegateData?.incomes_by_delegate || []
         ) || []
       )
@@ -113,7 +113,7 @@ const useIncomeReportState = () => {
   useEffect(() => {
     showElectionRadio !== 'allElections' &&
       setDelegatesList(
-        newDataFormatByDelegates(
+        newDataFormatByDelegatesIncome(
           delegatesByElectionData?.historic_incomes || []
         ) || []
       )
