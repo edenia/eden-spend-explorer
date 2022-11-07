@@ -9,10 +9,16 @@ export default (theme, drawerWidth) => ({
     }
   },
   mainContent: {
-    flex: 1,
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'hidden'
+    maxWidth: '100%',
+    height: 'auto',
+    overflow: 'auto',
+    justifyContent: 'space-between',
+    '& .pageContainer': {
+      height: 'auto'
+    }
   },
   childContent: {
     flex: 1,

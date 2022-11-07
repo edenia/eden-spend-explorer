@@ -5,6 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { StylesProvider, createGenerateClassName } from '@mui/styles'
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
+import '@edenia/ui-kit/dist/index.css'
 
 import useTresuryBalanceState from './hooks/customHooks/useTresuryBalanceState'
 import routes from './routes'

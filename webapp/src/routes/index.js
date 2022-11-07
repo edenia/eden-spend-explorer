@@ -5,15 +5,7 @@ import {
   GitHub as GitHubIcon,
   Send as TelegramIcon
 } from 'react-feather'
-import {
-  AddCard as AddCardIcon,
-  AttachMoney as AttachMoneyIcon,
-  Home as HomeIcon,
-  InfoOutlined as InfoIcon,
-  HelpOutlineOutlined as HelpIcon,
-  PersonAdd,
-  PriceCheck
-} from '@mui/icons-material'
+// import { HelpOutlineOutlined as HelpIcon } from '@mui/icons-material'
 
 import { mainConfig } from '../config'
 
@@ -24,41 +16,41 @@ const IncomeReportDelegates = lazy(() => import('./IncomeReportDelegates'))
 const IncomeReportGeneral = lazy(() => import('./IncomeReportGeneral'))
 const Home = lazy(() => import('./Home'))
 const About = lazy(() => import('./About'))
-const Help = lazy(() => import('./Help'))
+// const Help = lazy(() => import('./Help'))
 const Page404 = lazy(() => import('./Route404'))
 
 const routes = [
   {
-    name: 'home',
-    icon: <HomeIcon />,
+    name: 'Home',
+    icon: '/icons/home-icon.svg',
     component: Home,
     path: '/',
     exact: true
   },
   {
-    name: 'General Incomes',
-    icon: <AddCardIcon />,
+    name: 'Income',
+    icon: '/icons/income-icon.svg',
     component: IncomeReportGeneral,
     path: '/generalIncomes',
     exact: true
   },
   {
-    name: 'Delegate Incomes',
-    icon: <PersonAdd />,
+    name: 'Income',
+    icon: '/icons/expenses-icon.svg',
     component: IncomeReportDelegates,
     path: '/delegateIncomes',
     exact: true
   },
   {
-    name: 'General Expenses',
-    icon: <AttachMoneyIcon />,
+    name: 'Expenses',
+    icon: '/icons/expenses-icon.svg',
     component: ExpenseReportGeneral,
     path: '/generalExpenses',
     exact: true
   },
   {
-    name: 'Delegate Expenses',
-    icon: <PriceCheck />,
+    name: 'Expenses',
+    icon: '/icons/expenses-icon.svg',
     component: ExpenseReportDelegates,
     path: '/delegateExpenses',
     exact: true
@@ -73,18 +65,18 @@ const routes = [
   {
     header: 'docs',
     name: 'about',
-    icon: <InfoIcon />,
+    icon: '/icons/about-icon.svg',
     component: About,
     path: '/about',
     exact: true
   },
-  {
-    name: 'help',
-    icon: <HelpIcon />,
-    component: Help,
-    path: '/help',
-    exact: true
-  },
+  // {
+  //   name: 'help',
+  //   icon: <HelpIcon />,
+  //   component: Help,
+  //   path: '/help',
+  //   exact: true
+  // },
   {
     name: 'changelog',
     badge: mainConfig.appVersion,

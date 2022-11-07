@@ -10,9 +10,12 @@
     "/>title": "Eden on EOS Accounting Standard",
     "/income>title": "Ingresos | Eden on EOS Accounting Standard",
     "/generalIncomes>sidebar": "Ingresos Generales",
+    "/generalIncomes>heading": "Income",
     "/delegateIncomes>sidebar": "Ingresos Delegados",
+    "/delegateIncomes>heading": "Income",
     "/income>heading": "Ingresos",
     "/generalExpenses>sidebar": "Gastos Generales",
+    "/delegateExpenses>heading": "Gastos Generales",
     "/delegateExpenses>sidebar": "Gastos Delegados",
     "/spendTools>sidebar": "Herramientas de gasto",
     "/>sidebar": "Inicio",
@@ -152,5 +155,9 @@
     "githubEOSCR": "GitHub EOS Costa Rica",
     "telegramChannel": "Grupo de Telegram",
     "websiteEOSCR": "Página web EOS Costa Rica"
+  },
+  "footer": {
+    "communityOwnedPublic": "A Community Owned Public Good",
+    "developedEdenia": "Developed by Edenia"
   }
 }
