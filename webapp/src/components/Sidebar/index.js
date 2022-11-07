@@ -1,180 +1,114 @@
-import React, { memo, useState } from 'react'
-import PropTypes from 'prop-types'
-import { NavLink as RouterNavLink, useNavigate } from 'react-router-dom'
+import React, { memo, useEffect, useState } from 'react'
+import { Sidebar, MenuOption, PreviewProfile } from '@edenia/ui-kit'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { gql, GraphQLClient } from 'graphql-request'
+import { Link, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@mui/styles'
-import MuiListItem from '@mui/material/ListItem'
-import Drawer from '@mui/material/Drawer'
-import Chip from '@mui/material/Chip'
-import List from '@mui/material/List'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import Typography from '@mui/material/Typography'
-import Collapse from '@mui/material/Collapse'
-import Toolbar from '@mui/material/Toolbar'
-import {
-  ChevronDown as ChevronDownIcon,
-  ChevronUp as ChevronUpIcon
-} from 'react-feather'
-import Scrollbar from 'react-perfect-scrollbar'
-import 'react-perfect-scrollbar/dist/css/styles.css'
+import PropTypes from 'prop-types'
+
+import { useSharedState } from '../../context/state.context'
+import { GET_MEMBERS_DATA } from '../../gql'
 
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
 
-const NavLink = React.forwardRef((props, ref) => (
-  <RouterNavLink ref={ref} {...props} />
-))
-
-NavLink.displayName = 'NavLink'
-
-const ExternalLink = React.forwardRef(({ to, children, className }, ref) => (
-  <a
-    ref={ref}
-    href={to}
-    className={className}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    {children}
-  </a>
-))
-
-ExternalLink.displayName = 'NavLink'
-
-ExternalLink.propTypes = {
-  to: PropTypes.string,
-  children: PropTypes.node,
-  className: PropTypes.string
-}
-
-const ListItemLink = ({ name, path, icon, badge, ...props }) => {
-  const { t } = useTranslation('routes')
+const SidebarComp = ({ routes, open, onClose }) => {
   const classes = useStyles()
-  const primaryText = path.includes('http')
-    ? t(name, name)
-    : t(`${path}>sidebar`, path)
-
-  return (
-    <MuiListItem
-      button
-      component={path.includes('http') ? ExternalLink : NavLink}
-      to={path}
-      activeclassname="active"
-      href={path}
-      {...props}
-    >
-      {icon && <ListItemIcon>{icon}</ListItemIcon>}
-      <ListItemText primary={primaryText} />
-      {badge && <Chip className={classes.badge} label={badge} />}
-    </MuiListItem>
-  )
-}
-
-ListItemLink.propTypes = {
-  name: PropTypes.string,
-  path: PropTypes.string,
-  icon: PropTypes.node,
-  badge: PropTypes.string
-}
-
-const ListItemGroup = ({ name, icon, path, childrens, ...props }) => {
-  const [open, setOpen] = useState(true)
   const { t } = useTranslation('routes')
+  const [state, { logout, showMessage }] = useSharedState()
+  const router = useLocation()
+  const { pathname } = router
+  const [userData, setUSerData] = useState()
+  const client = new GraphQLClient('https://eden-api.edenia.cloud/v1/graphql', {
+    headers: {}
+  })
+
+  useEffect(async () => {
+    if (!state?.ual?.activeUser?.accountName) return
+
+    const variables = {
+      value: state?.ual?.activeUser?.accountName,
+      orderBy: {
+        election_rank: 'desc'
+      },
+      limit: 50
+    }
+    const response = await client.request(
+      gql`
+        ${GET_MEMBERS_DATA}
+      `,
+      variables
+    )
+
+    if (response?.members.length > 0) setUSerData(response?.members[0])
+    else {
+      showMessage({
+        type: 'warning',
+        content: t('invalidEdenMember')
+      })
+      logout()
+    }
+  }, [state?.ual?.activeUser])
 
   return (
-    <>
-      <MuiListItem button onClick={() => setOpen(() => !open)} {...props}>
-        {icon && <ListItemIcon>{icon}</ListItemIcon>}
-        <ListItemText primary={t(name)} />
-        {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
-      </MuiListItem>
-      {childrens && (
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          {childrens.map((route, index) => (
-            <ListItem
-              header={route.header}
-              path={route.path}
-              icon={route.icon}
-              text={route.text}
-              key={`${route.name}${index}`}
-            />
-          ))}
-        </Collapse>
-      )}
-    </>
-  )
-}
+    <Sidebar
+      open={open}
+      close={onClose}
+      logo="/logos/eden-spend-explorer-logo.png"
+      menuOptions={
+        <div className={classes.spacinTopSidebarItems}>
+          {routes.map(data => {
+            if (!data.component) return <></>
 
-ListItemGroup.propTypes = {
-  name: PropTypes.string,
-  path: PropTypes.string,
-  icon: PropTypes.node,
-  childrens: PropTypes.array
-}
-
-const ListItem = ({ header, childrens, ...props }) => {
-  const { t } = useTranslation('routes')
-  const classes = useStyles()
-
-  return (
-    <div className={classes.listItem}>
-      {header && <Typography>{t(header)}</Typography>}
-      {childrens && <ListItemGroup childrens={childrens} {...props} />}
-      {!childrens && <ListItemLink {...props} />}
-    </div>
-  )
-}
-
-ListItem.propTypes = {
-  header: PropTypes.string,
-  childrens: PropTypes.array
-}
-
-const Sidebar = ({ routes, ...props }) => {
-  const navigate = useNavigate()
-  const classes = useStyles()
-
-  return (
-    <Drawer className={classes.main} {...props}>
-      <Toolbar />
-      <div className={classes.brand}>
-        <div className={classes.ellipseContainer}>
-          <div className={classes.ellipse}>
-            <img
-              onClick={() => navigate('/')}
-              src={`${process.env.PUBLIC_URL}/images/user@3x.png`}
-            />
-          </div>
+            return (
+              <div key={data.name} className={classes.marginTopItemsSidebar}>
+                <Link to={data.path} underline="none" component={RouterLink}>
+                  <MenuOption
+                    text={t(`${data.path}>sidebar`)}
+                    icon={data.icon}
+                    isSelected={pathname === data.path}
+                  />
+                </Link>
+              </div>
+            )
+          })}
         </div>
-        <div>
-          <Typography variant="span">User</Typography>
-        </div>
-      </div>
-
-      <Scrollbar className={classes.scrollbar}>
-        <div className={classes.divider} />
-        <List component="nav">
-          {routes.map((category, index) => (
-            <ListItem
-              key={`${category.name}${index}`}
-              name={category.name}
-              header={category.header}
-              path={category.path}
-              icon={category.icon}
-              badge={category.badge}
-              childrens={category.childrens}
-            />
-          ))}
-        </List>
-      </Scrollbar>
-    </Drawer>
+      }
+      profileComponent={
+        state.ual.activeUser ? (
+          <PreviewProfile
+            name={userData?.name}
+            nameSize="14px"
+            image={`https://eden-genesis.mypinata.cloud/ipfs/${userData?.profile?.image}`}
+            nameFontWeight="600"
+            selectableItems={
+              <div className={classes.centerSelectableItems}>
+                <Typography variant="caption">
+                  <Link
+                    color="black"
+                    href={`https://genesis.eden.eoscommunity.org/${state?.ual?.activeUser?.accountName}`}
+                    rel="noreferrer"
+                    underline="none"
+                    target="_blank"
+                  >
+                    @ {state?.ual?.activeUser?.accountName}
+                  </Link>
+                </Typography>
+              </div>
+            }
+          />
+        ) : undefined
+      }
+    />
   )
 }
 
-Sidebar.propTypes = {
-  routes: PropTypes.array
+SidebarComp.propTypes = {
+  routes: PropTypes.array,
+  onClose: PropTypes.func,
+  open: PropTypes.bool
 }
 
-export default memo(Sidebar)
+export default memo(SidebarComp)

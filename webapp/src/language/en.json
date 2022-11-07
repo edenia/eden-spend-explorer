@@ -9,10 +9,14 @@
   "routes": {
     "/>title": "Eden on EOS Accounting Standard",
     "/income>title": "Treasury | Eden on EOS Accounting Standard",
-    "/income>sidebar": "Income",
+    "/generalIncomes>sidebar": "Income",
+    "/generalIncomes>heading": "Income",
+    "/delegateIncomes>sidebar": "Income",
+    "/delegateIncomes>heading": "Income",
     "/income>heading": "Income",
-    "/expense>sidebar": "Expense",
-    "/delegate>sidebar": "Delegate",
+    "/generalExpenses>sidebar": "Expenses",
+    "/delegateExpenses>heading": "Expenses",
+    "/delegateExpenses>sidebar": "Delegate Expenses",
     "/spendTools>sidebar": "Spend Tools",
     "/>sidebar": "Home",
     "/>heading": "Welcome",
@@ -26,7 +30,8 @@
     "community": "Community",
     "changelog": "Changelog",
     "github": "Github Repository",
-    "telegram": "Telegram Channel"
+    "telegram": "Telegram Channel",
+    "invalidEdenMember": "Invalid user, this aren't Eden member"
   },
   "homeRoute": {
     "viewDescription": "An easy way to understand and standarize the use of Eden funds and how the community benefits from it.",
@@ -150,5 +155,9 @@
     "githubEOSCR": "GitHub EOS Costa Rica",
     "telegramChannel": "Telegram Channel",
     "websiteEOSCR": "Website EOS Costa Rica"
+  },
+  "footer": {
+    "communityOwnedPublic": "A Community Owned Public Good.",
+    "developedEdenia": "Developed by Edenia"
   }
 }

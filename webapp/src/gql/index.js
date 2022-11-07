@@ -1,5 +1,6 @@
 export * from './general.gql'
 export * from './income.gql'
+export * from './eden_member.gql'
 export * from './expense.gql'
 export * from './delegate.gql'
 export * from './spendTools.gql'
