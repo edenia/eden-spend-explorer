@@ -24,42 +24,40 @@ const routes = [
     icon: '/icons/home-icon.svg',
     component: Home,
     path: '/',
-    exact: true
+    exact: true,
+    roles: ['guest', 'member']
   },
   {
     name: 'Income',
     icon: '/icons/income-icon.svg',
-    component: IncomeReportGeneral,
-    path: '/generalIncomes',
-    exact: true
-  },
-  {
-    name: 'Income',
-    icon: '/icons/expenses-icon.svg',
-    component: IncomeReportDelegates,
-    path: '/delegateIncomes',
-    exact: true
+    component: IncomeReport,
+    path: '/income',
+    exact: true,
+    roles: ['guest', 'member']
   },
   {
     name: 'Expenses',
     icon: '/icons/expenses-icon.svg',
-    component: ExpenseReportGeneral,
-    path: '/generalExpenses',
-    exact: true
+    component: ExpenseReport,
+    path: '/expense',
+    exact: true,
+    roles: ['guest', 'member']
   },
   {
-    name: 'Expenses',
+    name: 'Delegate',
     icon: '/icons/expenses-icon.svg',
-    component: ExpenseReportDelegates,
-    path: '/delegateExpenses',
-    exact: true
+    component: DelegateReport,
+    path: '/delegate',
+    exact: true,
+    roles: ['guest', 'member']
   },
   {
     name: 'Spend Tool',
-    icon: <img src={`${process.env.PUBLIC_URL}/icons/edit_tool.svg`} />,
+    icon: '/icons/tools-icon.svg',
     component: SpendTools,
     path: '/spendTools',
-    exact: true
+    exact: true,
+    roles: ['member']
   },
   {
     header: 'docs',
@@ -67,7 +65,8 @@ const routes = [
     icon: '/icons/about-icon.svg',
     component: About,
     path: '/about',
-    exact: true
+    exact: true,
+    roles: ['guest', 'member']
   },
   // {
   //   name: 'help',
@@ -100,9 +99,7 @@ const routes = [
 ]
 
 export default role => {
-  const routesForRole = routes.filter(
-    route => !route.roles || route.roles.includes(role)
-  )
+  const routesForRole = routes.filter(route => route?.roles?.includes(role))
 
   return {
     sidebar: routesForRole.filter(route => !!route.name),

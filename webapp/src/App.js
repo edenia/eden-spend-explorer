@@ -25,8 +25,8 @@ const App = () => {
     useTresuryBalanceState()
   const theme = useMemo(() => getTheme(state.useDarkMode), [state.useDarkMode])
   const userRoutes = useMemo(
-    () => routes(state.user?.role || 'guest'),
-    [state.user]
+    () => routes(state?.user?.accountName ? 'member' : 'guest'),
+    [state?.user]
   )
 
   const renderRoute = ({ component: Component, ...route }, index) => (
