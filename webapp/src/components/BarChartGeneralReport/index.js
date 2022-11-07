@@ -187,11 +187,9 @@ const BarChartGeneralReport = ({
   }, [getBarPng])
 
   useEffect(() => {
-    typeData === 'income'
-      ? setCategory('Claimed')
-      : typeData === 'expense'
-      ? setCategory('Categorized')
-      : setIsDelegate(true)
+    if (typeData === 'income') setCategory('Claimed')
+    else if (typeData === 'expense') setCategory('Categorized')
+    else setIsDelegate(true)
   }, [typeData])
 
   useEffect(() => {
