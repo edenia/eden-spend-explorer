@@ -65,6 +65,7 @@ const Header = memo(({ onDrawerToggle }) => {
   const handleSignOut = () => {
     logout()
     setPathName('/')
+    window.location.href = '/'
   }
 
   useEffect(() => {

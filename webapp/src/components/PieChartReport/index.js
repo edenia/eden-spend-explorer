@@ -1,12 +1,18 @@
-import React, { memo, useState, useCallback } from 'react'
+import React, { memo, useState, useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import FileSaver from 'file-saver'
-import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts'
+import { PieChart, Pie, Sector, ResponsiveContainer, Cell } from 'recharts'
 import { useCurrentPng } from 'recharts-to-png'
 import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@mui/styles'
-import { IconButton, Typography } from '@mui/material'
-import DownloadIcon from '@mui/icons-material/Download'
+import {
+  IconButton,
+  Typography,
+  FormControlLabel,
+  Switch,
+  FormGroup
+} from '@mui/material'
+import DownloadOutlined from '@mui/icons-material/DownloadOutlined'
 import TooltipDownload from '@mui/material/Tooltip'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
@@ -46,9 +52,9 @@ const renderActiveShape = props => {
         x={cx}
         y={cy}
         dy={8}
-        textLength="15%"
+        textLength="10%"
         textAnchor="middle"
-        fill={payload.color}
+        fill={'#000'}
         lengthAdjust="spacingAndGlyphs"
       >
         {payload.name}
@@ -83,7 +89,7 @@ const renderActiveShape = props => {
         textAnchor={textAnchor}
         fill="#333"
         lengthAdjust="spacingAndGlyphs"
-      >{`${coin}-${formatWithThousandSeparator(value, 2)}`}</text>
+      >{`${formatWithThousandSeparator(value, 2)}-${coin}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -100,14 +106,21 @@ const renderActiveShape = props => {
 
 const PieChartReport = ({
   data,
-  coinType,
   keyTranslation,
-  pathTranslation
+  pathTranslation,
+  typeData
 }) => {
   const classes = useStyles()
   const [activeIndex, setActiveIndex] = useState(0)
   const [getPiePng, { ref: pieRef }] = useCurrentPng()
   const { t } = useTranslation()
+  const [selectedUSD, setSelected] = useState(false)
+  const [coinType, setCoinType] = useState('EOS')
+  const [category, setCategory] = useState('')
+
+  const handleChange = event => {
+    setSelected(event.target.checked)
+  }
 
   const newData = data.map(info => {
     return { ...info, coin: coinType }
@@ -125,33 +138,56 @@ const PieChartReport = ({
     }
   }, [getPiePng])
 
+  useEffect(() => {
+    typeData === 'income' ? setCategory('Claimed') : setCategory('Categorized')
+  }, [typeData])
+
+  useEffect(() => {
+    selectedUSD ? setCoinType('USD') : setCoinType('EOS')
+  }, [selectedUSD])
+
   return (
     <>
       <div className={classes.chartContainer}>
         <div className={classes.textContainer}>
-          <Typography variant="h6" marginLeft={10}>
+          <Typography variant="h4">
             {t(keyTranslation, { ns: pathTranslation })}
           </Typography>
           <TooltipDownload title="Donwload">
             <IconButton onClick={handlePieDownload}>
-              <DownloadIcon />
+              <DownloadOutlined />
             </IconButton>
           </TooltipDownload>
+          <div className={classes.filtersChartContainer}>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch checked={selectedUSD} onChange={handleChange} />
+                }
+                label="Convert to USD"
+                labelPlacement="start"
+              />
+            </FormGroup>
+          </div>
         </div>
-        <ResponsiveContainer height={300} width={600}>
-          <PieChart width={600} height={300} ref={pieRef}>
+        <ResponsiveContainer height={400}>
+          <PieChart height={250} ref={pieRef}>
             <Pie
               activeIndex={activeIndex}
               activeShape={renderActiveShape}
               data={newData}
               nameKey={'name'}
-              dataKey={coinType}
+              dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
               cx="50%"
               cy="50%"
-              innerRadius={45}
-              outerRadius={60}
+              innerRadius={'40%'}
+              outerRadius={'70%'}
               onMouseEnter={onPieEnter}
-            />
+            >
+              {data.map(data => (
+                <Cell key={`cell-${data.election}`} fill={data.color} />
+              ))}
+            </Pie>
           </PieChart>
         </ResponsiveContainer>
       </div>
@@ -161,9 +197,9 @@ const PieChartReport = ({
 
 PieChartReport.propTypes = {
   data: PropTypes.array,
-  coinType: PropTypes.string,
   keyTranslation: PropTypes.string,
-  pathTranslation: PropTypes.string
+  pathTranslation: PropTypes.string,
+  typeData: PropTypes.string
 }
 
 export default memo(PieChartReport)

@@ -4,14 +4,13 @@ import { useTranslation } from 'react-i18next'
 import {
   FormControl,
   FormControlLabel,
-  Tooltip,
   Typography,
   RadioGroup,
   Radio
 } from '@mui/material'
 
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
-import LineAreaChartReport from '../../components/LineAreaChartReport'
+import BarChartGeneralReport from '../../components/BarChartGeneralReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
 import { useSharedState } from '../../context/state.context'
@@ -25,7 +24,7 @@ const useStyles = makeStyles(styles)
 
 const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
-const IncomeReportGeneral = () => {
+const IncomeReport = () => {
   const classes = useStyles()
 
   const { t } = useTranslation()
@@ -34,25 +33,19 @@ const IncomeReportGeneral = () => {
 
   const [
     {
-      chartTransactionsList,
-      typeCurrencySelect,
-      showDelegateRadio,
-      showElectionRadio,
-      totalByCategoryList,
-      percentIncomeList,
-      totalClaimedList,
-      electionYearSelect,
-      electionRoundSelect,
+      incomeByElectionsList,
       electionsByYearList,
-      incomeByDelegate,
-      claimedIncomeByDelegate
+      percentIncomeList,
+      delegatesList,
+      electionRoundSelect,
+      electionYearSelect,
+      showElectionRadio
     },
     {
-      setTypeCurrencySelect,
-      setShowElectionRadio,
-      getListElectionYears,
+      setElectionRoundSelect,
       setElectionYearSelect,
-      setElectionRoundSelect
+      getListElectionYears,
+      setShowElectionRadio
     }
   ] = useIncomeReportState()
 
@@ -60,41 +53,39 @@ const IncomeReportGeneral = () => {
     setShowElectionRadio('allElections')
   }, [])
 
-  const tableData = chartTransactionsList.map(firstObj => ({
-    ...percentIncomeList.find(secondObj => secondObj.name === firstObj.name),
-    ...firstObj
-  }))
+  const tableData =
+    showElectionRadio === 'allElections'
+      ? incomeByElectionsList.map(firstObj => ({
+          ...percentIncomeList.find(
+            secondObj => secondObj.name === firstObj.election
+          ),
+          ...firstObj
+        }))
+      : delegatesList.map(firstObj => ({
+          ...percentIncomeList.find(
+            secondObj => secondObj.name === firstObj.name
+          ),
+          ...firstObj
+        }))
 
   const columns = [
     {
-      field: 'txId',
-      headerName: t('tableHeader2', { ns: 'incomeRoute' }),
-      hide: !tableData[0]?.txId,
+      field: 'election',
+      hide: !tableData[0]?.election,
+      headerName: t('tableElectionHeader', { ns: 'incomeRoute' }),
       cellClassName: classes.links,
-      renderCell: param => (
-        <Tooltip title={param.value}>
-          <a
-            href={
-              param.value.length > 60
-                ? `https://bloks.io/transaction/${param.value}`
-                : `https://bloks.io/account/genesis.eden?loadContract=true&tab=Tables&table=distaccount&account=genesis.eden&scope=&limit=100&lower_bound=${param.value}&upper_bound=${param.value}`
-            }
-          >
-            {param.value.slice(0, 8)}
-          </a>
-        </Tooltip>
-      ),
       ...rowsCenter
     },
     {
       field: 'name',
-      headerName: tableData[0]?.level
+      hide: !tableData[0]?.color,
+      headerName: tableData[0]?.name
         ? t('tableHeader1', { ns: 'incomeRoute' })
         : t('tableElectionHeader', { ns: 'incomeRoute' }),
       cellClassName: classes.links,
       renderCell: param => (
         <a
-          className={tableData[0]?.level ? '' : classes.disableLink}
+          className={tableData[0]?.name ? '' : classes.disableLink}
           href={`https://eosauthority.com/account/${param.value}?network=eos`}
         >
           {param.value}
@@ -103,79 +94,43 @@ const IncomeReportGeneral = () => {
       ...rowsCenter
     },
     {
-      field: 'level',
-      headerName: t('tableHeader3', { ns: 'incomeRoute' }),
-      hide: !tableData[0]?.level,
-      type: 'number',
-      ...rowsCenter
-    },
-    {
-      field: 'category',
-      headerName: t('tableHeader11', { ns: 'incomeRoute' }),
-      renderCell: param => (
-        <>
-          {param.value === 'claimed'
-            ? t('claimedCategory', { ns: 'incomeRoute' })
-            : t('unclaimedCategory', { ns: 'incomeRoute' })}
-        </>
-      ),
-      hide: !tableData[0]?.category,
-      ...rowsCenter
-    },
-    {
-      field: 'EOS',
+      field: 'EOS_TOTAL',
       headerName: 'EOS',
+      hide: !tableData[0]?.election,
       renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
     },
     {
-      field: 'USD',
+      field: 'USD_TOTAL',
       headerName: 'USD',
+      hide: !tableData[0]?.election,
       renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
     },
     {
-      field: 'date',
-      headerName: t('tableHeader6', { ns: 'incomeRoute' }),
-      hide: !tableData[0]?.date,
-      ...rowsCenter
-    },
-    {
-      field: 'EOS_CLAIMED',
+      field: 'EOS_CLAIMED_PERCENT',
       headerName: t('tableHeader7', { ns: 'incomeRoute' }),
       type: 'number',
-      hide:
-        showDelegateRadio === 'oneDelegate' &&
-        showElectionRadio === 'oneElection',
       ...rowsCenter
     },
     {
-      field: 'EOS_UNCLAIMED',
+      field: 'EOS_UNCLAIMED_PERCENT',
       headerName: t('tableHeader8', { ns: 'incomeRoute' }),
       type: 'number',
-      hide:
-        showDelegateRadio === 'oneDelegate' &&
-        showElectionRadio === 'oneElection',
       ...rowsCenter
     },
     {
-      field: 'USD_CLAIMED',
+      field: 'USD_CLAIMED_PERCENT',
       headerName: t('tableHeader9', { ns: 'incomeRoute' }),
       type: 'number',
-      hide:
-        showDelegateRadio === 'oneDelegate' &&
-        showElectionRadio === 'oneElection',
       ...rowsCenter
     },
     {
-      field: 'USD_UNCLAIMED',
+      field: 'USD_UNCLAIMED_PERCENT',
       headerName: t('tableHeader10', { ns: 'incomeRoute' }),
       type: 'number',
-      hide:
-        showDelegateRadio === 'oneDelegate' &&
-        showElectionRadio === 'oneElection',
       ...rowsCenter
     }
   ]
@@ -228,12 +183,6 @@ const IncomeReportGeneral = () => {
               />
             </RadioGroup>
           </FormControl>
-          <SelectComponent
-            onChangeFunction={setTypeCurrencySelect}
-            labelSelect={t('textCurrencySelect', { ns: 'generalForm' })}
-            values={['EOS', 'USD']}
-            actualValue={typeCurrencySelect}
-          />
         </div>
         <div id="id-radio-election-container">
           {showElectionRadio === 'oneElection' && (
@@ -255,56 +204,30 @@ const IncomeReportGeneral = () => {
         </div>
       </div>
 
-      <div>
-        <LineAreaChartReport
-          data={chartTransactionsList}
-          coinType={typeCurrencySelect}
-          keyTranslation={'titleAreaChartGeneral1'}
-          pathTranslation={'incomeRoute'}
-          showLegend={true}
-        />
-      </div>
+      <>
+        <div className={classes.chartContainer}>
+          <BarChartGeneralReport
+            data={incomeByElectionsList}
+            keyTranslation={'titleAreaChartGeneral1'}
+            pathTranslation={'incomeRoute'}
+            showLegend={true}
+            typeData={'income'}
+          />
+        </div>
 
-      <div className={classes.chartContainer}>
-        <PieChartReport
-          data={totalByCategoryList}
-          coinType={typeCurrencySelect}
-          keyTranslation={'titlePieChartGeneral1'}
-          pathTranslation={'incomeRoute'}
-        />
-
-        <PieChartReport
-          data={totalClaimedList}
-          coinType={typeCurrencySelect}
-          keyTranslation={'titlePieChartGeneral2'}
-          pathTranslation={'incomeRoute'}
-        />
-      </div>
-
-      <div>
-        <LineAreaChartReport
-          data={incomeByDelegate}
-          coinType={typeCurrencySelect}
-          keyTranslation={'titleAreaChartGeneral2'}
-          pathTranslation={'incomeRoute'}
-          showLegend={false}
-        />
-      </div>
-
-      <div>
-        <LineAreaChartReport
-          data={claimedIncomeByDelegate}
-          coinType={typeCurrencySelect}
-          keyTranslation={'titleAreaChartGeneral3'}
-          pathTranslation={'incomeRoute'}
-          showLegend={false}
-        />
-      </div>
-
+        <div className={classes.chartContainer}>
+          <PieChartReport
+            data={delegatesList}
+            keyTranslation={'titlePieChartGeneral1'}
+            pathTranslation={'incomeRoute'}
+            typeData={'income'}
+          />
+        </div>
+      </>
       <div className={classes.tableContainer}>
         <div className={classes.subTitle}>
           <Typography variant="span">
-            {chartTransactionsList[0]?.level
+            {incomeByElectionsList[0]?.level
               ? t('titleTable', { ns: 'incomeRoute' })
               : t('titleTable2', { ns: 'incomeRoute' })}
           </Typography>
@@ -318,6 +241,6 @@ const IncomeReportGeneral = () => {
   )
 }
 
-IncomeReportGeneral.prototypes = {}
+IncomeReport.prototypes = {}
 
-export default memo(IncomeReportGeneral)
+export default memo(IncomeReport)
