@@ -14,7 +14,7 @@ const Home = () => {
   const { t } = useTranslation('homeRoute')
 
   const handleStartButton = () => {
-    navigate('income/', {
+    navigate('income', {
       replace: true
     })
   }

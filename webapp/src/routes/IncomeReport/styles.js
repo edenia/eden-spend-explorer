@@ -2,9 +2,9 @@ export default theme => ({
   root: {
     marginRight: '8px',
     marginLeft: '8px',
-    '& #titles-container-id': {
+    '& #treasury-container-id': {
       display: 'flex',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-end',
       [theme.breakpoints.down('450')]: {
         flexDirection: 'column'
       }
