@@ -1,12 +1,6 @@
 import React, { memo, useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
-import {
-  Typography,
-  FormControl,
-  FormControlLabel,
-  RadioGroup,
-  Radio
-} from '@mui/material'
+import { FormControl, FormControlLabel, RadioGroup, Radio } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
 import useExpenseReportState from '../../hooks/customHooks/useExpenseReportState'
@@ -133,23 +127,8 @@ const ExpenseReport = () => {
 
   return (
     <div className={classes.root}>
-      <div id="titles-container-id">
-        <div className={classes.titleContainer}>
-          <div className={classes.divider} />
-          <div className={classes.title}>
-            <Typography variant="span">
-              {t('title', { ns: 'expenseRoute' })}
-            </Typography>
-          </div>
-        </div>
+      <div id="treasury-container-id">
         <TreasuryBalance />
-      </div>
-      <div className={classes.subTitle}>
-        <Typography variant="span">
-          {t('subTitle', { ns: 'expenseRoute' })}
-        </Typography>
-        <br />
-        <label>{t('textInformation', { ns: 'expenseRoute' })}</label>
       </div>
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
@@ -196,7 +175,7 @@ const ExpenseReport = () => {
       <div>
         <BarChartGeneralReport
           data={expenseByElectionsList}
-          keyTranslation={'titleAreaChartGeneral1'}
+          keyTranslation={'titleBarChart'}
           pathTranslation={'expenseRoute'}
           showLegend={true}
           typeData={'expense'}
@@ -206,14 +185,14 @@ const ExpenseReport = () => {
       <div className={classes.chartContainer}>
         <PieChartReport
           data={delegatesList}
-          keyTranslation={'titlePieChartGeneral1'}
+          keyTranslation={'titlePieChart1'}
           pathTranslation={'expenseRoute'}
           typeData={'expense'}
         />
 
         <PieChartReport
           data={categoryList}
-          keyTranslation={'titlePieChartGeneral2'}
+          keyTranslation={'titlePieChart2'}
           pathTranslation={'expenseRoute'}
           typeData={'expense'}
         />

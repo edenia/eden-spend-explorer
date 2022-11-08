@@ -13,7 +13,6 @@ import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
 import BarChartGeneralReport from '../../components/BarChartGeneralReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
-import { useSharedState } from '../../context/state.context'
 import TableReport from '../../components/TableReport'
 import SelectComponent from '../../components/Select'
 
@@ -28,8 +27,6 @@ const IncomeReport = () => {
   const classes = useStyles()
 
   const { t } = useTranslation()
-  const [state] = useSharedState()
-  const { nextEdenDisbursement = '' } = state.eosTrasuryBalance
 
   const [
     {
@@ -137,31 +134,9 @@ const IncomeReport = () => {
 
   return (
     <div className={classes.root}>
-      <div id="titles-container-id">
-        <div className={classes.titleContainer}>
-          <div className={classes.divider} />
-          <div className={classes.title}>
-            <Typography variant="span">
-              {t('title', { ns: 'incomeRoute' })}
-            </Typography>
-          </div>
-        </div>
+      <div id="treasury-container-id">
         <TreasuryBalance />
       </div>
-      <div className={classes.subTitle}>
-        <Typography variant="span">
-          {t('subTitle', { ns: 'incomeRoute' })}
-        </Typography>
-        <br />
-        <label>
-          {t('textInformation', { ns: 'incomeRoute' })}
-          <br />
-          <strong>{`${t('nextDisbursement', {
-            ns: 'incomeRoute'
-          })} ${nextEdenDisbursement}`}</strong>
-        </label>
-      </div>
-
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
           <FormControl>
@@ -208,7 +183,7 @@ const IncomeReport = () => {
         <div className={classes.chartContainer}>
           <BarChartGeneralReport
             data={incomeByElectionsList}
-            keyTranslation={'titleAreaChartGeneral1'}
+            keyTranslation={'titleBarChart'}
             pathTranslation={'incomeRoute'}
             showLegend={true}
             typeData={'income'}
@@ -218,7 +193,7 @@ const IncomeReport = () => {
         <div className={classes.chartContainer}>
           <PieChartReport
             data={delegatesList}
-            keyTranslation={'titlePieChartGeneral1'}
+            keyTranslation={'titlePieChart'}
             pathTranslation={'incomeRoute'}
             typeData={'income'}
           />
