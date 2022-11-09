@@ -5,14 +5,15 @@ module.exports = {
   type: `${edenConfig.edenContract}:withdraw`,
   apply: async action => {
     try {
-      const amount = Number(action.json.quantity.split(' ')[0])
+      const amount =
+        Number(action.json.quantity.split(' ')[0]) - action.amountTransfer
       const transactionData = {
         txid: action.transaction_id,
         amount,
         category: 'claimed',
         date: action.timestamp,
         description: action.json.owner,
-        id_election: action.electionId,
+        id_election: action.election.id,
         recipient: action.json.owner,
         type: 'income',
         eos_exchange: action.eosPrice,

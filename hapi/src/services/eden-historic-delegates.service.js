@@ -111,24 +111,32 @@ const saveDelegateByFundTransfer = async () => {
       await runDelegateUpdaters(actions)
     }
   } catch (error) {
-    console.error('error to saveDelegateByFundTransfer:', error.message)
+    console.error('save delegate by fundTransfer error: ', error.message)
+    await sleepUtil(60)
+    saveDelegateByFundTransfer()
   }
 }
 
 const saveDelegateByDistAccount = async () => {
   let nextKey = null
-  while (true) {
-    const delegates = await historicDelegates({ next_key: nextKey })
-    for (const delegate of delegates.rows) {
-      const date = delegate[1].distribution_time
-      const account = delegate[1].owner
-      const rank = delegate[1].rank
-      await registerHistoricDelegate(date, account, rank)
+  try {
+    while (true) {
+      const delegates = await historicDelegates({ next_key: nextKey })
+      for (const delegate of delegates.rows) {
+        const date = delegate[1].distribution_time
+        const account = delegate[1].owner
+        const rank = delegate[1].rank
+        await registerHistoricDelegate(date, account, rank)
+      }
+
+      if (!delegates.more) break
+
+      nextKey = delegates.next_key
     }
-
-    if (!delegates.more) break
-
-    nextKey = delegates.next_key
+  } catch (error) {
+    console.error('save delegate by disaccount error: ', error.message)
+    await sleepUtil(60)
+    saveDelegateByDistAccount()
   }
 }
 

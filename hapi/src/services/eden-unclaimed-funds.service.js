@@ -70,24 +70,30 @@ const registerUnclaimedTransaction = async (
 
 const updateUnclaimedFunds = async () => {
   let nextKey = null
-  while (true) {
-    const delegates = await communityUtil.loadTableData(
-      { next_key: nextKey, limit: 10000 },
-      'distaccount'
-    )
+  try {
+    while (true) {
+      const delegates = await communityUtil.loadTableData(
+        { next_key: nextKey, limit: 10000 },
+        'distaccount'
+      )
 
-    for (const delegate of delegates.rows) {
-      const date = delegate[1].distribution_time
-      const account = delegate[1].owner
-      const rank = delegate[1].rank
-      const id = delegate[1].id.toString()
-      const amount = Number(delegate[1].balance.split(' ')[0])
-      await registerUnclaimedTransaction(date, account, rank, amount, id)
+      for (const delegate of delegates.rows) {
+        const date = delegate[1].distribution_time
+        const account = delegate[1].owner
+        const rank = delegate[1].rank
+        const id = delegate[1].id.toString()
+        const amount = Number(delegate[1].balance.split(' ')[0])
+        await registerUnclaimedTransaction(date, account, rank, amount, id)
+      }
+
+      if (!delegates.more) break
+
+      nextKey = delegates.next_key
     }
-
-    if (!delegates.more) break
-
-    nextKey = delegates.next_key
+  } catch (error) {
+    console.error('update unclaimed funds error: ', error.message)
+    await sleepUtil(60)
+    updateUnclaimedFunds()
   }
 }
 
