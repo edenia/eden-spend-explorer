@@ -8,5 +8,8 @@ export default theme => ({
   },
   marginTopItemsSidebar: {
     marginTop: theme.spacing(0.5)
+  },
+  divProfileStyle: {
+    cursor: 'pointer'
   }
 })
