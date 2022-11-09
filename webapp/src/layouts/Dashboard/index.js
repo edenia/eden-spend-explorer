@@ -32,7 +32,7 @@ const Dashboard = ({ children, routes }) => {
               style: { width: drawerWidth }
             }}
             variant="temporary"
-            open={mobileOpen}
+            openComponent={mobileOpen}
             onClose={handleDrawerToggle}
             routes={routes}
           />
