@@ -10,7 +10,8 @@ module.exports = {
 
     await edenTransactionGql.update({
       where: {
-        txid: { _eq: action.json.tx_id }
+        txid: { _eq: action.json.tx_id },
+        type: { _eq: 'expense' }
       },
       _set: { category, description }
     })
