@@ -27,7 +27,7 @@ module.exports = {
         category,
         date: action.timestamp,
         description,
-        id_election: action.electionId,
+        id_election: action.election.id,
         recipient: action.json.to,
         type: 'expense',
         eos_exchange: action.eosPrice,

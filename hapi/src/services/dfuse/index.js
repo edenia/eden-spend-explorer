@@ -21,6 +21,7 @@ let LASTEST_RATE_DATA_CONSULTED = null
 
 const runUpdaters = async actions => {
   for (let index = 0; index < actions.length; index++) {
+    let lastElectionsAmountFundTransfer = 0
     const action = actions[index]
     try {
       const { matchingActions, id } = action?.trace
@@ -30,7 +31,6 @@ const runUpdaters = async actions => {
         indexMatching++
       ) {
         const matchingAction = matchingActions[indexMatching]
-
         const updater = updaters.find(
           item =>
             item.type === `${matchingAction.account}:${matchingAction.name}`
@@ -43,6 +43,8 @@ const runUpdaters = async actions => {
             : await edenHistoricElectionGql.get({
                 date_election: { _lte: action.trace.block.timestamp }
               })
+
+        if (!electionNumber) continue
 
         const edenElectionId =
           matchingAction.name === 'withdraw'
@@ -81,13 +83,26 @@ const runUpdaters = async actions => {
           }
         }
 
+        if (matchingAction.name === 'fundtransfer') {
+          const withdrawElection = await edenHistoricElectionGql.get({
+            date_election: { _lte: action.trace.block.timestamp }
+          })
+          const amount = Number(matchingAction.json.amount.split(' ')[0])
+
+          lastElectionsAmountFundTransfer =
+            withdrawElection.election !== edenElectionId.election
+              ? lastElectionsAmountFundTransfer + amount
+              : lastElectionsAmountFundTransfer
+        }
+
         await updater.apply({
           transaction_id: id,
           json: matchingAction.json,
           timestamp: action.trace.block.timestamp,
           ation: matchingAction.name,
-          electionId: edenElectionId.id,
-          eosPrice: LASTEST_RATE_DATA_CONSULTED
+          eosPrice: LASTEST_RATE_DATA_CONSULTED,
+          election: edenElectionId,
+          amountTransfer: lastElectionsAmountFundTransfer
         })
       }
     } catch (error) {
