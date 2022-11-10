@@ -30,11 +30,19 @@ const runUpdaters = async actions => {
         indexMatching++
       ) {
         const matchingAction = matchingActions[indexMatching]
-
         const updater = updaters.find(
           item =>
             item.type === `${matchingAction.account}:${matchingAction.name}`
         )
+
+        if (matchingAction.name === 'categorize') {
+          await updater.apply({
+            json: matchingAction.json
+          })
+
+          continue
+        }
+
         const electionNumber =
           matchingAction.name === 'fundtransfer'
             ? await edenHistoricElectionGql.get({
@@ -43,6 +51,8 @@ const runUpdaters = async actions => {
             : await edenHistoricElectionGql.get({
                 date_election: { _lte: action.trace.block.timestamp }
               })
+
+        if (!electionNumber) continue
 
         const edenElectionId =
           matchingAction.name === 'withdraw'
@@ -123,7 +133,7 @@ const sync = async () => {
     try {
       while (hasMore) {
         ;({ hasMore, actions, blockNumber } = await getActions({
-          query: `account:${edenConfig.edenContract} data.owner:${delegate.account} OR account:${edenConfig.edenContract} data.to:${delegate.account} OR account:eosio.token data.from:${delegate.account} receiver:eosio.token`,
+          query: `account:${edenConfig.edenContract} data.owner:${delegate.account} OR account:${edenConfig.edenContract} data.to:${delegate.account} OR account:eosio.token data.from:${delegate.account} receiver:eosio.token OR data.account:${delegate.account} receiver:edenexplorer`,
           lowBlockNum: blockNumber
         }))
 

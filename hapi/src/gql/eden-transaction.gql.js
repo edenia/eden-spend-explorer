@@ -54,8 +54,28 @@ const deleteTx = async where => {
   return data.delete_eden_transaction
 }
 
+const update = async ({ where, _set }) => {
+  const mutation = `
+    mutation update($where: eden_transaction_bool_exp!, $_set: eden_transaction_set_input) {
+      update_eden_transaction(where: $where, _set: $_set) {
+        returning {
+          id
+        }
+      }
+    }
+  `
+
+  const data = await hasuraUtil.instance.request(mutation, {
+    where,
+    _set
+  })
+
+  return data.update_eden_transaction
+}
+
 module.exports = {
   save,
   get,
-  deleteTx
+  deleteTx,
+  update
 }
