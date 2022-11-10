@@ -80,11 +80,16 @@ const useIncomeReportState = () => {
   useEffect(() => {
     loadTotalIncomeByDelegate()
     loadPercentAllElections()
-    loadDelegatesByElection()
     loadIncomeByElections()
-    loadPercentByElection()
     loadElectionsByYear()
   }, [])
+
+  useEffect(() => {
+    if (showElectionRadio === 'oneElection') {
+      loadDelegatesByElection()
+      loadPercentByElection()
+    }
+  }, [electionRoundSelect, showElectionRadio])
 
   useEffect(() => {
     setElectionRoundSelect(

@@ -137,47 +137,6 @@ const IncomeReport = () => {
       <div id="treasury-container-id">
         <TreasuryBalance />
       </div>
-      <div className={classes.filtersContainer}>
-        <div id="id-radio-election-container">
-          <FormControl>
-            <RadioGroup
-              name="election-radio-buttons-group"
-              row
-              onChange={({ target }) => setShowElectionRadio(target.value)}
-              value={showElectionRadio}
-            >
-              <FormControlLabel
-                control={<Radio size="small" />}
-                label={t('textRadioButton4', { ns: 'generalForm' })}
-                value="allElections"
-              />
-              <FormControlLabel
-                control={<Radio size="small" />}
-                label={t('textRadioButton3', { ns: 'generalForm' })}
-                value="oneElection"
-              />
-            </RadioGroup>
-          </FormControl>
-        </div>
-        <div id="id-radio-election-container">
-          {showElectionRadio === 'oneElection' && (
-            <>
-              <SelectComponent
-                onChangeFunction={setElectionYearSelect}
-                labelSelect={t('textYearSelect', { ns: 'generalForm' })}
-                values={getListElectionYears()}
-                actualValue={electionYearSelect}
-              />
-              <SelectComponent
-                onChangeFunction={setElectionRoundSelect}
-                labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
-                values={electionsByYearList.map(data => `${data.election}`)}
-                actualValue={electionRoundSelect}
-              />
-            </>
-          )}
-        </div>
-      </div>
 
       <>
         <div className={classes.chartContainer}>
@@ -188,6 +147,48 @@ const IncomeReport = () => {
             showLegend={true}
             typeData={'income'}
           />
+        </div>
+
+        <div className={classes.filtersContainer}>
+          <div id="id-radio-election-container">
+            <FormControl>
+              <RadioGroup
+                name="election-radio-buttons-group"
+                row
+                onChange={({ target }) => setShowElectionRadio(target.value)}
+                value={showElectionRadio}
+              >
+                <FormControlLabel
+                  control={<Radio size="small" />}
+                  label={t('textRadioButton4', { ns: 'generalForm' })}
+                  value="allElections"
+                />
+                <FormControlLabel
+                  control={<Radio size="small" />}
+                  label={t('textRadioButton3', { ns: 'generalForm' })}
+                  value="oneElection"
+                />
+              </RadioGroup>
+            </FormControl>
+          </div>
+          <div id="id-radio-election-container">
+            {showElectionRadio === 'oneElection' && (
+              <>
+                <SelectComponent
+                  onChangeFunction={setElectionYearSelect}
+                  labelSelect={t('textYearSelect', { ns: 'generalForm' })}
+                  values={getListElectionYears()}
+                  actualValue={electionYearSelect}
+                />
+                <SelectComponent
+                  onChangeFunction={setElectionRoundSelect}
+                  labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
+                  values={electionsByYearList.map(data => `${data.election}`)}
+                  actualValue={electionRoundSelect}
+                />
+              </>
+            )}
+          </div>
         </div>
 
         <div className={classes.chartContainer}>

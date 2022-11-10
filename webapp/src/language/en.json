@@ -58,8 +58,8 @@
     "uncategorizedCat": "Uncategorized"
   },
   "incomeRoute": {
-    "titleBarChart": "Income per Election in EOS",
-    "titlePieChart": "Delegate Income in EOS",
+    "titleBarChart": "Income per Election",
+    "titlePieChart": "Delegate Income",
     "titleTable": "Delegates ranked in order of income from highest to lowest",
     "titleTable2": "Elections sorted from oldest to newest",
     "tableElectionHeader": "Term",
@@ -78,9 +78,9 @@
     "unclaimedCategory": "Unclaimed"
   },
   "expenseRoute": {
-    "titleBarChart": "Expense per Election in EOS",
-    "titlePieChart1": "Expense by Category in EOS",
-    "titlePieChart2": "Expense by Delegate in EOS",
+    "titleBarChart": "Expense per Election",
+    "titlePieChart1": "Expense by Category",
+    "titlePieChart2": "Expense by Delegate",
     "tableElectionHeader": "Term",
     "tableHeader1": "Account",
     "tableHeader2": "ID (caps)",

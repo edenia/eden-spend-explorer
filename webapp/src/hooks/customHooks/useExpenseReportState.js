@@ -95,15 +95,20 @@ const useExpenseReportState = () => {
   })
 
   useEffect(() => {
-    loadTotalByCategoryAndElection()
     loadTotalExpenseByDelegate()
     loadPercentAllElections()
-    loadDelegatesByElection()
     loadExpenseByElections()
-    loadPercentByElection()
     loadElectionsByYear()
     loadTotalByCategory()
   }, [])
+
+  useEffect(() => {
+    if (showElectionRadio === 'oneElection') {
+      loadTotalByCategoryAndElection()
+      loadDelegatesByElection()
+      loadPercentByElection()
+    }
+  }, [electionRoundSelect, showElectionRadio])
 
   useEffect(() => {
     setElectionRoundSelect(

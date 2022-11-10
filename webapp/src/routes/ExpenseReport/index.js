@@ -130,6 +130,17 @@ const ExpenseReport = () => {
       <div id="treasury-container-id">
         <TreasuryBalance />
       </div>
+
+      <div className={classes.borderChar}>
+        <BarChartGeneralReport
+          data={expenseByElectionsList}
+          keyTranslation={'titleBarChart'}
+          pathTranslation={'expenseRoute'}
+          showLegend={true}
+          typeData={'expense'}
+        />
+      </div>
+
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
           <FormControl>
@@ -172,16 +183,6 @@ const ExpenseReport = () => {
         </div>
       </div>
 
-      <div>
-        <BarChartGeneralReport
-          data={expenseByElectionsList}
-          keyTranslation={'titleBarChart'}
-          pathTranslation={'expenseRoute'}
-          showLegend={true}
-          typeData={'expense'}
-        />
-      </div>
-
       <div className={classes.chartContainer}>
         <PieChartReport
           data={delegatesList}
@@ -189,7 +190,7 @@ const ExpenseReport = () => {
           pathTranslation={'expenseRoute'}
           typeData={'expense'}
         />
-
+        <div className={classes.verticalLine} />
         <PieChartReport
           data={categoryList}
           keyTranslation={'titlePieChart2'}

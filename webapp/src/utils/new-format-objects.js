@@ -70,14 +70,14 @@ export const newDataFormatByElectionsIncome = electionsList => {
     const election = {
       election: `Election ${electionsList[pos].election + 1}`,
       EOS_CLAIMED: Number(electionsList[pos].amount),
-      EOS_UNCLAIMED: Number(electionsList[pos + 1].amount),
+      EOS_UNCLAIMED: Number(electionsList[pos + 1]?.amount),
       USD_CLAIMED: Number(electionsList[pos].usd_total),
-      USD_UNCLAIMED: Number(electionsList[pos + 1].usd_total),
+      USD_UNCLAIMED: Number(electionsList[pos + 1]?.usd_total),
       EOS_TOTAL: Number(
-        electionsList[pos].amount + electionsList[pos + 1].amount
+        electionsList[pos].amount + electionsList[pos + 1]?.amount
       ),
       USD_TOTAL: Number(
-        electionsList[pos].usd_total + electionsList[pos + 1].usd_total
+        electionsList[pos].usd_total + electionsList[pos + 1]?.usd_total
       )
     }
     elections.push(election)
