@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { mainConfig } from '../../config'
 import { eosApi } from '../../utils/eosapi'
+import { sleep } from '../../utils/sleep'
 
 const getActualDate = () => {
   const date = new Date()
@@ -11,7 +12,7 @@ const getActualDate = () => {
 
 const useTresuryBalanceState = () => {
   const [eosRate, setEosRate] = useState(0)
-  const [currencyBalance, setCurrencyBalance] = useState('')
+  const [currencyBalance, setCurrencyBalance] = useState('Loading...')
   const [nextEdenDisbursement, setNextEdenDisbursement] = useState('')
 
   const getEosBalance = async () => {
@@ -46,15 +47,9 @@ const useTresuryBalanceState = () => {
       setEosRate(data.market_data.current_price.usd)
     } catch (error) {
       console.log(error)
-      await sleep(60)
+      await sleep(10)
       getEosRate()
     }
-  }
-
-  const sleep = seconds => {
-    return new Promise(resolve => {
-      setTimeout(() => resolve(), seconds * 1000)
-    })
   }
 
   const getNextEdenDisbursement = async () => {
@@ -72,6 +67,8 @@ const useTresuryBalanceState = () => {
       setNextEdenDisbursement(date)
     } catch (error) {
       console.log(error)
+      await sleep(10)
+      getNextEdenDisbursement()
     }
   }
 
