@@ -64,7 +64,6 @@ const update = async ({ where, _set }) => {
       }
     }
   `
-
   const data = await hasuraUtil.instance.request(mutation, {
     where,
     _set
