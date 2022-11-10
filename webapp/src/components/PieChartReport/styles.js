@@ -9,13 +9,24 @@ export default theme => ({
       width: '100%'
     }
   },
+  titleContainer: {
+    display: 'flex'
+  },
+  titleContainerExpense: {
+    display: 'flex',
+    width: '90%',
+    height: '65px',
+    borderBottom: '2px solid rgba(0, 0, 0, 0.12)'
+  },
   textContainer: {
     display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start'
+    alignItems: 'center',
+    marginLeft: '30px'
   },
   filtersChartContainer: {
     display: 'flex',
-    marginLeft: '70px'
+    position: 'relative',
+    left: '10%',
+    alignItems: 'center'
   }
 })

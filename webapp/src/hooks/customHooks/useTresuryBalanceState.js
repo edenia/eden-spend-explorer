@@ -25,6 +25,8 @@ const useTresuryBalanceState = () => {
       setCurrencyBalance(response[0] || '')
     } catch (error) {
       console.log(error)
+      await sleep(60)
+      getEosBalance()
     }
   }
 
@@ -44,7 +46,15 @@ const useTresuryBalanceState = () => {
       setEosRate(data.market_data.current_price.usd)
     } catch (error) {
       console.log(error)
+      await sleep(60)
+      getEosRate()
     }
+  }
+
+  const sleep = seconds => {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(), seconds * 1000)
+    })
   }
 
   const getNextEdenDisbursement = async () => {

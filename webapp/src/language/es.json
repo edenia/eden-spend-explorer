@@ -55,8 +55,8 @@
     "uncategorizedCat": "No categorizado"
   },
   "incomeRoute": {
-    "titleBarChart": "Ingresos por Elección en EOS",
-    "titlePieChart": "Ingresos de los Delegados en EOS",
+    "titleBarChart": "Ingresos por Elección",
+    "titlePieChart": "Ingresos de los Delegados",
     "titleTable": "Delegados ordenados por ingresos de mayor a menor",
     "titleTable2": "Elecciones ordenadas de la mas antigua a la mas reciente",
     "tableElectionHeader": "Periodo",
@@ -75,9 +75,9 @@
     "unclaimedCategory": "No reclamado"
   },
   "expenseRoute": {
-    "titleBarChart": "Gasto por Elección en EOS",
-    "titlePieChart1": "Gastos por Categoría en EOS",
-    "titlePieChart2": "Gastos por Delegado en EOS",
+    "titleBarChart": "Gasto por Elección",
+    "titlePieChart1": "Gastos por Categoría",
+    "titlePieChart2": "Gastos por Delegado",
     "tableElectionHeader": "Periodo",
     "tableHeader1": "Cuenta",
     "tableHeader2": "ID (caps)",
@@ -92,7 +92,7 @@
     "tableHeader11": "Categoría"
   },
   "delegateRoute": {
-    "titleBarChart": "Ingresos y Gastos por Delegado en EOS",
+    "titleBarChart": "Ingresos y Gastos por Delegado",
     "tableElectionHeader": "Periodo",
     "tableHeader1": "Cuenta",
     "tableHeader2": "ID (caps)",

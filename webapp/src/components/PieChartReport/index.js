@@ -52,10 +52,12 @@ const renderActiveShape = props => {
         x={cx}
         y={cy}
         dy={8}
-        textLength="10%"
+        textLength="130"
         textAnchor="middle"
+        fontSize="20px"
+        fontSizeAdjust="0.58"
         fill={'#000'}
-        lengthAdjust="spacingAndGlyphs"
+        lengthAdjust="spacing"
       >
         {payload.name}
       </text>
@@ -117,6 +119,7 @@ const PieChartReport = ({
   const [selectedUSD, setSelected] = useState(false)
   const [coinType, setCoinType] = useState('EOS')
   const [category, setCategory] = useState('')
+  const [titleSize, setTitleSize] = useState('h4')
 
   const handleChange = event => {
     setSelected(event.target.checked)
@@ -139,7 +142,12 @@ const PieChartReport = ({
   }, [getPiePng])
 
   useEffect(() => {
-    typeData === 'income' ? setCategory('Claimed') : setCategory('Categorized')
+    if (typeData === 'income') {
+      setCategory('Claimed')
+    } else {
+      setCategory('Categorized')
+      setTitleSize('h6')
+    }
   }, [typeData])
 
   useEffect(() => {
@@ -149,27 +157,55 @@ const PieChartReport = ({
   return (
     <>
       <div className={classes.chartContainer}>
-        <div className={classes.textContainer}>
-          <Typography variant="h4">
-            {t(keyTranslation, { ns: pathTranslation })}
-          </Typography>
-          <TooltipDownload title="Donwload">
-            <IconButton onClick={handlePieDownload}>
-              <DownloadOutlined />
-            </IconButton>
-          </TooltipDownload>
-          <div className={classes.filtersChartContainer}>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Switch checked={selectedUSD} onChange={handleChange} />
-                }
-                label="Convert to USD"
-                labelPlacement="start"
-              />
-            </FormGroup>
+        {typeData === 'expense' ? (
+          <div className={classes.titleContainerExpense}>
+            <div className={classes.textContainer}>
+              <Typography variant={titleSize}>
+                {t(keyTranslation, { ns: pathTranslation })}
+              </Typography>
+              <TooltipDownload title="Donwload">
+                <IconButton onClick={handlePieDownload}>
+                  <DownloadOutlined />
+                </IconButton>
+              </TooltipDownload>
+            </div>
+            <div className={classes.filtersChartContainer}>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch checked={selectedUSD} onChange={handleChange} />
+                  }
+                  label="Convert to USD"
+                  labelPlacement="start"
+                />
+              </FormGroup>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className={classes.titleContainer}>
+            <div className={classes.textContainer}>
+              <Typography variant={titleSize}>
+                {t(keyTranslation, { ns: pathTranslation })}
+              </Typography>
+              <TooltipDownload title="Donwload">
+                <IconButton onClick={handlePieDownload}>
+                  <DownloadOutlined />
+                </IconButton>
+              </TooltipDownload>
+            </div>
+            <div className={classes.filtersChartContainer}>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch checked={selectedUSD} onChange={handleChange} />
+                  }
+                  label="Convert to USD"
+                  labelPlacement="start"
+                />
+              </FormGroup>
+            </div>
+          </div>
+        )}
         <ResponsiveContainer height={400}>
           <PieChart height={250} ref={pieRef}>
             <Pie
