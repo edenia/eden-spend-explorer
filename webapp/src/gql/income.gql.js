@@ -27,7 +27,10 @@ export const GET_PERCENT_BY_ELECTIONS_INCOME = gql`
 
 export const GET_INCOME_BY_ELECTIONS = gql`
   query getIncomeByElections {
-    total_by_category_and_election(where: { type: { _eq: "income" } }) {
+    total_by_category_and_election(
+      where: { type: { _eq: "income" } }
+      order_by: { election: asc, category: asc }
+    ) {
       election
       category
       amount
