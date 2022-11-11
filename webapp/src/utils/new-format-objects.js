@@ -190,3 +190,11 @@ export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
   )
   return transactions
 }
+
+export const newDataFormatByCategoryDelegate = categoryList =>
+  categoryList.map(data => ({
+    category: data.category,
+    EOS: Number(data.amount),
+    USD: Number(data.usd_total),
+    color: generateColor()
+  }))

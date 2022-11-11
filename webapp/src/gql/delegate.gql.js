@@ -37,3 +37,19 @@ export const GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION = gql`
     }
   }
 `
+
+export const GET_EXPENSE_BY_CATEGORY = gql`
+  query getExpenseByCategory($election: Int, $delegate: String) {
+    transaction_by_category_and_election(
+      where: {
+        type: { _eq: "expense" }
+        delegate_payer: { _eq: $delegate }
+        election: { _eq: $election }
+      }
+    ) {
+      category
+      amount
+      usd_total
+    }
+  }
+`

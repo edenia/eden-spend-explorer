@@ -157,7 +157,7 @@ const PieChartReport = ({
   return (
     <>
       <div className={classes.chartContainer}>
-        {typeData === 'expense' ? (
+        {typeData !== 'income' ? (
           <div className={classes.titleContainerExpense}>
             <div className={classes.textContainer}>
               <Typography variant={titleSize}>
@@ -208,22 +208,41 @@ const PieChartReport = ({
         )}
         <ResponsiveContainer height={400}>
           <PieChart height={250} ref={pieRef}>
-            <Pie
-              activeIndex={activeIndex}
-              activeShape={renderActiveShape}
-              data={newData}
-              nameKey={'name'}
-              dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
-              cx="50%"
-              cy="50%"
-              innerRadius={'40%'}
-              outerRadius={'70%'}
-              onMouseEnter={onPieEnter}
-            >
-              {data.map(data => (
-                <Cell key={`cell-${data.election}`} fill={data.color} />
-              ))}
-            </Pie>
+            {typeData === 'delegate' ? (
+              <Pie
+                activeIndex={activeIndex}
+                activeShape={renderActiveShape}
+                data={newData}
+                nameKey={'category'}
+                dataKey={`${coinType}`}
+                cx="50%"
+                cy="50%"
+                innerRadius={'40%'}
+                outerRadius={'70%'}
+                onMouseEnter={onPieEnter}
+              >
+                {data.map(data => (
+                  <Cell key={`cell-${data.election}`} fill={data.color} />
+                ))}
+              </Pie>
+            ) : (
+              <Pie
+                activeIndex={activeIndex}
+                activeShape={renderActiveShape}
+                data={newData}
+                nameKey={'name'}
+                dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
+                cx="50%"
+                cy="50%"
+                innerRadius={'40%'}
+                outerRadius={'70%'}
+                onMouseEnter={onPieEnter}
+              >
+                {data.map(data => (
+                  <Cell key={`cell-${data.election}`} fill={data.color} />
+                ))}
+              </Pie>
+            )}
           </PieChart>
         </ResponsiveContainer>
       </div>

@@ -5,7 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import { useTranslation } from 'react-i18next'
 
 import useDelegateReportState from '../../hooks/customHooks/useDelegateReportState'
-import BarChartGeneralReport from '../../components/BarChartGeneralReport'
+import StackedBarChartReport from '../../components/StackedBarChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import SelectComponent from '../../components/Select'
 
@@ -64,12 +64,11 @@ const DelegateReport = () => {
         </div>
       </div>
       <div className={classes.chartContainer}>
-        <BarChartGeneralReport
+        <StackedBarChartReport
           data={transactionList}
           keyTranslation={'titleBarChart'}
           pathTranslation={'delegateRoute'}
           showLegend={true}
-          typeData={'delegate'}
         />
       </div>
     </div>

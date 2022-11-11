@@ -4,9 +4,13 @@ import { useLazyQuery } from '@apollo/client'
 import { GET_ELECTIONS_BY_YEAR } from '../../gql/general.gql'
 import {
   GET_DELEGATES_BY_ELECTION,
-  GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION
+  GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION,
+  GET_EXPENSE_BY_CATEGORY
 } from '../../gql/delegate.gql'
-import { newDataFormatByTypeDelegate } from '../../utils/new-format-objects'
+import {
+  newDataFormatByTypeDelegate,
+  newDataFormatByCategoryDelegate
+} from '../../utils/new-format-objects'
 
 const useDelegateReportState = () => {
   const [electionYearSelect, setElectionYearSelect] = useState('All')
@@ -15,6 +19,7 @@ const useDelegateReportState = () => {
   const [electionsByYearList, setElectionsByYearList] = useState([])
   const [delegateList, setDelegatesList] = useState([])
   const [transactionList, setTransactionList] = useState([])
+  const [categoryList, setCategoryList] = useState([])
 
   const [loadDelegatesByElection, { data: delegatesByElectionData }] =
     useLazyQuery(GET_DELEGATES_BY_ELECTION, {
@@ -25,6 +30,16 @@ const useDelegateReportState = () => {
 
   const [loadTransactions, { data: transactionsData }] = useLazyQuery(
     GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION,
+    {
+      variables: {
+        election: electionRoundSelect,
+        delegate: delegateSelect
+      }
+    }
+  )
+
+  const [loadCategoryList, { data: categoryListData }] = useLazyQuery(
+    GET_EXPENSE_BY_CATEGORY,
     {
       variables: {
         election: electionRoundSelect,
@@ -53,6 +68,7 @@ const useDelegateReportState = () => {
     loadDelegatesByElection()
     loadElectionsByYear()
     loadTransactions()
+    loadCategoryList()
   }, [])
 
   useEffect(() => {
@@ -81,13 +97,22 @@ const useDelegateReportState = () => {
     )
   }, [transactionsData])
 
+  useEffect(() => {
+    setCategoryList(
+      newDataFormatByCategoryDelegate(
+        categoryListData?.transaction_by_category_and_election || []
+      )
+    )
+  }, [categoryListData])
+
   return [
     {
       electionRoundSelect,
       delegateSelect,
       electionsByYearList,
       transactionList,
-      delegateList
+      delegateList,
+      categoryList
     },
     {
       setElectionRoundSelect,
