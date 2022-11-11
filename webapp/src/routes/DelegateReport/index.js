@@ -23,10 +23,14 @@ const DelegateReport = () => {
       delegateSelect,
       electionsByYearList,
       transactionList,
+      categoryList,
       delegateList
     },
     { setElectionRoundSelect, setElectionYearSelect, setDelegateSelect }
   ] = useDelegateReportState()
+
+  console.log(transactionList)
+  console.log(categoryList)
 
   useEffect(() => {
     setElectionYearSelect('All')
