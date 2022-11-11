@@ -185,14 +185,14 @@ const ExpenseReport = () => {
 
       <div className={classes.chartContainer}>
         <PieChartReport
-          data={delegatesList}
+          data={categoryList}
           keyTranslation={'titlePieChart1'}
           pathTranslation={'expenseRoute'}
           typeData={'expense'}
         />
         <div className={classes.verticalLine} />
         <PieChartReport
-          data={categoryList}
+          data={delegatesList}
           keyTranslation={'titlePieChart2'}
           pathTranslation={'expenseRoute'}
           typeData={'expense'}
