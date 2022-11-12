@@ -86,3 +86,15 @@ export const GET_TOTAL_BY_CATEGORY_EXPENSE = gql`
     }
   }
 `
+export const EDIT_TRANSACTION_BY_TXID = gql`
+  mutation update(
+    $where: eden_transaction_bool_exp!
+    $_set: eden_transaction_set_input
+  ) {
+    update_eden_transaction(where: $where, _set: $_set) {
+      returning {
+        id
+      }
+    }
+  }
+`

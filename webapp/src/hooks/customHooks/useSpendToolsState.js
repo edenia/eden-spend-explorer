@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { useLazyQuery } from '@apollo/client'
+import { useLazyQuery, useMutation } from '@apollo/client'
 
 import { useSharedState } from '../../context/state.context'
 import {
   GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
   GET_CATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
-  GET_ACTUAL_ELECTION_QUERY
+  GET_ACTUAL_ELECTION_QUERY,
+  EDIT_TRANSACTION_BY_TXID
 } from '../../gql'
 
 import useForm from './useForm'
@@ -38,6 +39,7 @@ const useSpendTools = () => {
     newCategory: '',
     newDescription: ''
   })
+  const [editTransaction] = useMutation(EDIT_TRANSACTION_BY_TXID)
 
   const executeAction = async (data, account, name) => {
     setErrorMessage('')
@@ -65,7 +67,24 @@ const useSpendTools = () => {
 
       setOpenSnackbar(true)
 
-      openModal ? resetModal() : reset()
+      if (openModal) {
+        editTransaction({
+          variables: {
+            where: {
+              txid: { _eq: modalData?.txid },
+              type: { _eq: 'expense' }
+            },
+            _set: {
+              category: formValuesModal.newCategory,
+              description: formValuesModal.newDescription
+            }
+          }
+        })
+
+        resetModal()
+      } else {
+        reset()
+      }
     } catch (error) {
       setErrorMessage(error.message)
     }
