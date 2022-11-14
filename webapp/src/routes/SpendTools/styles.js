@@ -148,8 +148,8 @@ export default theme => ({
       '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)'
   },
   modalDimentions: {
-    maxWidth: '723px',
-    minHeight: '605px',
+    width: '723px',
+    height: '605px',
     padding: '20px 32px',
     borderRadius: '7px',
     border: 'solid 1px #667080',
@@ -158,8 +158,11 @@ export default theme => ({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '80vw'
+    },
+    [theme.breakpoints.down('sm')]: {
+      overflow: 'auto'
     },
     '& #close-modal-button-id': {
       position: 'absolute',
