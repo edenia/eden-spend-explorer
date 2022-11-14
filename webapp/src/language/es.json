@@ -92,7 +92,8 @@
     "tableHeader11": "Categoría"
   },
   "delegateRoute": {
-    "titleBarChart": "Ingresos y Gastos por Delegado",
+    "titleBarChart": "Ingresos y Gastos",
+    "titlePieChart": "Gastos por Categoria",
     "tableElectionHeader": "Periodo",
     "tableHeader1": "Cuenta",
     "tableHeader2": "ID (caps)",

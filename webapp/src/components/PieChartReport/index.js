@@ -59,7 +59,7 @@ const renderActiveShape = props => {
         fill={'#000'}
         lengthAdjust="spacing"
       >
-        {payload.name}
+        {payload.name ? payload.name : payload.category}
       </text>
       <Sector
         cx={cx}
@@ -218,7 +218,7 @@ const PieChartReport = ({
                 cx="50%"
                 cy="50%"
                 innerRadius={'40%'}
-                outerRadius={'70%'}
+                outerRadius={'60%'}
                 onMouseEnter={onPieEnter}
               >
                 {data.map(data => (
@@ -235,7 +235,7 @@ const PieChartReport = ({
                 cx="50%"
                 cy="50%"
                 innerRadius={'40%'}
-                outerRadius={'70%'}
+                outerRadius={'68%'}
                 onMouseEnter={onPieEnter}
               >
                 {data.map(data => (

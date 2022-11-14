@@ -95,7 +95,8 @@
     "tableHeader11": "Category"
   },
   "delegateRoute": {
-    "titleBarChart": "Income and Expense per Delegate",
+    "titleBarChart": "Income and Expense",
+    "titlePieChart": "Expense by Category",
     "tableElectionHeader": "Term",
     "tableHeader1": "Account",
     "tableHeader2": "ID (caps)",

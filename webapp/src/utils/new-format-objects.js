@@ -172,20 +172,20 @@ export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
     generateDelegateData(
       'income',
       'Claimed',
-      incomeList[0]?.eos_claimed,
-      incomeList[0]?.usd_claimed,
-      incomeList[0]?.eos_unclaimed,
-      incomeList[0]?.usd_unclaimed
+      incomeList[0]?.eos_claimed || 0,
+      incomeList[0]?.usd_claimed || 0,
+      incomeList[0]?.eos_unclaimed || 0,
+      incomeList[0]?.usd_unclaimed || 0
     )
   )
   transactions.push(
     generateDelegateData(
       'expense',
       'Categorized',
-      expenseList[0]?.eos_categorized,
-      expenseList[0]?.usd_categorized,
-      expenseList[0]?.eos_uncategorized,
-      expenseList[0]?.usd_uncategorized
+      expenseList[0]?.eos_categorized || 0,
+      expenseList[0]?.usd_categorized || 0,
+      expenseList[0]?.eos_uncategorized || 0,
+      expenseList[0]?.usd_uncategorized || 0
     )
   )
   return transactions

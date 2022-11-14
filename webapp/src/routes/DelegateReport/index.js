@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next'
 
 import useDelegateReportState from '../../hooks/customHooks/useDelegateReportState'
 import StackedBarChartReport from '../../components/StackedBarChartReport'
+import PieChartReport from '../../components/PieChartReport'
+// import TableReport from '../../components/TableReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import SelectComponent from '../../components/Select'
 
@@ -20,7 +22,6 @@ const DelegateReport = () => {
   const [
     {
       electionRoundSelect,
-      delegateSelect,
       electionsByYearList,
       transactionList,
       categoryList,
@@ -28,9 +29,6 @@ const DelegateReport = () => {
     },
     { setElectionRoundSelect, setElectionYearSelect, setDelegateSelect }
   ] = useDelegateReportState()
-
-  console.log(transactionList)
-  console.log(categoryList)
 
   useEffect(() => {
     setElectionYearSelect('All')
@@ -52,7 +50,6 @@ const DelegateReport = () => {
             />
             <Autocomplete
               id="combo-box-demo"
-              value={delegateSelect}
               sx={{ width: 300 }}
               options={delegateList.map(data => data.delegate_payer)}
               onInputChange={(event, newInputValue) => {
@@ -61,13 +58,20 @@ const DelegateReport = () => {
               autoHighlight
               clearOnEscape
               renderInput={params => (
-                <TextField {...params} label="Delegate" variant="standard" />
+                <TextField {...params} label="Delegate" variant="outlined" />
               )}
             />
           </>
         </div>
       </div>
       <div className={classes.chartContainer}>
+        <PieChartReport
+          data={categoryList}
+          keyTranslation={'titlePieChart'}
+          pathTranslation={'delegateRoute'}
+          typeData={'delegate'}
+        />
+        <div className={classes.verticalLine} />
         <StackedBarChartReport
           data={transactionList}
           keyTranslation={'titleBarChart'}

@@ -65,11 +65,22 @@ const useDelegateReportState = () => {
   )
 
   useEffect(() => {
-    loadDelegatesByElection()
-    loadElectionsByYear()
-    loadTransactions()
-    loadCategoryList()
-  }, [])
+    if (
+      (electionRoundSelect !== null || electionRoundSelect !== undefined) &&
+      delegateSelect !== undefined &&
+      delegateSelect !== ''
+    ) {
+      loadTransactions()
+      loadCategoryList()
+    }
+  }, [electionRoundSelect, delegateSelect])
+
+  useEffect(() => {
+    if (electionRoundSelect !== null || electionRoundSelect !== undefined) {
+      loadDelegatesByElection()
+      loadElectionsByYear()
+    }
+  }, [electionRoundSelect])
 
   useEffect(() => {
     setElectionRoundSelect(
@@ -100,7 +111,7 @@ const useDelegateReportState = () => {
   useEffect(() => {
     setCategoryList(
       newDataFormatByCategoryDelegate(
-        categoryListData?.transaction_by_category_and_election || []
+        categoryListData?.expenses_by_category_and_delegate || []
       )
     )
   }, [categoryListData])

@@ -1,14 +1,9 @@
 export default theme => ({
   chartContainer: {
-    width: '100%',
+    width: '50%',
     display: 'flex',
-    alignItems: 'flex-start',
     flexDirection: 'column',
-    marginTop: 24,
-    '& #chart-scroll-id': {
-      minWidth: '925px',
-      width: '100%'
-    }
+    marginTop: 24
   },
   chartLinks: {
     display: 'flex',
@@ -34,11 +29,15 @@ export default theme => ({
   },
   textContainer: {
     display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start'
+    alignItems: 'center',
+    marginLeft: '30px',
+    width: '90%',
+    height: '65px'
   },
   filtersChartContainer: {
     display: 'flex',
-    marginLeft: '400px'
+    position: 'relative',
+    left: '10%',
+    alignItems: 'center'
   }
 })

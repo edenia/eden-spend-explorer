@@ -55,18 +55,6 @@ const RenderChartLegend = ({ data }) => {
         />
         {`Un${data.toLocaleLowerCase()}`}
       </a>
-      <a key={`key-total-link-chart`}>
-        <Box
-          width={12}
-          height={12}
-          ml={2}
-          mt={0.5}
-          mr={0.5}
-          bgcolor="#19647e"
-          borderRadius={5}
-        />
-        {`Total`}
-      </a>
       <a key={`key-${data}-link-chart`}>
         <Box
           width={12}
@@ -78,6 +66,18 @@ const RenderChartLegend = ({ data }) => {
           borderRadius={5}
         />
         {data}
+      </a>
+      <a key={`key-total-link-chart`}>
+        <Box
+          width={12}
+          height={12}
+          ml={2}
+          mt={0.5}
+          mr={0.5}
+          bgcolor="#19647e"
+          borderRadius={5}
+        />
+        Total
       </a>
     </div>
   )
@@ -226,16 +226,16 @@ const BarChartReport = ({
                   <Cell key={`cell-${election}`} />
                 ))}
               </Bar>
-              <Bar dataKey={`${coinType}_TOTAL`} barSize={35} fill="#19647e">
-                {data.map(({ election }) => (
-                  <Cell key={`cell-${election}`} />
-                ))}
-              </Bar>
               <Bar
                 dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
                 barSize={35}
                 fill="#ee964b"
               >
+                {data.map(({ election }) => (
+                  <Cell key={`cell-${election}`} />
+                ))}
+              </Bar>
+              <Bar dataKey={`${coinType}_TOTAL`} barSize={35} fill="#19647e">
                 {data.map(({ election }) => (
                   <Cell key={`cell-${election}`} />
                 ))}

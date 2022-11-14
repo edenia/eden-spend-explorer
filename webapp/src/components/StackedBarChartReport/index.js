@@ -38,12 +38,12 @@ const lowerCaseAllWordsExceptFirstLetters = (string = ' ') =>
     word => `${word.slice(0, 1)}${word.slice(1).toLowerCase()}`
   )
 
-const RenderChartLegend = ({ data }) => {
+const RenderChartLegend = () => {
   const classes = useStyles()
 
   return (
     <div className={classes.chartLinks}>
-      <a key={`key-total-link-chart`}>
+      <a key={`key-claimed-link-chart`}>
         <Box
           width={12}
           height={12}
@@ -53,9 +53,9 @@ const RenderChartLegend = ({ data }) => {
           bgcolor="#19647e"
           borderRadius={5}
         />
-        {`Categorized / Claimed`}
+        Claimed
       </a>
-      <a key={`key-${data}-link-chart`}>
+      <a key={`key-categorized-link-chart`}>
         <Box
           width={12}
           height={12}
@@ -65,14 +65,34 @@ const RenderChartLegend = ({ data }) => {
           bgcolor="#ee964b"
           borderRadius={5}
         />
-        {`Uncategorized / Unclaimed`}
+        Categorized
+      </a>
+      <a key={`key-unclaimed-link-chart`}>
+        <Box
+          width={12}
+          height={12}
+          ml={2}
+          mt={0.5}
+          mr={0.5}
+          bgcolor="#f4d35e"
+          borderRadius={5}
+        />
+        Unclaimed
+      </a>
+      <a key={`key-uncategorized-link-chart`}>
+        <Box
+          width={12}
+          height={12}
+          ml={2}
+          mt={0.5}
+          mr={0.5}
+          bgcolor="#28afb0"
+          borderRadius={5}
+        />
+        Uncategorized
       </a>
     </div>
   )
-}
-
-RenderChartLegend.propTypes = {
-  data: PropTypes.string
 }
 
 const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
@@ -147,7 +167,7 @@ const StackedBarChartReport = ({
     <>
       <div className={classes.chartContainer}>
         <div className={classes.textContainer}>
-          <Typography variant="h4">
+          <Typography variant="h6">
             {t(keyTranslation, { ns: pathTranslation })}
           </Typography>
           <TooltipDownload title="Download">
@@ -168,7 +188,7 @@ const StackedBarChartReport = ({
           </div>
         </div>
         <div id="chart-scroll-id">
-          <ResponsiveContainer width="100%" height={400}>
+          <ResponsiveContainer width="50%" height={400}>
             <ComposedChart
               height={400}
               data={data}
@@ -196,14 +216,20 @@ const StackedBarChartReport = ({
                 content={<CustomTooltip coinType={coinType} />}
               />
               {showLegend && <Legend content={<RenderChartLegend />} />}
-              <Bar dataKey={`${coinType}_`} barSize={35} fill="#19647e">
+              <Bar dataKey={`${coinType}_`} barSize={88} stackId="a">
                 {data.map(({ type }) => (
-                  <Cell key={`cell-${type}`} />
+                  <Cell
+                    key={`cell-${type}`}
+                    fill={type === 'income' ? '#19647e' : '#ee964b'}
+                  />
                 ))}
               </Bar>
-              <Bar dataKey={`${coinType}_UN`} barSize={35} fill="#ee964b">
+              <Bar dataKey={`${coinType}_UN`} barSize={88} stackId="a">
                 {data.map(({ type }) => (
-                  <Cell key={`cell-${type}`} />
+                  <Cell
+                    key={`cell-${type}`}
+                    fill={type === 'income' ? '#f4d35e' : '#28afb0'}
+                  />
                 ))}
               </Bar>
             </ComposedChart>
