@@ -81,6 +81,18 @@ const useSpendTools = () => {
           }
         })
 
+        setTransactionsList(
+          transactionsList.map(transaction =>
+            transaction.txid === modalData?.txid
+              ? {
+                  ...transaction,
+                  category: formValuesModal.newCategory,
+                  description: formValuesModal.newDescription
+                }
+              : transaction
+          )
+        )
+
         resetModal()
       } else {
         reset()
