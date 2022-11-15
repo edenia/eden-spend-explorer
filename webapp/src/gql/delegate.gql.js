@@ -7,6 +7,7 @@ export const GET_DELEGATES_BY_ELECTION = gql`
       distinct_on: delegate_payer
     ) {
       delegate_payer
+      delegate_level
     }
   }
 `
@@ -49,6 +50,28 @@ export const GET_EXPENSE_BY_CATEGORY = gql`
       category
       amount
       usd_total
+    }
+  }
+`
+
+export const GET_MAX_DELEGATE_LEVEL = gql`
+  query getMaxDelegateLevel($election: Int) {
+    eden_election(
+      where: { election: { _eq: $election } }
+      order_by: { delegate_level: desc }
+      limit: 1
+    ) {
+      delegate_level
+    }
+  }
+`
+
+export const GET_INCOME_BY_ELECTION = gql`
+  query MyQuery($election: Int) {
+    historic_incomes(where: { election: { _eq: $election } }) {
+      recipient
+      eos_claimed
+      eos_unclaimed
     }
   }
 `

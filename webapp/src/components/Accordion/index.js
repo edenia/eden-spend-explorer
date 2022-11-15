@@ -1,14 +1,38 @@
-import * as React from 'react'
+import React, { memo } from 'react'
+import PropTypes from 'prop-types'
 import Accordion from '@mui/material/Accordion'
+import { makeStyles } from '@mui/styles'
 import AccordionDetails from '@mui/material/AccordionDetails'
+import { Typography } from '@mui/material'
 import AccordionSummary from '@mui/material/AccordionSummary'
-import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { DelegateItem } from '@edenia/ui-kit'
+import { useTranslation } from 'react-i18next'
 
-export default function ControlledAccordions() {
+import useDelegateReportState from '../../hooks/customHooks/useDelegateReportState'
+import { formatWithThousandSeparator } from '../../utils'
+import DelegateDetails from '../DelegateDetails'
+import styles from './styles'
+
+const useStyles = makeStyles(styles)
+
+const AccordionComp = ({
+  nameDelegate,
+  accountDelegate,
+  imageDelegate,
+  avatarIcon,
+  profileLink,
+  delegateLevel,
+  eosRewarded
+}) => {
   const [expanded, setExpanded] = React.useState(false)
+  const classes = useStyles()
+  const { t } = useTranslation()
+  const [{ transactionList, categoryList }, { setDelegateSelect }] =
+    useDelegateReportState()
 
   const handleChange = panel => (event, isExpanded) => {
+    isExpanded && setDelegateSelect(accountDelegate)
     setExpanded(isExpanded ? panel : false)
   }
 
@@ -22,21 +46,43 @@ export default function ControlledAccordions() {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
           id="panel1bh-header"
+          className={classes.summaryContentStyle}
         >
-          <Typography sx={{ width: '33%', flexShrink: 0 }}>
-            General settings
-          </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>
-            I am an accordion
-          </Typography>
+          <DelegateItem
+            name={nameDelegate}
+            bgColor="#ffff"
+            image={`https://eden-genesis.mypinata.cloud/ipfs/${imageDelegate}`}
+            avatarIcon={avatarIcon}
+            profileLink={profileLink}
+            targetProfile="_blank"
+            positionText={delegateLevel}
+            headItem={
+              <Typography variant="h6">
+                {formatWithThousandSeparator(eosRewarded)}
+              </Typography>
+            }
+            text={t('rewarded', { ns: 'delegateRoute' })}
+          />
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-            Aliquam eget maximus est, id dignissim quam.
-          </Typography>
+          <DelegateDetails
+            categoryList={categoryList}
+            transactionList={transactionList}
+          />
         </AccordionDetails>
       </Accordion>
     </div>
   )
 }
+
+AccordionComp.propTypes = {
+  nameDelegate: PropTypes.string,
+  accountDelegate: PropTypes.string,
+  imageDelegate: PropTypes.string,
+  avatarIcon: PropTypes.string,
+  profileLink: PropTypes.string,
+  delegateLevel: PropTypes.string,
+  eosRewarded: PropTypes.number
+}
+
+export default memo(AccordionComp)

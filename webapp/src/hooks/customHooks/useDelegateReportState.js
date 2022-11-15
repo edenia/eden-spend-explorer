@@ -5,11 +5,14 @@ import { GET_ELECTIONS_BY_YEAR } from '../../gql/general.gql'
 import {
   GET_DELEGATES_BY_ELECTION,
   GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION,
-  GET_EXPENSE_BY_CATEGORY
+  GET_EXPENSE_BY_CATEGORY,
+  GET_MAX_DELEGATE_LEVEL,
+  GET_INCOME_BY_ELECTION
 } from '../../gql/delegate.gql'
 import {
   newDataFormatByTypeDelegate,
-  newDataFormatByCategoryDelegate
+  newDataFormatByCategoryDelegate,
+  newDataFormatDelegatesByElectionDelegate
 } from '../../utils/new-format-objects'
 
 const useDelegateReportState = () => {
@@ -20,6 +23,7 @@ const useDelegateReportState = () => {
   const [delegateList, setDelegatesList] = useState([])
   const [transactionList, setTransactionList] = useState([])
   const [categoryList, setCategoryList] = useState([])
+  const [maxLevel, setMaxLevel] = useState(0)
 
   const [loadDelegatesByElection, { data: delegatesByElectionData }] =
     useLazyQuery(GET_DELEGATES_BY_ELECTION, {
@@ -27,6 +31,24 @@ const useDelegateReportState = () => {
         election: electionRoundSelect
       }
     })
+
+  const [loadIncomeByElection, { data: incomeByElectionData }] = useLazyQuery(
+    GET_INCOME_BY_ELECTION,
+    {
+      variables: {
+        election: electionRoundSelect
+      }
+    }
+  )
+
+  const [loadMaxDelegateLevel, { data: maxDelegateLevelData }] = useLazyQuery(
+    GET_MAX_DELEGATE_LEVEL,
+    {
+      variables: {
+        election: electionRoundSelect
+      }
+    }
+  )
 
   const [loadTransactions, { data: transactionsData }] = useLazyQuery(
     GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION,
@@ -79,6 +101,8 @@ const useDelegateReportState = () => {
     if (electionRoundSelect !== null || electionRoundSelect !== undefined) {
       loadDelegatesByElection()
       loadElectionsByYear()
+      loadMaxDelegateLevel()
+      loadIncomeByElection()
     }
   }, [electionRoundSelect])
 
@@ -90,14 +114,20 @@ const useDelegateReportState = () => {
   }, [electionsByYearData])
 
   useEffect(() => {
+    if (!delegatesByElectionData && !incomeByElectionData) return
+
     setDelegatesList(
-      delegatesByElectionData?.transaction_by_category_and_election || []
+      newDataFormatDelegatesByElectionDelegate({
+        delegateList:
+          delegatesByElectionData?.transaction_by_category_and_election || [],
+        incomeList: incomeByElectionData?.historic_incomes || []
+      }) || []
     )
     setDelegateSelect(
       delegatesByElectionData?.transaction_by_category_and_election[0]
         ?.delegate_payer
     )
-  }, [delegatesByElectionData])
+  }, [delegatesByElectionData, incomeByElectionData])
 
   useEffect(() => {
     setTransactionList(
@@ -116,6 +146,10 @@ const useDelegateReportState = () => {
     )
   }, [categoryListData])
 
+  useEffect(() => {
+    setMaxLevel(maxDelegateLevelData?.eden_election[0]?.delegate_level)
+  })
+
   return [
     {
       electionRoundSelect,
@@ -123,12 +157,14 @@ const useDelegateReportState = () => {
       electionsByYearList,
       transactionList,
       delegateList,
-      categoryList
+      categoryList,
+      maxLevel
     },
     {
       setElectionRoundSelect,
       setElectionYearSelect,
-      setDelegateSelect
+      setDelegateSelect,
+      setDelegatesList
     }
   ]
 }

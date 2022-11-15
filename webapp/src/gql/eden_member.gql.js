@@ -1,8 +1,8 @@
 export const GET_MEMBERS_DATA = `
-  query getMembers($value: String, $orderBy: [member_order_by!], $limit: Int) {
+  query getMembers($value: [String], $orderBy: [member_order_by!], $limit: Int) {
     memberPag: member_aggregate(
       order_by: $orderBy
-      where: { account: { _eq: $value } }
+      where: { account: { _in: $value } }
     ) {
       aggregate {
         count
@@ -11,7 +11,7 @@ export const GET_MEMBERS_DATA = `
     members: member(
       limit: $limit
       order_by: $orderBy
-      where: { account: { _eq: $value } }
+      where: { account: { _in: $value } }
     ) {
       account
       election_participation_status

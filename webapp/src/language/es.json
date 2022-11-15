@@ -94,18 +94,7 @@
   "delegateRoute": {
     "titleBarChart": "Ingresos y Gastos",
     "titlePieChart": "Gastos por Categoria",
-    "tableElectionHeader": "Periodo",
-    "tableHeader1": "Cuenta",
-    "tableHeader2": "ID (caps)",
-    "tableHeader3": "Nivel de delegado",
-    "tableHeader4": "Total de EOS categorizados",
-    "tableHeader5": "Total de USD categorizados",
-    "tableHeader6": "Fecha de transacción",
-    "tableHeader7": "% EOS categorizados",
-    "tableHeader8": "% EOS no categorizados",
-    "tableHeader9": "% USD categorizados",
-    "tableHeader10": "% USD no categorizados",
-    "tableHeader11": "Categoría"
+    "rewarded": "EOS Obtenido"
   },
   "spendToolsRoute": {
     "viewAbout": "Un conjunto de herramientas que le ayudarán a realizar nuevas transacciones o a editarlas.",

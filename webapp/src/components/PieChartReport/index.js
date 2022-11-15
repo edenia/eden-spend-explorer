@@ -52,10 +52,10 @@ const renderActiveShape = props => {
         x={cx}
         y={cy}
         dy={8}
-        textLength="130"
+        textLength="125"
         textAnchor="middle"
         fontSize="20px"
-        fontSizeAdjust="0.58"
+        fontSizeAdjust="0.5"
         fill={'#000'}
         lengthAdjust="spacing"
       >
@@ -217,8 +217,8 @@ const PieChartReport = ({
                 dataKey={`${coinType}`}
                 cx="50%"
                 cy="50%"
-                innerRadius={'40%'}
-                outerRadius={'60%'}
+                innerRadius={'35%'}
+                outerRadius={'55%'}
                 onMouseEnter={onPieEnter}
               >
                 {data.map(data => (

@@ -198,3 +198,21 @@ export const newDataFormatByCategoryDelegate = categoryList =>
     USD: Number(data.usd_total),
     color: generateColor()
   }))
+
+export const newDataFormatDelegatesByElectionDelegate = ({
+  delegateList,
+  incomeList
+}) => {
+  if (delegateList !== undefined && incomeList !== undefined) {
+    return delegateList.map(delegate => {
+      const posDelegate = incomeList.find(
+        income => income.recipient === delegate.delegate_payer
+      )
+      if (posDelegate) {
+        const totalIncome = posDelegate.eos_claimed + posDelegate.eos_unclaimed
+        return { ...delegate, totalIncome }
+      }
+      return delegate
+    })
+  }
+}

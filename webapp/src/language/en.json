@@ -97,18 +97,7 @@
   "delegateRoute": {
     "titleBarChart": "Income and Expense",
     "titlePieChart": "Expense by Category",
-    "tableElectionHeader": "Term",
-    "tableHeader1": "Account",
-    "tableHeader2": "ID (caps)",
-    "tableHeader3": "Delegate level",
-    "tableHeader4": "Total EOS categorized",
-    "tableHeader5": "Total USD categorized",
-    "tableHeader6": "Transaction date",
-    "tableHeader7": "EOS categorized %",
-    "tableHeader8": "EOS uncategorized %",
-    "tableHeader9": "USD categorized %",
-    "tableHeader10": "USD uncategorized %",
-    "tableHeader11": "Category"
+    "rewarded": "EOS Rewarded"
   },
   "spendToolsRoute": {
     "viewAbout": "A set of tools that will help you perform new transactions or edit them.",
