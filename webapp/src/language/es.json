@@ -66,11 +66,8 @@
     "tableHeader4": "Total de EOS distribuidos",
     "tableHeader5": "Total de USD distribuidos",
     "tableHeader6": "Fecha de transacción",
-    "tableHeader7": "% EOS reclamado",
-    "tableHeader8": "% EOS no reclamado",
-    "tableHeader9": "% USD reclamado",
-    "tableHeader10": "% USD no reclamado",
-    "tableHeader11": "Categoría",
+    "tableHeader7": "% Reclamado",
+    "tableHeader8": "% No reclamado",
     "claimedCategory": "Reclamado",
     "unclaimedCategory": "No reclamado"
   },
@@ -85,11 +82,8 @@
     "tableHeader4": "Total de EOS categorizados",
     "tableHeader5": "Total de USD categorizados",
     "tableHeader6": "Fecha de transacción",
-    "tableHeader7": "% EOS categorizados",
-    "tableHeader8": "% EOS no categorizados",
-    "tableHeader9": "% USD categorizados",
-    "tableHeader10": "% USD no categorizados",
-    "tableHeader11": "Categoría"
+    "tableHeader7": "% Categorizados",
+    "tableHeader8": "% No categorizados"
   },
   "delegateRoute": {
     "titleBarChart": "Ingresos y Gastos por Delegado",
@@ -103,8 +97,7 @@
     "tableHeader7": "% EOS categorizados",
     "tableHeader8": "% EOS no categorizados",
     "tableHeader9": "% USD categorizados",
-    "tableHeader10": "% USD no categorizados",
-    "tableHeader11": "Categoría"
+    "tableHeader10": "% USD no categorizados"
   },
   "spendToolsRoute": {
     "viewAbout": "Un conjunto de herramientas que le ayudarán a realizar nuevas transacciones o a editarlas.",
