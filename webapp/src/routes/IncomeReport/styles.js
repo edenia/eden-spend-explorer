@@ -21,10 +21,11 @@ export default theme => ({
     textAlign: 'justify',
     marginLeft: '12px',
     '& span': {
-      fontSize: '24px',
-      fontWeight: 'bold',
-      lineHeight: 1.25,
-      letterSpacing: '-0.48px',
+      alignSelf: 'stretch',
+      fontSize: '18px',
+      fontWeight: 500,
+      lineHeight: 1.56,
+      letterSpacing: '-0.4px',
       [theme.breakpoints.down('550')]: {
         marginTop: '16px'
       }
@@ -80,7 +81,7 @@ export default theme => ({
     alignItems: 'center'
   },
   tableContainer: {
-    marginTop: '80px',
+    marginTop: '24px',
     '& .MuiDataGrid-columnHeaderTitle': {
       fontWeight: 'bold',
       color: theme.palette.secondary.main

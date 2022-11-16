@@ -58,7 +58,7 @@ const Home = () => {
       <div className={classes.boxesContainer}>
         <div className={classes.frameContainer}>
           <div className={classes.titleFrame}>
-            <span>EDAS</span>
+            <span>{t('edenSpendExplorer')}</span>
           </div>
           <div className={classes.bodyFrame}>
             <span>{t('edasDescription')}</span>

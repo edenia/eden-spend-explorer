@@ -40,5 +40,14 @@ export default theme => ({
   filtersChartContainer: {
     display: 'flex',
     marginLeft: '400px'
+  },
+  titleChart: {
+    textAlign: 'justify',
+    marginLeft: '12px',
+    alignSelf: 'stretch',
+    fontSize: '18px',
+    fontWeight: 500,
+    lineHeight: 1.56,
+    letterSpacing: '-0.4px'
   }
 })

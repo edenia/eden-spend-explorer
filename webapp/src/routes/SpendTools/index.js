@@ -200,7 +200,7 @@ const SpendTools = () => {
             <div className={classes.formModalContainer}>
               <div className={classes.rowFormContainer}>
                 <div className={classes.inputContainer}>
-                  <InputLabel>{t('categoryInput')}</InputLabel>
+                  <InputLabel>{t('categoryLabel')}</InputLabel>
                   <Select
                     name="newCategory"
                     value={newCategory}
@@ -217,7 +217,7 @@ const SpendTools = () => {
                   </Select>
                 </div>
                 <div className={classes.inputContainer}>
-                  <InputLabel>{t('descriptionInput')}</InputLabel>
+                  <InputLabel>{t('descriptionLabel')}</InputLabel>
                   <TextField
                     name="newDescription"
                     value={newDescription}
@@ -250,13 +250,13 @@ const SpendTools = () => {
         <div className={classes.formContainer}>
           <div className={classes.rowFormContainer}>
             <div className={classes.inputContainer}>
-              <InputLabel>{t('toInput')}</InputLabel>
+              <InputLabel>{t('toLabel')}</InputLabel>
               <TextField
                 name="to"
                 type="text"
                 value={to}
                 onChange={handleInputChange}
-                placeholder="Enter account name..."
+                placeholder={t('toInput')}
                 error={errors?.to}
                 id="outlined-error"
                 autoComplete="off"
@@ -265,9 +265,9 @@ const SpendTools = () => {
             </div>
             <div className={classes.specialInput}>
               <div id="labels-id">
-                <label id="amount-id">{t('amountInput')}</label>
+                <label id="amount-id">{t('amountLabel')}</label>
                 <label id="available-id">
-                  Available:{' '}
+                  {t('availableLabel')}:{' '}
                   {formatWithThousandSeparator(
                     isNaN(amountClaimed - amountCategorized)
                       ? 0
@@ -295,7 +295,7 @@ const SpendTools = () => {
           </div>
           <div className={classes.rowFormContainer}>
             <div className={classes.inputContainer}>
-              <InputLabel>{t('categoryInput')}</InputLabel>
+              <InputLabel>{t('categoryLabel')}</InputLabel>
               <Select
                 name="category"
                 type="text"
@@ -309,7 +309,7 @@ const SpendTools = () => {
                     ? undefined
                     : () => (
                         <MenuItem id="placeholder-select">
-                          Select category
+                          {t('categoryInput')}
                         </MenuItem>
                       )
                 }
@@ -322,13 +322,13 @@ const SpendTools = () => {
               </Select>
             </div>
             <div className={classes.inputContainer}>
-              <InputLabel>{t('descriptionInput')}</InputLabel>
+              <InputLabel>{t('descriptionLabel')}</InputLabel>
               <TextField
                 name="description"
                 type="text"
                 value={description}
                 onChange={handleInputChange}
-                placeholder="Add a description"
+                placeholder={t('descriptionInput')}
                 fullWidth
                 error={errors?.description}
                 autoComplete="off"

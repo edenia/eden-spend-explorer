@@ -98,20 +98,14 @@ const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
         payload.map((data, i) => (
           <div key={`${i}-tooltip`}>
             <div>
-              {`${
+              {`${t(
                 data.payload.category
-                  ? t(
-                      (
-                        data.dataKey.split('_')[1] + data.payload.category
-                      ).toLocaleLowerCase(),
-                      {
-                        ns: 'generalForm'
-                      }
-                    )
-                  : t(data.dataKey.split('_')[1].toLocaleLowerCase(), {
-                      ns: 'generalForm'
-                    })
-              }: ${formatWithThousandSeparator(
+                  ? `${data.dataKey
+                      .split('_')[1]
+                      .toLocaleLowerCase()}${data.payload.category.toLocaleLowerCase()}`
+                  : data.dataKey.split('_')[1].toLocaleLowerCase(),
+                { ns: 'generalForm' }
+              )}: ${formatWithThousandSeparator(
                 data.payload[data.dataKey],
                 4
               )} ${coinType}`}
@@ -176,7 +170,7 @@ const BarChartReport = ({
     <>
       <div className={classes.chartContainer}>
         <div className={classes.textContainer}>
-          <Typography variant="h4">
+          <Typography className={classes.titleChart} variant="span">
             {t(keyTranslation, { ns: pathTranslation })}
           </Typography>
           <TooltipDownload title="Download">
@@ -190,7 +184,7 @@ const BarChartReport = ({
                 control={
                   <Switch checked={selectedUSD} onChange={handleChange} />
                 }
-                label="Convert to USD"
+                label={t('switchInput', { ns: 'generalForm' })}
                 labelPlacement="start"
               />
             </FormGroup>

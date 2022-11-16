@@ -1,6 +1,13 @@
 import React, { memo, useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
-import { FormControl, FormControlLabel, RadioGroup, Radio } from '@mui/material'
+import {
+  FormControl,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+  Divider,
+  Typography
+} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
 import useExpenseReportState from '../../hooks/customHooks/useExpenseReportState'
@@ -116,7 +123,6 @@ const ExpenseReport = () => {
       <div id="treasury-container-id">
         <TreasuryBalance />
       </div>
-
       <div className={classes.borderChar}>
         <BarChartReport
           data={expenseByElectionsList}
@@ -126,7 +132,7 @@ const ExpenseReport = () => {
           typeData={'expense'}
         />
       </div>
-
+      <Divider />
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
           <FormControl>
@@ -168,7 +174,6 @@ const ExpenseReport = () => {
           )}
         </div>
       </div>
-
       <div className={classes.chartContainer}>
         <PieChartReport
           data={categoryList}
@@ -185,7 +190,13 @@ const ExpenseReport = () => {
         />
       </div>
       <div className={classes.tableContainer}>
+        <Divider />
         <div className={classes.subTitle}>
+          <Typography variant="span">
+            {showElectionRadio === 'allElections'
+              ? t('titleTable2', { ns: 'expenseRoute' })
+              : t('titleTable', { ns: 'expenseRoute' })}
+          </Typography>
           <div id="id-table-container">
             <TableReport columns={columns} dataPercent={tableData} />
           </div>
