@@ -72,7 +72,7 @@ const RenderChartLegend = ({ data }) => {
           bgcolor="#19647e"
           borderRadius={5}
         />
-        Total
+        {t('total', { ns: 'generalForm' })}
       </a>
     </div>
   )
