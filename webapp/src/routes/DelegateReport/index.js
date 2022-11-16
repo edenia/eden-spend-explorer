@@ -91,21 +91,6 @@ const DelegateReport = () => {
           return member
         })
       )
-      accordionList.sort((d1, d2) =>
-        d1?.totalRewarded < d2?.totalRewarded
-          ? 1
-          : d1?.totalRewarded > d2?.totalRewarded
-          ? -1
-          : 0
-      )
-
-      accordionList.sort((d1, d2) =>
-        d1?.rank?.memberType < d2?.rank?.memberType
-          ? 1
-          : d1?.rank?.memberType > d2?.rank?.memberType
-          ? -1
-          : 0
-      )
       setLoader(false)
     }
   }, [delegateList, maxLevel])
@@ -115,6 +100,22 @@ const DelegateReport = () => {
       delegateList.filter(delegate => delegate?.account?.includes(searchValue))
     )
   }, [searchValue, delegateList])
+
+  accordionList.sort((d1, d2) =>
+    d1?.totalRewarded < d2?.totalRewarded
+      ? 1
+      : d1?.totalRewarded > d2?.totalRewarded
+      ? -1
+      : 0
+  )
+
+  accordionList.sort((d1, d2) =>
+    d1?.rank?.memberType < d2?.rank?.memberType
+      ? 1
+      : d1?.rank?.memberType > d2?.rank?.memberType
+      ? -1
+      : 0
+  )
 
   return (
     <div className={classes.root}>
