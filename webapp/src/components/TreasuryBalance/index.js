@@ -26,7 +26,7 @@ const TrasuryBalance = () => {
         {formatWithThousandSeparator(
           eosRate * Number(currencyBalance.split(' ')[0]),
           2
-        )}{' '}
+        ) || 0}{' '}
         @ ${formatWithThousandSeparator(eosRate, 2)}/EOS
       </label>
     </div>

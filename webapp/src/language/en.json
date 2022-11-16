@@ -69,11 +69,8 @@
     "tableHeader4": "Total EOS distributed",
     "tableHeader5": "Total USD distributed",
     "tableHeader6": "Transaction date",
-    "tableHeader7": "EOS claimed %",
-    "tableHeader8": "EOS unclaimed %",
-    "tableHeader9": "USD claimed %",
-    "tableHeader10": "USD unclaimed %",
-    "tableHeader11": "Category",
+    "tableHeader7": "Claimed %",
+    "tableHeader8": "Unclaimed %",
     "claimedCategory": "Claimed",
     "unclaimedCategory": "Unclaimed"
   },
@@ -88,11 +85,8 @@
     "tableHeader4": "Total EOS categorized",
     "tableHeader5": "Total USD categorized",
     "tableHeader6": "Transaction date",
-    "tableHeader7": "EOS categorized %",
-    "tableHeader8": "EOS uncategorized %",
-    "tableHeader9": "USD categorized %",
-    "tableHeader10": "USD uncategorized %",
-    "tableHeader11": "Category"
+    "tableHeader7": "Categorized %",
+    "tableHeader8": "Uncategorized %"
   },
   "delegateRoute": {
     "titleBarChart": "Income and Expense",

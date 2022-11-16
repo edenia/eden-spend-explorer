@@ -84,17 +84,15 @@ const ExpenseReport = () => {
       ...rowsCenter
     },
     {
-      field: 'EOS_TOTAL',
+      field: tableData[0]?.election ? 'EOS_TOTAL' : 'EOS_CATEGORIZED',
       headerName: 'EOS',
-      hide: !tableData[0]?.election,
       renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
     },
     {
-      field: 'USD_TOTAL',
+      field: tableData[0]?.election ? 'USD_TOTAL' : 'USD_CATEGORIZED',
       headerName: 'USD',
-      hide: !tableData[0]?.election,
       renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
@@ -108,18 +106,6 @@ const ExpenseReport = () => {
     {
       field: 'EOS_UNCATEGORIZED_PERCENT',
       headerName: t('tableHeader8', { ns: 'expenseRoute' }),
-      type: 'number',
-      ...rowsCenter
-    },
-    {
-      field: 'USD_CATEGORIZED_PERCENT',
-      headerName: t('tableHeader9', { ns: 'expenseRoute' }),
-      type: 'number',
-      ...rowsCenter
-    },
-    {
-      field: 'USD_UNCATEGORIZED_PERCENT',
-      headerName: t('tableHeader10', { ns: 'expenseRoute' }),
       type: 'number',
       ...rowsCenter
     }
@@ -185,14 +171,14 @@ const ExpenseReport = () => {
 
       <div className={classes.chartContainer}>
         <PieChartReport
-          data={delegatesList}
+          data={categoryList}
           keyTranslation={'titlePieChart1'}
           pathTranslation={'expenseRoute'}
           typeData={'expense'}
         />
         <div className={classes.verticalLine} />
         <PieChartReport
-          data={categoryList}
+          data={delegatesList}
           keyTranslation={'titlePieChart2'}
           pathTranslation={'expenseRoute'}
           typeData={'expense'}
