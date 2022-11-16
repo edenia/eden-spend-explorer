@@ -20,11 +20,13 @@ export default theme => ({
   subTitle: {
     textAlign: 'justify',
     marginLeft: '12px',
+    marginTop: '24px',
     '& span': {
-      fontSize: '24px',
-      fontWeight: 'bold',
-      lineHeight: 1.25,
-      letterSpacing: '-0.48px',
+      alignSelf: 'stretch',
+      fontSize: '18px',
+      fontWeight: 500,
+      lineHeight: 1.56,
+      letterSpacing: '-0.4px',
       [theme.breakpoints.down('550')]: {
         marginTop: '16px'
       }
@@ -55,9 +57,6 @@ export default theme => ({
         textAlign: 'center'
       }
     }
-  },
-  borderChar: {
-    borderBottom: '2px solid rgba(0, 0, 0, 0.12)'
   },
   verticalLine: {
     display: 'flex',

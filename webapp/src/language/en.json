@@ -33,12 +33,13 @@
     "invalidEdenMember": "Invalid user, this aren't Eden member"
   },
   "homeRoute": {
+    "edenSpendExplorer": "Eden Spend Explorer",
     "viewDescription": "An easy way to understand and standarize the use of Eden funds and how the community benefits from it.",
-    "button": "Start Using EDAS",
-    "edasDescription": "The Eden Spend Explorer is a reporting mechanism meant to provide the Eden on EOS community information around how Eden funds are being allocated.",
+    "button": "Start",
+    "edasDescription": "Eden Spend Explorer is a reporting mechanism intended to provide the Eden community in EOS with information on how Eden funds, awarded to various delegates, are being allocated or used. In this way, delegates can make use of the \"Spend tools\", which allows for both the submission and justification of transactions made throughout each election.",
     "transparent": "Transparent",
-    "transparentDescription": "Elected delegates may adhere to the standard and easily report their Eden expenses using a specific format for the memo field of the EOS token transfer action.",
-    "edenDescription": "Eden is a community working to maximize the power and independence of its members and thereby securing life, liberty, property, and justice for all."
+    "transparentDescription": "Elected delegates can adhere to the standard and easily report their Eden expenditures using a specific format for the memo field of the EOS token transfer action, thus providing more transparency by keeping the community aware of different expenditures being made. Therefore, it makes it easier to track projects that are being worked on for the benefit of the community.",
+    "edenDescription": "Eden on EOS is a unique governance process that brings together the knowledge of its members to identify the most outstanding members who will represent the community, avoiding partisan management, popularity contests or use of member advantages. Eden seeks to maximize the power and independence of its members to ensure life, liberty, property and justice for all."
   },
   "generalForm": {
     "textRadioButton1": "By one delegate",
@@ -52,16 +53,18 @@
     "textDelegateSelect": "Delegate",
     "exchangeRate": "Exchange rate",
     "date": "Date",
-    "claimedCat": "Claimed",
-    "unclaimedCat": "Unclaimed",
-    "categorizedCat": "categorized",
-    "uncategorizedCat": "Uncategorized"
+    "claimed": "Claimed",
+    "unclaimed": "Unclaimed",
+    "categorized": "Categorized",
+    "uncategorized": "Uncategorized",
+    "total": "Total",
+    "switchInput": "Convert to USD"
   },
   "incomeRoute": {
     "titleBarChart": "Income per Election",
     "titlePieChart": "Delegate Income",
-    "titleTable": "Delegates ranked in order of income from highest to lowest",
-    "titleTable2": "Elections sorted from oldest to newest",
+    "titleTable": "Amounts claimed and unclaimed by election",
+    "titleTable2": "Amounts claimed and unclaimed by all elections",
     "tableElectionHeader": "Term",
     "tableHeader1": "Account",
     "tableHeader2": "ID (caps)",
@@ -81,6 +84,8 @@
     "titleBarChart": "Expense per Election",
     "titlePieChart1": "Expense by Category",
     "titlePieChart2": "Expense by Delegate",
+    "titleTable": "Amounts categorized and uncategorized by election",
+    "titleTable2": "Amounts categorized and uncategorized by all elections",
     "tableElectionHeader": "Term",
     "tableHeader1": "Account",
     "tableHeader2": "ID (caps)",
@@ -112,10 +117,11 @@
   "spendToolsRoute": {
     "viewAbout": "A set of tools that will help you perform new transactions or edit them.",
     "transferInformation": "Here you can send tokens related with Eden funds.",
-    "toInput": "Send Tokens To",
-    "categoryInput": "Category",
-    "amountInput": "Amount",
-    "descriptionInput": "Description",
+    "toLabel": "Send Tokens To",
+    "categoryLabel": "Category",
+    "amountLabel": "Amount",
+    "availableLabel": "Available",
+    "descriptionLabel": "Description",
     "transferButton": "Transfer EOS",
     "titleTable": "Tokens Sent By Your Account",
     "headerTable1": "TX HASH",
@@ -135,15 +141,18 @@
     "appendButton": "Append Memo",
     "memo": "The transaction does not have memo",
     "snackbarMessage": "Transaction succesful!",
-    "snackbarButton": "I understand"
+    "snackbarButton": "I understand",
+    "categoryInput": "Select category",
+    "toInput": "Enter account name...",
+    "descriptionInput": "Add a description"
   },
   "aboutRoute": {
-    "subtitle1": "What is EDAS?",
-    "paragraph1": "The Eden Spend Explorer is a reporting mechanism intended to provide the Eden community in EOS with information on how Eden funds are allocated. Elected delegates can adhere to the standard and easily report their Eden expenditures using a specific format for the EOS token transfer action memo field.",
+    "subtitle1": "What is Eden Spend Explorer?",
+    "paragraph1": "Eden Spend Explorer is a reporting mechanism intended to provide the Eden community in EOS with information on how Eden funds are allocated. Elected delegates can adhere to the standard and easily report their Eden expenditures using a format specific to the EOS token transfer action memo field. This is made possible by the \"Spend Tool\", which allows expenses to be accounted for by either making a transaction that can be immediately categorized through the Spend Tool, or also, there is the possibility to categorize or recategorize one of the previously made transactions.",
     "subtitle2": "Why is it important?",
-    "paragraph2": "The Eden Spend Explorer system is of great importance as it offers the possibility for the elected delegates of the Eden community to justify the funds they are granted for the implementation of new projects and ideas for the benefit of the community. The system listens to the events of the blockchain network and records the events that are of interest to generate reports about the funds of the network, what is their destination and how they are used.",
+    "paragraph2": "Eden Spend Explorer is of great importance as it offers the possibility to the elected delegates of the Eden community to justify the funds granted to them for the realization of new projects and ideas for the benefit of the community. The system listens to the events of the blockchain network and records the information that is of interest to generate reports on the funds of the network, what their destination is and how they are used. It also provides information on how the funds allocated to the different elected representatives in EOS are being used to execute projects for the benefit of the community.",
     "subtitle3": "Where does the data come from?",
-    "paragraph3": "This system uses technologies that are in trend, such as Web 3.0. This is because the system makes use of information that is hosted within the EOSIO blockchain. To make this possible, different architectures were implemented to listen to events from the blockchain and store them in a database. The information is stored within the database to facilitate the search, as this can be very cumbersome to do directly to the blockchain, because there are millions of data and this would make the query very inefficient."
+    "paragraph3": "This system uses trending technologies that are booming, one of them is Web 3.0, which is involved in Eden Spend Explorer because the information is stored within a blockchain. This is because the system makes use of the information that is hosted within the EOSIO blockchain. To obtain the information, different architectures are implemented to listen for events within the blockchain and thus store the data of interest that comes within the action of the event. The information is stored within the database to facilitate the search and query of the data, since it can be very cumbersome to do it directly to the blockchain, because there is so much data that the query of these is not the most efficient. For that reason the information is stored within a database, for a better user experience in loading information."
   },
   "helpRoute": {
     "title": "Thank you for your interest!",

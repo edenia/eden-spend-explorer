@@ -15,6 +15,8 @@
     "/expense>heading": "Gastos",
     "/spendTools>sidebar": "Herramientas de gasto",
     "/spendTools>heading": "Herramientas de gasto",
+    "/delegate>sidebar": "Delegados",
+    "/delegate>heading": "Delegados",
     "/>sidebar": "Inicio",
     "/>heading": "Inicio",
     "/about>title": "Acerca de | Eden on EOS Accounting Standard",
@@ -30,18 +32,19 @@
     "telegram": "Grupo en Telegram"
   },
   "homeRoute": {
+    "edenSpendExplorer": "Explorador de Gastos Eden",
     "viewDescription": "Una forma fácil de entender y estandarizar el uso de los fondos Eden y cómo se beneficia la comunidad.",
-    "button": "iniciar con EDAS",
-    "edasDescription": "El Explorador de Gastos de Eden es un mecanismo de información destinado a proporcionar a la comunidad de Eden en EOS información sobre cómo se están asignando los fondos de Eden.",
+    "button": "Iniciar",
+    "edasDescription": "El explorardor de gastos de Eden es un mecanismo de información destinado a proporcionar a la comunidad de Eden en EOS información sobre cómo se están asignando o utilizando los fondos de Eden, otorgados a distintos delegados. De esta manera, los delegados pueden hacer uso del \"Spend tools\", que permite realizar tanto el envió como justificación de transacciones realizadas a lo largo de cada elección.",
     "transparent": "Transparencia",
-    "transparentDescription": "Los delegados elegidos pueden adherirse a la norma y notificar fácilmente sus gastos de Eden utilizando un formato específico para el campo memo de la acción de transferencia de fichas EOS.",
-    "edenDescription": "Eden es una comunidad que trabaja para maximizar el poder y la independencia de sus miembros y así asegurar la vida, la libertad, la propiedad y la justicia para todos."
+    "transparentDescription": "Los delegados electos pueden adherirse a la norma y notificar fácilmente sus gastos de Eden utilizando un formato específico para el campo memo de la acción de transferencia de tokens EOS, de esta manera, se tiene mas transparencia al mantener al tanto a la comunidad de diferentes gastos que se están realizando. Por ende, facilita el seguimiento de proyectos en los que se está trabajando en beneficio de la comunidad.",
+    "edenDescription": "Eden on EOS es un proceso de gobierno único que reúne el conocimiento de sus miembros para identificar a los más destacados que representarán a la comunidad, evitando caer en el manejo partidista, competencias de popularidad o uso de ventajas de sus miembros. Eden trata maximizar el poder y la independencia de sus miembros y así asegurar la vida, la libertad, la propiedad y la justicia para todos."
   },
   "generalForm": {
     "textRadioButton1": "Por un delegado",
     "textRadioButton2": "Por todos los delegados",
     "textRadioButton3": "Por elección",
-    "textRadioButton4": "Por todas las Eleccion",
+    "textRadioButton4": "Por todas las Elecciones",
     "textYearSelect": "Año",
     "AllSelectYear": "Todos",
     "textElectionSelect": "Elección",
@@ -49,16 +52,17 @@
     "textDelegateSelect": "Delegado",
     "exchangeRate": "Tipo de cambio",
     "date": "Fecha",
-    "claimedCat": "Reclamado",
-    "unclaimedCat": "No reclamado",
-    "categorizedCat": "Categorizado",
-    "uncategorizedCat": "No categorizado"
+    "claimed": "Reclamado",
+    "unclaimed": "No reclamado",
+    "categorized": "Categorizado",
+    "uncategorized": "No categorizado",
+    "switchInput": "Convertir a USD"
   },
   "incomeRoute": {
     "titleBarChart": "Ingresos por Elección",
     "titlePieChart": "Ingresos de los Delegados",
-    "titleTable": "Delegados ordenados por ingresos de mayor a menor",
-    "titleTable2": "Elecciones ordenadas de la mas antigua a la mas reciente",
+    "titleTable": "Montos reclamados y no reclamados por elección",
+    "titleTable2": "Montos reclamados y no reclamados de todas las elecciones",
     "tableElectionHeader": "Periodo",
     "tableHeader1": "Cuenta",
     "tableHeader2": "ID (caps)",
@@ -78,6 +82,8 @@
     "titleBarChart": "Gasto por Elección",
     "titlePieChart1": "Gastos por Categoría",
     "titlePieChart2": "Gastos por Delegado",
+    "titleTable": "Montos categorizados y no categorizados por elección",
+    "titleTable2": "Montos categorizados y no categorizados de todas las elecciones",
     "tableElectionHeader": "Periodo",
     "tableHeader1": "Cuenta",
     "tableHeader2": "ID (caps)",
@@ -109,10 +115,11 @@
   "spendToolsRoute": {
     "viewAbout": "Un conjunto de herramientas que le ayudarán a realizar nuevas transacciones o a editarlas.",
     "transferInformation": "Aquí puedes enviar tokens relacionados con los fondos de Eden",
-    "toInput": "Enviar Tokens A",
-    "categoryInput": "Categoría",
-    "amountInput": "Monto",
-    "descriptionInput": "Descripción",
+    "toLabel": "Enviar Tokens A",
+    "categoryLabel": "Categoría",
+    "amountLabel": "Monto",
+    "availableLabel": "Disponible",
+    "descriptionLabel": "Descripción",
     "transferButton": "Transferir EOS",
     "titleTable": "Tokens enviados por tu cuenta",
     "headerTable1": "TX HASH",
@@ -132,15 +139,18 @@
     "appendButton": "Adjuntar Memo",
     "memo": "La transacción no tiene memo",
     "snackbarMessage": "Transacción existosa!",
-    "snackbarButton": "Entendido"
+    "snackbarButton": "Entendido",
+    "categoryInput": "Seleccionar categoría",
+    "toInput": "Ingresar nombre de cuenta...",
+    "descriptionInput": "Agregar una descripción"
   },
   "aboutRoute": {
-    "subtitle1": "¿Qué es EDAS?",
-    "paragraph1": "El Explorador de Gastos de Edén es un mecanismo de información destinado a proporcionar a la comunidad de Edén en EOS información sobre cómo se asignan los fondos de Edén. Los delegados elegidos pueden adherirse al estándar e informar fácilmente de sus gastos en Eden utilizando un formato específico para el campo de memo de acción de transferencia de fichas de EOS.",
+    "subtitle1": "¿Qué es Eden Spend Explorer?",
+    "paragraph1": "Eden Spend Explorer es un mecanismo de información destinado a proporcionar a la comunidad de Edén en EOS información sobre cómo se asignan los fondos de Edén. Los delegados elegidos pueden adherirse al estándar e informar fácilmente de sus gastos en Eden utilizando un formato específico para el campo de memo de acción de transferencia de fichas de EOS. Esto es posible gracias a la herramienta de \"Spend Tool\", la cual permite justificar los gastos ya sea realizando una transacción que puede ser categorizada inmediatamente por medio del Spend Tool, o también, existe la posibilidad de categorizar o recategorizar una de las transacciones realizadas anteriormente.",
     "subtitle2": "¿Por qué es importante?",
-    "paragraph2": "El sistema Eden Spend Explorer es de gran importancia ya que ofrece la posibilidad a los delegados elegidos de la comunidad Eden de justificar los fondos que se les conceden para la realización de nuevos proyectos e ideas en beneficio de la comunidad. El sistema escucha los eventos de la red blockchain y registra los eventos que son de interés para generar informes sobre los fondos de la red, cuál es su destino y cómo se utilizan.",
+    "paragraph2": "Eden Spend Explorer es de gran importancia ya que ofrece la posibilidad a los delegados elegidos de la comunidad Eden, justificar los fondos que se les conceden para la realización de nuevos proyectos e ideas en beneficio de la comunidad. El sistema escucha los eventos de la red blockchain y registra la información que es de interés para generar informes sobre los fondos de la red, cuál es su destino y cómo se utilizan. Así mismo, permite proveer información sobre cómo se están utilizando los fondos asignados a los distintos representantes electos en EOS para ejecutar proyectos en beneficio de la comunidad.",
     "subtitle3": "¿De dónde vienen los datos?",
-    "paragraph3": "Este sistema utiliza tecnologías que están en tendencia, como la Web 3.0. Esto se debe a que el sistema hace uso de la información que se aloja dentro del blockchain de EOSIO. Para hacer esto posible, se implementaron diferentes arquitecturas para escuchar los eventos de la blockchain y almacenarlos en una base de datos. La información se almacena dentro de la base de datos para facilitar la búsqueda, ya que puede ser muy engorroso hacerla directamente a la blockchain, porque hay millones de datos y esto haría la consulta muy ineficiente."
+    "paragraph3": "Este sistema utiliza tecnologías en tendencia que se encuentran en pleno auge, una de ellas es la Web 3.0, misma que se ve involucrada dentro de Eden Spend Explorer ya que la información se encuentra almacenada dentro de una cadena de bloques. Esto se debe a que el sistema hace uso de la información que se aloja dentro del blockchain de EOSIO. Para obtener la información, se implementan diferentes arquitecturas para escuchar los eventos dentro de la blockchain y de esta manera almacenar los datos de interes que vienen dentro de la acción del evento. La información se almacena dentro de la base de datos para facilitar la búsqueda y consulta de los datos, ya que puede ser muy engorroso hacerla directamente a la blockchain, debido a que al existir tantos datos la consulta de estos no es la más eficiente. Por ese motivo se almacena la información dentro de una base de datos, para una mejor experiencia de usuario en la carga de información."
   },
   "helpRoute": {
     "title": "Gracias por su interés!",

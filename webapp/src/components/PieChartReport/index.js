@@ -119,7 +119,6 @@ const PieChartReport = ({
   const [selectedUSD, setSelected] = useState(false)
   const [coinType, setCoinType] = useState('EOS')
   const [category, setCategory] = useState('')
-  const [titleSize, setTitleSize] = useState('h4')
 
   const handleChange = event => {
     setSelected(event.target.checked)
@@ -146,7 +145,6 @@ const PieChartReport = ({
       setCategory('Claimed')
     } else {
       setCategory('Categorized')
-      setTitleSize('h6')
     }
   }, [typeData])
 
@@ -160,7 +158,7 @@ const PieChartReport = ({
         {typeData === 'expense' ? (
           <div className={classes.titleContainerExpense}>
             <div className={classes.textContainer}>
-              <Typography variant={titleSize}>
+              <Typography className={classes.titleChart} variant="span">
                 {t(keyTranslation, { ns: pathTranslation })}
               </Typography>
               <TooltipDownload title="Donwload">
@@ -175,7 +173,7 @@ const PieChartReport = ({
                   control={
                     <Switch checked={selectedUSD} onChange={handleChange} />
                   }
-                  label="Convert to USD"
+                  label={t('switchInput', { ns: 'generalForm' })}
                   labelPlacement="start"
                 />
               </FormGroup>
@@ -184,7 +182,7 @@ const PieChartReport = ({
         ) : (
           <div className={classes.titleContainer}>
             <div className={classes.textContainer}>
-              <Typography variant={titleSize}>
+              <Typography variant="span">
                 {t(keyTranslation, { ns: pathTranslation })}
               </Typography>
               <TooltipDownload title="Donwload">
@@ -199,7 +197,7 @@ const PieChartReport = ({
                   control={
                     <Switch checked={selectedUSD} onChange={handleChange} />
                   }
-                  label="Convert to USD"
+                  label={t('switchInput', { ns: 'generalForm' })}
                   labelPlacement="start"
                 />
               </FormGroup>

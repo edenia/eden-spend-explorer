@@ -19,14 +19,29 @@ export default theme => ({
     borderBottom: '2px solid rgba(0, 0, 0, 0.12)'
   },
   textContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    marginLeft: '30px'
+    textAlign: 'justify',
+    marginLeft: '12px',
+    '& span': {
+      alignSelf: 'stretch',
+      fontSize: '18px',
+      fontWeight: 500,
+      lineHeight: 1.56,
+      letterSpacing: '-0.4px'
+    }
   },
   filtersChartContainer: {
     display: 'flex',
     position: 'relative',
     left: '10%',
     alignItems: 'center'
+  },
+  titleChart: {
+    textAlign: 'justify',
+    marginLeft: '12px',
+    alignSelf: 'stretch',
+    fontSize: '18px',
+    fontWeight: 500,
+    lineHeight: 1.56,
+    letterSpacing: '-0.4px'
   }
 })
