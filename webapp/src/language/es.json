@@ -41,7 +41,7 @@
     "textRadioButton1": "Por un delegado",
     "textRadioButton2": "Por todos los delegados",
     "textRadioButton3": "Por elección",
-    "textRadioButton4": "Por todas las Eleccion",
+    "textRadioButton4": "Por todas las Elecciones",
     "textYearSelect": "Año",
     "AllSelectYear": "Todos",
     "textElectionSelect": "Elección",
@@ -49,10 +49,14 @@
     "textDelegateSelect": "Delegado",
     "exchangeRate": "Tipo de cambio",
     "date": "Fecha",
-    "claimedCat": "Reclamado",
-    "unclaimedCat": "No reclamado",
-    "categorizedCat": "Categorizado",
-    "uncategorizedCat": "No categorizado"
+    "claimed": "Reclamado",
+    "unclaimed": "No reclamado",
+    "total": "Total",
+    "categorized": "Categorizado",
+    "uncategorized": "No categorizado",
+    "election": "Elección",
+    "income": "Ingresos",
+    "expense": "Gastos"
   },
   "incomeRoute": {
     "titleBarChart": "Ingresos por Elección",

@@ -52,10 +52,14 @@
     "textDelegateSelect": "Delegate",
     "exchangeRate": "Exchange rate",
     "date": "Date",
-    "claimedCat": "Claimed",
-    "unclaimedCat": "Unclaimed",
-    "categorizedCat": "categorized",
-    "uncategorizedCat": "Uncategorized"
+    "claimed": "Claimed",
+    "unclaimed": "Unclaimed",
+    "total": "Total",
+    "categorized": "Categorized",
+    "uncategorized": "Uncategorized",
+    "election": "Election",
+    "income": "Income",
+    "expense": "Expense"
   },
   "incomeRoute": {
     "titleBarChart": "Income per Election",

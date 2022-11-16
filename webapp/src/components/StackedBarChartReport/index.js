@@ -32,14 +32,9 @@ import styles from './styles'
 
 const useStyles = makeStyles(styles)
 
-const lowerCaseAllWordsExceptFirstLetters = (string = ' ') =>
-  string.replaceAll(
-    /\S*/g,
-    word => `${word.slice(0, 1)}${word.slice(1).toLowerCase()}`
-  )
-
 const RenderChartLegend = () => {
   const classes = useStyles()
+  const { t } = useTranslation()
 
   return (
     <div className={classes.chartLinks}>
@@ -53,7 +48,7 @@ const RenderChartLegend = () => {
           bgcolor="#19647e"
           borderRadius={5}
         />
-        Claimed
+        {t('claimed', { ns: 'generalForm' })}
       </a>
       <a key={`key-categorized-link-chart`}>
         <Box
@@ -65,7 +60,7 @@ const RenderChartLegend = () => {
           bgcolor="#ee964b"
           borderRadius={5}
         />
-        Categorized
+        {t('categorized', { ns: 'generalForm' })}
       </a>
       <a key={`key-unclaimed-link-chart`}>
         <Box
@@ -77,7 +72,7 @@ const RenderChartLegend = () => {
           bgcolor="#f4d35e"
           borderRadius={5}
         />
-        Unclaimed
+        {t('unclaimed', { ns: 'generalForm' })}
       </a>
       <a key={`key-uncategorized-link-chart`}>
         <Box
@@ -89,7 +84,7 @@ const RenderChartLegend = () => {
           bgcolor="#28afb0"
           borderRadius={5}
         />
-        Uncategorized
+        {t('uncategorized', { ns: 'generalForm' })}
       </a>
     </div>
   )
@@ -97,19 +92,32 @@ const RenderChartLegend = () => {
 
 const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
   const { t } = useTranslation()
+  label = label + ''
+  const arrayLabel = label.split(' ')
 
   return (
     <div>
-      <strong>{label}</strong>
+      <strong>
+        {`${t(arrayLabel[0].toLocaleLowerCase(), { ns: 'generalForm' })}`}
+      </strong>
       {payload &&
         payload.map((data, i) => (
           <div key={`${i}-tooltip`}>
             <div>
-              {`${lowerCaseAllWordsExceptFirstLetters(
+              {`${
                 data.payload.category
-                  ? data.dataKey.split('_')[1] + data.payload.category
-                  : data.dataKey.split('_')[1]
-              )}: ${formatWithThousandSeparator(
+                  ? t(
+                      (
+                        data.dataKey.split('_')[1] + data.payload.category
+                      ).toLocaleLowerCase(),
+                      {
+                        ns: 'generalForm'
+                      }
+                    )
+                  : t(data.dataKey.split('_')[1].toLocaleLowerCase(), {
+                      ns: 'generalForm'
+                    })
+              }: ${formatWithThousandSeparator(
                 data.payload[data.dataKey],
                 4
               )} ${coinType}`}
