@@ -4,7 +4,7 @@ import { FormControl, FormControlLabel, RadioGroup, Radio } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
 import useExpenseReportState from '../../hooks/customHooks/useExpenseReportState'
-import BarChartGeneralReport from '../../components/BarChartGeneralReport'
+import BarChartReport from '../../components/BarChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
 import { formatWithThousandSeparator } from '../../utils'
@@ -118,7 +118,7 @@ const ExpenseReport = () => {
       </div>
 
       <div className={classes.borderChar}>
-        <BarChartGeneralReport
+        <BarChartReport
           data={expenseByElectionsList}
           keyTranslation={'titleBarChart'}
           pathTranslation={'expenseRoute'}

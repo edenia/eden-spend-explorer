@@ -52,10 +52,14 @@
     "textDelegateSelect": "Delegate",
     "exchangeRate": "Exchange rate",
     "date": "Date",
-    "claimedCat": "Claimed",
-    "unclaimedCat": "Unclaimed",
-    "categorizedCat": "categorized",
-    "uncategorizedCat": "Uncategorized"
+    "claimed": "Claimed",
+    "unclaimed": "Unclaimed",
+    "total": "Total",
+    "categorized": "Categorized",
+    "uncategorized": "Uncategorized",
+    "election": "Election",
+    "income": "Income",
+    "expense": "Expense"
   },
   "incomeRoute": {
     "titleBarChart": "Income per Election",
@@ -89,18 +93,11 @@
     "tableHeader8": "Uncategorized %"
   },
   "delegateRoute": {
-    "titleBarChart": "Income and Expense per Delegate",
-    "tableElectionHeader": "Term",
-    "tableHeader1": "Account",
-    "tableHeader2": "ID (caps)",
-    "tableHeader3": "Delegate level",
-    "tableHeader4": "Total EOS categorized",
-    "tableHeader5": "Total USD categorized",
-    "tableHeader6": "Transaction date",
-    "tableHeader7": "EOS categorized %",
-    "tableHeader8": "EOS uncategorized %",
-    "tableHeader9": "USD categorized %",
-    "tableHeader10": "USD uncategorized %"
+    "titleBarChart": "Income and Expense",
+    "titlePieChart": "Expense by Category",
+    "rewarded": "EOS Rewarded",
+    "electionTime": "Elected delegates as of",
+    "instruction": "Click on delegate to review his/her spending."
   },
   "spendToolsRoute": {
     "viewAbout": "A set of tools that will help you perform new transactions or edit them.",

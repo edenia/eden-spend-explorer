@@ -58,7 +58,7 @@ const SidebarComp = ({ routes, openComponent, onClose }) => {
     if (!state?.ual?.activeUser?.accountName) return
 
     const variables = {
-      value: state?.ual?.activeUser?.accountName,
+      value: [state?.ual?.activeUser?.accountName],
       orderBy: {
         election_rank: 'desc'
       },

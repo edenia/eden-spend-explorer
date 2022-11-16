@@ -1,6 +1,6 @@
 export default theme => ({
   eosPriceContainer: {
-    backgroundColor: 'rgba(0, 194, 191, 0.25)',
+    backgroundColor: 'rgba(225,225,225,.24)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'end',

@@ -41,7 +41,7 @@
     "textRadioButton1": "Por un delegado",
     "textRadioButton2": "Por todos los delegados",
     "textRadioButton3": "Por elección",
-    "textRadioButton4": "Por todas las Eleccion",
+    "textRadioButton4": "Por todas las Elecciones",
     "textYearSelect": "Año",
     "AllSelectYear": "Todos",
     "textElectionSelect": "Elección",
@@ -49,10 +49,14 @@
     "textDelegateSelect": "Delegado",
     "exchangeRate": "Tipo de cambio",
     "date": "Fecha",
-    "claimedCat": "Reclamado",
-    "unclaimedCat": "No reclamado",
-    "categorizedCat": "Categorizado",
-    "uncategorizedCat": "No categorizado"
+    "claimed": "Reclamado",
+    "unclaimed": "No reclamado",
+    "total": "Total",
+    "categorized": "Categorizado",
+    "uncategorized": "No categorizado",
+    "election": "Elección",
+    "income": "Ingresos",
+    "expense": "Gastos"
   },
   "incomeRoute": {
     "titleBarChart": "Ingresos por Elección",
@@ -86,18 +90,11 @@
     "tableHeader8": "% No categorizados"
   },
   "delegateRoute": {
-    "titleBarChart": "Ingresos y Gastos por Delegado",
-    "tableElectionHeader": "Periodo",
-    "tableHeader1": "Cuenta",
-    "tableHeader2": "ID (caps)",
-    "tableHeader3": "Nivel de delegado",
-    "tableHeader4": "Total de EOS categorizados",
-    "tableHeader5": "Total de USD categorizados",
-    "tableHeader6": "Fecha de transacción",
-    "tableHeader7": "% EOS categorizados",
-    "tableHeader8": "% EOS no categorizados",
-    "tableHeader9": "% USD categorizados",
-    "tableHeader10": "% USD no categorizados"
+    "titleBarChart": "Ingresos y Gastos",
+    "titlePieChart": "Gastos por Categoria",
+    "rewarded": "EOS Obtenido",
+    "electionTime": "Delegados elegidos a partir de",
+    "instruction": "Haga clic en el delegado para revisar su gasto."
   },
   "spendToolsRoute": {
     "viewAbout": "Un conjunto de herramientas que le ayudarán a realizar nuevas transacciones o a editarlas.",

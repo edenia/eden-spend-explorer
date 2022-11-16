@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
-import BarChartGeneralReport from '../../components/BarChartGeneralReport'
+import BarChartReport from '../../components/BarChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
 import TableReport from '../../components/TableReport'
@@ -126,7 +126,7 @@ const IncomeReport = () => {
 
       <>
         <div className={classes.chartContainer}>
-          <BarChartGeneralReport
+          <BarChartReport
             data={incomeByElectionsList}
             keyTranslation={'titleBarChart'}
             pathTranslation={'incomeRoute'}

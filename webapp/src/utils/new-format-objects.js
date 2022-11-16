@@ -166,21 +166,47 @@ export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
     generateDelegateData(
       'income',
       'Claimed',
-      incomeList[0]?.eos_claimed,
-      incomeList[0]?.usd_claimed,
-      incomeList[0]?.eos_unclaimed,
-      incomeList[0]?.usd_unclaimed
+      incomeList[0]?.eos_claimed || 0,
+      incomeList[0]?.usd_claimed || 0,
+      incomeList[0]?.eos_unclaimed || 0,
+      incomeList[0]?.usd_unclaimed || 0
     )
   )
   transactions.push(
     generateDelegateData(
       'expense',
       'Categorized',
-      expenseList[0]?.eos_categorized,
-      expenseList[0]?.usd_categorized,
-      expenseList[0]?.eos_uncategorized,
-      expenseList[0]?.usd_uncategorized
+      expenseList[0]?.eos_categorized || 0,
+      expenseList[0]?.usd_categorized || 0,
+      expenseList[0]?.eos_uncategorized || 0,
+      expenseList[0]?.usd_uncategorized || 0
     )
   )
   return transactions
+}
+
+export const newDataFormatByCategoryDelegate = categoryList =>
+  categoryList.map(data => ({
+    category: data.category,
+    EOS: Number(data.amount),
+    USD: Number(data.usd_total),
+    color: generateColor()
+  }))
+
+export const newDataFormatDelegatesByElectionDelegate = ({
+  delegateList,
+  incomeList
+}) => {
+  if (delegateList !== undefined && incomeList !== undefined) {
+    return delegateList.map(delegate => {
+      const posDelegate = incomeList.find(
+        income => income.recipient === delegate.delegate_payer
+      )
+      if (posDelegate) {
+        const totalIncome = posDelegate.eos_claimed + posDelegate.eos_unclaimed
+        return { ...delegate, totalIncome }
+      }
+      return delegate
+    })
+  }
 }
