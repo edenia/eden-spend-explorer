@@ -4,6 +4,8 @@ export default theme => ({
     marginLeft: '8px',
     '& #treasury-container-id': {
       display: 'flex',
+      position: 'relative',
+      left: '43%',
       justifyContent: 'flex-end',
       [theme.breakpoints.down('450')]: {
         flexDirection: 'column'
@@ -13,25 +15,16 @@ export default theme => ({
   content: {
     textAlign: 'center'
   },
-  title: {
-    fontWeight: 'bold',
-    fontSize: '32px',
-    lineHeight: 1.13,
-    letterSpacing: '-0.64px',
-    marginLeft: '8px'
+  spinner: {
+    marginTop: '20vh'
   },
-  subTitle: {
-    textAlign: 'justify',
-    marginLeft: '12px',
-    '& span': {
-      fontSize: '24px',
-      fontWeight: 'bold',
-      lineHeight: 1.25,
-      letterSpacing: '-0.48px',
-      [theme.breakpoints.down('550')]: {
-        marginTop: '16px'
-      }
-    }
+  headPage: {
+    display: 'flex'
+  },
+  textContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'relative'
   },
   filtersContainer: {
     marginTop: '24px',
@@ -58,61 +51,5 @@ export default theme => ({
         textAlign: 'center'
       }
     }
-  },
-  divider: {
-    width: '4px',
-    height: '31px',
-    backgroundColor: '#00c2bf'
-  },
-  titleContainer: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  tableContainer: {
-    marginTop: '80px',
-    '& .MuiDataGrid-columnHeaderTitle': {
-      fontWeight: 'bold',
-      color: theme.palette.secondary.main
-    },
-    '& .MuiDataGrid-cell': {
-      color: theme.palette.secondary.main
-    },
-    '& #id-table-container': {
-      marginTop: '16px',
-      height: 368
-    }
-  },
-  chartLinks: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    overflowY: 'auto',
-    maxHeight: '400px',
-    '& a ': {
-      display: 'flex',
-      textAlign: 'center',
-      textDecoration: 'none',
-      color: theme.palette.secondary.main,
-      marginTop: '2px'
-    },
-    '& a:hover': {
-      color: 'rgba(0, 194, 191, 0.80)'
-    }
-  },
-  links: {
-    '& a ': {
-      display: 'flex',
-      textAlign: 'center',
-      textDecoration: 'none',
-      color: theme.palette.secondary.main,
-      marginTop: '2px'
-    },
-    '& a:hover': {
-      color: 'rgba(0, 194, 191, 0.80)'
-    }
-  },
-  disableLink: {
-    pointerEvents: 'none',
-    cursor: 'pointer'
   }
 })

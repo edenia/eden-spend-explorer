@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from 'react'
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
+import { Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { gql, GraphQLClient } from 'graphql-request'
 import { useTranslation } from 'react-i18next'
@@ -20,20 +21,30 @@ const useStyles = makeStyles(styles)
 const DelegateReport = () => {
   const classes = useStyles()
   const { t } = useTranslation()
+  const { i18n } = useTranslation('translations')
   const [loader, setLoader] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
+  const [accordionList, setAccordionList] = useState([])
+  const options = { year: 'numeric', month: 'long', day: 'numeric' }
   const client = new GraphQLClient('https://eden-api.edenia.cloud/v1/graphql', {
     headers: {}
   })
 
   const [
-    { electionRoundSelect, electionsByYearList, delegateList, maxLevel },
     {
-      setElectionRoundSelect,
-      setElectionYearSelect,
-      setDelegateSelect,
-      setDelegatesList
-    }
+      electionRoundSelect,
+      electionsByYearList,
+      delegateList,
+      maxLevel,
+      dateElection
+    },
+    { setElectionRoundSelect, setElectionYearSelect, setDelegatesList }
   ] = useDelegateReportState()
+
+  const dateFormat = new Date(dateElection).toLocaleDateString(
+    i18n.language,
+    options
+  )
 
   const handleChangeSelectedElection = event => {
     setLoader(true)
@@ -62,7 +73,6 @@ const DelegateReport = () => {
         `,
         variables
       )
-      setLoader(false)
       setDelegatesList(
         response.members.map(member => {
           const posDelegate = delegateList.find(
@@ -81,18 +91,17 @@ const DelegateReport = () => {
           return member
         })
       )
+      setLoader(false)
     }
   }, [delegateList, maxLevel])
 
-  delegateList.sort((d1, d2) =>
-    d1?.rank?.memberType < d2?.rank?.memberType
-      ? 1
-      : d1?.rank?.memberType > d2?.rank?.memberType
-      ? -1
-      : 0
-  )
+  useEffect(() => {
+    setAccordionList(
+      delegateList.filter(delegate => delegate?.account?.includes(searchValue))
+    )
+  }, [searchValue, delegateList])
 
-  delegateList.sort((d1, d2) =>
+  accordionList.sort((d1, d2) =>
     d1?.totalRewarded < d2?.totalRewarded
       ? 1
       : d1?.totalRewarded > d2?.totalRewarded
@@ -100,26 +109,38 @@ const DelegateReport = () => {
       : 0
   )
 
+  accordionList.sort((d1, d2) =>
+    d1?.rank?.memberType < d2?.rank?.memberType
+      ? 1
+      : d1?.rank?.memberType > d2?.rank?.memberType
+      ? -1
+      : 0
+  )
+
   return (
     <div className={classes.root}>
-      <div id="treasury-container-id">
-        <TreasuryBalance />
+      <div className={classes.headPage}>
+        <div className={classes.textContainer}>
+          <Typography variant="h6">
+            {`${t('electionTime', { ns: 'delegateRoute' })}: ${dateFormat}`}
+          </Typography>
+          <Typography variant="h6">
+            {t('instruction', { ns: 'delegateRoute' })}
+          </Typography>
+        </div>
+        <div id="treasury-container-id">
+          <TreasuryBalance />
+        </div>
       </div>
       <div className={classes.filtersContainer}>
         <div id="id-select-election-container">
           <>
-            <SelectComponent
-              onChangeFunction={event => handleChangeSelectedElection(event)}
-              labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
-              values={electionsByYearList.map(data => `${data.election}`)}
-              actualValue={electionRoundSelect}
-            />
             <Autocomplete
               id="combo-box-demo"
               sx={{ width: 300 }}
               options={delegateList.map(data => data.account)}
               onInputChange={(event, newInputValue) => {
-                setDelegateSelect(newInputValue)
+                setSearchValue(newInputValue)
               }}
               autoHighlight
               clearOnEscape
@@ -127,14 +148,23 @@ const DelegateReport = () => {
                 <TextField {...params} label="Delegate" variant="outlined" />
               )}
             />
+            <SelectComponent
+              onChangeFunction={event => handleChangeSelectedElection(event)}
+              labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
+              values={electionsByYearList.map(data => `${data.election}`)}
+              actualValue={electionRoundSelect}
+              width={200}
+            />
           </>
         </div>
       </div>
       <div className={classes.content}>
         {loader ? (
-          <Spinner />
+          <div className={classes.spinner}>
+            <Spinner />
+          </div>
         ) : (
-          delegateList.map(delegate => (
+          accordionList.map(delegate => (
             <AccordionComp
               key={delegate?.account}
               nameDelegate={delegate?.name}

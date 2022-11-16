@@ -94,7 +94,9 @@
   "delegateRoute": {
     "titleBarChart": "Ingresos y Gastos",
     "titlePieChart": "Gastos por Categoria",
-    "rewarded": "EOS Obtenido"
+    "rewarded": "EOS Obtenido",
+    "electionTime": "Delegados elegidos a partir de",
+    "instruction": "Haga clic en el delegado para revisar su gasto."
   },
   "spendToolsRoute": {
     "viewAbout": "Un conjunto de herramientas que le ayudarán a realizar nuevas transacciones o a editarlas.",

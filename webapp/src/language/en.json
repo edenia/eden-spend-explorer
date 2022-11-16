@@ -97,7 +97,9 @@
   "delegateRoute": {
     "titleBarChart": "Income and Expense",
     "titlePieChart": "Expense by Category",
-    "rewarded": "EOS Rewarded"
+    "rewarded": "EOS Rewarded",
+    "electionTime": "Elected delegates as of",
+    "instruction": "Click on delegate to review his/her spending."
   },
   "spendToolsRoute": {
     "viewAbout": "A set of tools that will help you perform new transactions or edit them.",

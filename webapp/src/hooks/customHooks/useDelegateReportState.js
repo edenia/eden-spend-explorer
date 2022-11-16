@@ -7,7 +7,8 @@ import {
   GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION,
   GET_EXPENSE_BY_CATEGORY,
   GET_MAX_DELEGATE_LEVEL,
-  GET_INCOME_BY_ELECTION
+  GET_INCOME_BY_ELECTION,
+  GET_DATE_ELECTION
 } from '../../gql/delegate.gql'
 import {
   newDataFormatByTypeDelegate,
@@ -24,6 +25,7 @@ const useDelegateReportState = () => {
   const [transactionList, setTransactionList] = useState([])
   const [categoryList, setCategoryList] = useState([])
   const [maxLevel, setMaxLevel] = useState(0)
+  const [dateElection, setDateElection] = useState('2021-10-09T00:00:00+00:00')
 
   const [loadDelegatesByElection, { data: delegatesByElectionData }] =
     useLazyQuery(GET_DELEGATES_BY_ELECTION, {
@@ -31,6 +33,15 @@ const useDelegateReportState = () => {
         election: electionRoundSelect
       }
     })
+
+  const [loadDateElection, { data: dateElectionData }] = useLazyQuery(
+    GET_DATE_ELECTION,
+    {
+      variables: {
+        election: electionRoundSelect
+      }
+    }
+  )
 
   const [loadIncomeByElection, { data: incomeByElectionData }] = useLazyQuery(
     GET_INCOME_BY_ELECTION,
@@ -103,6 +114,7 @@ const useDelegateReportState = () => {
       loadElectionsByYear()
       loadMaxDelegateLevel()
       loadIncomeByElection()
+      loadDateElection()
     }
   }, [electionRoundSelect])
 
@@ -150,6 +162,10 @@ const useDelegateReportState = () => {
     setMaxLevel(maxDelegateLevelData?.eden_election[0]?.delegate_level)
   })
 
+  useEffect(() => {
+    setDateElection(dateElectionData?.eden_historic_election[0]?.date_election)
+  }, [dateElectionData])
+
   return [
     {
       electionRoundSelect,
@@ -158,7 +174,8 @@ const useDelegateReportState = () => {
       transactionList,
       delegateList,
       categoryList,
-      maxLevel
+      maxLevel,
+      dateElection
     },
     {
       setElectionRoundSelect,
