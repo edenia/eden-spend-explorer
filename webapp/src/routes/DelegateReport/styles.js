@@ -4,31 +4,27 @@ export default theme => ({
     marginLeft: '8px',
     '& #treasury-container-id': {
       display: 'flex',
+      position: 'relative',
+      left: '43%',
       justifyContent: 'flex-end',
       [theme.breakpoints.down('450')]: {
         flexDirection: 'column'
       }
     }
   },
-  title: {
-    fontWeight: 'bold',
-    fontSize: '32px',
-    lineHeight: 1.13,
-    letterSpacing: '-0.64px',
-    marginLeft: '8px'
+  content: {
+    textAlign: 'center'
   },
-  subTitle: {
-    textAlign: 'justify',
-    marginLeft: '12px',
-    '& span': {
-      fontSize: '24px',
-      fontWeight: 'bold',
-      lineHeight: 1.25,
-      letterSpacing: '-0.48px',
-      [theme.breakpoints.down('550')]: {
-        marginTop: '16px'
-      }
-    }
+  spinner: {
+    marginTop: '20vh'
+  },
+  headPage: {
+    display: 'flex'
+  },
+  textContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'relative'
   },
   filtersContainer: {
     marginTop: '24px',
@@ -55,77 +51,5 @@ export default theme => ({
         textAlign: 'center'
       }
     }
-  },
-  chartContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    overflowX: 'hidden',
-    with: '100%',
-    '& #chart-scroll-id': {
-      minWidth: '925px',
-      width: '100%'
-    },
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'column'
-    }
-  },
-  divider: {
-    width: '4px',
-    height: '31px',
-    backgroundColor: '#00c2bf'
-  },
-  titleContainer: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  tableContainer: {
-    marginTop: '80px',
-    '& .MuiDataGrid-columnHeaderTitle': {
-      fontWeight: 'bold',
-      color: theme.palette.secondary.main
-    },
-    '& .MuiDataGrid-cell': {
-      color: theme.palette.secondary.main
-    },
-    '& #id-table-container': {
-      marginTop: '16px',
-      height: 368
-    }
-  },
-  chartLinks: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    overflowY: 'auto',
-    maxHeight: '400px',
-    '& a ': {
-      display: 'flex',
-      textAlign: 'center',
-      textDecoration: 'none',
-      color: theme.palette.secondary.main,
-      marginTop: '2px'
-    },
-    '& a:hover': {
-      color: 'rgba(0, 194, 191, 0.80)'
-    }
-  },
-  links: {
-    '& a ': {
-      display: 'flex',
-      textAlign: 'center',
-      textDecoration: 'none',
-      color: theme.palette.secondary.main,
-      marginTop: '2px'
-    },
-    '& a:hover': {
-      color: 'rgba(0, 194, 191, 0.80)'
-    }
-  },
-  disableLink: {
-    pointerEvents: 'none',
-    cursor: 'pointer'
   }
 })

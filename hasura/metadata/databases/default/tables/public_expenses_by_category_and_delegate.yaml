@@ -1,0 +1,16 @@
+table:
+  name: expenses_by_category_and_delegate
+  schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - amount
+        - category
+        - delegate_level
+        - delegate_payer
+        - election
+        - exchange_rate
+        - usd_total
+      filter: {}
+      allow_aggregations: true

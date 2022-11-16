@@ -8,7 +8,8 @@ const SelectComponent = ({
   values,
   onChangeFunction,
   actualValue,
-  disable
+  disable,
+  width = 100
 }) => {
   const { t } = useTranslation()
 
@@ -22,7 +23,7 @@ const SelectComponent = ({
   }
 
   return (
-    <FormControl sx={{ m: 1, width: 100 }} size="small">
+    <FormControl sx={{ m: 1, width: width }}>
       <InputLabel>{labelSelect}</InputLabel>
       <Select
         labelId="demo-select-small"
@@ -46,7 +47,8 @@ SelectComponent.propTypes = {
   values: PropTypes.array,
   onChangeFunction: PropTypes.func,
   actualValue: PropTypes.any,
-  disable: PropTypes.bool
+  disable: PropTypes.bool,
+  width: PropTypes.number
 }
 
 export default memo(SelectComponent)

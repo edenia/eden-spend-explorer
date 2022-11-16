@@ -32,106 +32,68 @@ import styles from './styles'
 
 const useStyles = makeStyles(styles)
 
-const RenderChartLegend = ({ data, isDelegate }) => {
+const RenderChartLegend = ({ data }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
   return (
     <div className={classes.chartLinks}>
-      {!isDelegate ? (
-        <>
-          <a key={`key-Un${data.toLocaleLowerCase()}-link-chart`}>
-            <Box
-              width={12}
-              height={12}
-              ml={2}
-              mt={0.5}
-              mr={0.5}
-              bgcolor="#f4d35e"
-              borderRadius={5}
-            />
-            {t(`un${data.toLocaleLowerCase()}`, {
-              ns: 'generalForm'
-            })}
-          </a>
-          <a key={`key-total-link-chart`}>
-            <Box
-              width={12}
-              height={12}
-              ml={2}
-              mt={0.5}
-              mr={0.5}
-              bgcolor="#19647e"
-              borderRadius={5}
-            />
-            {`Total`}
-          </a>
-          <a key={`key-${data}-link-chart`}>
-            <Box
-              width={12}
-              height={12}
-              ml={2}
-              mt={0.5}
-              mr={0.5}
-              bgcolor="#ee964b"
-              borderRadius={5}
-            />
-            {t(data.toLocaleLowerCase(), {
-              ns: 'generalForm'
-            })}
-          </a>
-        </>
-      ) : (
-        <>
-          <a key={`key-total-link-chart`}>
-            <Box
-              width={12}
-              height={12}
-              ml={2}
-              mt={0.5}
-              mr={0.5}
-              bgcolor="#19647e"
-              borderRadius={5}
-            />
-            {`${t('categorized', {
-              ns: 'generalForm'
-            })} / ${t('claimed', {
-              ns: 'generalForm'
-            })}`}
-          </a>
-          <a key={`key-${data}-link-chart`}>
-            <Box
-              width={12}
-              height={12}
-              ml={2}
-              mt={0.5}
-              mr={0.5}
-              bgcolor="#ee964b"
-              borderRadius={5}
-            />
-            {`${t('uncategorized', {
-              ns: 'generalForm'
-            })} / ${t('unclaimed', {
-              ns: 'generalForm'
-            })}`}
-          </a>
-        </>
-      )}
+      <a key={`key-Un${data.toLocaleLowerCase()}-link-chart`}>
+        <Box
+          width={12}
+          height={12}
+          ml={2}
+          mt={0.5}
+          mr={0.5}
+          bgcolor="#f4d35e"
+          borderRadius={5}
+        />
+        {t(`un${data.toLocaleLowerCase()}`, { ns: 'generalForm' })}
+      </a>
+      <a key={`key-${data}-link-chart`}>
+        <Box
+          width={12}
+          height={12}
+          ml={2}
+          mt={0.5}
+          mr={0.5}
+          bgcolor="#ee964b"
+          borderRadius={5}
+        />
+        {t(`${data.toLocaleLowerCase()}`, { ns: 'generalForm' })}
+      </a>
+      <a key={`key-total-link-chart`}>
+        <Box
+          width={12}
+          height={12}
+          ml={2}
+          mt={0.5}
+          mr={0.5}
+          bgcolor="#19647e"
+          borderRadius={5}
+        />
+        {t('total', { ns: 'generalForm' })}
+      </a>
     </div>
   )
 }
 
 RenderChartLegend.propTypes = {
-  data: PropTypes.string,
-  isDelegate: PropTypes.bool
+  data: PropTypes.string
 }
 
 const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
   const { t } = useTranslation()
+  label = label + ''
+  const arrayLabel = label.split(' ')
 
   return (
     <div>
-      <strong>{label}</strong>
+      <strong>
+        {`${t(arrayLabel[0].toLocaleLowerCase(), { ns: 'generalForm' })} ${
+          arrayLabel[1]
+        }`}
+      </strong>
       {payload &&
         payload.map((data, i) => (
           <div key={`${i}-tooltip`}>
@@ -169,7 +131,7 @@ CustomTooltip.propTypes = {
   coinType: PropTypes.string
 }
 
-const BarChartGeneralReport = ({
+const BarChartReport = ({
   data,
   keyTranslation,
   pathTranslation,
@@ -181,7 +143,6 @@ const BarChartGeneralReport = ({
   const [category, setCategory] = useState('')
   const { t } = useTranslation()
   const [selectedUSD, setSelected] = useState(false)
-  const [isDelegate, setIsDelegate] = useState(false)
   const [coinType, setCoinType] = useState('EOS')
 
   const handleChange = event => {
@@ -198,8 +159,7 @@ const BarChartGeneralReport = ({
 
   useEffect(() => {
     if (typeData === 'income') setCategory('Claimed')
-    else if (typeData === 'expense') setCategory('Categorized')
-    else setIsDelegate(true)
+    else setCategory('Categorized')
   }, [typeData])
 
   useEffect(() => {
@@ -244,19 +204,10 @@ const BarChartGeneralReport = ({
               ref={barRef}
             >
               <CartesianGrid stroke="#f5f5f5" />
-              {!isDelegate ? (
-                <XAxis
-                  tick={{ fontSize: 10 }}
-                  dataKey="election"
-                  scale="auto"
-                />
-              ) : (
-                <XAxis tick={{ fontSize: 10 }} dataKey="type" scale="auto" />
-              )}
+              <XAxis tick={{ fontSize: 10 }} dataKey="election" scale="auto" />
               <YAxis
                 tick={{ fontSize: 14, stroke: '#000000', strokeWidth: 0.5 }}
               />
-
               <Tooltip
                 wrapperStyle={{
                   outline: 'none',
@@ -268,59 +219,31 @@ const BarChartGeneralReport = ({
                 content={<CustomTooltip coinType={coinType} />}
               />
               {showLegend && (
-                <Legend
-                  content={
-                    <RenderChartLegend
-                      data={category}
-                      isDelegate={isDelegate}
-                    />
-                  }
-                />
+                <Legend content={<RenderChartLegend data={category} />} />
               )}
-              {!isDelegate ? (
-                <>
-                  <Bar
-                    dataKey={`${coinType}_UN${category.toLocaleUpperCase()}`}
-                    barSize={35}
-                    fill="#f4d35e"
-                  >
-                    {data.map(({ election }) => (
-                      <Cell key={`cell-${election}`} />
-                    ))}
-                  </Bar>
-                  <Bar
-                    dataKey={`${coinType}_TOTAL`}
-                    barSize={35}
-                    fill="#19647e"
-                  >
-                    {data.map(({ election }) => (
-                      <Cell key={`cell-${election}`} />
-                    ))}
-                  </Bar>
-                  <Bar
-                    dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
-                    barSize={35}
-                    fill="#ee964b"
-                  >
-                    {data.map(({ election }) => (
-                      <Cell key={`cell-${election}`} />
-                    ))}
-                  </Bar>
-                </>
-              ) : (
-                <>
-                  <Bar dataKey={`${coinType}_`} barSize={35} fill="#19647e">
-                    {data.map(({ type }) => (
-                      <Cell key={`cell-${type}`} />
-                    ))}
-                  </Bar>
-                  <Bar dataKey={`${coinType}_UN`} barSize={35} fill="#ee964b">
-                    {data.map(({ type }) => (
-                      <Cell key={`cell-${type}`} />
-                    ))}
-                  </Bar>
-                </>
-              )}
+              <Bar
+                dataKey={`${coinType}_UN${category.toLocaleUpperCase()}`}
+                barSize={35}
+                fill="#f4d35e"
+              >
+                {data.map(({ election }) => (
+                  <Cell key={`cell-${election}`} />
+                ))}
+              </Bar>
+              <Bar
+                dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
+                barSize={35}
+                fill="#ee964b"
+              >
+                {data.map(({ election }) => (
+                  <Cell key={`cell-${election}`} />
+                ))}
+              </Bar>
+              <Bar dataKey={`${coinType}_TOTAL`} barSize={35} fill="#19647e">
+                {data.map(({ election }) => (
+                  <Cell key={`cell-${election}`} />
+                ))}
+              </Bar>
             </ComposedChart>
           </ResponsiveContainer>
         </div>
@@ -329,7 +252,7 @@ const BarChartGeneralReport = ({
   )
 }
 
-BarChartGeneralReport.propTypes = {
+BarChartReport.propTypes = {
   data: PropTypes.array,
   keyTranslation: PropTypes.string,
   pathTranslation: PropTypes.string,
@@ -337,4 +260,4 @@ BarChartGeneralReport.propTypes = {
   typeData: PropTypes.string
 }
 
-export default memo(BarChartGeneralReport)
+export default memo(BarChartReport)

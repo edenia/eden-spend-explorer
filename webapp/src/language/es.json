@@ -54,9 +54,13 @@
     "date": "Fecha",
     "claimed": "Reclamado",
     "unclaimed": "No reclamado",
+    "switchInput": "Convertir a USD",
+    "total": "Total",
     "categorized": "Categorizado",
     "uncategorized": "No categorizado",
-    "switchInput": "Convertir a USD"
+    "election": "Elección",
+    "income": "Ingresos",
+    "expense": "Gastos"
   },
   "incomeRoute": {
     "titleBarChart": "Ingresos por Elección",
@@ -70,11 +74,8 @@
     "tableHeader4": "Total de EOS distribuidos",
     "tableHeader5": "Total de USD distribuidos",
     "tableHeader6": "Fecha de transacción",
-    "tableHeader7": "% EOS reclamado",
-    "tableHeader8": "% EOS no reclamado",
-    "tableHeader9": "% USD reclamado",
-    "tableHeader10": "% USD no reclamado",
-    "tableHeader11": "Categoría",
+    "tableHeader7": "% Reclamado",
+    "tableHeader8": "% No reclamado",
     "claimedCategory": "Reclamado",
     "unclaimedCategory": "No reclamado"
   },
@@ -91,26 +92,15 @@
     "tableHeader4": "Total de EOS categorizados",
     "tableHeader5": "Total de USD categorizados",
     "tableHeader6": "Fecha de transacción",
-    "tableHeader7": "% EOS categorizados",
-    "tableHeader8": "% EOS no categorizados",
-    "tableHeader9": "% USD categorizados",
-    "tableHeader10": "% USD no categorizados",
-    "tableHeader11": "Categoría"
+    "tableHeader7": "% Categorizados",
+    "tableHeader8": "% No categorizados"
   },
   "delegateRoute": {
-    "titleBarChart": "Ingresos y Gastos por Delegado",
-    "tableElectionHeader": "Periodo",
-    "tableHeader1": "Cuenta",
-    "tableHeader2": "ID (caps)",
-    "tableHeader3": "Nivel de delegado",
-    "tableHeader4": "Total de EOS categorizados",
-    "tableHeader5": "Total de USD categorizados",
-    "tableHeader6": "Fecha de transacción",
-    "tableHeader7": "% EOS categorizados",
-    "tableHeader8": "% EOS no categorizados",
-    "tableHeader9": "% USD categorizados",
-    "tableHeader10": "% USD no categorizados",
-    "tableHeader11": "Categoría"
+    "titleBarChart": "Ingresos y Gastos",
+    "titlePieChart": "Gastos por Categoria",
+    "rewarded": "EOS Obtenido",
+    "electionTime": "Delegados elegidos a partir de",
+    "instruction": "Haga clic en el delegado para revisar su gasto."
   },
   "spendToolsRoute": {
     "viewAbout": "Un conjunto de herramientas que le ayudarán a realizar nuevas transacciones o a editarlas.",

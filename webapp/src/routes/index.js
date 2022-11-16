@@ -45,7 +45,7 @@ const routes = [
   },
   {
     name: 'Delegate',
-    icon: '/icons/expenses-icon.svg',
+    icon: '/icons/delegate-icon.svg',
     component: DelegateReport,
     path: '/delegate',
     exact: true,

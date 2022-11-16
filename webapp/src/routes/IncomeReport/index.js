@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
-import BarChartGeneralReport from '../../components/BarChartGeneralReport'
+import BarChartReport from '../../components/BarChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
 import { formatWithThousandSeparator } from '../../utils'
@@ -92,17 +92,15 @@ const IncomeReport = () => {
       ...rowsCenter
     },
     {
-      field: 'EOS_TOTAL',
+      field: tableData[0]?.election ? 'EOS_TOTAL' : 'EOS_CLAIMED',
       headerName: 'EOS',
-      hide: !tableData[0]?.election,
       renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
     },
     {
-      field: 'USD_TOTAL',
+      field: tableData[0]?.election ? 'USD_TOTAL' : 'USD_CLAIMED',
       headerName: 'USD',
-      hide: !tableData[0]?.election,
       renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
       type: 'number',
       ...rowsCenter
@@ -118,18 +116,6 @@ const IncomeReport = () => {
       headerName: t('tableHeader8', { ns: 'incomeRoute' }),
       type: 'number',
       ...rowsCenter
-    },
-    {
-      field: 'USD_CLAIMED_PERCENT',
-      headerName: t('tableHeader9', { ns: 'incomeRoute' }),
-      type: 'number',
-      ...rowsCenter
-    },
-    {
-      field: 'USD_UNCLAIMED_PERCENT',
-      headerName: t('tableHeader10', { ns: 'incomeRoute' }),
-      type: 'number',
-      ...rowsCenter
     }
   ]
 
@@ -139,7 +125,7 @@ const IncomeReport = () => {
         <TreasuryBalance />
       </div>
       <div className={classes.chartContainer}>
-        <BarChartGeneralReport
+        <BarChartReport
           data={incomeByElectionsList}
           keyTranslation={'titleBarChart'}
           pathTranslation={'incomeRoute'}
