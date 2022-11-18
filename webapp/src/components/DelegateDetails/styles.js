@@ -2,7 +2,7 @@ export default theme => ({
   verticalLine: {
     borderLeft: '1px solid rgba(225,225,225,.99)',
     borderBottom: '1px solid rgba(225,225,225,.99)',
-    marginBottom: '8px'
+    marginBottom: theme.spacing(1)
   },
   chartContainer: {
     display: 'flex',

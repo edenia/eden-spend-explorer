@@ -1,6 +1,6 @@
 export default theme => ({
   root: {
-    margin: '8px',
+    margin: theme.spacing(1),
     '& #treasury-container-id': {
       display: 'flex',
       justifyContent: 'flex-end',
@@ -18,10 +18,10 @@ export default theme => ({
     }
   },
   filtersContainer: {
-    marginTop: '16px',
+    marginTop: theme.spacing(2),
     '& #id-radio-election-container': {
       display: 'flex',
-      marginLeft: '12px',
+      marginLeft: theme.spacing(2),
       justifyContent: 'end',
       alignItems: 'center'
     },
@@ -33,7 +33,7 @@ export default theme => ({
     }
   },
   tableContainer: {
-    marginTop: '24px',
+    marginTop: theme.spacing(3),
     '& .MuiDataGrid-columnHeaderTitle': {
       fontWeight: 'bold',
       color: theme.palette.secondary.main
@@ -42,7 +42,7 @@ export default theme => ({
       color: theme.palette.secondary.main
     },
     '& #id-table-container': {
-      marginTop: '16px',
+      marginTop: theme.spacing(2),
       height: 368
     }
   },

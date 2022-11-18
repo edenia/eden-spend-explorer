@@ -1,18 +1,18 @@
 export default theme => ({
   root: {
-    margin: '8px 16px'
+    margin: theme.spacing(2, 3)
   },
   toolInformation: {
-    marginTop: '24px'
+    marginTop: theme.spacing(3)
   },
   formContainer: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'flex-start',
-    gap: '16px',
-    padding: '8px 16px',
-    margin: '16px 0 8px 0',
+    gap: theme.spacing(2),
+    padding: theme.spacing(1, 2),
+    margin: theme.spacing(2, 0, 1, 0),
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
       alignItems: 'center',
@@ -81,8 +81,8 @@ export default theme => ({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    gap: '16px',
-    padding: '8px 16px',
+    gap: theme.spacing(2),
+    padding: theme.spacing(1, 2),
     [theme.breakpoints.up('xs')]: {
       maxWidth: '377px'
     }
@@ -99,13 +99,13 @@ export default theme => ({
     }
   },
   tableContainer: {
-    marginTop: '16px',
+    marginTop: theme.spacing(2),
     '& .MuiDataGrid-columnHeaderTitle': {
       fontWeight: 'bold',
       fontSize: '12px'
     },
     '& #id-table-container': {
-      marginTop: '16px',
+      marginTop: theme.spacing(2),
       height: '368.5px'
     }
   },
@@ -117,7 +117,7 @@ export default theme => ({
       height: '48px',
       backgroundColor: '#2563eb',
       borderRadius: 0,
-      padding: '0 16px',
+      padding: theme.spacing(0, 2),
       textTransform: 'none'
     },
     '& .MuiButtonBase-root:hover': {
@@ -143,7 +143,7 @@ export default theme => ({
   },
   divShadow: {
     border: '1px solid rgb(0 0 0 / 2%)',
-    marginTop: '16px',
+    marginTop: theme.spacing(2),
     boxShadow:
       '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)'
   },
@@ -183,7 +183,7 @@ export default theme => ({
   },
   titleTable: {
     marginLeft: '5%',
-    marginTop: '24px',
+    marginTop: theme.spacing(3),
     fontSize: '18px',
     fontWeight: '500',
     letterSpacing: '-0.4px',
@@ -192,17 +192,17 @@ export default theme => ({
   dangerText: {
     display: 'flex',
     justifyContent: 'center',
-    marginTop: '16px',
+    marginTop: theme.spacing(2),
     '& small': {
       color: 'red'
     }
   },
   textModalContainer: {
-    marginTop: '24px',
+    marginTop: theme.spacing(3),
     fontSize: '16px',
     lineHeight: 1.25,
     letterSpacing: '-0.4px',
     color: 'rgba(0, 0, 0, 0.87)',
-    marginBottom: '36px'
+    marginBottom: theme.spacing(5)
   }
 })

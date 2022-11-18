@@ -1,6 +1,6 @@
 export default theme => ({
   root: {
-    margin: '8px'
+    margin: theme.spacing(1)
   },
   spinner: {
     textAlign: 'center',
@@ -12,7 +12,7 @@ export default theme => ({
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
       '& #treasury-container-id': {
-        marginTop: '8px'
+        marginTop: theme.spacing(1)
       }
     }
   },
@@ -27,13 +27,13 @@ export default theme => ({
     }
   },
   filtersContainer: {
-    marginTop: '24px',
-    marginBottom: '24px',
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
     display: 'flex',
     justifyContent: 'end',
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
-      marginTop: 8,
+      marginTop: theme.spacing(1),
       textAlign: 'center',
       flexWrap: 'wrap'
     },
