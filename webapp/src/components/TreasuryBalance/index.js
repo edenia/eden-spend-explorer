@@ -19,7 +19,8 @@ const TrasuryBalance = () => {
     <div className={classes.eosPriceContainer}>
       <label className={classes.eosPriceTitle}>{t('titleEosBalance')}</label>
       <label className={classes.eosBalance}>
-        {formatWithThousandSeparator(currencyBalance.split(' ')[0], 2)} EOS
+        {formatWithThousandSeparator(currencyBalance.split(' ')[0], 2)}{' '}
+        {currencyBalance.split(' ')[1]}
       </label>
       <label className={classes.eosBalanceInDollars}>
         $
@@ -27,7 +28,8 @@ const TrasuryBalance = () => {
           eosRate * Number(currencyBalance.split(' ')[0]),
           2
         ) || 0}{' '}
-        @ ${formatWithThousandSeparator(eosRate, 2)}/EOS
+        @ ${formatWithThousandSeparator(eosRate, 2)}
+        {eosRate > 0 ? '/EOS' : ''}
       </label>
     </div>
   )
