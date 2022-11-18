@@ -124,15 +124,13 @@ const IncomeReport = () => {
       <div id="treasury-container-id">
         <TreasuryBalance />
       </div>
-      <div className={classes.chartContainer}>
-        <BarChartReport
-          data={incomeByElectionsList}
-          keyTranslation={'titleBarChart'}
-          pathTranslation={'incomeRoute'}
-          showLegend={true}
-          typeData={'income'}
-        />
-      </div>
+      <BarChartReport
+        data={incomeByElectionsList}
+        keyTranslation={'titleBarChart'}
+        pathTranslation={'incomeRoute'}
+        showLegend={true}
+        typeData={'income'}
+      />
       <Divider variant="middle" />
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
@@ -176,17 +174,15 @@ const IncomeReport = () => {
         </div>
       </div>
 
-      <div className={classes.chartContainer}>
-        <PieChartReport
-          data={delegatesList}
-          keyTranslation={'titlePieChart'}
-          pathTranslation={'incomeRoute'}
-          typeData={'income'}
-        />
-      </div>
+      <PieChartReport
+        data={delegatesList}
+        keyTranslation={'titlePieChart'}
+        pathTranslation={'incomeRoute'}
+        typeData={'income'}
+      />
       <Divider variant="middle" />
       <div className={classes.tableContainer}>
-        <div className={classes.subTitle}>
+        <div className={classes.title}>
           <Typography variant="span">
             {showElectionRadio === 'allElections'
               ? t('titleTable2', { ns: 'incomeRoute' })

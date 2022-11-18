@@ -133,7 +133,7 @@ export default theme => ({
       marginTop: '2px'
     },
     '& a:hover': {
-      color: 'rgba(0, 194, 191, 0.80)'
+      color: theme.palette.secondary.main
     }
   },
   labelButtonTransfer: {

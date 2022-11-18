@@ -1,47 +1,26 @@
 export default theme => ({
   chartContainer: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'flex-start',
-    flexDirection: 'column',
-    marginTop: 24,
-    [theme.breakpoints.down('md')]: {
-      width: '100%'
-    }
+    margin: '16px 0 16px 0'
   },
-  titleContainer: {
-    display: 'flex'
-  },
-  titleContainerExpense: {
-    display: 'flex',
-    width: '90%',
-    height: '65px',
-    borderBottom: '2px solid rgba(0, 0, 0, 0.12)'
-  },
-  textContainer: {
-    textAlign: 'justify',
-    marginLeft: '12px',
+  title: {
     '& span': {
-      alignSelf: 'stretch',
       fontSize: '18px',
       fontWeight: 500,
       lineHeight: 1.56,
       letterSpacing: '-0.4px'
     }
   },
-  filtersChartContainer: {
-    display: 'flex',
-    position: 'relative',
-    left: '10%',
-    alignItems: 'center'
+  filter: {
+    '& span': {
+      fontSize: '12px',
+      fontWeight: 300,
+      lineHeight: 1.33,
+      letterSpacing: '-0.26px'
+    }
   },
-  titleChart: {
-    textAlign: 'justify',
-    marginLeft: '12px',
-    alignSelf: 'stretch',
-    fontSize: '18px',
-    fontWeight: 500,
-    lineHeight: 1.56,
-    letterSpacing: '-0.4px'
+  titleContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 })

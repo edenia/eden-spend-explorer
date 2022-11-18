@@ -10,7 +10,8 @@ import {
   Typography,
   FormControlLabel,
   Switch,
-  FormGroup
+  FormGroup,
+  Divider
 } from '@mui/material'
 import DownloadOutlined from '@mui/icons-material/DownloadOutlined'
 import TooltipDownload from '@mui/material/Tooltip'
@@ -22,86 +23,63 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 
 const renderActiveShape = props => {
-  const RADIAN = Math.PI / 180
   const {
     cx,
     cy,
-    midAngle,
-    innerRadius,
-    outerRadius,
     startAngle,
     endAngle,
     payload,
     percent,
     value,
-    coin
+    coin,
+    innerRadius,
+    outerRadius
   } = props
-  const sin = Math.sin(-RADIAN * midAngle)
-  const cos = Math.cos(-RADIAN * midAngle)
-  const sx = cx + (outerRadius + 10) * cos
-  const sy = cy + (outerRadius + 10) * sin
-  const mx = cx + (outerRadius + 30) * cos
-  const my = cy + (outerRadius + 30) * sin
-  const ex = mx + (cos >= 0 ? 1 : -1) * 22
-  const ey = my
-  const textAnchor = cos >= 0 ? 'start' : 'end'
 
   return (
     <g>
       <text
         x={cx}
         y={cy}
-        dy={8}
-        textLength="125"
+        dy={-8}
         textAnchor="middle"
-        fontSize="20px"
-        fontSizeAdjust="0.5"
-        fill={'#000'}
-        lengthAdjust="spacing"
+        fontSize="12px"
+        fontWeight={800}
       >
         {payload.name ? payload.name : payload.category}
+      </text>
+      <text
+        x={cx}
+        y={cy}
+        dy={8}
+        textAnchor="middle"
+        fontSize="12px"
+        fontWeight={500}
+      >
+        {payload.EOS_CLAIMED
+          ? formatWithThousandSeparator(payload.EOS_CLAIMED, 2)
+          : formatWithThousandSeparator(value, 2)}{' '}
+        {coin}
+      </text>
+      <text
+        x={cx}
+        y={cy}
+        dy={24}
+        textAnchor="middle"
+        fontSize="12px"
+        fontWeight={500}
+      >
+        {`${(percent * 100).toFixed(2)}%`}
       </text>
       <Sector
         cx={cx}
         cy={cy}
         innerRadius={innerRadius}
-        outerRadius={outerRadius}
+        outerRadius={outerRadius + 16}
         startAngle={startAngle}
         endAngle={endAngle}
         fill={payload.color}
       />
-      <Sector
-        cx={cx}
-        cy={cy}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        innerRadius={outerRadius + 6}
-        outerRadius={outerRadius + 10}
-        fill={payload.color}
-      />
-      <path
-        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-        stroke={payload.color}
-        fill="none"
-      />
-      <circle cx={ex} cy={ey} r={2} fill={payload.color} stroke="none" />
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        textAnchor={textAnchor}
-        fill="#333"
-        lengthAdjust="spacingAndGlyphs"
-      >{`${formatWithThousandSeparator(value, 2)}-${coin}`}</text>
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        dy={18}
-        textAnchor={textAnchor}
-        fill="#999"
-        lengthAdjust="spacingAndGlyphs"
-      >
-        {`${(percent * 100).toFixed(2)}%`}
-      </text>
     </g>
   )
 }
@@ -110,7 +88,9 @@ const PieChartReport = ({
   data,
   keyTranslation,
   pathTranslation,
-  typeData
+  typeData,
+  innerRadius = 60,
+  outerRadius = 150
 }) => {
   const classes = useStyles()
   const [activeIndex, setActiveIndex] = useState(0)
@@ -153,98 +133,54 @@ const PieChartReport = ({
   }, [selectedUSD])
 
   return (
-    <>
-      <div className={classes.chartContainer}>
-        {typeData !== 'income' ? (
-          <div className={classes.titleContainerExpense}>
-            <div className={classes.textContainer}>
-              <Typography className={classes.titleChart} variant="span">
-                {t(keyTranslation, { ns: pathTranslation })}
-              </Typography>
-              <TooltipDownload title="Donwload">
-                <IconButton onClick={handlePieDownload}>
-                  <DownloadOutlined />
-                </IconButton>
-              </TooltipDownload>
-            </div>
-            <div className={classes.filtersChartContainer}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Switch checked={selectedUSD} onChange={handleChange} />
-                  }
-                  label={t('switchInput', { ns: 'generalForm' })}
-                  labelPlacement="start"
-                />
-              </FormGroup>
-            </div>
-          </div>
-        ) : (
-          <div className={classes.titleContainer}>
-            <div className={classes.textContainer}>
-              <Typography variant="span">
-                {t(keyTranslation, { ns: pathTranslation })}
-              </Typography>
-              <TooltipDownload title="Donwload">
-                <IconButton onClick={handlePieDownload}>
-                  <DownloadOutlined />
-                </IconButton>
-              </TooltipDownload>
-            </div>
-            <div className={classes.filtersChartContainer}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Switch checked={selectedUSD} onChange={handleChange} />
-                  }
-                  label={t('switchInput', { ns: 'generalForm' })}
-                  labelPlacement="start"
-                />
-              </FormGroup>
-            </div>
-          </div>
-        )}
-        <ResponsiveContainer height={400}>
-          <PieChart height={250} ref={pieRef}>
-            {typeData === 'delegate' ? (
-              <Pie
-                activeIndex={activeIndex}
-                activeShape={renderActiveShape}
-                data={newData}
-                nameKey={'category'}
-                dataKey={`${coinType}`}
-                cx="50%"
-                cy="50%"
-                innerRadius={'35%'}
-                outerRadius={'55%'}
-                onMouseEnter={onPieEnter}
-              >
-                {data.map(data => (
-                  <Cell key={`cell-${data.election}`} fill={data.color} />
-                ))}
-              </Pie>
-            ) : (
-              <Pie
-                activeIndex={activeIndex}
-                activeShape={renderActiveShape}
-                data={newData}
-                nameKey={'name'}
-                dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
-                cx="50%"
-                cy="50%"
-                innerRadius={'40%'}
-                outerRadius={'68%'}
-                onMouseEnter={onPieEnter}
-              >
-                {data.map(data => (
-                  <Cell key={`cell-${data.election}`} fill={data.color} />
-                ))}
-              </Pie>
-            )}
-          </PieChart>
-        </ResponsiveContainer>
+    <div className={classes.chartContainer}>
+      <div className={classes.titleContainer}>
+        <div className={classes.title}>
+          <Typography className={classes.titleChart} variant="span">
+            {t(keyTranslation, { ns: pathTranslation })}
+          </Typography>
+          <TooltipDownload title="Donwload">
+            <IconButton onClick={handlePieDownload}>
+              <DownloadOutlined />
+            </IconButton>
+          </TooltipDownload>
+        </div>
+        <div className={classes.filter}>
+          <FormGroup>
+            <FormControlLabel
+              control={<Switch checked={selectedUSD} onChange={handleChange} />}
+              label={t('switchInput', { ns: 'generalForm' })}
+              labelPlacement="start"
+            />
+          </FormGroup>
+        </div>
       </div>
-    </>
+      {typeData === 'expese' && <Divider variant="middle" />}
+      <ResponsiveContainer width="100%" height={350}>
+        <PieChart ref={pieRef}>
+          <Pie
+            activeIndex={activeIndex}
+            activeShape={renderActiveShape}
+            data={newData}
+            nameKey={typeData === 'delegate' ? 'category' : 'name'}
+            dataKey={
+              typeData === 'delegate'
+                ? `${coinType}`
+                : `${coinType}_${category.toLocaleUpperCase()}`
+            }
+            cx="50%"
+            cy="50%"
+            innerRadius={innerRadius}
+            outerRadius={outerRadius}
+            onMouseEnter={onPieEnter}
+          >
+            {data.map(data => (
+              <Cell key={`cell-${data.election}`} fill={data.color} />
+            ))}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
   )
 }
 
@@ -252,7 +188,9 @@ PieChartReport.propTypes = {
   data: PropTypes.array,
   keyTranslation: PropTypes.string,
   pathTranslation: PropTypes.string,
-  typeData: PropTypes.string
+  typeData: PropTypes.string,
+  innerRadius: PropTypes.number,
+  outerRadius: PropTypes.number
 }
 
 export default memo(PieChartReport)

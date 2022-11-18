@@ -1,7 +1,6 @@
 export default theme => ({
   root: {
-    marginRight: '8px',
-    marginLeft: '8px',
+    margin: '8px',
     '& #treasury-container-id': {
       display: 'flex',
       justifyContent: 'flex-end',
@@ -11,88 +10,44 @@ export default theme => ({
     }
   },
   title: {
-    fontWeight: 'bold',
-    fontSize: '32px',
-    lineHeight: 1.13,
-    letterSpacing: '-0.64px',
-    marginLeft: '8px'
-  },
-  subTitle: {
-    textAlign: 'justify',
-    marginLeft: '12px',
-    marginTop: '24px',
     '& span': {
-      alignSelf: 'stretch',
       fontSize: '18px',
       fontWeight: 500,
       lineHeight: 1.56,
-      letterSpacing: '-0.4px',
-      [theme.breakpoints.down('550')]: {
-        marginTop: '16px'
-      }
+      letterSpacing: '-0.4px'
     }
   },
   filtersContainer: {
-    marginTop: '24px',
+    marginTop: '16px',
     '& #id-radio-election-container': {
       display: 'flex',
       marginLeft: '12px',
       justifyContent: 'end',
       alignItems: 'center'
     },
-    '& #id-select-election-container': {
-      minHeight: '50px',
-      display: 'flex',
-      marginLeft: '12px',
-      justifyContent: 'end',
-      alignItems: 'center',
-      [theme.breakpoints.down('sm')]: {
-        marginTop: 8,
-        borderTop: '1px solid',
-        textAlign: 'center',
-        flexWrap: 'wrap',
-        justifyContent: 'center'
-      },
-      [theme.breakpoints.up('sm')]: {
-        textAlign: 'center'
-      }
+    '& span': {
+      fontSize: '12px',
+      fontWeight: 300,
+      lineHeight: 1.33,
+      letterSpacing: '-0.26px'
     }
-  },
-  verticalLine: {
-    display: 'flex',
-    position: 'relative',
-    borderLeft: '2px solid rgba(0, 0, 0, 0.12)',
-    height: '250',
-    width: '2px',
-    right: '30px'
   },
   chartContainer: {
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    overflowX: 'hidden',
-    with: '100%',
-    '& #chart-scroll-id': {
-      minWidth: '925px',
-      width: '100%'
-    },
+    justifyContent: 'space-between',
     [theme.breakpoints.down('md')]: {
+      justifyContent: 'center',
       flexDirection: 'column'
     }
   },
-  divider: {
-    width: '4px',
-    height: '31px',
-    backgroundColor: '#00c2bf'
-  },
-  titleContainer: {
-    display: 'flex',
-    alignItems: 'center'
+  pieChartContainer: {
+    width: '35vw',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
   },
   tableContainer: {
-    marginTop: '80px',
+    marginTop: '24px',
     '& .MuiDataGrid-columnHeaderTitle': {
       fontWeight: 'bold',
       color: theme.palette.secondary.main
@@ -105,23 +60,6 @@ export default theme => ({
       height: 368
     }
   },
-  chartLinks: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    overflowY: 'auto',
-    maxHeight: '400px',
-    '& a ': {
-      display: 'flex',
-      textAlign: 'center',
-      textDecoration: 'none',
-      color: theme.palette.secondary.main,
-      marginTop: '2px'
-    },
-    '& a:hover': {
-      color: 'rgba(0, 194, 191, 0.80)'
-    }
-  },
   links: {
     '& a ': {
       display: 'flex',
@@ -131,11 +69,16 @@ export default theme => ({
       marginTop: '2px'
     },
     '& a:hover': {
-      color: 'rgba(0, 194, 191, 0.80)'
+      color: '#1565c0'
     }
   },
   disableLink: {
     pointerEvents: 'none',
     cursor: 'pointer'
+  },
+  dividerLine: {
+    borderLeft: '1px solid rgba(225,225,225,.99)',
+    borderBottom: '1px solid rgba(225,225,225,.99)',
+    marginBottom: '8px'
   }
 })
