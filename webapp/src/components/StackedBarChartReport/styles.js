@@ -1,43 +1,48 @@
 export default theme => ({
   chartContainer: {
-    width: '50%',
-    display: 'flex',
-    flexDirection: 'column',
-    marginTop: 24
+    margin: theme.spacing(2, 0, 2, 0)
   },
-  chartLinks: {
+  title: {
+    '& span': {
+      fontSize: '18px',
+      fontWeight: 500,
+      lineHeight: 1.56,
+      letterSpacing: '-0.4px'
+    }
+  },
+  filter: {
+    '& span': {
+      fontSize: '12px',
+      fontWeight: 300,
+      lineHeight: 1.33,
+      letterSpacing: '-0.26px'
+    }
+  },
+  titleContainer: {
     display: 'flex',
-    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  chartLegent: {
+    display: 'flex',
     justifyContent: 'center',
-    overflowY: 'auto',
-    maxHeight: '400px',
+    flexWrap: 'wrap',
     '& a ': {
       display: 'flex',
       textAlign: 'left',
       textDecoration: 'none',
-      color: theme.palette.secondary.main,
-      marginTop: '2px',
-      width: '160px'
+      fontSize: '12px'
     },
     '& a:hover': {
-      color: 'rgba(0, 194, 191, 0.80)'
+      pointerEvents: 'none'
     }
   },
-  disableLink: {
-    pointerEvents: 'none',
-    cursor: 'pointer'
-  },
-  textContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    marginLeft: '30px',
-    width: '90%',
-    height: '65px'
-  },
-  filtersChartContainer: {
-    display: 'flex',
-    position: 'relative',
-    left: '10%',
-    alignItems: 'center'
+  legentCircle: {
+    width: 12,
+    height: 12,
+    marginLeft: '2vw',
+    marginTop: theme.spacing(0.4),
+    marginRight: theme.spacing(1),
+    borderRadius: 5
   }
 })

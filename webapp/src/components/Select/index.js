@@ -9,7 +9,7 @@ const SelectComponent = ({
   onChangeFunction,
   actualValue,
   disable,
-  width = 100
+  width = 80
 }) => {
   const { t } = useTranslation()
 
@@ -23,7 +23,10 @@ const SelectComponent = ({
   }
 
   return (
-    <FormControl sx={{ m: 1, width: width }}>
+    <FormControl
+      sx={{ m: 1, width: width }}
+      size={width !== 80 ? 'normal' : 'small'}
+    >
       <InputLabel>{labelSelect}</InputLabel>
       <Select
         labelId="demo-select-small"

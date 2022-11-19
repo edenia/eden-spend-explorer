@@ -1,55 +1,44 @@
 export default theme => ({
   root: {
-    marginRight: '8px',
-    marginLeft: '8px',
-    '& #treasury-container-id': {
-      display: 'flex',
-      position: 'relative',
-      left: '43%',
-      justifyContent: 'flex-end',
-      [theme.breakpoints.down('450')]: {
-        flexDirection: 'column'
-      }
-    }
-  },
-  content: {
-    textAlign: 'center'
+    margin: theme.spacing(1)
   },
   spinner: {
+    textAlign: 'center',
     marginTop: '20vh'
   },
   headPage: {
-    display: 'flex'
+    display: 'flex',
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      '& #treasury-container-id': {
+        marginTop: theme.spacing(1)
+      }
+    }
   },
-  textContainer: {
+  title: {
     display: 'flex',
     flexDirection: 'column',
-    position: 'relative'
+    '& span': {
+      fontSize: '18px',
+      fontWeight: 500,
+      lineHeight: 1.56,
+      letterSpacing: '-0.4px'
+    }
   },
   filtersContainer: {
-    marginTop: '24px',
-    '& #id-radio-election-container': {
-      display: 'flex',
-      marginLeft: '12px',
-      justifyContent: 'end',
-      alignItems: 'center'
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    display: 'flex',
+    justifyContent: 'end',
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: theme.spacing(1),
+      textAlign: 'center',
+      flexWrap: 'wrap'
     },
-    '& #id-select-election-container': {
-      minHeight: '50px',
-      display: 'flex',
-      marginLeft: '12px',
-      justifyContent: 'end',
-      alignItems: 'center',
-      [theme.breakpoints.down('sm')]: {
-        marginTop: 8,
-        borderTop: '1px solid',
-        textAlign: 'center',
-        flexWrap: 'wrap',
-        justifyContent: 'center'
-      },
-      [theme.breakpoints.up('sm')]: {
-        textAlign: 'center'
-      }
+    [theme.breakpoints.up('sm')]: {
+      textAlign: 'center'
     }
   }
 })

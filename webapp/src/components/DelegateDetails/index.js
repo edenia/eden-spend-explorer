@@ -14,19 +14,24 @@ const DelegateDetails = ({ categoryList, transactionList }) => {
   return (
     <>
       <div className={classes.chartContainer}>
-        <PieChartReport
-          data={categoryList}
-          keyTranslation={'titlePieChart'}
-          pathTranslation={'delegateRoute'}
-          typeData={'delegate'}
-        />
+        <div className={classes.pieChartContainer}>
+          <PieChartReport
+            data={categoryList}
+            keyTranslation={'titlePieChart'}
+            pathTranslation={'delegateRoute'}
+            typeData={'delegate'}
+            outerRadius={140}
+          />
+        </div>
         <div className={classes.verticalLine} />
-        <StackedBarChartReport
-          data={transactionList}
-          keyTranslation={'titleBarChart'}
-          pathTranslation={'delegateRoute'}
-          showLegend={true}
-        />
+        <div className={classes.pieChartContainer}>
+          <StackedBarChartReport
+            data={transactionList}
+            keyTranslation={'titleBarChart'}
+            pathTranslation={'delegateRoute'}
+            showLegend={true}
+          />
+        </div>
       </div>
     </>
   )
