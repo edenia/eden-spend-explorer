@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import Hidden from '@mui/material/Hidden'
 import { makeStyles } from '@mui/styles'
 import { Toolbar } from '@mui/material'
+import PropTypes from 'prop-types'
 
 import Sidebar from '../../components/Sidebar'
 import Header from '../../components/Header'
@@ -17,6 +18,15 @@ const useStyles = makeStyles(theme => styles(theme, drawerWidth))
 const Dashboard = ({ children, routes }) => {
   const [mobileOpen, setMobileOpen] = useState(false)
   const classes = useStyles()
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    document.documentElement.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    })
+  }, [pathname])
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
