@@ -1,0 +1,22 @@
+type Query {
+  delegateFrontend(
+    electionNumber: delegateFrontendInput
+  ): delegateFrontendOutput
+}
+
+input SampleInput {
+  election: Int
+}
+
+input delegateFrontendInput {
+  election: Int
+}
+
+type SampleOutput {
+  data: json!
+}
+
+type delegateFrontendOutput {
+  data: json!
+}
+

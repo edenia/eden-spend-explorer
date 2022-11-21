@@ -1,10 +1,9 @@
 const { hasuraUtil } = require('../utils')
 
-// const dfuseService = require('./dfuse/index')
-// const edenDelegatesService = require('./eden-delegates.service')
-// const edenHistoricDelegateService = require('./eden-historic-delegates.service')
-// const edenUnclaimedFundsService = require('./eden-unclaimed-funds.service')
-const delegateFrontend = require('./delegate-frontend.service')
+const dfuseService = require('./dfuse/index')
+const edenDelegatesService = require('./eden-delegates.service')
+const edenHistoricDelegateService = require('./eden-historic-delegates.service')
+const edenUnclaimedFundsService = require('./eden-unclaimed-funds.service')
 
 const MAX_TIMEOUT_MS = 2147483.647
 
@@ -47,11 +46,10 @@ const run = async ({ name, action, interval }) => {
 
 const init = async () => {
   await hasuraUtil.hasuraAssembled()
-  run(delegateFrontend.updateDelegateFrontendWorker())
-  // await run(edenHistoricDelegateService.updateHistoricDelegatesWorker())
-  // run(edenDelegatesService.updateEdenTableWorker())
-  // run(edenUnclaimedFundsService.updateEdenUncleimedFundsWorker())
-  // run(dfuseService.syncWorker())
+  await run(edenHistoricDelegateService.updateHistoricDelegatesWorker())
+  run(edenDelegatesService.updateEdenTableWorker())
+  run(edenUnclaimedFundsService.updateEdenUncleimedFundsWorker())
+  run(dfuseService.syncWorker())
 }
 
 module.exports = {
