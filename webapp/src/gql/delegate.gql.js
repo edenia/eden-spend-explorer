@@ -75,6 +75,7 @@ export const GET_INCOME_BY_ELECTION = gql`
     }
   }
 `
+
 export const GET_DATE_ELECTION = gql`
   query getDateElection($election: Int) {
     eden_historic_election(where: { election: { _eq: $election } }) {

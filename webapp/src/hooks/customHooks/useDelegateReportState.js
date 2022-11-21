@@ -17,7 +17,6 @@ import {
 } from '../../utils/new-format-objects'
 
 const useDelegateReportState = () => {
-  const [electionYearSelect, setElectionYearSelect] = useState('All')
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
   const [delegateSelect, setDelegateSelect] = useState('')
   const [electionsByYearList, setElectionsByYearList] = useState([])
@@ -28,103 +27,86 @@ const useDelegateReportState = () => {
   const [dateElection, setDateElection] = useState('2021-10-09T00:00:00+00:00')
 
   const [loadDelegatesByElection, { data: delegatesByElectionData }] =
-    useLazyQuery(GET_DELEGATES_BY_ELECTION, {
-      variables: {
-        election: electionRoundSelect
-      }
-    })
+    useLazyQuery(GET_DELEGATES_BY_ELECTION)
 
-  const [loadDateElection, { data: dateElectionData }] = useLazyQuery(
-    GET_DATE_ELECTION,
-    {
-      variables: {
-        election: electionRoundSelect
-      }
-    }
-  )
+  const [loadDateElection, { data: dateElectionData }] =
+    useLazyQuery(GET_DATE_ELECTION)
 
   const [loadIncomeByElection, { data: incomeByElectionData }] = useLazyQuery(
-    GET_INCOME_BY_ELECTION,
-    {
-      variables: {
-        election: electionRoundSelect
-      }
-    }
+    GET_INCOME_BY_ELECTION
   )
 
   const [loadMaxDelegateLevel, { data: maxDelegateLevelData }] = useLazyQuery(
-    GET_MAX_DELEGATE_LEVEL,
-    {
-      variables: {
-        election: electionRoundSelect
-      }
-    }
+    GET_MAX_DELEGATE_LEVEL
   )
 
   const [loadTransactions, { data: transactionsData }] = useLazyQuery(
-    GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION,
-    {
-      variables: {
-        election: electionRoundSelect,
-        delegate: delegateSelect
-      }
-    }
+    GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION
   )
 
   const [loadCategoryList, { data: categoryListData }] = useLazyQuery(
-    GET_EXPENSE_BY_CATEGORY,
-    {
-      variables: {
-        election: electionRoundSelect,
-        delegate: delegateSelect
-      }
-    }
+    GET_EXPENSE_BY_CATEGORY
   )
 
   const [loadElectionsByYear, { data: electionsByYearData }] = useLazyQuery(
     GET_ELECTIONS_BY_YEAR,
     {
-      variables:
-        electionYearSelect === 'All' || electionYearSelect === 'Todos'
-          ? {
-              minDate: `2021-01-01`,
-              maxDate: `${new Date().getFullYear()}-12-31`
-            }
-          : {
-              minDate: `${electionYearSelect}-01-01`,
-              maxDate: `${electionYearSelect}-12-31`
-            }
+      variables: {
+        minDate: `2021-01-01`,
+        maxDate: `${new Date().getFullYear()}-12-31`
+      }
     }
   )
 
   useEffect(() => {
-    if (
-      (electionRoundSelect !== null || electionRoundSelect !== undefined) &&
-      delegateSelect !== undefined &&
-      delegateSelect !== ''
-    ) {
-      loadTransactions()
-      loadCategoryList()
-    }
+    loadTransactions({
+      variables: {
+        election: electionRoundSelect,
+        delegate: delegateSelect
+      }
+    })
+    loadCategoryList({
+      variables: {
+        election: electionRoundSelect,
+        delegate: delegateSelect
+      }
+    })
   }, [electionRoundSelect, delegateSelect])
 
   useEffect(() => {
-    if (electionRoundSelect !== null || electionRoundSelect !== undefined) {
-      loadDelegatesByElection()
-      loadElectionsByYear()
-      loadMaxDelegateLevel()
-      loadIncomeByElection()
-      loadDateElection()
-    }
+    loadDelegatesByElection({
+      variables: {
+        election: electionRoundSelect
+      }
+    })
+    loadMaxDelegateLevel({
+      variables: {
+        election: electionRoundSelect
+      }
+    })
+    loadIncomeByElection({
+      variables: {
+        election: electionRoundSelect
+      }
+    })
+    loadDateElection({
+      variables: {
+        election: electionRoundSelect
+      }
+    })
+    loadElectionsByYear()
   }, [electionRoundSelect])
 
+  // election
   useEffect(() => {
+    if (!electionsByYearData?.eden_historic_election[0]) return
     setElectionRoundSelect(
       electionsByYearData?.eden_historic_election[0].election
     )
     setElectionsByYearList(electionsByYearData?.eden_historic_election || [])
   }, [electionsByYearData])
 
+  // election
   useEffect(() => {
     if (!delegatesByElectionData && !incomeByElectionData) return
 
@@ -140,6 +122,16 @@ const useDelegateReportState = () => {
         ?.delegate_payer
     )
   }, [delegatesByElectionData, incomeByElectionData])
+
+  // election
+  useEffect(() => {
+    setMaxLevel(maxDelegateLevelData?.eden_election[0]?.delegate_level)
+  })
+
+  // election
+  useEffect(() => {
+    setDateElection(dateElectionData?.eden_historic_election[0]?.date_election)
+  }, [dateElectionData])
 
   useEffect(() => {
     setTransactionList(
@@ -158,14 +150,6 @@ const useDelegateReportState = () => {
     )
   }, [categoryListData])
 
-  useEffect(() => {
-    setMaxLevel(maxDelegateLevelData?.eden_election[0]?.delegate_level)
-  })
-
-  useEffect(() => {
-    setDateElection(dateElectionData?.eden_historic_election[0]?.date_election)
-  }, [dateElectionData])
-
   return [
     {
       electionRoundSelect,
@@ -179,7 +163,6 @@ const useDelegateReportState = () => {
     },
     {
       setElectionRoundSelect,
-      setElectionYearSelect,
       setDelegateSelect,
       setDelegatesList
     }

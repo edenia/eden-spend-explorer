@@ -38,7 +38,7 @@ const DelegateReport = () => {
       maxLevel,
       dateElection
     },
-    { setElectionRoundSelect, setElectionYearSelect, setDelegatesList }
+    { setElectionRoundSelect, setDelegatesList }
   ] = useDelegateReportState()
 
   const dateFormat = new Date(dateElection).toLocaleDateString(
@@ -48,12 +48,8 @@ const DelegateReport = () => {
 
   const handleChangeSelectedElection = event => {
     setLoader(true)
-    setElectionRoundSelect(event)
+    setElectionRoundSelect(Number(event))
   }
-
-  useEffect(() => {
-    setElectionYearSelect('All')
-  }, [])
 
   useEffect(async () => {
     if (delegateList.length > 0 && delegateList[0].delegate_payer && maxLevel) {
