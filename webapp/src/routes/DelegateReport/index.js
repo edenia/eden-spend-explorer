@@ -52,7 +52,7 @@ const DelegateReport = () => {
   }
 
   useEffect(async () => {
-    if (delegateList.length > 0 && delegateList[0].delegate_payer && maxLevel) {
+    if (delegateList.length > 0 && delegateList[0].delegate_payer) {
       setLoader(true)
       const variables = {
         value: delegateList.reduce((reduceList, delegate) => {
@@ -69,6 +69,7 @@ const DelegateReport = () => {
         `,
         variables
       )
+
       setDelegatesList(
         response.members.map(member => {
           const posDelegate = delegateList.find(
@@ -89,7 +90,7 @@ const DelegateReport = () => {
       )
       setLoader(false)
     }
-  }, [delegateList, maxLevel])
+  }, [delegateList])
 
   useEffect(() => {
     setAccordionList(
@@ -130,7 +131,9 @@ const DelegateReport = () => {
             <Autocomplete
               id="combo-box-demo"
               sx={{ width: 300 }}
-              options={delegateList.map(data => data.account)}
+              options={delegateList.map(
+                data => data.account || data.delegate_payer
+              )}
               onInputChange={(event, newInputValue) => {
                 setSearchValue(newInputValue)
               }}
