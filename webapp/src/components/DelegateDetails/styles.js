@@ -17,5 +17,12 @@ export default theme => ({
     [theme.breakpoints.down('md')]: {
       width: '100%'
     }
+  },
+  alertContainer: {
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: theme.spacing(4)
   }
 })

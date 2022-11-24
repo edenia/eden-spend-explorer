@@ -247,7 +247,8 @@ const useDelegateReportState = () => {
       transactionList,
       categoryList,
       loader,
-      accordionList
+      accordionList,
+      searchValue
     },
     {
       setElectionRoundSelect,

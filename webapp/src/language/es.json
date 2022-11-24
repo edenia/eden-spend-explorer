@@ -29,7 +29,8 @@
     "community": "Comunidad",
     "changelog": "Registro de cambios",
     "github": "Repositorio de Github",
-    "telegram": "Grupo en Telegram"
+    "telegram": "Grupo en Telegram",
+    "invalidEdenMember": "Usuario inválido, Este no es un miembro de Eden"
   },
   "homeRoute": {
     "edenSpendExplorer": "Explorador de Gastos Eden",

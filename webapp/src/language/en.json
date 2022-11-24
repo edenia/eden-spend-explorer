@@ -30,7 +30,7 @@
     "changelog": "Changelog",
     "github": "Github Repository",
     "telegram": "Telegram Channel",
-    "invalidEdenMember": "Invalid user, this aren't Eden member"
+    "invalidEdenMember": "Invalid user, this is't Eden member"
   },
   "homeRoute": {
     "edenSpendExplorer": "Eden Spend Explorer",

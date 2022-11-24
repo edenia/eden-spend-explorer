@@ -29,7 +29,8 @@ const DelegateReport = () => {
       transactionList,
       categoryList,
       loader,
-      accordionList
+      accordionList,
+      searchValue
     },
     { setElectionRoundSelect, setDelegateSelect, setSearchValue }
   ] = useDelegateReportState()
@@ -92,6 +93,7 @@ const DelegateReport = () => {
           transactionList={transactionList}
           categoryList={categoryList}
           setDelegateSelect={setDelegateSelect}
+          searchValue={searchValue}
         />
       )}
     </div>

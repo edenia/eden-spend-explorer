@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Accordion from '@mui/material/Accordion'
 import { makeStyles } from '@mui/styles'
 import AccordionDetails from '@mui/material/AccordionDetails'
-import { Typography } from '@mui/material'
+import { Alert, Divider, Typography } from '@mui/material'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { DelegateItem } from '@edenia/ui-kit'
@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 
 import { formatWithThousandSeparator } from '../../utils'
 import DelegateDetails from '../DelegateDetails'
+
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
@@ -19,7 +20,8 @@ const AccordionComp = ({
   accordionList,
   transactionList,
   categoryList,
-  setDelegateSelect
+  setDelegateSelect,
+  searchValue
 }) => {
   const [expanded, setExpanded] = React.useState(false)
   const classes = useStyles()
@@ -32,42 +34,54 @@ const AccordionComp = ({
 
   return (
     <div>
-      {accordionList.map((delegate, i) => (
-        <Accordion
-          key={`${delegate.account}-${i}`}
-          expanded={expanded === `${delegate.account}-${i}`}
-          onChange={handleChange(`${delegate.account}-${i}`, delegate.account)}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1bh-content"
-            id="panel1bh-header"
-            className={classes.summaryContentStyle}
+      {accordionList.length < 1 && searchValue.length > 0 ? (
+        <div className={classes.alertContainer}>
+          <Alert severity="error">
+            {t('invalidEdenMember', { ns: 'routes' })}
+          </Alert>
+        </div>
+      ) : (
+        accordionList.map((delegate, i) => (
+          <Accordion
+            key={`${delegate.account}-${i}`}
+            expanded={expanded === `${delegate.account}-${i}`}
+            onChange={handleChange(
+              `${delegate.account}-${i}`,
+              delegate.account
+            )}
           >
-            <DelegateItem
-              name={delegate.profile.name}
-              bgColor="#ffff"
-              image={`https://eden-genesis.mypinata.cloud/ipfs/${delegate?.profile?.image}`}
-              avatarIcon={delegate?.rank?.badge}
-              profileLink={delegate.profile.blog}
-              targetProfile="_blank"
-              positionText={delegate?.rank?.label}
-              headItem={
-                <Typography variant="h6">
-                  {formatWithThousandSeparator(delegate?.totalRewarded)}
-                </Typography>
-              }
-              text={t('rewarded', { ns: 'delegateRoute' })}
-            />
-          </AccordionSummary>
-          <AccordionDetails>
-            <DelegateDetails
-              categoryList={categoryList}
-              transactionList={transactionList}
-            />
-          </AccordionDetails>
-        </Accordion>
-      ))}
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+              className={classes.summaryContentStyle}
+            >
+              <DelegateItem
+                name={delegate.profile.name}
+                bgColor="#ffff"
+                image={`https://eden-genesis.mypinata.cloud/ipfs/${delegate?.profile?.image}`}
+                avatarIcon={delegate?.rank?.badge}
+                profileLink={delegate.profile.blog}
+                targetProfile="_blank"
+                positionText={delegate?.rank?.label}
+                headItem={
+                  <Typography variant="h6">
+                    {formatWithThousandSeparator(delegate?.totalRewarded)}
+                  </Typography>
+                }
+                text={t('rewarded', { ns: 'delegateRoute' })}
+              />
+            </AccordionSummary>
+            <Divider variant="middle" />
+            <AccordionDetails>
+              <DelegateDetails
+                categoryList={categoryList}
+                transactionList={transactionList}
+              />
+            </AccordionDetails>
+          </Accordion>
+        ))
+      )}
     </div>
   )
 }
@@ -76,7 +90,8 @@ AccordionComp.propTypes = {
   accordionList: PropTypes.array,
   transactionList: PropTypes.array,
   categoryList: PropTypes.array,
-  setDelegateSelect: PropTypes.func
+  setDelegateSelect: PropTypes.func,
+  searchValue: PropTypes.string
 }
 
 export default memo(AccordionComp)
