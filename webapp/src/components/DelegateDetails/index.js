@@ -1,5 +1,7 @@
 import React, { memo } from 'react'
 import PropTypes from 'prop-types'
+import { Alert } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@mui/styles'
 
 import StackedBarChartReport from '../../components/StackedBarChartReport'
@@ -9,17 +11,34 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 
 const DelegateDetails = ({ categoryList, transactionList }) => {
+  const { t } = useTranslation()
   const classes = useStyles()
 
   return (
     <>
       <div className={classes.chartContainer}>
-        <PieChartReport
-          data={categoryList}
-          keyTranslation={'titlePieChart'}
-          pathTranslation={'delegateRoute'}
-          typeData={'delegate'}
-        />
+        {!categoryList[0] ? (
+          <Alert
+            severity="error"
+            sx={{
+              display: 'flex',
+              marginTop: '200px',
+              height: '50px',
+              width: '350px',
+              alignContent: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            {t('noExpense', { ns: 'generalForm' })}
+          </Alert>
+        ) : (
+          <PieChartReport
+            data={categoryList}
+            keyTranslation={'titlePieChart'}
+            pathTranslation={'delegateRoute'}
+            typeData={'delegate'}
+          />
+        )}
         <div className={classes.verticalLine} />
         <StackedBarChartReport
           data={transactionList}

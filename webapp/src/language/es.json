@@ -60,7 +60,8 @@
     "uncategorized": "No categorizado",
     "election": "Elección",
     "income": "Ingresos",
-    "expense": "Gastos"
+    "expense": "Gastos",
+    "noExpense": "No hay Gastos para Mostrar"
   },
   "incomeRoute": {
     "titleBarChart": "Ingresos por Elección",
