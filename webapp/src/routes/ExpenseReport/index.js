@@ -123,16 +123,14 @@ const ExpenseReport = () => {
       <div id="treasury-container-id">
         <TreasuryBalance />
       </div>
-      <div className={classes.borderChar}>
-        <BarChartReport
-          data={expenseByElectionsList}
-          keyTranslation={'titleBarChart'}
-          pathTranslation={'expenseRoute'}
-          showLegend={true}
-          typeData={'expense'}
-        />
-      </div>
-      <Divider />
+      <BarChartReport
+        data={expenseByElectionsList}
+        keyTranslation={'titleBarChart'}
+        pathTranslation={'expenseRoute'}
+        showLegend={true}
+        typeData={'expense'}
+      />
+      <Divider variant="middle" />
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
           <FormControl>
@@ -155,43 +153,45 @@ const ExpenseReport = () => {
             </RadioGroup>
           </FormControl>
         </div>
-        <div id="id-radio-election-container">
-          {showElectionRadio === 'oneElection' && (
-            <>
-              <SelectComponent
-                onChangeFunction={setElectionYearSelect}
-                labelSelect={t('textYearSelect', { ns: 'generalForm' })}
-                values={getListElectionYears()}
-                actualValue={electionYearSelect}
-              />
-              <SelectComponent
-                onChangeFunction={setElectionRoundSelect}
-                labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
-                values={electionsByYearList.map(data => `${data.election}`)}
-                actualValue={electionRoundSelect}
-              />
-            </>
-          )}
-        </div>
+        {showElectionRadio === 'oneElection' && (
+          <div id="id-radio-election-container">
+            <SelectComponent
+              onChangeFunction={setElectionYearSelect}
+              labelSelect={t('textYearSelect', { ns: 'generalForm' })}
+              values={getListElectionYears()}
+              actualValue={electionYearSelect}
+            />
+            <SelectComponent
+              onChangeFunction={setElectionRoundSelect}
+              labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
+              values={electionsByYearList.map(data => `${data.election}`)}
+              actualValue={electionRoundSelect}
+            />
+          </div>
+        )}
       </div>
       <div className={classes.chartContainer}>
-        <PieChartReport
-          data={categoryList}
-          keyTranslation={'titlePieChart1'}
-          pathTranslation={'expenseRoute'}
-          typeData={'expense'}
-        />
-        <div className={classes.verticalLine} />
-        <PieChartReport
-          data={delegatesList}
-          keyTranslation={'titlePieChart2'}
-          pathTranslation={'expenseRoute'}
-          typeData={'expense'}
-        />
+        <div className={classes.pieChartContainer}>
+          <PieChartReport
+            data={categoryList}
+            keyTranslation={'titlePieChart1'}
+            pathTranslation={'expenseRoute'}
+            typeData={'expense'}
+          />
+        </div>
+        <div className={classes.dividerLine} />
+        <div className={classes.pieChartContainer}>
+          <PieChartReport
+            data={delegatesList}
+            keyTranslation={'titlePieChart2'}
+            pathTranslation={'expenseRoute'}
+            typeData={'expense'}
+          />
+        </div>
       </div>
+      <Divider variant="middle" />
       <div className={classes.tableContainer}>
-        <Divider />
-        <div className={classes.subTitle}>
+        <div className={classes.title}>
           <Typography variant="span">
             {showElectionRadio === 'allElections'
               ? t('titleTable2', { ns: 'expenseRoute' })

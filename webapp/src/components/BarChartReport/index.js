@@ -37,41 +37,17 @@ const RenderChartLegend = ({ data }) => {
   const { t } = useTranslation()
 
   return (
-    <div className={classes.chartLinks}>
+    <div className={classes.chartLegent}>
       <a key={`key-Un${data.toLocaleLowerCase()}-link-chart`}>
-        <Box
-          width={12}
-          height={12}
-          ml={2}
-          mt={0.5}
-          mr={0.5}
-          bgcolor="#f4d35e"
-          borderRadius={5}
-        />
+        <Box className={classes.legentCircle} bgcolor="#f4d35e" />
         {t(`un${data.toLocaleLowerCase()}`, { ns: 'generalForm' })}
       </a>
       <a key={`key-${data}-link-chart`}>
-        <Box
-          width={12}
-          height={12}
-          ml={2}
-          mt={0.5}
-          mr={0.5}
-          bgcolor="#ee964b"
-          borderRadius={5}
-        />
+        <Box className={classes.legentCircle} bgcolor="#ee964b" />
         {t(`${data.toLocaleLowerCase()}`, { ns: 'generalForm' })}
       </a>
       <a key={`key-total-link-chart`}>
-        <Box
-          width={12}
-          height={12}
-          ml={2}
-          mt={0.5}
-          mr={0.5}
-          bgcolor="#19647e"
-          borderRadius={5}
-        />
+        <Box className={classes.legentCircle} bgcolor="#19647e" />
         {t('total', { ns: 'generalForm' })}
       </a>
     </div>
@@ -167,10 +143,10 @@ const BarChartReport = ({
   }, [selectedUSD])
 
   return (
-    <>
-      <div className={classes.chartContainer}>
-        <div className={classes.textContainer}>
-          <Typography className={classes.titleChart} variant="span">
+    <div className={classes.chartContainer}>
+      <div className={classes.titleContainer}>
+        <div className={classes.title}>
+          <Typography variant="span">
             {t(keyTranslation, { ns: pathTranslation })}
           </Typography>
           <TooltipDownload title="Download">
@@ -178,77 +154,67 @@ const BarChartReport = ({
               <DownloadOutlined />
             </IconButton>
           </TooltipDownload>
-          <div className={classes.filtersChartContainer}>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Switch checked={selectedUSD} onChange={handleChange} />
-                }
-                label={t('switchInput', { ns: 'generalForm' })}
-                labelPlacement="start"
-              />
-            </FormGroup>
-          </div>
         </div>
-        <div id="chart-scroll-id">
-          <ResponsiveContainer width="100%" height={400}>
-            <ComposedChart
-              height={400}
-              data={data}
-              margin={{
-                top: 20,
-                right: 0,
-                bottom: 20,
-                left: 12
-              }}
-              ref={barRef}
-            >
-              <CartesianGrid stroke="#f5f5f5" />
-              <XAxis tick={{ fontSize: 10 }} dataKey="election" scale="auto" />
-              <YAxis
-                tick={{ fontSize: 14, stroke: '#000000', strokeWidth: 0.5 }}
-              />
-              <Tooltip
-                wrapperStyle={{
-                  outline: 'none',
-                  borderRadius: '4px',
-                  backgroundColor: '#bfefef',
-                  fontSize: '14px',
-                  padding: '8px'
-                }}
-                content={<CustomTooltip coinType={coinType} />}
-              />
-              {showLegend && (
-                <Legend content={<RenderChartLegend data={category} />} />
-              )}
-              <Bar
-                dataKey={`${coinType}_UN${category.toLocaleUpperCase()}`}
-                barSize={35}
-                fill="#f4d35e"
-              >
-                {data.map(({ election }) => (
-                  <Cell key={`cell-${election}`} />
-                ))}
-              </Bar>
-              <Bar
-                dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
-                barSize={35}
-                fill="#ee964b"
-              >
-                {data.map(({ election }) => (
-                  <Cell key={`cell-${election}`} />
-                ))}
-              </Bar>
-              <Bar dataKey={`${coinType}_TOTAL`} barSize={35} fill="#19647e">
-                {data.map(({ election }) => (
-                  <Cell key={`cell-${election}`} />
-                ))}
-              </Bar>
-            </ComposedChart>
-          </ResponsiveContainer>
+        <div className={classes.filter}>
+          <FormGroup>
+            <FormControlLabel
+              control={<Switch checked={selectedUSD} onChange={handleChange} />}
+              label={t('switchInput', { ns: 'generalForm' })}
+              labelPlacement="start"
+            />
+          </FormGroup>
         </div>
       </div>
-    </>
+      <ResponsiveContainer width="100%" height={300} marginTop="16px">
+        <ComposedChart height={300} data={data} ref={barRef}>
+          <CartesianGrid stroke="#f0f0f0" />
+          <XAxis
+            tick={{ fontSize: 10, stroke: '#000', strokeWidth: 0.5 }}
+            dataKey="election"
+            scale="auto"
+          />
+          <YAxis
+            tick={{ fontSize: '10px', stroke: '#000', strokeWidth: 0.1 }}
+          />
+          <Tooltip
+            wrapperStyle={{
+              outline: 'none',
+              borderRadius: '4px',
+              backgroundColor: '#F9F9F9',
+              fontSize: '14px',
+              padding: '8px'
+            }}
+            content={<CustomTooltip coinType={coinType} />}
+          />
+          {showLegend && (
+            <Legend content={<RenderChartLegend data={category} />} />
+          )}
+          <Bar
+            dataKey={`${coinType}_UN${category.toLocaleUpperCase()}`}
+            barSize={35}
+            fill="#f4d35e"
+          >
+            {data.map(({ election }) => (
+              <Cell key={`cell-${election}`} />
+            ))}
+          </Bar>
+          <Bar
+            dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
+            barSize={35}
+            fill="#ee964b"
+          >
+            {data.map(({ election }) => (
+              <Cell key={`cell-${election}`} />
+            ))}
+          </Bar>
+          <Bar dataKey={`${coinType}_TOTAL`} barSize={35} fill="#19647e">
+            {data.map(({ election }) => (
+              <Cell key={`cell-${election}`} />
+            ))}
+          </Bar>
+        </ComposedChart>
+      </ResponsiveContainer>
+    </div>
   )
 }
 

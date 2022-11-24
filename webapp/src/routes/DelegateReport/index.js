@@ -46,11 +46,11 @@ const DelegateReport = () => {
   return (
     <div className={classes.root}>
       <div className={classes.headPage}>
-        <div className={classes.textContainer}>
-          <Typography variant="h6">
+        <div className={classes.title}>
+          <Typography variant="span">
             {`${t('electionTime', { ns: 'delegateRoute' })}: ${dateFormat}`}
           </Typography>
-          <Typography variant="h6">
+          <Typography variant="span">
             {t('instruction', { ns: 'delegateRoute' })}
           </Typography>
         </div>
@@ -59,45 +59,41 @@ const DelegateReport = () => {
         </div>
       </div>
       <div className={classes.filtersContainer}>
-        <div id="id-select-election-container">
-          <Autocomplete
-            id="combo-box-demo"
-            sx={{ width: 300 }}
-            options={delegateList.map(
-              data => data.account || data.delegate_payer
-            )}
-            onInputChange={(event, newInputValue) => {
-              setSearchValue(newInputValue)
-            }}
-            autoHighlight
-            clearOnEscape
-            renderInput={params => (
-              <TextField {...params} label="Delegate" variant="outlined" />
-            )}
-          />
-          <SelectComponent
-            onChangeFunction={event => handleChangeSelectedElection(event)}
-            labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
-            values={electionRoundList.map(data => `${data.election}`)}
-            actualValue={electionRoundSelect}
-            width={200}
-          />
+        <Autocomplete
+          id="combo-box-demo"
+          sx={{ width: 300 }}
+          options={delegateList.map(
+            data => data.account || data.delegate_payer
+          )}
+          onInputChange={(event, newInputValue) => {
+            setSearchValue(newInputValue)
+          }}
+          autoHighlight
+          clearOnEscape
+          renderInput={params => (
+            <TextField {...params} label="Delegate" variant="outlined" />
+          )}
+        />
+        <SelectComponent
+          onChangeFunction={event => handleChangeSelectedElection(event)}
+          labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
+          values={electionRoundList.map(data => `${data.election}`)}
+          actualValue={electionRoundSelect}
+          width={200}
+        />
+      </div>
+      {loader ? (
+        <div className={classes.spinner}>
+          <Spinner />
         </div>
-      </div>
-      <div className={classes.content}>
-        {loader ? (
-          <div className={classes.spinner}>
-            <Spinner />
-          </div>
-        ) : (
-          <AccordionComp
-            accordionList={accordionList}
-            transactionList={transactionList}
-            categoryList={categoryList}
-            setDelegateSelect={setDelegateSelect}
-          />
-        )}
-      </div>
+      ) : (
+        <AccordionComp
+          accordionList={accordionList}
+          transactionList={transactionList}
+          categoryList={categoryList}
+          setDelegateSelect={setDelegateSelect}
+        />
+      )}
     </div>
   )
 }

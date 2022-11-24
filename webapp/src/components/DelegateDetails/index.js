@@ -17,35 +17,40 @@ const DelegateDetails = ({ categoryList, transactionList }) => {
   return (
     <>
       <div className={classes.chartContainer}>
-        {!categoryList[0] ? (
-          <Alert
-            severity="error"
-            sx={{
-              display: 'flex',
-              marginTop: '200px',
-              height: '50px',
-              width: '350px',
-              alignContent: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            {t('noExpense', { ns: 'generalForm' })}
-          </Alert>
-        ) : (
-          <PieChartReport
-            data={categoryList}
-            keyTranslation={'titlePieChart'}
-            pathTranslation={'delegateRoute'}
-            typeData={'delegate'}
-          />
-        )}
+        <div className={classes.pieChartContainer}>
+          {!categoryList[0] ? (
+            <Alert
+              severity="error"
+              sx={{
+                display: 'flex',
+                marginTop: '200px',
+                height: '50px',
+                width: '350px',
+                alignContent: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {t('noExpense', { ns: 'generalForm' })}
+            </Alert>
+          ) : (
+            <PieChartReport
+              data={categoryList}
+              keyTranslation={'titlePieChart'}
+              pathTranslation={'delegateRoute'}
+              typeData={'delegate'}
+              outerRadius={140}
+            />
+          )}
+        </div>
         <div className={classes.verticalLine} />
-        <StackedBarChartReport
-          data={transactionList}
-          keyTranslation={'titleBarChart'}
-          pathTranslation={'delegateRoute'}
-          showLegend={true}
-        />
+        <div className={classes.pieChartContainer}>
+          <StackedBarChartReport
+            data={transactionList}
+            keyTranslation={'titleBarChart'}
+            pathTranslation={'delegateRoute'}
+            showLegend={true}
+          />
+        </div>
       </div>
     </>
   )

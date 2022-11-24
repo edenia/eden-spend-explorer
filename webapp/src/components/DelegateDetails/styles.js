@@ -1,26 +1,21 @@
 export default theme => ({
   verticalLine: {
-    display: 'flex',
-    position: 'relative',
-    borderLeft: '2px solid rgba(0, 0, 0, 0.12)',
-    height: '250',
-    width: '2px',
-    right: '30px'
+    borderLeft: '1px solid rgba(225,225,225,.99)',
+    borderBottom: '1px solid rgba(225,225,225,.99)',
+    marginBottom: theme.spacing(1)
   },
   chartContainer: {
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    overflowX: 'hidden',
-    with: '100%',
-    '& #chart-scroll-id': {
-      minWidth: '925px',
-      width: '100%'
-    },
+    justifyContent: 'space-between',
     [theme.breakpoints.down('md')]: {
+      justifyContent: 'center',
       flexDirection: 'column'
+    }
+  },
+  pieChartContainer: {
+    width: '35vw',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
     }
   }
 })
