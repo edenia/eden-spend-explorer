@@ -9,7 +9,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { DelegateItem } from '@edenia/ui-kit'
 import { useTranslation } from 'react-i18next'
 
-import useDelegateReportState from '../../hooks/customHooks/useDelegateReportState'
 import { formatWithThousandSeparator } from '../../utils'
 import DelegateDetails from '../DelegateDetails'
 import styles from './styles'
@@ -17,72 +16,67 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 
 const AccordionComp = ({
-  nameDelegate,
-  accountDelegate,
-  imageDelegate,
-  avatarIcon,
-  profileLink,
-  delegateLevel,
-  eosRewarded
+  accordionList,
+  transactionList,
+  categoryList,
+  setDelegateSelect
 }) => {
   const [expanded, setExpanded] = React.useState(false)
   const classes = useStyles()
   const { t } = useTranslation()
-  const [{ transactionList, categoryList }, { setDelegateSelect }] =
-    useDelegateReportState()
 
-  const handleChange = panel => (event, isExpanded) => {
-    isExpanded && setDelegateSelect(accountDelegate)
+  const handleChange = (panel, account) => (event, isExpanded) => {
+    isExpanded ? setDelegateSelect(account) : setDelegateSelect('')
     setExpanded(isExpanded ? panel : false)
   }
 
   return (
     <div>
-      <Accordion
-        expanded={expanded === 'panel1'}
-        onChange={handleChange('panel1')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-          className={classes.summaryContentStyle}
+      {accordionList.map((delegate, i) => (
+        <Accordion
+          key={`${delegate.account}-${i}`}
+          expanded={expanded === `${delegate.account}-${i}`}
+          onChange={handleChange(`${delegate.account}-${i}`, delegate.account)}
         >
-          <DelegateItem
-            name={nameDelegate}
-            bgColor="#ffff"
-            image={`https://eden-genesis.mypinata.cloud/ipfs/${imageDelegate}`}
-            avatarIcon={avatarIcon}
-            profileLink={profileLink}
-            targetProfile="_blank"
-            positionText={delegateLevel}
-            headItem={
-              <Typography variant="h6">
-                {formatWithThousandSeparator(eosRewarded)}
-              </Typography>
-            }
-            text={t('rewarded', { ns: 'delegateRoute' })}
-          />
-        </AccordionSummary>
-        <AccordionDetails>
-          <DelegateDetails
-            categoryList={categoryList}
-            transactionList={transactionList}
-          />
-        </AccordionDetails>
-      </Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
+            className={classes.summaryContentStyle}
+          >
+            <DelegateItem
+              name={delegate.profile.name}
+              bgColor="#ffff"
+              image={`https://eden-genesis.mypinata.cloud/ipfs/${delegate?.profile?.image}`}
+              avatarIcon={delegate?.rank?.badge}
+              profileLink={delegate.profile.blog}
+              targetProfile="_blank"
+              positionText={delegate?.rank?.label}
+              headItem={
+                <Typography variant="h6">
+                  {formatWithThousandSeparator(delegate?.totalRewarded)}
+                </Typography>
+              }
+              text={t('rewarded', { ns: 'delegateRoute' })}
+            />
+          </AccordionSummary>
+          <AccordionDetails>
+            <DelegateDetails
+              categoryList={categoryList}
+              transactionList={transactionList}
+            />
+          </AccordionDetails>
+        </Accordion>
+      ))}
     </div>
   )
 }
 
 AccordionComp.propTypes = {
-  nameDelegate: PropTypes.string,
-  accountDelegate: PropTypes.string,
-  imageDelegate: PropTypes.string,
-  avatarIcon: PropTypes.string,
-  profileLink: PropTypes.string,
-  delegateLevel: PropTypes.string,
-  eosRewarded: PropTypes.number
+  accordionList: PropTypes.array,
+  transactionList: PropTypes.array,
+  categoryList: PropTypes.array,
+  setDelegateSelect: PropTypes.func
 }
 
 export default memo(AccordionComp)

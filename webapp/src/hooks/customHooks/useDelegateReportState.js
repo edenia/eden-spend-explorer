@@ -1,42 +1,49 @@
-import { useCallback, useEffect, useReducer } from 'react'
-// import { useLazyQuery } from '@apollo/client'
+import { useEffect, useReducer } from 'react'
+import { gql, GraphQLClient } from 'graphql-request'
 
-import { GET_ELECTIONS_BY_YEAR } from '../../gql/general.gql'
 import {
+  GET_ELECTIONS_BY_YEAR,
+  GET_MEMBERS_DATA,
   GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION,
   GET_EXPENSE_BY_CATEGORY,
   GET_INITIAL_DELEGATE_DATA
-} from '../../gql/delegate.gql'
+} from '../../gql'
 import {
   newDataFormatByTypeDelegate,
   newDataFormatByCategoryDelegate
 } from '../../utils/new-format-objects'
-import { useImperativeQuery } from '../../utils'
+import { useImperativeQuery, classifyMemberRank } from '../../utils'
 
 const INIT_REDUCER_DATA = {
-  electionRoundSelect: 0,
+  electionRoundSelect: null,
   delegateSelect: '',
-  electionsByYearList: [],
+  electionRoundList: [],
   delegateList: [],
   transactionList: [],
   categoryList: [],
+  accordionList: [],
+  profilesList: [],
+  loader: false,
   maxLevel: 0,
-  dateElection: '2021-10-09T00:00:00+00:00'
+  searchValue: ''
 }
+const client = new GraphQLClient('https://eden-api.edenia.cloud/v1/graphql', {
+  headers: {}
+})
 
 const delegateReportStateReducer = (state, action) => {
   switch (action.type) {
     case 'SET_GENERAL_DATA':
       return { ...state, ...action.payload }
 
-    case 'SET_DELEGATE_LIST':
-      return { ...state, delegateList: action.payload }
-
     case 'SET_DELEGATE_SELECT':
       return { ...state, delegateSelect: action.payload }
 
     case 'SET_ROUND_SELECT':
       return { ...state, electionRoundSelect: action.payload }
+
+    case 'SET_SEARCH_VALUE':
+      return { ...state, searchValue: action.payload }
 
     default:
       break
@@ -48,41 +55,101 @@ const useDelegateReportState = () => {
     delegateReportStateReducer,
     INIT_REDUCER_DATA
   )
-
   const {
     electionRoundSelect,
     delegateSelect,
-    electionsByYearList,
+    electionRoundList,
     delegateList,
     transactionList,
     categoryList,
     maxLevel,
-    dateElection
+    dateElection,
+    loader,
+    accordionList,
+    searchValue,
+    profilesList
   } = state
 
-  const getDataByDelegate = useCallback(async () => {
+  const setDelegateSelect = delegateSelect => {
+    dispatch({ type: 'SET_DELEGATE_SELECT', payload: delegateSelect })
+  }
+
+  const setElectionRoundSelect = electionRoundSelect => {
+    dispatch({ type: 'SET_ROUND_SELECT', payload: electionRoundSelect })
+  }
+
+  const setSearchValue = searchValue => {
+    dispatch({ type: 'SET_SEARCH_VALUE', payload: searchValue })
+  }
+
+  const loadTransactions = useImperativeQuery(
+    GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION
+  )
+  const loadInitialData = useImperativeQuery(GET_INITIAL_DELEGATE_DATA)
+  const loadCategoryList = useImperativeQuery(GET_EXPENSE_BY_CATEGORY)
+  const loadElectionsByYear = useImperativeQuery(GET_ELECTIONS_BY_YEAR)
+
+  useEffect(async () => {
+    const responseElectionByYear = await loadElectionsByYear({
+      minDate: `2021-01-01`,
+      maxDate: `${new Date().getFullYear()}-12-31`
+    })
+    const currentElection =
+      responseElectionByYear.data?.eden_historic_election.at(-1).election
+    const responseInitialData = await loadInitialData({
+      election: currentElection
+    })
+    const maxLevel =
+      responseInitialData.data?.delegateFrontend?.data.at(-1).delegate_level
+
+    dispatch({
+      type: 'SET_GENERAL_DATA',
+      payload: {
+        electionRoundList: responseElectionByYear.data?.eden_historic_election,
+        electionRoundSelect: currentElection,
+        maxLevel
+      }
+    })
+  }, [])
+
+  useEffect(async () => {
+    if (electionRoundSelect == null) return
+
     const responseInitialData = await loadInitialData({
       election: electionRoundSelect
     })
-
     const length = responseInitialData.data?.delegateFrontend?.data.length
-
     const maxLevel =
-      responseInitialData.data?.delegateFrontend?.data[length - 1]
-        .delegate_level || 0
-    const dateElection =
-      responseInitialData.data?.delegateFrontend?.data[length - 2]
-        .date_election || '2021-10-09T00:00:00+00:00'
+      responseInitialData.data?.delegateFrontend?.data.at(-1).delegate_level
+    const selectedElectionDate =
+      responseInitialData.data?.delegateFrontend?.data.at(-2)
     const delegates =
-      responseInitialData.data.delegateFrontend?.data.slice(0, length - 3) || []
+      responseInitialData.data.delegateFrontend?.data.slice(0, length - 2) || []
+
+    if (delegates.length > 0) {
+      getProfiles(delegates)
+    }
+
+    dispatch({
+      type: 'SET_GENERAL_DATA',
+      payload: {
+        maxLevel,
+        dateElection: selectedElectionDate.date_election,
+        delegateList: delegates
+      }
+    })
+  }, [electionRoundSelect])
+
+  useEffect(async () => {
+    if (!delegateSelect) return
 
     const responseCategory = await loadCategoryList({
-      election: electionRoundSelect,
+      election: Number(electionRoundSelect),
       delegate: delegateSelect
     })
 
     const responseTransaction = await loadTransactions({
-      election: electionRoundSelect,
+      election: Number(electionRoundSelect),
       delegate: delegateSelect
     })
 
@@ -98,199 +165,94 @@ const useDelegateReportState = () => {
     dispatch({
       type: 'SET_GENERAL_DATA',
       payload: {
-        maxLevel: maxLevel,
-        dateElection: dateElection,
-        delegateList: delegates,
         transactionList: transactions || [],
-        categoryList: categories || [],
-        electionRoundSelect
+        categoryList: categories || []
       }
     })
-  }, [electionRoundSelect, delegateSelect])
+  }, [delegateSelect])
 
-  const setDelegatesList = useCallback(
-    delegateList => {
-      dispatch({ type: 'SET_DELEGATE_LIST', payload: delegateList })
-    },
-    [electionRoundSelect]
-  )
-
-  const setDelegateSelect = delegateSelect => {
-    dispatch({ type: 'SET_DELEGATE_SELECT', payload: delegateSelect })
-  }
-
-  const setElectionRoundSelect = electionRoundSelect => {
-    dispatch({ type: 'SET_ROUND_SELECT', payload: electionRoundSelect })
-  }
-
-  // const [electionRoundSelect, setElectionRoundSelect] = useState(0)
-  // const [delegateSelect, setDelegateSelect] = useState('')
-  // const [electionsByYearList, setElectionsByYearList] = useState([])
-  // const [delegateList, setDelegatesList] = useState([])
-  // const [transactionList, setTransactionList] = useState([])
-  // const [categoryList, setCategoryList] = useState([])
-  // const [maxLevel, setMaxLevel] = useState(0)
-  // const [dateElection, setDateElection] = useState('2021-10-09T00:00:00+00:00')
-
-  // const [transactionsData, setTransactionData] = useState([])
-  // const [categoryListData, setCategoryListData] = useState([])
-  // const [initialData, setInitialData] = useState([])
-
-  const loadTransactions = useImperativeQuery(
-    GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION
-  )
-
-  // const [loadInitialData, { data: initialData }] = useLazyQuery(
-  //   GET_INITIAL_DELEGATE_DATA
-  // )
-
-  // const [loadCategoryList, { data: categoryListData }] = useLazyQuery(
-  //   GET_EXPENSE_BY_CATEGORY
-  // )
-
-  // const [loadElectionsByYear, { data: electionsByYearData }] = useLazyQuery(
-  //   GET_ELECTIONS_BY_YEAR,
-  //   {
-  //     variables: {
-  //       minDate: `2021-01-01`,
-  //       maxDate: `${new Date().getFullYear()}-12-31`
-  //     }
-  //   }
-  // )
-
-  const loadInitialData = useImperativeQuery(GET_INITIAL_DELEGATE_DATA)
-
-  const loadCategoryList = useImperativeQuery(GET_EXPENSE_BY_CATEGORY)
-
-  const loadElectionsByYear = useImperativeQuery(GET_ELECTIONS_BY_YEAR)
-
-  useEffect(() => {
-    const test = async () => {
-      const responseElectionByYear = await loadElectionsByYear({
-        minDate: `2021-01-01`,
-        maxDate: `${new Date().getFullYear()}-12-31`
-      })
-
-      const responseInitialData = await loadInitialData({
-        election: electionRoundSelect
-      })
-
-      const length = responseInitialData.data?.delegateFrontend?.data.length
-
-      const maxLevel =
-        responseInitialData.data?.delegateFrontend?.data[length - 1]
-          .delegate_level || 0
-      const dateElection =
-        responseInitialData.data?.delegateFrontend?.data[length - 2]
-          .date_election || '2021-10-09T00:00:00+00:00'
-      const delegates =
-        responseInitialData.data.delegateFrontend?.data.slice(0, length - 3) ||
-        []
-
-      // console.log({
-      //   responseTransaction: responseTransaction.data,
-      //   responseCategory: responseCategory.data,
-      //   responseInitialData: responseInitialData.data,
-      //   setInitialData,
-      //   dispatch
-      // })
+  const getProfiles = async delegates => {
+    if (delegates[0].delegate_payer) {
+      dispatch({ type: 'SET_GENERAL_DATA', payload: { loader: true } })
+      const variables = {
+        value: delegates.reduce((reduceList, delegate) => {
+          return [...reduceList, delegate.delegate_payer]
+        }, []),
+        orderBy: {
+          election_rank: 'desc'
+        },
+        limit: 50
+      }
+      const response = await client.request(
+        gql`
+          ${GET_MEMBERS_DATA}
+        `,
+        variables
+      )
 
       dispatch({
         type: 'SET_GENERAL_DATA',
         payload: {
-          maxLevel: maxLevel,
-          dateElection: dateElection,
-          delegateList: delegates,
-          electionsByYearList:
-            responseElectionByYear.data?.eden_historic_election
+          loader: false,
+          profilesList: response.members.map(member => {
+            const posDelegate = delegates.find(
+              delegate => delegate.delegate_payer === member.account
+            )
+
+            if (posDelegate) {
+              const rank = classifyMemberRank(
+                posDelegate.delegate_level,
+                maxLevel
+              )
+
+              return { ...member, rank, totalRewarded: posDelegate.totalIncome }
+            }
+
+            return member
+          })
         }
       })
     }
-
-    console.count()
-    test()
-  }, [])
+  }
 
   useEffect(() => {
-    getDataByDelegate()
-  }, [delegateSelect, electionRoundSelect, getDataByDelegate])
+    dispatch({
+      type: 'SET_GENERAL_DATA',
+      payload: {
+        accordionList: profilesList.filter(delegate =>
+          delegate?.account?.includes(searchValue)
+        )
+      }
+    })
+  }, [profilesList, searchValue])
 
-  // console.log({
-  //   electionRoundSelect,
-  //   delegateSelect,
-  //   electionsByYearList,
-  //   delegateList,
-  //   transactionList,
-  //   categoryList,
-  //   maxLevel,
-  //   dateElection
-  // })
+  accordionList.sort((d1, d2) => {
+    if (d1?.totalRewarded < d2?.totalRewarded) return 1
+    else if (d1?.totalRewarded > d2?.totalRewarded) return -1
+    else return 0
+  })
 
-  // useEffect(() => {
-  //   // loadInitialData({
-  //   //   variables: {
-  //   //     election: 0
-  //   //   }
-  //   // })
-  //   loadElectionsByYear()
-  // }, [])
-
-  // useEffect(() => {
-  //   if (!initialData) return
-
-  //   const length = initialData?.delegateFrontend?.data.length
-
-  //   const maxLevel =
-  //     initialData?.delegateFrontend?.data[length - 1].delegate_level || 0
-  //   const dateElection =
-  //     initialData?.delegateFrontend?.data[length - 2].date_election ||
-  //     '2021-10-09T00:00:00+00:00'
-  //   const delegates =
-  //     initialData.delegateFrontend?.data.slice(0, length - 3) || []
-  //   console.log(maxLevel, dateElection, delegates)
-  //   // setMaxLevel(maxLevel)
-  //   // setDateElection(dateElection)
-  //   // setDelegatesList(delegates)
-  // }, [initialData])
-
-  // election
-  // useEffect(() => {
-  //   if (!electionsByYearData?.eden_historic_election[0]) return
-  //   setElectionsByYearList(electionsByYearData?.eden_historic_election || [])
-  // }, [electionsByYearData])
-
-  // useEffect(() => {
-  //   setTransactionList(
-  //     newDataFormatByTypeDelegate(
-  //       transactionsData?.historic_incomes || [],
-  //       transactionsData?.historic_expenses || []
-  //     ) || []
-  //   )
-  // }, [transactionsData])
-
-  // useEffect(() => {
-  //   setCategoryList(
-  //     newDataFormatByCategoryDelegate(
-  //       categoryListData?.expenses_by_category_and_delegate || []
-  //     )
-  //   )
-  // }, [categoryListData])
+  accordionList.sort((d1, d2) => {
+    if (d1?.rank?.memberType < d2?.rank?.memberType) return 1
+    else if (d1?.rank?.memberType > d2?.rank?.memberType) return -1
+    else return 0
+  })
 
   return [
     {
       electionRoundSelect,
-      delegateSelect,
-      electionsByYearList,
-      transactionList,
+      electionRoundList,
       delegateList,
+      dateElection,
+      transactionList,
       categoryList,
-      maxLevel,
-      dateElection
+      loader,
+      accordionList
     },
     {
       setElectionRoundSelect,
       setDelegateSelect,
-      setDelegatesList
+      setSearchValue
     }
   ]
 }
