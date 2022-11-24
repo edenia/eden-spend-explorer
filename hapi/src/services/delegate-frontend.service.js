@@ -11,8 +11,10 @@ const newDataFormatDelegatesByElectionDelegate = ({
       )
       if (posDelegate) {
         const totalIncome = posDelegate.eos_claimed + posDelegate.eos_unclaimed
+
         return { ...delegate, totalIncome }
       }
+
       return delegate
     })
   }
@@ -38,6 +40,7 @@ const getData = async election => {
   const dataFound = {
     data: dataDelegate
   }
+
   return dataFound
 }
 
