@@ -65,8 +65,6 @@ const ExpenseReport = () => {
           ...firstObj
         }))
 
-  console.log(tableData)
-
   const columns = [
     {
       field: 'election',

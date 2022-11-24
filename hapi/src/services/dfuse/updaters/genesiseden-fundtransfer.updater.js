@@ -35,7 +35,7 @@ module.exports = {
         await edenTransactionGql.save(transactionData)
       } catch (error) {
         console.error(
-          `error to sync fundtransfer ${action.action}: ${error.message}`
+          `fundtransfer sync error ${action.action}: ${error.message}`
         )
       }
     } else {

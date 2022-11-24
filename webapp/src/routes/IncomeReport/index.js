@@ -66,8 +66,6 @@ const IncomeReport = () => {
           ...firstObj
         }))
 
-  console.log(tableData)
-
   const columns = [
     {
       field: 'election',
