@@ -162,6 +162,10 @@ export const newDataFormatTotalByCategoryExpense = totalByCategory =>
 
 export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
   const transactions = []
+  const resultUncategorizedEOS =
+    expenseList[0]?.eos_uncategorized - incomeList[0]?.eos_claimed
+  const resultUncategorizedUSD =
+    expenseList[0]?.usd_uncategorized - incomeList[0]?.usd_claimed
   transactions.push(
     generateDelegateData(
       'income',
@@ -178,8 +182,8 @@ export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
       'Categorized',
       expenseList[0]?.eos_categorized || 0,
       expenseList[0]?.usd_categorized || 0,
-      expenseList[0]?.eos_uncategorized || 0,
-      expenseList[0]?.usd_uncategorized || 0
+      resultUncategorizedEOS > 0 ? resultUncategorizedEOS : 0,
+      resultUncategorizedUSD > 0 ? resultUncategorizedUSD : 0
     )
   )
   return transactions
