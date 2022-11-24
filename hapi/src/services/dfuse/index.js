@@ -73,10 +73,7 @@ const runUpdaters = async actions => {
 
         const txDate = moment(action.trace.block.timestamp).format('DD-MM-YYYY')
 
-        if (
-          LASTEST_RATE_DATE_CONSULTED !== txDate &&
-          matchingAction.name !== 'fundtransfer'
-        ) {
+        if (LASTEST_RATE_DATE_CONSULTED !== txDate) {
           try {
             const data = await communityUtil.getExchangeRateByDate(txDate)
             LASTEST_RATE_DATA_CONSULTED = data.market_data.current_price.usd

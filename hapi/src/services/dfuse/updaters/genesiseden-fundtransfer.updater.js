@@ -34,7 +34,9 @@ module.exports = {
       try {
         await edenTransactionGql.save(transactionData)
       } catch (error) {
-        console.error(`error to sync ${action.action}: ${error.message}`)
+        console.error(
+          `error to sync fundtransfer ${action.action}: ${error.message}`
+        )
       }
     } else {
       await edenTransactionGql.deleteTx({
