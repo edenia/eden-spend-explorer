@@ -1,6 +1,9 @@
 export default theme => ({
   root: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+      marginTop: theme.spacing(0)
+    }
   },
   spinner: {
     textAlign: 'center',
@@ -12,7 +15,7 @@ export default theme => ({
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
       '& #treasury-container-id': {
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(0)
       }
     }
   },

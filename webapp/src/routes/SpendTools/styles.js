@@ -1,6 +1,9 @@
 export default theme => ({
   root: {
-    margin: theme.spacing(2, 3)
+    margin: theme.spacing(2, 3),
+    [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(0)
+    }
   },
   toolInformation: {
     marginTop: theme.spacing(3)
@@ -14,6 +17,8 @@ export default theme => ({
     padding: theme.spacing(1, 2),
     margin: theme.spacing(2, 0, 1, 0),
     [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(2, 0, 0, 0),
+      padding: theme.spacing(0),
       flexDirection: 'column',
       alignItems: 'center',
       gap: 0
@@ -85,6 +90,10 @@ export default theme => ({
     padding: theme.spacing(1, 2),
     [theme.breakpoints.up('xs')]: {
       maxWidth: '377px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '185px',
+      padding: theme.spacing(0)
     }
   },
   selectForm: {
@@ -106,7 +115,10 @@ export default theme => ({
     },
     '& #id-table-container': {
       marginTop: theme.spacing(2),
-      height: '368.5px'
+      height: '369px',
+      [theme.breakpoints.down('sm')]: {
+        height: '400px'
+      }
     }
   },
   buttonContainer: {

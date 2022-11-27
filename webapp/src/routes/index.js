@@ -57,7 +57,7 @@ const routes = [
     component: SpendTools,
     path: '/spendTools',
     exact: true,
-    roles: ['member']
+    roles: ['guest', 'member']
   },
   {
     header: 'docs',
