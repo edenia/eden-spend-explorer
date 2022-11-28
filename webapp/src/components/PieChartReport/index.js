@@ -22,6 +22,11 @@ import styles from './styles'
 
 const useStyles = makeStyles(styles)
 
+const capitalizeFirstLetter = string => {
+  const newString = string.replace(/\s/g, '')
+  return newString.charAt(0).toUpperCase() + newString.slice(1)
+}
+
 const renderActiveShape = props => {
   const {
     cx,
@@ -46,7 +51,9 @@ const renderActiveShape = props => {
         fontSize="12px"
         fontWeight={800}
       >
-        {payload.name ? payload.name : payload.category}
+        {payload.name
+          ? capitalizeFirstLetter(payload.name)
+          : capitalizeFirstLetter(payload.category)}
       </text>
       <text
         x={cx}
