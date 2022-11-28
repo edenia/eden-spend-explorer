@@ -25,7 +25,7 @@ module.exports = {
 
       if (!registeredTransaction) await edenTransactionGql.save(transactionData)
     } catch (error) {
-      console.error(`error to sync ${action.action}: ${error.message}`)
+      console.error(`withdrawal sync error ${action.action}: ${error.message}`)
     }
   }
 }

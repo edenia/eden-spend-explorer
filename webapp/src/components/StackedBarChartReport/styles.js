@@ -28,6 +28,7 @@ export default theme => ({
     justifyContent: 'center',
     flexWrap: 'wrap',
     '& a ': {
+      width: '105px',
       display: 'flex',
       textAlign: 'left',
       textDecoration: 'none',
@@ -40,7 +41,6 @@ export default theme => ({
   legentCircle: {
     width: 12,
     height: 12,
-    marginLeft: '2vw',
     marginTop: theme.spacing(0.4),
     marginRight: theme.spacing(1),
     borderRadius: 5

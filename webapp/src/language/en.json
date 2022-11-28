@@ -30,7 +30,7 @@
     "changelog": "Changelog",
     "github": "Github Repository",
     "telegram": "Telegram Channel",
-    "invalidEdenMember": "Invalid user, this aren't Eden member"
+    "invalidEdenMember": "Invalid user, this isn't an Eden member"
   },
   "homeRoute": {
     "edenSpendExplorer": "Eden Spend Explorer",
@@ -61,13 +61,14 @@
     "uncategorized": "Uncategorized",
     "election": "Election",
     "income": "Income",
-    "expense": "Expense"
+    "expense": "Expense",
+    "noExpense": "There aren't Expenses to Show"
   },
   "incomeRoute": {
     "titleBarChart": "Income per Election",
     "titlePieChart": "Delegate Income",
-    "titleTable": "Amounts claimed and unclaimed by election",
-    "titleTable2": "Amounts claimed and unclaimed by all elections",
+    "titleTable": "Amounts Claimed and Unclaimed by Election",
+    "titleTable2": "Amounts Claimed and Unclaimed by all Elections",
     "tableElectionHeader": "Term",
     "tableHeader1": "Account",
     "tableHeader2": "ID (caps)",
@@ -84,8 +85,8 @@
     "titleBarChart": "Expense per Election",
     "titlePieChart1": "Expense by Category",
     "titlePieChart2": "Expense by Delegate",
-    "titleTable": "Amounts categorized and uncategorized by election",
-    "titleTable2": "Amounts categorized and uncategorized by all elections",
+    "titleTable": "Amounts Categorized and Uncategorized by Election",
+    "titleTable2": "Amounts Categorized and Uncategorized by all Elections",
     "tableElectionHeader": "Term",
     "tableHeader1": "Account",
     "tableHeader2": "ID (caps)",

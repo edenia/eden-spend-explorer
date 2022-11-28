@@ -29,7 +29,8 @@
     "community": "Comunidad",
     "changelog": "Registro de cambios",
     "github": "Repositorio de Github",
-    "telegram": "Grupo en Telegram"
+    "telegram": "Grupo en Telegram",
+    "invalidEdenMember": "Usuario inválido, Este no es un miembro de Eden"
   },
   "homeRoute": {
     "edenSpendExplorer": "Explorador de Gastos Eden",
@@ -60,13 +61,14 @@
     "uncategorized": "No categorizado",
     "election": "Elección",
     "income": "Ingresos",
-    "expense": "Gastos"
+    "expense": "Gastos",
+    "noExpense": "No hay Gastos para Mostrar"
   },
   "incomeRoute": {
     "titleBarChart": "Ingresos por Elección",
     "titlePieChart": "Ingresos de los Delegados",
-    "titleTable": "Montos reclamados y no reclamados por elección",
-    "titleTable2": "Montos reclamados y no reclamados de todas las elecciones",
+    "titleTable": "Montos Reclamados y No Reclamados por Elección",
+    "titleTable2": "Montos Reclamados y No Reclamados de Todas las Elecciones",
     "tableElectionHeader": "Periodo",
     "tableHeader1": "Cuenta",
     "tableHeader2": "ID (caps)",
@@ -83,8 +85,8 @@
     "titleBarChart": "Gasto por Elección",
     "titlePieChart1": "Gastos por Categoría",
     "titlePieChart2": "Gastos por Delegado",
-    "titleTable": "Montos categorizados y no categorizados por elección",
-    "titleTable2": "Montos categorizados y no categorizados de todas las elecciones",
+    "titleTable": "Montos Categorizados y No Categorizados por Elección",
+    "titleTable2": "Montos Categorizados y No Categorizados de Todas las Elecciones",
     "tableElectionHeader": "Periodo",
     "tableHeader1": "Cuenta",
     "tableHeader2": "ID (caps)",

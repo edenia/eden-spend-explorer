@@ -1,15 +1,12 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo } from 'react'
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
 import { Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import { gql, GraphQLClient } from 'graphql-request'
 import { useTranslation } from 'react-i18next'
 import { Spinner } from '@edenia/ui-kit'
 
 import useDelegateReportState from '../../hooks/customHooks/useDelegateReportState'
-import { GET_MEMBERS_DATA } from '../../gql'
-import { classifyMemberRank } from '../../utils'
 import AccordionComp from '../../components/Accordion'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import SelectComponent from '../../components/Select'
@@ -22,23 +19,20 @@ const DelegateReport = () => {
   const classes = useStyles()
   const { t } = useTranslation()
   const { i18n } = useTranslation('translations')
-  const [loader, setLoader] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
-  const [accordionList, setAccordionList] = useState([])
   const options = { year: 'numeric', month: 'long', day: 'numeric' }
-  const client = new GraphQLClient('https://eden-api.edenia.cloud/v1/graphql', {
-    headers: {}
-  })
-
   const [
     {
       electionRoundSelect,
-      electionsByYearList,
+      electionRoundList,
       delegateList,
-      maxLevel,
-      dateElection
+      dateElection,
+      transactionList,
+      categoryList,
+      loader,
+      accordionList,
+      searchValue
     },
-    { setElectionRoundSelect, setElectionYearSelect, setDelegatesList }
+    { setElectionRoundSelect, setDelegateSelect, setSearchValue }
   ] = useDelegateReportState()
 
   const dateFormat = new Date(dateElection).toLocaleDateString(
@@ -47,71 +41,8 @@ const DelegateReport = () => {
   )
 
   const handleChangeSelectedElection = event => {
-    setLoader(true)
-    setElectionRoundSelect(event)
+    setElectionRoundSelect(Number(event))
   }
-
-  useEffect(() => {
-    setElectionYearSelect('All')
-  }, [])
-
-  useEffect(async () => {
-    if (delegateList.length > 0 && delegateList[0].delegate_payer && maxLevel) {
-      setLoader(true)
-      const variables = {
-        value: delegateList.reduce((reduceList, delegate) => {
-          return [...reduceList, delegate.delegate_payer]
-        }, []),
-        orderBy: {
-          election_rank: 'desc'
-        },
-        limit: 50
-      }
-      const response = await client.request(
-        gql`
-          ${GET_MEMBERS_DATA}
-        `,
-        variables
-      )
-      setDelegatesList(
-        response.members.map(member => {
-          const posDelegate = delegateList.find(
-            delegate => delegate.delegate_payer === member.account
-          )
-
-          if (posDelegate) {
-            const rank = classifyMemberRank(
-              posDelegate.delegate_level,
-              maxLevel
-            )
-
-            return { ...member, rank, totalRewarded: posDelegate.totalIncome }
-          }
-
-          return member
-        })
-      )
-      setLoader(false)
-    }
-  }, [delegateList, maxLevel])
-
-  useEffect(() => {
-    setAccordionList(
-      delegateList.filter(delegate => delegate?.account?.includes(searchValue))
-    )
-  }, [searchValue, delegateList])
-
-  accordionList.sort((d1, d2) => {
-    if (d1?.totalRewarded < d2?.totalRewarded) return 1
-    else if (d1?.totalRewarded > d2?.totalRewarded) return -1
-    else return 0
-  })
-
-  accordionList.sort((d1, d2) => {
-    if (d1?.rank?.memberType < d2?.rank?.memberType) return 1
-    else if (d1?.rank?.memberType > d2?.rank?.memberType) return -1
-    else return 0
-  })
 
   return (
     <div className={classes.root}>
@@ -144,7 +75,7 @@ const DelegateReport = () => {
           <SelectComponent
             onChangeFunction={handleChangeSelectedElection}
             labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
-            values={electionsByYearList.map(data => `${data.election}`)}
+            values={electionRoundList.map(data => `${data.election}`)}
             actualValue={electionRoundSelect}
             width={200}
           />
@@ -155,17 +86,13 @@ const DelegateReport = () => {
           <Spinner />
         </div>
       ) : (
-        accordionList.map(delegate => (
-          <AccordionComp
-            key={delegate?.account}
-            nameDelegate={delegate?.name}
-            accountDelegate={delegate?.account}
-            imageDelegate={delegate?.profile?.image}
-            avatarIcon={delegate?.rank?.badge}
-            delegateLevel={delegate?.rank?.label}
-            eosRewarded={delegate?.totalRewarded}
-          />
-        ))
+        <AccordionComp
+          accordionList={accordionList}
+          transactionList={transactionList}
+          categoryList={categoryList}
+          setDelegateSelect={setDelegateSelect}
+          searchValue={searchValue}
+        />
       )}
     </div>
   )

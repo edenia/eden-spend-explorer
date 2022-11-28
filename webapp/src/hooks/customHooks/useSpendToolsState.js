@@ -176,7 +176,7 @@ const useSpendTools = () => {
   }, [currentElectionData])
 
   useEffect(() => {
-    setAuthenticatedUser('xavieredenia')
+    setAuthenticatedUser(state.user?.accountName)
   }, [state.user?.accountName])
 
   return [

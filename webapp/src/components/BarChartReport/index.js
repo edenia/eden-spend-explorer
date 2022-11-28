@@ -143,7 +143,7 @@ const BarChartReport = ({
   }, [selectedUSD])
 
   return (
-    <div className={classes.chartContainer}>
+    <div className={classes.root}>
       <div className={classes.titleContainer}>
         <div className={classes.title}>
           <Typography variant="span">
@@ -165,55 +165,62 @@ const BarChartReport = ({
           </FormGroup>
         </div>
       </div>
-      <ResponsiveContainer width="100%" height={300} marginTop="16px">
-        <ComposedChart height={300} data={data} ref={barRef}>
-          <CartesianGrid stroke="#f0f0f0" />
-          <XAxis
-            tick={{ fontSize: 10, stroke: '#000', strokeWidth: 0.5 }}
-            dataKey="election"
-            scale="auto"
-          />
-          <YAxis
-            tick={{ fontSize: '10px', stroke: '#000', strokeWidth: 0.1 }}
-          />
-          <Tooltip
-            wrapperStyle={{
-              outline: 'none',
-              borderRadius: '4px',
-              backgroundColor: '#F9F9F9',
-              fontSize: '14px',
-              padding: '8px'
-            }}
-            content={<CustomTooltip coinType={coinType} />}
-          />
-          {showLegend && (
-            <Legend content={<RenderChartLegend data={category} />} />
-          )}
-          <Bar
-            dataKey={`${coinType}_UN${category.toLocaleUpperCase()}`}
-            barSize={35}
-            fill="#f4d35e"
-          >
-            {data.map(({ election }) => (
-              <Cell key={`cell-${election}`} />
-            ))}
-          </Bar>
-          <Bar
-            dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
-            barSize={35}
-            fill="#ee964b"
-          >
-            {data.map(({ election }) => (
-              <Cell key={`cell-${election}`} />
-            ))}
-          </Bar>
-          <Bar dataKey={`${coinType}_TOTAL`} barSize={35} fill="#19647e">
-            {data.map(({ election }) => (
-              <Cell key={`cell-${election}`} />
-            ))}
-          </Bar>
-        </ComposedChart>
-      </ResponsiveContainer>
+      <div className={classes.chartContainer}>
+        <ResponsiveContainer
+          minWidth={600}
+          width="100%"
+          height={300}
+          marginTop="16px"
+        >
+          <ComposedChart height={300} data={data} ref={barRef}>
+            <CartesianGrid stroke="#f0f0f0" />
+            <XAxis
+              tick={{ fontSize: 10, stroke: '#000', strokeWidth: 0.5 }}
+              dataKey="election"
+              scale="auto"
+            />
+            <YAxis
+              tick={{ fontSize: '10px', stroke: '#000', strokeWidth: 0.1 }}
+            />
+            <Tooltip
+              wrapperStyle={{
+                outline: 'none',
+                borderRadius: '4px',
+                backgroundColor: '#F9F9F9',
+                fontSize: '14px',
+                padding: '8px'
+              }}
+              content={<CustomTooltip coinType={coinType} />}
+            />
+            {showLegend && (
+              <Legend content={<RenderChartLegend data={category} />} />
+            )}
+            <Bar
+              dataKey={`${coinType}_UN${category.toLocaleUpperCase()}`}
+              barSize={35}
+              fill="#f4d35e"
+            >
+              {data.map(({ election }) => (
+                <Cell key={`cell-${election}`} />
+              ))}
+            </Bar>
+            <Bar
+              dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
+              barSize={35}
+              fill="#ee964b"
+            >
+              {data.map(({ election }) => (
+                <Cell key={`cell-${election}`} />
+              ))}
+            </Bar>
+            <Bar dataKey={`${coinType}_TOTAL`} barSize={35} fill="#19647e">
+              {data.map(({ election }) => (
+                <Cell key={`cell-${election}`} />
+              ))}
+            </Bar>
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   )
 }

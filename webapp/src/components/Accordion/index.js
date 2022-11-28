@@ -3,85 +3,99 @@ import PropTypes from 'prop-types'
 import Accordion from '@mui/material/Accordion'
 import { makeStyles } from '@mui/styles'
 import AccordionDetails from '@mui/material/AccordionDetails'
-import { Typography } from '@mui/material'
+import { Alert, Divider, Typography } from '@mui/material'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { DelegateItem } from '@edenia/ui-kit'
 import { useTranslation } from 'react-i18next'
 
-import useDelegateReportState from '../../hooks/customHooks/useDelegateReportState'
 import { formatWithThousandSeparator } from '../../utils'
 import DelegateDetails from '../DelegateDetails'
+
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
 
 const AccordionComp = ({
-  nameDelegate,
-  accountDelegate,
-  imageDelegate,
-  avatarIcon,
-  profileLink,
-  delegateLevel,
-  eosRewarded
+  accordionList,
+  transactionList,
+  categoryList,
+  setDelegateSelect,
+  searchValue
 }) => {
   const [expanded, setExpanded] = React.useState(false)
   const classes = useStyles()
   const { t } = useTranslation()
-  const [{ transactionList, categoryList }, { setDelegateSelect }] =
-    useDelegateReportState()
 
-  const handleChange = panel => (event, isExpanded) => {
-    isExpanded && setDelegateSelect(accountDelegate)
+  const handleChange = (panel, account) => (event, isExpanded) => {
+    isExpanded ? setDelegateSelect(account) : setDelegateSelect('')
     setExpanded(isExpanded ? panel : false)
   }
 
   return (
     <div className={classes.accordionContainer}>
-      <Accordion
-        expanded={expanded === 'panel1'}
-        onChange={handleChange('panel1')}
-      >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <DelegateItem
-            name={nameDelegate}
-            bgColor="#ffff"
-            image={`https://eden-genesis.mypinata.cloud/ipfs/${imageDelegate}`}
-            avatarIcon={avatarIcon}
-            profileLink={profileLink}
-            targetProfile="_blank"
-            positionText={delegateLevel}
-            headItem={
-              <Typography variant="h6" className="hideData">
-                {formatWithThousandSeparator(eosRewarded, 4)}
-              </Typography>
-            }
-            text={
-              <Typography variant="span" className="hideData">
-                {t('rewarded', { ns: 'delegateRoute' })}
-              </Typography>
-            }
-          />
-        </AccordionSummary>
-        <AccordionDetails>
-          <DelegateDetails
-            categoryList={categoryList}
-            transactionList={transactionList}
-          />
-        </AccordionDetails>
-      </Accordion>
+      {accordionList.length < 1 && searchValue.length > 0 ? (
+        <div className={classes.alertContainer}>
+          <Alert severity="error">
+            {t('invalidEdenMember', { ns: 'routes' })}
+          </Alert>
+        </div>
+      ) : (
+        accordionList.map((delegate, i) => (
+          <Accordion
+            key={`${delegate.account}-${i}`}
+            expanded={expanded === `${delegate.account}-${i}`}
+            onChange={handleChange(
+              `${delegate.account}-${i}`,
+              delegate.account
+            )}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+              className={classes.summaryContentStyle}
+            >
+              <DelegateItem
+                name={delegate.profile.name}
+                bgColor="#ffff"
+                image={`https://eden-genesis.mypinata.cloud/ipfs/${delegate?.profile?.image}`}
+                avatarIcon={delegate?.rank?.badge}
+                profileLink={delegate.profile.blog}
+                targetProfile="_blank"
+                positionText={delegate?.rank?.label}
+                headItem={
+                  <Typography variant="h6" className="hideData">
+                    {formatWithThousandSeparator(delegate?.totalRewarded, 4)}
+                  </Typography>
+                }
+                text={
+                  <Typography variant="span" className="hideData">
+                    {t('rewarded', { ns: 'delegateRoute' })}
+                  </Typography>
+                }
+              />
+            </AccordionSummary>
+            <Divider variant="middle" />
+            <AccordionDetails>
+              <DelegateDetails
+                categoryList={categoryList}
+                transactionList={transactionList}
+              />
+            </AccordionDetails>
+          </Accordion>
+        ))
+      )}
     </div>
   )
 }
 
 AccordionComp.propTypes = {
-  nameDelegate: PropTypes.string,
-  accountDelegate: PropTypes.string,
-  imageDelegate: PropTypes.string,
-  avatarIcon: PropTypes.string,
-  profileLink: PropTypes.string,
-  delegateLevel: PropTypes.string,
-  eosRewarded: PropTypes.number
+  accordionList: PropTypes.array,
+  transactionList: PropTypes.array,
+  categoryList: PropTypes.array,
+  setDelegateSelect: PropTypes.func,
+  searchValue: PropTypes.string
 }
 
 export default memo(AccordionComp)

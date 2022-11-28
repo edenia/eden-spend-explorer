@@ -1,6 +1,17 @@
-actions: []
+actions:
+  - name: delegateFrontend
+    definition:
+      kind: ""
+      handler: '{{HASURA_GRAPHQL_ACTION_BASE_URL}}/get-delegates'
+    permissions:
+      - role: guest
+    comment: Get delegate data for delegate view
 custom_types:
   enums: []
-  input_objects: []
-  objects: []
+  input_objects:
+    - name: SampleInput
+    - name: delegateFrontendInput
+  objects:
+    - name: SampleOutput
+    - name: delegateFrontendOutput
   scalars: []
