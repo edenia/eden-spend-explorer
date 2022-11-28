@@ -41,6 +41,12 @@ export default theme => ({
     margin: theme.spacing(2, 0, 2, 2),
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'end',
+    '& #combo-box-id': {
+      width: '100%',
+      maxWidth: '308px'
+    },
+
     [theme.breakpoints.down('sm')]: {
       marginTop: theme.spacing(1),
       width: '100%',

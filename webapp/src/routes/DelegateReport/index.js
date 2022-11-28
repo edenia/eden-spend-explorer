@@ -59,21 +59,21 @@ const DelegateReport = () => {
           </Typography>
         </div>
         <div className={classes.filtersContainer}>
-          <Autocomplete
-            id="combo-box-demo"
-            sx={{ width: 300 }}
-            options={delegateList.map(
-              data => data.account || data.delegate_payer
-            )}
-            onInputChange={(event, newInputValue) => {
-              setSearchValue(newInputValue)
-            }}
-            autoHighlight
-            clearOnEscape
-            renderInput={params => (
-              <TextField {...params} label="Delegate" variant="outlined" />
-            )}
-          />
+          <div id="combo-box-id">
+            <Autocomplete
+              options={delegateList.map(
+                data => data.account || data.delegate_payer
+              )}
+              onInputChange={(event, newInputValue) => {
+                setSearchValue(newInputValue)
+              }}
+              autoHighlight
+              clearOnEscape
+              renderInput={params => (
+                <TextField {...params} label="Delegate" variant="outlined" />
+              )}
+            />
+          </div>
           <SelectComponent
             onChangeFunction={handleChangeSelectedElection}
             labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
