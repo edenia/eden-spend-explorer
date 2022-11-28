@@ -58,11 +58,13 @@ const DelegateReport = () => {
             {t('instruction', { ns: 'delegateRoute' })}
           </Typography>
         </div>
-
         <div className={classes.filtersContainer}>
           <Autocomplete
-            sx={{ width: '100%' }}
-            options={delegateList.map(data => data.account)}
+            id="combo-box-demo"
+            sx={{ width: 300 }}
+            options={delegateList.map(
+              data => data.account || data.delegate_payer
+            )}
             onInputChange={(event, newInputValue) => {
               setSearchValue(newInputValue)
             }}
