@@ -28,7 +28,7 @@ export default theme => ({
     justifyContent: 'center',
     flexWrap: 'wrap',
     '& a ': {
-      width: '105px',
+      width: '116px',
       display: 'flex',
       textAlign: 'left',
       textDecoration: 'none',
