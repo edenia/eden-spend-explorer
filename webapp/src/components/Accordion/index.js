@@ -66,7 +66,7 @@ const AccordionComp = ({
                 positionText={delegate?.rank?.label}
                 headItem={
                   <Typography variant="h6">
-                    {formatWithThousandSeparator(delegate?.totalRewarded)}
+                    {formatWithThousandSeparator(delegate?.totalRewarded, 4)}
                   </Typography>
                 }
                 text={t('rewarded', { ns: 'delegateRoute' })}
