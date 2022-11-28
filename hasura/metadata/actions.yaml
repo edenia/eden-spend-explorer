@@ -3,6 +3,8 @@ actions:
     definition:
       kind: ""
       handler: '{{HASURA_GRAPHQL_ACTION_BASE_URL}}/get-delegates'
+    permissions:
+      - role: guest
     comment: Get delegate data for delegate view
 custom_types:
   enums: []
