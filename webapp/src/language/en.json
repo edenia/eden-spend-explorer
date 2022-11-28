@@ -30,7 +30,7 @@
     "changelog": "Changelog",
     "github": "Github Repository",
     "telegram": "Telegram Channel",
-    "invalidEdenMember": "Invalid user, this aren't Eden member"
+    "invalidEdenMember": "Invalid user, this isn't an Eden member"
   },
   "homeRoute": {
     "edenSpendExplorer": "Eden Spend Explorer",
@@ -61,7 +61,8 @@
     "uncategorized": "Uncategorized",
     "election": "Election",
     "income": "Income",
-    "expense": "Expense"
+    "expense": "Expense",
+    "noExpense": "There aren't Expenses to Show"
   },
   "incomeRoute": {
     "titleBarChart": "Income per Election",
