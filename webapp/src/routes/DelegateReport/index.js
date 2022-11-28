@@ -115,6 +115,9 @@ const DelegateReport = () => {
 
   return (
     <div className={classes.root}>
+      <div id="treasury-container-id">
+        <TreasuryBalance />
+      </div>
       <div className={classes.headPage}>
         <div className={classes.title}>
           <Typography variant="span">
@@ -124,30 +127,28 @@ const DelegateReport = () => {
             {t('instruction', { ns: 'delegateRoute' })}
           </Typography>
         </div>
-        <div id="treasury-container-id">
-          <TreasuryBalance />
+
+        <div className={classes.filtersContainer}>
+          <Autocomplete
+            sx={{ width: '100%' }}
+            options={delegateList.map(data => data.account)}
+            onInputChange={(event, newInputValue) => {
+              setSearchValue(newInputValue)
+            }}
+            autoHighlight
+            clearOnEscape
+            renderInput={params => (
+              <TextField {...params} label="Delegate" variant="outlined" />
+            )}
+          />
+          <SelectComponent
+            onChangeFunction={handleChangeSelectedElection}
+            labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
+            values={electionsByYearList.map(data => `${data.election}`)}
+            actualValue={electionRoundSelect}
+            width={200}
+          />
         </div>
-      </div>
-      <div className={classes.filtersContainer}>
-        <Autocomplete
-          sx={{ width: 300 }}
-          options={delegateList.map(data => data.account)}
-          onInputChange={(event, newInputValue) => {
-            setSearchValue(newInputValue)
-          }}
-          autoHighlight
-          clearOnEscape
-          renderInput={params => (
-            <TextField {...params} label="Delegate" variant="outlined" />
-          )}
-        />
-        <SelectComponent
-          onChangeFunction={handleChangeSelectedElection}
-          labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
-          values={electionsByYearList.map(data => `${data.election}`)}
-          actualValue={electionRoundSelect}
-          width={200}
-        />
       </div>
       {loader ? (
         <div className={classes.spinner}>

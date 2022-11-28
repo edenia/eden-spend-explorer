@@ -24,7 +24,7 @@ const SelectComponent = ({
 
   return (
     <FormControl
-      sx={{ m: 1, width: width }}
+      sx={{ m: '8px 0px 8px 8px', width: width }}
       size={width !== 80 ? 'normal' : 'small'}
     >
       <InputLabel>{labelSelect}</InputLabel>

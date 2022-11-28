@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import Accordion from '@mui/material/Accordion'
 import { makeStyles } from '@mui/styles'
 import AccordionDetails from '@mui/material/AccordionDetails'
-// import { Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { DelegateItem } from '@edenia/ui-kit'
-// import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import useDelegateReportState from '../../hooks/customHooks/useDelegateReportState'
-// import { formatWithThousandSeparator } from '../../utils'
+import { formatWithThousandSeparator } from '../../utils'
 import DelegateDetails from '../DelegateDetails'
 import styles from './styles'
 
@@ -27,7 +27,7 @@ const AccordionComp = ({
 }) => {
   const [expanded, setExpanded] = React.useState(false)
   const classes = useStyles()
-  // const { t } = useTranslation()
+  const { t } = useTranslation()
   const [{ transactionList, categoryList }, { setDelegateSelect }] =
     useDelegateReportState()
 
@@ -37,17 +37,12 @@ const AccordionComp = ({
   }
 
   return (
-    <div>
+    <div className={classes.accordionContainer}>
       <Accordion
         expanded={expanded === 'panel1'}
         onChange={handleChange('panel1')}
       >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-          className={classes.summaryContentStyle}
-        >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <DelegateItem
             name={nameDelegate}
             bgColor="#ffff"
@@ -56,12 +51,16 @@ const AccordionComp = ({
             profileLink={profileLink}
             targetProfile="_blank"
             positionText={delegateLevel}
-            // headItem={
-            //   <Typography variant="h6">
-            //     {formatWithThousandSeparator(eosRewarded)}
-            //   </Typography>
-            // }
-            // text={t('rewarded', { ns: 'delegateRoute' })}
+            headItem={
+              <Typography variant="h6" className="hideData">
+                {formatWithThousandSeparator(eosRewarded, 4)}
+              </Typography>
+            }
+            text={
+              <Typography variant="span" className="hideData">
+                {t('rewarded', { ns: 'delegateRoute' })}
+              </Typography>
+            }
           />
         </AccordionSummary>
         <AccordionDetails>
