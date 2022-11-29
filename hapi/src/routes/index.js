@@ -1,4 +1,5 @@
 const healthzRoute = require('./healthz.route')
-const getDelegatesRout = require('./get-delegates.route')
+const getDelegatesRoute = require('./get-delegates.route')
+const getIncomeRoute = require('./get-income.route')
 
-module.exports = [healthzRoute, getDelegatesRout]
+module.exports = [healthzRoute, getDelegatesRoute, getIncomeRoute]
