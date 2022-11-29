@@ -2,7 +2,7 @@ export default theme => ({
   buttonContainer: {
     display: 'flex',
     justifyContent: 'center',
-    marginTop: '16px',
+    marginTop: theme.spacing(2),
     '& .MuiButton-root': {
       width: '191px',
       height: '36px',
@@ -30,22 +30,24 @@ export default theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    margin: '16px',
-    textAlign: 'center'
+    margin: theme.spacing(2),
+    textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      height: '278px',
+      margin: theme.spacing(0)
+    }
   },
   titleStyles: {
     fontSize: '32px',
     fontWeight: 600,
     lineHeight: 1.25,
     letterSpacing: '-0.6px',
-    color: '#000',
-    marginTop: '16px'
+    marginTop: theme.spacing(2)
   },
   subtitleStyles: {
-    marginTop: '16px',
+    marginTop: theme.spacing(2),
     maxWidth: '420px',
     letterSpacing: '0.15px',
-    color: '#000',
     fontSize: '16px',
     fontFamily: 'Roboto'
   },
@@ -59,7 +61,7 @@ export default theme => ({
   },
   frameContainer: {
     width: '323px',
-    margin: '16px',
+    margin: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
       width: 'auto'
     }

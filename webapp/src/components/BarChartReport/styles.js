@@ -1,6 +1,10 @@
 export default theme => ({
-  chartContainer: {
+  root: {
     margin: theme.spacing(2, 0, 2, 0)
+  },
+  chartContainer: {
+    whiteSpace: 'nowrap',
+    overflowY: 'hidden'
   },
   title: {
     '& span': {

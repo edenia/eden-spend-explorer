@@ -2,6 +2,11 @@ import React, { memo } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+
+import styles from './styles'
+
+const useStyles = makeStyles(styles)
 
 const SelectComponent = ({
   labelSelect,
@@ -11,6 +16,7 @@ const SelectComponent = ({
   disable,
   width = 80
 }) => {
+  const classes = useStyles()
   const { t } = useTranslation()
 
   if (disable || !values[0]) return null
@@ -23,25 +29,27 @@ const SelectComponent = ({
   }
 
   return (
-    <FormControl
-      sx={{ m: 1, width: width }}
-      size={width !== 80 ? 'normal' : 'small'}
-    >
-      <InputLabel>{labelSelect}</InputLabel>
-      <Select
-        labelId="demo-select-small"
-        id="select-id"
-        value={actualValue}
-        label={labelSelect}
-        onChange={({ target }) => onChangeFunction(target.value)}
+    <div className={classes.selectContainer}>
+      <FormControl
+        sx={{ width: width }}
+        size={width !== 80 ? 'normal' : 'small'}
       >
-        {values.map(value => (
-          <MenuItem key={value} value={value}>
-            {selectValue(value)}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+        <InputLabel>{labelSelect}</InputLabel>
+        <Select
+          labelId="demo-select-small"
+          id="select-id"
+          value={actualValue}
+          label={labelSelect}
+          onChange={({ target }) => onChangeFunction(target.value)}
+        >
+          {values.map(value => (
+            <MenuItem key={value} value={value}>
+              {selectValue(value)}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
   )
 }
 

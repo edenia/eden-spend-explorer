@@ -33,7 +33,7 @@ const AccordionComp = ({
   }
 
   return (
-    <div>
+    <div className={classes.accordionContainer}>
       {accordionList.length < 1 && searchValue.length > 0 ? (
         <div className={classes.alertContainer}>
           <Alert severity="error">
@@ -65,11 +65,15 @@ const AccordionComp = ({
                 targetProfile="_blank"
                 positionText={delegate?.rank?.label}
                 headItem={
-                  <Typography variant="h6">
+                  <Typography variant="h6" className="hideData">
                     {formatWithThousandSeparator(delegate?.totalRewarded, 4)}
                   </Typography>
                 }
-                text={t('rewarded', { ns: 'delegateRoute' })}
+                text={
+                  <Typography variant="span" className="hideData">
+                    {t('rewarded', { ns: 'delegateRoute' })}
+                  </Typography>
+                }
               />
             </AccordionSummary>
             <Divider variant="middle" />
