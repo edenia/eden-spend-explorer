@@ -44,7 +44,10 @@ export default theme => ({
     justifyContent: 'end',
     '& #combo-box-id': {
       width: '100%',
-      maxWidth: '308px'
+      maxWidth: '308px',
+      [theme.breakpoints.down('sm')]: {
+        maxWidth: '100%'
+      }
     },
 
     [theme.breakpoints.down('sm')]: {

@@ -19,7 +19,6 @@ const TableReport = ({ columns, dataPercent }) => {
     <div className={classes.tableContainer}>
       <ThemeProvider theme={theme}>
         <DataGrid
-          sx={{ border: 'none', minWidth: '600px' }}
           rows={dataPercent}
           loading={!dataPercent[0]}
           columns={columns}

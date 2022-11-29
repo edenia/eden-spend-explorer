@@ -79,7 +79,7 @@ const DelegateReport = () => {
             labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
             values={electionRoundList.map(data => `${data.election}`)}
             actualValue={electionRoundSelect}
-            width={200}
+            width={100}
           />
         </div>
       </div>
