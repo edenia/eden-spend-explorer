@@ -90,6 +90,7 @@ const useIncomeReportState = () => {
 
   useEffect(async () => {
     let electionsByYearData
+
     if (electionYearSelect === 'All' || electionYearSelect === 'Todos') {
       electionsByYearData = await loadElectionsByYear({
         minDate: `2021-01-01`,
@@ -101,6 +102,7 @@ const useIncomeReportState = () => {
         maxDate: `${electionYearSelect}-12-31`
       })
     }
+
     setElectionRoundSelect(
       electionsByYearData.data?.eden_historic_election[0].election
     )
