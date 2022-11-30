@@ -83,7 +83,7 @@ const ExpenseReport = () => {
       renderCell: param => (
         <a
           className={tableData[0]?.name ? '' : classes.disableLink}
-          href={`https://eosauthority.com/account/${param.value}?network=eos`}
+          href={`https://eosdetective.io/network/transfers?accounts=${param.value}&time_min=1661975129190&time_max=1669751129190&excludedAccounts=&excludedCategories=system`}
         >
           {param.value}
         </a>
