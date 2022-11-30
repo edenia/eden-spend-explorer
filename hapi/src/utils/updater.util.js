@@ -17,7 +17,47 @@ const memoSplit = memoString => {
   return { category, description }
 }
 
+const getElectionWithoutExpense = async (
+  delegateAccount,
+  amount,
+  edenElectionGql,
+  edenTransactionGql
+) => {
+  const elections = await edenElectionGql.get(
+    {
+      eden_delegate: { account: { _eq: delegateAccount } }
+    },
+    true
+  )
+
+  for (let index = 0; index < elections.length; index++) {
+    const { id, election } = elections[index]
+    const income = await edenTransactionGql.getAggregate({
+      eden_election: {
+        eden_delegate: { account: { _eq: delegateAccount } },
+        election: { _eq: election }
+      },
+      type: { _eq: 'income' }
+    })
+    const expense = await edenTransactionGql.getAggregate({
+      eden_election: {
+        eden_delegate: { account: { _eq: delegateAccount } },
+        election: { _eq: election }
+      },
+      type: { _eq: 'expense' },
+      category: { _eq: 'claimed' }
+    })
+
+    if (expense + amount <= income) return { election, idElection: id }
+  }
+  return {
+    election: elections.at(-1).election,
+    idElection: elections.at(-1).id
+  }
+}
+
 module.exports = {
   memoSplit,
-  isEdenExpense
+  isEdenExpense,
+  getElectionWithoutExpense
 }

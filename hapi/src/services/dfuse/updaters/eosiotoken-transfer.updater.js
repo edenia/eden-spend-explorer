@@ -1,4 +1,4 @@
-const { edenTransactionGql } = require('../../../gql')
+const { edenTransactionGql, edenElectionGql } = require('../../../gql')
 const { updaterUtil } = require('../../../utils')
 const { transactionConstant } = require('../../../constants')
 
@@ -21,13 +21,19 @@ module.exports = {
 
     try {
       const amount = Number(action.json.quantity.split(' ')[0])
+      const { idElection } = await updaterUtil.getElectionWithoutExpense(
+        action.delegateAccount,
+        amount,
+        edenElectionGql,
+        edenTransactionGql
+      )
       const transactionData = {
         txid: action.transaction_id,
         amount,
         category,
         date: action.timestamp,
         description,
-        id_election: action.election.id,
+        id_election: idElection,
         recipient: action.json.to,
         type: 'expense',
         eos_exchange: action.eosPrice,

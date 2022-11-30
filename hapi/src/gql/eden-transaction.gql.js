@@ -72,9 +72,30 @@ const update = async ({ where, _set }) => {
   return data.update_eden_transaction
 }
 
+const getAggregate = async where => {
+  const query = `
+  query ($where: eden_transaction_bool_exp) {
+    eden_transaction_aggregate(where: $where) {
+      aggregate {
+        sum {
+          amount
+        }
+      }
+    }
+  }
+  `
+  const { eden_transaction_aggregate: edenTransactionAggregate } =
+    await hasuraUtil.instance.request(query, {
+      where
+    })
+
+  return edenTransactionAggregate?.aggregate?.sum?.amount || 0
+}
+
 module.exports = {
   save,
   get,
   deleteTx,
-  update
+  update,
+  getAggregate
 }
