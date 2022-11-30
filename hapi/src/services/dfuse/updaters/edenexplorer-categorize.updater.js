@@ -8,11 +8,9 @@ module.exports = {
       const { category, description } = updaterUtil.memoSplit(
         action.json.new_memo.split(':')[1] || ''
       )
-
       const transactionToEdit = edenTransactionGql.get({
         txid: { _eq: action.json.tx_id }
       })
-
       const { idElection: id_election } =
         await updaterUtil.getElectionWithoutExpense(
           action.delegateAccount,

@@ -50,6 +50,7 @@ const getElectionWithoutExpense = async (
 
     if (expense + amount <= income) return { election, idElection: id }
   }
+
   return {
     election: elections.at(-1).election,
     idElection: elections.at(-1).id
