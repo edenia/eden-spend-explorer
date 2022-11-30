@@ -4,6 +4,10 @@ type Query {
   ): delegateFrontendOutput
 }
 
+type Query {
+  incomeFrontend: incomeFrontendOutput
+}
+
 input SampleInput {
   election: Int
 }
@@ -17,6 +21,10 @@ type SampleOutput {
 }
 
 type delegateFrontendOutput {
+  data: json!
+}
+
+type incomeFrontendOutput {
   data: json!
 }
 

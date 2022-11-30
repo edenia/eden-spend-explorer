@@ -6,6 +6,12 @@ actions:
     permissions:
       - role: guest
     comment: Get delegate data for delegate view
+  - name: incomeFrontend
+    definition:
+      kind: ""
+      handler: '{{HASURA_GRAPHQL_ACTION_BASE_URL}}/get-income'
+    permissions:
+      - role: guest
 custom_types:
   enums: []
   input_objects:
@@ -14,4 +20,5 @@ custom_types:
   objects:
     - name: SampleOutput
     - name: delegateFrontendOutput
+    - name: incomeFrontendOutput
   scalars: []
