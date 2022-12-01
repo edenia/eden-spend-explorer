@@ -46,7 +46,7 @@ const Header = memo(({ onDrawerToggle }) => {
             className={clsx(classes.drawerContainer, classes.drawerShowMobile)}
           >
             <div className={classes.logoAppbar}>
-              <IconButton onClick={onDrawerToggle}>
+              <IconButton onClick={onDrawerToggle} id="language-button">
                 <MenuIcon fontSize="large" className={classes.menuIconColor} />
               </IconButton>
               <span className={classes.routeLabel}>

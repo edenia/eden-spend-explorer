@@ -69,7 +69,12 @@ const LanguageSelector = () => {
         onClick={handleToggle}
       >
         <div className={classes.paddingIcon}>
-          <img src={`${process.env.PUBLIC_URL}/images/language-icon.png`} />
+          <img
+            src={`${process.env.PUBLIC_URL}/images/language-icon.png`}
+            alt="icon-language"
+            width="24px"
+            height="24px"
+          />
         </div>
         <Typography variant="body1" className={classes.languageLabel}>
           {t(currentLanguage)}
@@ -100,6 +105,7 @@ const LanguageSelector = () => {
                   onKeyDown={event => handleListKeyDown(event)}
                 >
                   <MenuItem
+                    id="language-en"
                     onClick={e => {
                       handleClose(e)
                       handleChangeLanguage('en')
@@ -108,6 +114,7 @@ const LanguageSelector = () => {
                     {t('en')}
                   </MenuItem>
                   <MenuItem
+                    id="language-es"
                     onClick={e => {
                       handleClose(e)
                       handleChangeLanguage('es')
