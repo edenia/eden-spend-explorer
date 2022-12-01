@@ -25,6 +25,7 @@ const runUpdaters = async actions => {
     const action = actions[index]
     try {
       const { matchingActions, id } = action?.trace
+
       for (
         let indexMatching = 0;
         indexMatching < matchingActions.length;
@@ -44,34 +45,31 @@ const runUpdaters = async actions => {
           continue
         }
 
-        const electionNumber =
+        const timestamp =
           matchingAction.name === 'fundtransfer'
-            ? await edenHistoricElectionGql.get({
-                date_election: { _lte: matchingAction.json.distribution_time }
-              })
-            : await edenHistoricElectionGql.get({
-                date_election: { _lte: action.trace.block.timestamp }
-              })
+            ? matchingAction.json.distribution_time
+            : action.trace.block.timestamp
+        const electionNumber = await edenHistoricElectionGql.get({
+          date_election: { _lte: timestamp }
+        })
 
         if (!electionNumber) continue
 
-        const edenElectionId =
+        const delegateAccount =
           matchingAction.name === 'withdraw'
-            ? await edenElectionGql.get({
-                eden_delegate: { account: { _eq: matchingAction.json.owner } },
-                election: { _eq: electionNumber.election }
-              })
-            : await edenElectionGql.get({
-                eden_delegate: { account: { _eq: matchingAction.json.from } },
-                election: { _eq: electionNumber.election }
-              })
+            ? matchingAction.json.owner
+            : matchingAction.json.from
+        const edenElectionId = await edenElectionGql.get({
+          eden_delegate: { account: { _eq: delegateAccount } },
+          election: { _eq: electionNumber.election }
+        })
         const registeredTransaction = await edenTransactionGql.get({
           txid: { _eq: id }
         })
 
         if (!edenElectionId || registeredTransaction) continue
 
-        const txDate = moment(action.trace.block.timestamp).format('DD-MM-YYYY')
+        const txDate = moment(timestamp).format('DD-MM-YYYY')
 
         if (LASTEST_RATE_DATE_CONSULTED !== txDate) {
           try {
@@ -91,7 +89,7 @@ const runUpdaters = async actions => {
 
         if (matchingAction.name === 'fundtransfer') {
           const withdrawElection = await edenHistoricElectionGql.get({
-            date_election: { _lte: action.trace.block.timestamp }
+            date_election: { _lte: timestamp }
           })
           const amount = Number(matchingAction.json.amount.split(' ')[0])
 
@@ -104,11 +102,12 @@ const runUpdaters = async actions => {
         await updater.apply({
           transaction_id: id,
           json: matchingAction.json,
-          timestamp: action.trace.block.timestamp,
+          timestamp,
           ation: matchingAction.name,
           eosPrice: LASTEST_RATE_DATA_CONSULTED,
           election: edenElectionId,
-          amountTransfer: lastElectionsAmountFundTransfer
+          amountTransfer: lastElectionsAmountFundTransfer,
+          delegateAccount
         })
       }
     } catch (error) {
@@ -128,7 +127,7 @@ const getActions = async params => {
   return {
     hasMore: transactionsList.length === 1000,
     actions: transactionsList,
-    blockNumber: transactionsList[transactionsList.length - 1]?.trace.block.num
+    blockNumber: transactionsList.at(-1)?.trace.block.num
   }
 }
 
@@ -150,13 +149,14 @@ const sync = async () => {
 
         await runUpdaters(actions)
         await edenDelegatesGql.update(delegate.id, blockNumber)
+        await sleepUtil(10)
       }
     } catch (error) {
       console.error('dfuse error', error.message)
     }
   }
 
-  await sleepUtil(60)
+  await sleepUtil(10)
 
   return sync()
 }
