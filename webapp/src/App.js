@@ -6,6 +6,7 @@ import { StylesProvider, createGenerateClassName } from '@mui/styles'
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import '@edenia/ui-kit/dist/index.css'
+import ReactGA from 'react-ga'
 
 import useTresuryBalanceState from './hooks/customHooks/useTresuryBalanceState'
 import routes from './routes'
@@ -14,6 +15,10 @@ import DashboardLayout from './layouts/Dashboard'
 import { useSharedState } from './context/state.context'
 import getTheme from './theme'
 import './i18n'
+
+const TRACKING_ID = 'G-HYWDW1MCM8'
+
+ReactGA.initialize(TRACKING_ID)
 
 const generateClassName = createGenerateClassName({
   productionPrefix: 'eosSpendExplorer'

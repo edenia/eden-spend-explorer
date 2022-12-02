@@ -4,6 +4,7 @@ import Hidden from '@mui/material/Hidden'
 import { makeStyles } from '@mui/styles'
 import { Toolbar } from '@mui/material'
 import PropTypes from 'prop-types'
+import ReactGA from 'react-ga'
 
 import Sidebar from '../../components/Sidebar'
 import Header from '../../components/Header'
@@ -26,6 +27,8 @@ const Dashboard = ({ children, routes }) => {
       left: 0,
       behavior: 'instant'
     })
+
+    ReactGA.pageview(window.location.pathname)
   }, [pathname])
 
   const handleDrawerToggle = () => {

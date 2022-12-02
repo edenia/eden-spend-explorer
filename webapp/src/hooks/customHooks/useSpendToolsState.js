@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLazyQuery, useMutation } from '@apollo/client'
+import ReactGA from 'react-ga'
 
 import { useSharedState } from '../../context/state.context'
 import {
@@ -68,6 +69,12 @@ const useSpendTools = () => {
       setOpenSnackbar(true)
 
       if (openModal) {
+        ReactGA.event({
+          category: 'transaction',
+          action: 'update transaction',
+          label: modalData?.txid
+        })
+
         editTransaction({
           variables: {
             where: {
@@ -95,6 +102,12 @@ const useSpendTools = () => {
 
         resetModal()
       } else {
+        ReactGA.event({
+          category: 'transaction',
+          action: 'send tokens',
+          label: `from: ${formValues.to}, to: ${state.user?.accountName}`,
+          value: Number(formValues.amount)
+        })
         reset()
       }
     } catch (error) {
