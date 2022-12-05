@@ -135,7 +135,7 @@ const SidebarComp = ({ routes, openComponent, onClose }) => {
                     <Typography variant="caption">
                       <Link
                         color="black"
-                        href={`https://genesis.eden.eoscommunity.org/${state?.ual?.activeUser?.accountName}`}
+                        href={`https://genesis.eden.eoscommunity.org/members/${state?.ual?.activeUser?.accountName}`}
                         rel="noreferrer"
                         underline="none"
                         target="_blank"
