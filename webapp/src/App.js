@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useMemo } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { StylesProvider, createGenerateClassName } from '@mui/styles'
@@ -54,7 +54,10 @@ const App = () => {
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DashboardLayout routes={userRoutes.sidebar}>
               <Suspense fallback={<Loader />}>
-                <Routes>{userRoutes.browser.map(renderRoute)}</Routes>
+                <Routes>
+                  {userRoutes.browser.map(renderRoute)}
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
               </Suspense>
             </DashboardLayout>
           </LocalizationProvider>
