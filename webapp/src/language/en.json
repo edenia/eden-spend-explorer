@@ -1,6 +1,6 @@
 {
   "common": {
-    "login": "Login",
+    "login": "Sign in",
     "signOut": "Logout",
     "lightMode": "Light Mode",
     "darkMode": "Dark Mode",
