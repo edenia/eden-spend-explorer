@@ -1,5 +1,4 @@
 module.exports = {
-  dfuseGql: require('./dfuse-state.gql'),
   edenTransactionGql: require('./eden-transaction.gql'),
   edenDelegatesGql: require('./eden-delegates.gql'),
   edenElectionGql: require('./eden-election.gql'),

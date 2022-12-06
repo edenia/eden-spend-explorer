@@ -1,4 +1,3 @@
-- "!include public_dfuse_state.yaml"
 - "!include public_eden_delegates.yaml"
 - "!include public_eden_election.yaml"
 - "!include public_eden_historic_election.yaml"
