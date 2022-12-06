@@ -39,6 +39,8 @@ const FooterComp = () => {
             <img
               src="https://proxy.eden.eoscommunity.org/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fedenia-isotipo-grey.b3148c10.png&w=32&q=75"
               alt="edenia logo"
+              width="18px"
+              height="18px"
             />
           </div>
         }

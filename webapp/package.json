@@ -5,7 +5,8 @@
   "repository": "https://github.com/edenia/eden-spend-explorer.git",
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "react-app-rewired build --stats",
+    "analyze": "webpack-bundle-analyzer build/bundle-stats.json",
     "eject": "react-scripts eject",
     "lint": "lint-staged",
     "test": "env-cmd -f ../.env react-app-rewired test --env=jsdom",
@@ -88,6 +89,7 @@
     "lint-staged": "^12.3.1",
     "prettier": "^2.5.1",
     "react-app-rewired": "^2.1.11",
-    "standard": "^16.0.4"
+    "standard": "^16.0.4",
+    "webpack-bundle-analyzer": "^4.7.0"
   }
 }
