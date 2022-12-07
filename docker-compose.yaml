@@ -49,7 +49,7 @@ services:
       HAPI_DFUSE_FIRST_BLOCK: '${HAPI_DFUSE_FIRST_BLOCK}'
   hasura:
     container_name: 'eden-spending-hasura'
-    image: hasura/graphql-engine:v2.10.1.cli-migrations-v3
+    image: hasura/graphql-engine:v2.16.0.cli-migrations-v3
     ports:
       - '8080:8080'
     depends_on:
