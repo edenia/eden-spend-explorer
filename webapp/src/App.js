@@ -16,7 +16,7 @@ import { useSharedState } from './context/state.context'
 import getTheme from './theme'
 import './i18n'
 
-const TRACKING_ID = 'G-HYWDW1MCM8'
+const TRACKING_ID = 'G-3MY19MHQWY'
 
 ReactGA.initialize(TRACKING_ID)
 
