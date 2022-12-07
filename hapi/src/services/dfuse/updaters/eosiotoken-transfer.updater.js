@@ -22,7 +22,7 @@ module.exports = {
     try {
       const amount = Number(action.json.quantity.split(' ')[0])
       const { idElection } = await updaterUtil.getElectionWithoutExpense(
-        action.delegateAccount,
+        action.json.from,
         amount,
         edenElectionGql,
         edenTransactionGql

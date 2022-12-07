@@ -16,12 +16,8 @@ const {
 
 const updaters = require('./updaters')
 
-let LASTEST_RATE_DATE_CONSULTED = null
-let LASTEST_RATE_DATA_CONSULTED = null
-
 const runUpdaters = async actions => {
   for (let index = 0; index < actions.length; index++) {
-    let lastElectionsAmountFundTransfer = 0
     const action = actions[index]
     try {
       const { matchingActions, id } = action?.trace
@@ -36,6 +32,8 @@ const runUpdaters = async actions => {
           item =>
             item.type === `${matchingAction.account}:${matchingAction.name}`
         )
+
+        if (!updater) continue
 
         if (matchingAction.name === 'categorize') {
           await updater.apply({
@@ -55,27 +53,36 @@ const runUpdaters = async actions => {
 
         if (!electionNumber) continue
 
-        const delegateAccount =
-          matchingAction.name === 'withdraw'
-            ? matchingAction.json.owner
-            : matchingAction.json.from
         const edenElectionId = await edenElectionGql.get({
-          eden_delegate: { account: { _eq: delegateAccount } },
+          eden_delegate: { account: { _eq: matchingAction.json.from } },
           election: { _eq: electionNumber.election }
         })
         const registeredTransaction = await edenTransactionGql.get({
           txid: { _eq: id }
         })
 
-        if (!edenElectionId || registeredTransaction) continue
+        if (
+          !edenElectionId ||
+          (registeredTransaction && matchingAction.name !== 'fundtransfer')
+        )
+          continue
 
+        const registeredFundtransferTx = await communityUtil.existFundTransfer(
+          edenTransactionGql,
+          matchingAction.json?.amount?.split(' ')[0] || 0,
+          timestamp,
+          matchingAction.json.from
+        )
         const txDate = moment(timestamp).format('DD-MM-YYYY')
+        let eosPrice = 0
 
-        if (LASTEST_RATE_DATE_CONSULTED !== txDate) {
+        if (
+          !registeredFundtransferTx ||
+          matchingAction.name !== 'fundtransfer'
+        ) {
           try {
             const data = await communityUtil.getExchangeRateByDate(txDate)
-            LASTEST_RATE_DATA_CONSULTED = data.market_data.current_price.usd
-            LASTEST_RATE_DATE_CONSULTED = txDate
+            eosPrice = data.market_data.current_price.usd
           } catch (error) {
             console.error(
               `error runUpdaters, number of date queries exceeded: ${error.message}`
@@ -87,27 +94,13 @@ const runUpdaters = async actions => {
           }
         }
 
-        if (matchingAction.name === 'fundtransfer') {
-          const withdrawElection = await edenHistoricElectionGql.get({
-            date_election: { _lte: timestamp }
-          })
-          const amount = Number(matchingAction.json.amount.split(' ')[0])
-
-          lastElectionsAmountFundTransfer =
-            withdrawElection.election !== edenElectionId.election
-              ? lastElectionsAmountFundTransfer + amount
-              : lastElectionsAmountFundTransfer
-        }
-
         await updater.apply({
           transaction_id: id,
           json: matchingAction.json,
           timestamp,
           ation: matchingAction.name,
-          eosPrice: LASTEST_RATE_DATA_CONSULTED,
-          election: edenElectionId,
-          amountTransfer: lastElectionsAmountFundTransfer,
-          delegateAccount
+          eosPrice,
+          election: edenElectionId
         })
       }
     } catch (error) {

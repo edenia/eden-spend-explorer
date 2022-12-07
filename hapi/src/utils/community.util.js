@@ -64,9 +64,27 @@ const getExchangeRateByDate = async txDate => {
   return data
 }
 
+const existFundTransfer = async (
+  edenTransactionGql,
+  amount,
+  date,
+  delegate
+) => {
+  const existTx = await edenTransactionGql.get({
+    date: { _eq: date },
+    amount: { _eq: amount },
+    eden_election: {
+      eden_delegate: { account: { _eq: delegate } }
+    }
+  })
+
+  return existTx
+}
+
 module.exports = {
   nextElectionDate,
   nextDistributionDate,
   loadTableData,
-  getExchangeRateByDate
+  getExchangeRateByDate,
+  existFundTransfer
 }

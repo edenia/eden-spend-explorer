@@ -86,7 +86,7 @@ const runDelegateUpdaters = async actions => {
         const { json } = matchingActions[indexMach]
         const date = json.distribution_time
         const rank = json.rank
-        const account = json.to
+        const account = json.from
         await registerHistoricDelegate(date, account, rank)
       }
     } catch (error) {

@@ -35,7 +35,7 @@ const update = async ({ where, _set }) => {
 const get = async (where, getMany = false) => {
   const query = `
     query ($where: eden_election_bool_exp) {
-      eden_election(where: $where) {
+      eden_election(where: $where, order_by: {election: asc}) {
         id
         id_delegate
         delegate_level

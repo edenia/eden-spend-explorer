@@ -1,44 +1,42 @@
-const { v4: uuidv4 } = require('uuid')
+// const { v4: uuidv4 } = require('uuid')
 
-const { edenTransactionGql, edenHistoricElectionGql } = require('../../../gql')
+const { edenTransactionGql } = require('../../../gql')
 const { edenConfig } = require('../../../config')
+const { communityUtil } = require('../../../utils')
 
 module.exports = {
   type: `${edenConfig.edenContract}:fundtransfer`,
   apply: async action => {
     try {
-      const withdrawElection = await edenHistoricElectionGql.get({
-        date_election: { _lte: action.timestamp }
-      })
-      const existTx = await edenTransactionGql.get({
-        date: { _eq: action.json.distribution_time },
-        eden_election: {
-          delegate_level: { _eq: action.json.rank },
-          eden_delegate: { account: { _eq: action.json.from } }
-        }
-      })
       const amount = Number(action.json.amount.split(' ')[0])
-      const transactionData = {
-        txid: uuidv4(),
+      const existTx = await communityUtil.existFundTransfer(
+        edenTransactionGql,
         amount,
-        category: 'claimed',
-        date: action.json.distribution_time,
-        description: action.json.memo,
-        id_election: action.election.id,
-        recipient: action.json.to,
-        type: 'income',
-        eos_exchange: action.eosPrice,
-        usd_total: amount * action.eosPrice
-      }
-      if (!existTx && withdrawElection.election !== action.election.election) {
+        action.json.distribution_time,
+        action.json.from
+      )
+
+      if (!existTx) {
+        const transactionData = {
+          txid: action.transaction_id,
+          amount,
+          category: 'claimed',
+          date: action.json.distribution_time,
+          description: action.json.memo,
+          id_election: action.election.id,
+          recipient: action.json.from,
+          type: 'income',
+          eos_exchange: action.eosPrice,
+          usd_total: amount * action.eosPrice
+        }
+
         await edenTransactionGql.save(transactionData)
       } else {
-        await edenTransactionGql.deleteTx({
-          date: { _eq: transactionData.date },
-          eden_election: {
-            delegate_level: { _eq: action.json.rank },
-            eden_delegate: { account: { _eq: transactionData.recipient } }
-          }
+        await edenTransactionGql.update({
+          where: {
+            id: { _eq: existTx.id }
+          },
+          _set: { txid: action.transaction_id }
         })
       }
     } catch (error) {
