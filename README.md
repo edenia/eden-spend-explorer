@@ -1,5 +1,5 @@
 <p align="center">
-   <img src="./docs/images/logo_edeneos.png" width="300">
+   <img src="./docs/images/logo_eden.png" width="300">
 </p>
 
 # Eden Delegates Accounting Standard
@@ -115,32 +115,23 @@ Data can then be aggregated to be displayed on a web application with graphs and
 
 Some interesting data visualizations to be included in the dashboard could be :
 
-**Expenses by category pie chart**
+**Expenses and Incomes by category pie chart**
 
-- Total Expenses By Category per Delegate
-- Total Expenses by Category for all delegates
-- Total Expenses by Category for all chief delegates
-- Total Expenses by Category for all level 1 delegates
+- Total Expenses and Incomes By Category per Delegate
+- Total Expenses and Incomes By Category for All Delegates
 
-**Expenses over time line graph**
+**Expenses and Incomes by Round Stacked Graph**
 
-- Expenses over time per Delegate
-- Expenses over time for all delegates
-- Expenses over time for all chief delegates
-- Expenses over time for all level 1 delegates
+- Expenses and Incomes by Round per Delegate
 
-**Total Expenses**
+**Detailed Table**
 
-- Total expenses reported by each delegate
-- The top 10 largest Eden expenses this election cycle
-- The top accounts receivers of Eden funds
-- Total number of expenses
-- Average number of expenses
-- Average expense size
+- Expenses and Incomes per Round
+- Expenses and Incomes per Delegate
 
-**Expenses across eden rounds**
+**Expenses and Income Across Eden Rounds**
 
-- round 1 expenses vs round 2 expenses etc.
+- Round 1 Expenses and Incomes vs Round 2 Expenses and Incomes etc.
 
 ## Event Listener
 
@@ -163,7 +154,7 @@ We are inspired by the [Demux Pattern](https://github.com/EOSIO/demux-js) to dev
 
 ### Subscribe to Smart Contract Actions
 
-We will use the Hyperion history service's ability to query blockchain events to listen for transactions and trigger side effects outside of the blockchain. The blockchain remains as the single source of truth for all application state nonetheless.
+We will use the Dfuse history service's ability to query blockchain events to listen for transactions and trigger side effects outside of the blockchain. The blockchain remains as the single source of truth for all application state nonetheless.
 
 The backend service will subscribe to the following smart contract actions required in order to trigger updates when Eden specific token transfers occur on chain.
 
@@ -179,7 +170,7 @@ This application features the following technology stack :
 
 - **React JS** : A Front End Web Application Framework.
 - **Hapi** : Node JS HTTP API.
-- **Hyperion** : Hyperion Full History API.
+- **Dfuse** : Full History API.
 - **Hasura** : GraphQL Engine for PostgreSQL Database.
 - **EOSIO** : Blockchain protocol with industry-leading transaction speed.
 - **Kubernetes** : Docker Container Orchestration.
@@ -210,7 +201,7 @@ Hasura also enables custom REST handling capabilities with the possibility to in
 
 ### Hapi REST Server
 
-The Hyperion event listener is configured withing the HAPI nodeJS backend service. We also need to handle REST custom requests coming from the Hasura GraphQL server. For this, we will use [hapi.dev](https://hapi.dev/), which is a simple and easy-to-use backend framework.
+The Dfuse event listener is configured withing the HAPI nodeJS backend service. We also need to handle REST custom requests coming from the Hasura GraphQL server. For this, we will use [hapi.dev](https://hapi.dev/), which is a simple and easy-to-use backend framework.
 
 ## File Structure
 
@@ -226,7 +217,7 @@ Within this repository you will find the following directories and files:
 │       └── routes ................ HTTP routes
 │       └── utils ................. Utilities and Libraries
 │       └── services .............. Project Business Logic
-|           └── hyperion .......... Demux Implementation
+|           └── dfuse .......... Demux Implementation
 ├── hasura ........................ Hasura GraphQL Engine
 ├── kubernetes .................... Kubernetes Manifests
 ├── utils ......................... Makefiles for project build
