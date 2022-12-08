@@ -39,8 +39,6 @@ const SpendTools = () => {
       formValuesModal,
       errorMessage,
       modalData,
-      // amountClaimed,
-      // amountCategorized,
       openSnackbar
     },
     {
