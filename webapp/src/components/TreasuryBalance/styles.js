@@ -5,7 +5,7 @@ export default theme => ({
     flexDirection: 'column',
     alignItems: 'end',
     [theme.breakpoints.up('300')]: {
-      width: '244.4px',
+      minWidth: '244.4px',
       height: '77px',
       padding: '4.2px 9.9px 7.7px 17px',
       borderRadius: '11.3px'
