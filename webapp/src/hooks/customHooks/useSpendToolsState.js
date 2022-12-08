@@ -3,6 +3,8 @@ import { useLazyQuery, useMutation } from '@apollo/client'
 import ReactGA from 'react-ga'
 
 import { useSharedState } from '../../context/state.context'
+import { sleep } from '../../utils/sleep'
+import { eosApi } from '../../utils/eosapi'
 import {
   GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
   GET_CATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
@@ -14,6 +16,7 @@ import useForm from './useForm'
 
 const useSpendTools = () => {
   const [state] = useSharedState()
+  const [currencyBalance, setCurrencyBalance] = useState('Loading... ')
   const [authenticatedUser, setAuthenticatedUser] = useState('')
   const [amountCategorized, setAmountCategorized] = useState(0)
   const [transactionsList, setTransactionsList] = useState([])
@@ -41,6 +44,22 @@ const useSpendTools = () => {
     newDescription: ''
   })
   const [editTransaction] = useMutation(EDIT_TRANSACTION_BY_TXID)
+
+  const getEosBalance = async delegate => {
+    try {
+      const response = await eosApi.getCurrencyBalance(
+        'eosio.token',
+        delegate,
+        'EOS'
+      )
+
+      setCurrencyBalance(response[0] || '')
+    } catch (error) {
+      console.log(error)
+      await sleep(60)
+      getEosBalance()
+    }
+  }
 
   const executeAction = async (data, account, name) => {
     setErrorMessage('')
@@ -194,6 +213,7 @@ const useSpendTools = () => {
 
   return [
     {
+      currencyBalance,
       transactionsList,
       formValues,
       errors,
@@ -216,7 +236,8 @@ const useSpendTools = () => {
       handleCloseModal,
       handleOpenModal,
       executeAction,
-      setOpenSnackbar
+      setOpenSnackbar,
+      getEosBalance
     }
   ]
 }

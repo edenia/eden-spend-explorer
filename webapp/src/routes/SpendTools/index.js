@@ -30,6 +30,7 @@ const SpendTools = () => {
   const { eosRate } = state.eosTrasuryBalance
   const [
     {
+      currencyBalance,
       transactionsList,
       formValues,
       errors,
@@ -38,8 +39,8 @@ const SpendTools = () => {
       formValuesModal,
       errorMessage,
       modalData,
-      amountClaimed,
-      amountCategorized,
+      // amountClaimed,
+      // amountCategorized,
       openSnackbar
     },
     {
@@ -50,9 +51,12 @@ const SpendTools = () => {
       handleCloseModal,
       handleOpenModal,
       executeAction,
-      setOpenSnackbar
+      setOpenSnackbar,
+      getEosBalance
     }
   ] = useSpendTools()
+
+  getEosBalance(state.user?.accountName)
 
   const { to, amount, category, description } = formValues
   const { newCategory, newDescription } = formValuesModal
@@ -268,13 +272,7 @@ const SpendTools = () => {
                 <label id="amount-id">{t('amountLabel')}</label>
                 <label id="available-id">
                   {t('availableLabel')}:{' '}
-                  {formatWithThousandSeparator(
-                    isNaN(amountClaimed - amountCategorized)
-                      ? 0
-                      : amountClaimed - amountCategorized,
-                    4
-                  )}{' '}
-                  EOS
+                  {formatWithThousandSeparator(currencyBalance)}
                 </label>
               </div>
               <TextField
