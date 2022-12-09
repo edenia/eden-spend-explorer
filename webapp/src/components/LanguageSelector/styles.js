@@ -1,6 +1,6 @@
 export default theme => ({
   paddingIcon: {
-    paddingRight: theme.spacing(2),
+    paddingRight: theme.spacing(1),
     display: 'flex'
   },
   flexBox: {
