@@ -95,10 +95,10 @@ const SidebarComp = ({ routes, openComponent, onClose }) => {
       logo="/logos/eden-spend-explorer-logo.png"
       menuOptions={
         <div className={classes.spacinTopSidebarItems}>
-          {routes.map(data => {
-            if (!data.component) return <></>
-
-            return (
+          {routes.map(data =>
+            !data.component ? (
+              <></>
+            ) : (
               <div key={data.name} className={classes.marginTopItemsSidebar}>
                 <Link to={data.path} underline="none" component={RouterLink}>
                   <MenuOption
@@ -109,7 +109,7 @@ const SidebarComp = ({ routes, openComponent, onClose }) => {
                 </Link>
               </div>
             )
-          })}
+          )}
         </div>
       }
       profileComponent={

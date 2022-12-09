@@ -160,12 +160,15 @@ const ExpenseReport = () => {
               labelSelect={t('textYearSelect', { ns: 'generalForm' })}
               values={getListElectionYears()}
               actualValue={electionYearSelect}
+              width={100}
+              size="small"
             />
             <SelectComponent
               onChangeFunction={setElectionRoundSelect}
               labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
               values={electionsByYearList.map(data => `${data.election}`)}
               actualValue={electionRoundSelect}
+              size="small"
             />
           </div>
         )}
