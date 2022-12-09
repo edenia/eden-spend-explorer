@@ -9,18 +9,19 @@ select_permissions:
   - role: guest
     permission:
       columns:
+        - amount
         - category
+        - created_at
+        - date
         - description
+        - eos_exchange
+        - id
+        - id_election
+        - memo
         - recipient
         - txid
         - type
-        - amount
-        - eos_exchange
-        - usd_total
-        - created_at
-        - date
         - updated_at
-        - id
-        - id_election
+        - usd_total
       filter: {}
       allow_aggregations: true
