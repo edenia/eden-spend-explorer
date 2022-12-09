@@ -9,11 +9,15 @@ module.exports = {
         action.json.new_memo.split(':')[1] || ''
       )
       const transactionToEdit = edenTransactionGql.get({
-        txid: { _eq: action.json.tx_id }
+        txid: { _eq: action.json.tx_id },
+        type: { _eq: 'expense' }
       })
+
+      if (!transactionToEdit) return
+
       const { idElection: id_election } =
         await updaterUtil.getElectionWithoutExpense(
-          action.delegateAccount,
+          action.json.account,
           transactionToEdit.amount,
           edenElectionGql,
           edenTransactionGql

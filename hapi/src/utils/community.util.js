@@ -64,21 +64,22 @@ const getExchangeRateByDate = async txDate => {
   return data
 }
 
-const existFundTransfer = async (
-  edenTransactionGql,
-  amount,
-  date,
-  delegate
-) => {
-  const existTx = await edenTransactionGql.get({
-    date: { _eq: date },
-    amount: { _eq: amount },
-    eden_election: {
-      eden_delegate: { account: { _eq: delegate } }
-    }
+const saveNewElection = async edenHistoricElectionGql => {
+  const currentDate = moment().format()
+  const lastElection = await edenHistoricElectionGql.get({
+    date_election: { _lte: currentDate }
   })
 
-  return existTx
+  const electState = await loadTableData({ next_key: null }, 'elect.state')
+  const electStateData = electState.rows[0]
+  const nextElection = electStateData[1].last_election_time.split('T')[0]
+
+  if (lastElection.date_election.split('T')[0] === nextElection) return
+
+  await edenHistoricElectionGql.save({
+    election: lastElection.election + 1,
+    date_election: nextElection
+  })
 }
 
 module.exports = {
@@ -86,5 +87,5 @@ module.exports = {
   nextDistributionDate,
   loadTableData,
   getExchangeRateByDate,
-  existFundTransfer
+  saveNewElection
 }

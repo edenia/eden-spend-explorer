@@ -1,4 +1,3 @@
-const moment = require('moment')
 const { edenConfig } = require('../config')
 const { servicesConstant } = require('../constants')
 const { eosUtil, dfuseUtil, communityUtil, sleepUtil } = require('../utils')
@@ -40,7 +39,6 @@ const registerHistoricDelegate = async (date, account, rank) => {
   const election = await edenHistoricElectionGql.get({
     date_election: { _lte: date }
   })
-
   let registeredMember = await edenDelegatesGql.get({
     account: { _eq: account }
   })
@@ -53,7 +51,6 @@ const registerHistoricDelegate = async (date, account, rank) => {
     election: election.election,
     delegate_level: rank
   }
-
   let registeredElection = await edenElectionGql.get({
     id_delegate: { _eq: registeredMember.id },
     election: { _eq: electionData.election }
@@ -82,6 +79,7 @@ const runDelegateUpdaters = async actions => {
     const action = actions[index]
     try {
       const { matchingActions } = action.trace
+
       for (let indexMach = 0; indexMach < matchingActions.length; indexMach++) {
         const { json } = matchingActions[indexMach]
         const date = json.distribution_time
@@ -122,6 +120,7 @@ const saveDelegateByDistAccount = async () => {
   try {
     while (true) {
       const delegates = await historicDelegates({ next_key: nextKey })
+
       for (const delegate of delegates.rows) {
         const date = delegate[1].distribution_time
         const account = delegate[1].owner
@@ -159,30 +158,9 @@ const saveHistoricElection = async () => {
   await sleepUtil(5)
 }
 
-const saveNewHistoricElection = async () => {
-  const currentDate = moment().format()
-  const lastElection = await edenHistoricElectionGql.get({
-    date_election: { _lte: currentDate }
-  })
-
-  const electState = await communityUtil.loadTableData(
-    { next_key: null },
-    'elect.state'
-  )
-  const electStateData = electState.rows[0]
-  const nextElection = electStateData[1].last_election_time.split('T')[0]
-
-  if (lastElection.date_election.split('T')[0] === nextElection) return
-
-  await edenHistoricElectionGql.save({
-    election: lastElection.election + 1,
-    date_election: nextElection
-  })
-}
-
 const updateHistoricDelegate = async () => {
   await saveHistoricElection()
-  await saveNewHistoricElection()
+  await communityUtil.saveNewElection(edenHistoricElectionGql)
   await saveDelegateByDistAccount()
   await saveDelegateByFundTransfer()
 }

@@ -1,18 +1,10 @@
-const moment = require('moment')
-
-const { edenConfig } = require('../../config')
 const {
   edenElectionGql,
   edenHistoricElectionGql,
-  edenTransactionGql,
   edenDelegatesGql
 } = require('../../gql')
-const {
-  hasuraUtil,
-  sleepUtil,
-  communityUtil,
-  dfuseUtil
-} = require('../../utils')
+const { edenConfig } = require('../../config')
+const { hasuraUtil, sleepUtil, dfuseUtil } = require('../../utils')
 
 const updaters = require('./updaters')
 
@@ -32,8 +24,6 @@ const runUpdaters = async actions => {
           item =>
             item.type === `${matchingAction.account}:${matchingAction.name}`
         )
-
-        if (!updater) continue
 
         if (matchingAction.name === 'categorize') {
           await updater.apply({
@@ -57,50 +47,16 @@ const runUpdaters = async actions => {
           eden_delegate: { account: { _eq: matchingAction.json.from } },
           election: { _eq: electionNumber.election }
         })
-        const registeredTransaction = await edenTransactionGql.get({
-          txid: { _eq: id }
-        })
 
-        if (
-          !edenElectionId ||
-          (registeredTransaction && matchingAction.name !== 'fundtransfer')
-        )
-          continue
-
-        const registeredFundtransferTx = await communityUtil.existFundTransfer(
-          edenTransactionGql,
-          matchingAction.json?.amount?.split(' ')[0] || 0,
-          timestamp,
-          matchingAction.json.from
-        )
-        const txDate = moment(timestamp).format('DD-MM-YYYY')
-        let eosPrice = 0
-
-        if (
-          !registeredFundtransferTx ||
-          matchingAction.name !== 'fundtransfer'
-        ) {
-          try {
-            const data = await communityUtil.getExchangeRateByDate(txDate)
-            eosPrice = data.market_data.current_price.usd
-          } catch (error) {
-            console.error(
-              `error runUpdaters, number of date queries exceeded: ${error.message}`
-            )
-
-            await sleepUtil(60)
-
-            return runUpdaters(actions)
-          }
-        }
+        if (!edenElectionId) continue
 
         await updater.apply({
           transaction_id: id,
           json: matchingAction.json,
           timestamp,
           ation: matchingAction.name,
-          eosPrice,
-          election: edenElectionId
+          election: edenElectionId,
+          updater
         })
       }
     } catch (error) {
@@ -136,7 +92,7 @@ const sync = async () => {
     try {
       while (hasMore) {
         ;({ hasMore, actions, blockNumber } = await getActions({
-          query: `account:${edenConfig.edenContract} data.owner:${delegate.account} OR account:${edenConfig.edenContract} data.to:${delegate.account} OR account:eosio.token data.from:${delegate.account} receiver:eosio.token OR data.account:${delegate.account} receiver:edenexplorer`,
+          query: `account:${edenConfig.edenContract} data.from:${delegate.account} data.to:${delegate.account} OR account:eosio.token data.from:${delegate.account} receiver:eosio.token OR data.account:${delegate.account} receiver:edenexplorer`,
           lowBlockNum: blockNumber
         }))
 
