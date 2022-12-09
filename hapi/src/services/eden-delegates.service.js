@@ -6,29 +6,8 @@ const { edenElectionGql } = require('../gql')
 const { edenHistoricElectionGql } = require('../gql')
 const { servicesConstant } = require('../constants')
 
-const saveNewHistoricElection = async () => {
-  const currentDate = moment().format()
-  const lastElection = await edenHistoricElectionGql.get({
-    date_election: { _lte: currentDate }
-  })
-
-  const electState = await communityUtil.loadTableData(
-    { next_key: null },
-    'elect.state'
-  )
-  const electStateData = electState.rows[0]
-  const nextElection = electStateData[1].last_election_time.split('T')[0]
-
-  if (lastElection.date_election.split('T')[0] === nextElection) return
-
-  await edenHistoricElectionGql.save({
-    election: lastElection.election + 1,
-    date_election: nextElection
-  })
-}
-
 const updateEdenTable = async () => {
-  await saveNewHistoricElection()
+  await communityUtil.saveNewElection(edenHistoricElectionGql)
 
   let nextKey = null
   const dateActualElection = moment(new Date()).get()
@@ -60,7 +39,6 @@ const updateEdenTable = async () => {
         election: actualElection.election,
         delegate_level: member[1].election_rank
       }
-
       const registeredElection = await edenElectionGql.get({
         id_delegate: { _eq: registeredMember.id },
         election: { _eq: electionData.election }
