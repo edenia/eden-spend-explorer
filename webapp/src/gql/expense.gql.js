@@ -36,6 +36,10 @@ export const GET_EXPENSE_BY_ELECTIONS = gql`
       amount
       usd_total
     }
+    eden_historic_election {
+      election
+      date_election
+    }
   }
 `
 

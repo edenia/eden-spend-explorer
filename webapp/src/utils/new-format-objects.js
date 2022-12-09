@@ -69,24 +69,30 @@ export const newDataFormatByDelegatesIncome = transactionsList =>
   }))
 
 export const newDataFormatByCategorizedElectionsExpense = electionsList => {
+  const dataElections = electionsList?.total_by_category_and_election || []
+  const historicElections = electionsList?.eden_historic_election || []
   const elections = []
   let electionNum = 0
   let usdTotal = 0
   let eosTotal = 0
-  for (let pos = 0; pos < electionsList.length; pos++) {
-    if (electionsList[pos].election === electionNum) {
-      if (electionsList[pos].category !== 'uncategorized') {
-        usdTotal += electionsList[pos].usd_total
-        eosTotal += electionsList[pos].amount
+  for (let pos = 0; pos < dataElections.length; pos++) {
+    if (dataElections[pos].election === electionNum) {
+      if (dataElections[pos].category !== 'uncategorized') {
+        usdTotal += dataElections[pos].usd_total
+        eosTotal += dataElections[pos].amount
       } else {
+        const date = historicElections.find(
+          element => element.election === dataElections[pos].election
+        )
         const election = {
-          election: `Election ${electionsList[pos].election + 1}`,
-          EOS_TOTAL: Number(eosTotal + electionsList[pos].amount),
-          USD_TOTAL: Number(usdTotal + electionsList[pos].usd_total),
+          election: `Election ${dataElections[pos].election + 1}`,
+          date: date.date_election,
+          EOS_TOTAL: Number(eosTotal + dataElections[pos].amount),
+          USD_TOTAL: Number(usdTotal + dataElections[pos].usd_total),
           EOS_CATEGORIZED: Number(eosTotal),
           USD_CATEGORIZED: Number(usdTotal),
-          EOS_UNCATEGORIZED: Number(electionsList[pos].amount),
-          USD_UNCATEGORIZED: Number(electionsList[pos].usd_total)
+          EOS_UNCATEGORIZED: Number(dataElections[pos].amount),
+          USD_UNCATEGORIZED: Number(dataElections[pos].usd_total)
         }
         elections.push(election)
         eosTotal = 0
@@ -94,14 +100,18 @@ export const newDataFormatByCategorizedElectionsExpense = electionsList => {
         electionNum++
       }
     } else {
+      const date = historicElections.find(
+        element => element.election === dataElections[pos].election
+      )
       const election = {
-        election: `Election ${electionsList[pos].electionNum + 1}`,
-        EOS_TOTAL: Number(eosTotal + electionsList[pos].amount),
-        USD_TOTAL: Number(usdTotal + electionsList[pos].usd_total),
+        election: `Election ${dataElections[pos].electionNum + 1}`,
+        date: date.date_election,
+        EOS_TOTAL: Number(eosTotal + dataElections[pos].amount),
+        USD_TOTAL: Number(usdTotal + dataElections[pos].usd_total),
         EOS_CATEGORIZED: Number(eosTotal),
         USD_CATEGORIZED: Number(usdTotal),
-        EOS_UNCATEGORIZED: Number(electionsList[pos].amount),
-        USD_UNCATEGORIZED: Number(electionsList[pos].usd_total)
+        EOS_UNCATEGORIZED: Number(dataElections[pos].amount),
+        USD_UNCATEGORIZED: Number(dataElections[pos].usd_total)
       }
       elections.push(election)
       eosTotal = 0

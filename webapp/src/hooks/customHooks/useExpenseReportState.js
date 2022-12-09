@@ -120,7 +120,7 @@ const useExpenseReportState = () => {
   useEffect(() => {
     setExpenseByElectionsList(
       newDataFormatByCategorizedElectionsExpense(
-        expenseByElectionsData?.total_by_category_and_election || []
+        expenseByElectionsData || []
       ) || []
     )
   }, [expenseByElectionsData])
