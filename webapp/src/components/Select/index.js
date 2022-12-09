@@ -13,13 +13,13 @@ const SelectComponent = ({
   values,
   onChangeFunction,
   actualValue,
-  disable,
-  width = 80
+  width = 80,
+  size = 'normal'
 }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
-  if (disable || !values[0]) return null
+  if (!values[0]) return null
 
   const selectValue = value => {
     if (labelSelect === t('textElectionSelect', { ns: 'generalForm' }))
@@ -30,10 +30,7 @@ const SelectComponent = ({
 
   return (
     <div className={classes.selectContainer}>
-      <FormControl
-        sx={{ width: width }}
-        size={width !== 80 ? 'normal' : 'small'}
-      >
+      <FormControl sx={{ width: width }} size={size}>
         <InputLabel>{labelSelect}</InputLabel>
         <Select
           labelId="demo-select-small"
@@ -58,8 +55,8 @@ SelectComponent.propTypes = {
   values: PropTypes.array,
   onChangeFunction: PropTypes.func,
   actualValue: PropTypes.any,
-  disable: PropTypes.bool,
-  width: PropTypes.number
+  width: PropTypes.number,
+  size: PropTypes.string
 }
 
 export default memo(SelectComponent)
