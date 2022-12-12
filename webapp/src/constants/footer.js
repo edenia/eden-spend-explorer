@@ -36,6 +36,12 @@ export const footerItems = [
         ref: 'https://github.com/edenia/Eden',
         target: '_blank',
         text: 'EdenOS Github Repo'
+      },
+      {
+        underline: 'none',
+        ref: 'https://github.com/edenia/eden-spend-explorer/issues/new/choose',
+        target: '_blank',
+        text: 'Report a Bug / Request a Feature'
       }
     ]
   }
