@@ -9,7 +9,7 @@ export default theme => ({
   marginTopItemsSidebar: {
     marginTop: theme.spacing(0.5),
     '& .menu-option-icon': {
-      paddingRight: '16px'
+      paddingRight: theme.spacing(2)
     }
   },
   divProfileStyle: {
