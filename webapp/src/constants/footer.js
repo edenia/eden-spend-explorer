@@ -41,7 +41,7 @@ export const footerItems = [
         underline: 'none',
         ref: 'https://github.com/edenia/eden-spend-explorer/issues/new/choose',
         target: '_blank',
-        text: 'Report a bug / Request a Feature'
+        text: 'Report a Bug / Request a Feature'
       }
     ]
   }
