@@ -6,6 +6,9 @@ export default (theme, drawerWidth) => ({
     [theme.breakpoints.up('md')]: {
       width: drawerWidth,
       flexShrink: 0
+    },
+    '& .sidebar-container': {
+      width: 220
     }
   },
   mainContent: {
