@@ -152,7 +152,15 @@
     "websiteEOSCR": "Página web EOS Costa Rica"
   },
   "footer": {
-    "communityOwnedPublic": "A Community Owned Public Good",
-    "developedEdenia": "Developed by Edenia"
+    "firstHeader": "EDEN",
+    "secondHeader": "RECURSOS",
+    "community": "La Comunidad",
+    "membership": "Panel de membresía",
+    "getInvite": "Conseguir una invitación",
+    "electionProcess": "Proceso electoral en Eden",
+    "github": "EdenOS Github Repo",
+    "bugFeature": "Informar de un error / Solicitar una función",
+    "communityOwnedPublic": "Un bien público de propiedad comunitaria.",
+    "developedEdenia": "Desarrollado por Edenia"
   }
 }

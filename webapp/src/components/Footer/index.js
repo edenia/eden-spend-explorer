@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import { makeStyles, useTheme } from '@mui/styles'
 import { Typography, Link } from '@mui/material'
 import { useTranslation } from 'react-i18next'
@@ -8,10 +8,27 @@ import styles from './styles'
 import { footerItems } from '../../constants'
 const useStyles = makeStyles(styles)
 
+const cleanFooterItems = (footerItem, translation) => {
+  for (let pos = 0; pos < footerItem.length; pos++) {
+    footerItem[pos].links.map(element => {
+      return (element.text = translation(element.text, { ns: 'footer' }))
+    })
+    footerItem[pos].title = translation(footerItem[pos].title, { ns: 'footer' })
+  }
+  return footerItem
+}
+
 const FooterComp = () => {
-  const { t } = useTranslation('footer')
+  const { t, i18n } = useTranslation('footer')
   const classes = useStyles()
   const theme = useTheme()
+  let cleanData = cleanFooterItems(footerItems, t)
+
+  console.log({ footerItems })
+  useEffect(() => {
+    cleanData = cleanFooterItems(footerItems, t)
+    console.log({ cleanData })
+  }, [i18n.language])
 
   return (
     <div className={classes.footerRoot}>
@@ -24,7 +41,7 @@ const FooterComp = () => {
               color={theme.palette.grey[600]}
               display="flex"
             >
-              {t('communityOwnedPublic')}&ensp;
+              {/* {t('communityOwnedPublic')}&ensp; */}
               <Link
                 target="_blank"
                 href="https://edenia.com"
@@ -44,7 +61,7 @@ const FooterComp = () => {
             />
           </div>
         }
-        itemsFooter={footerItems}
+        itemsFooter={cleanData}
       />
     </div>
   )
