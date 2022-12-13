@@ -25,9 +25,6 @@ module.exports = {
       action.json.memo.split(':')[1] || ''
     )
 
-    if (action.json.to === transactionConstant.RECIPIENTS.pomelo)
-      category = 'pomelo'
-
     if (action.json.to === transactionConstant.RECIPIENTS.edenia)
       category = 'infrastructure'
 
