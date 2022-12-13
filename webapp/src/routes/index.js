@@ -68,7 +68,7 @@ const routes = [
   },
   {
     name: 'help',
-    icon: '/icons/about-icon.svg',
+    icon: '/icons/help-icon.svg',
     component: Help,
     path: '/help',
     exact: true,
