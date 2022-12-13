@@ -5,7 +5,6 @@ import {
   GitHub as GitHubIcon,
   Send as TelegramIcon
 } from 'react-feather'
-// import { HelpOutlineOutlined as HelpIcon } from '@mui/icons-material'
 
 import { mainConfig } from '../config'
 
@@ -15,7 +14,7 @@ const ExpenseReport = lazy(() => import('./ExpenseReport'))
 const IncomeReport = lazy(() => import('./IncomeReport'))
 const Home = lazy(() => import('./Home'))
 const About = lazy(() => import('./About'))
-// const Help = lazy(() => import('./Help'))
+const Help = lazy(() => import('./Help'))
 const Page404 = lazy(() => import('./Route404'))
 
 const routes = [
@@ -60,7 +59,6 @@ const routes = [
     roles: ['member']
   },
   {
-    header: 'docs',
     name: 'about',
     icon: '/icons/about-icon.svg',
     component: About,
@@ -68,13 +66,14 @@ const routes = [
     exact: true,
     roles: ['guest', 'member']
   },
-  // {
-  //   name: 'help',
-  //   icon: <HelpIcon />,
-  //   component: Help,
-  //   path: '/help',
-  //   exact: true
-  // },
+  {
+    name: 'help',
+    icon: '/icons/about-icon.svg',
+    component: Help,
+    path: '/help',
+    exact: true,
+    roles: ['guest', 'member']
+  },
   {
     name: 'changelog',
     badge: mainConfig.appVersion,
