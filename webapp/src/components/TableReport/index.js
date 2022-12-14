@@ -27,7 +27,7 @@ const TableReport = ({ columns, dataPercent }) => {
           rowsPerPageOptions={[5, 10, 20]}
           pagination
           getRowId={row =>
-            `${row.name}-${row.txid}-${row.color}-${row.EOS}-${row.election}`
+            `${row.name}-${row.id}-${row.color}-${row.EOS}-${row.election}`
           }
         />
       </ThemeProvider>
