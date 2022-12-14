@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { Footer } from '@edenia/ui-kit'
 
 import styles from './styles'
-import { footerItems } from '../../constants'
 const useStyles = makeStyles(styles)
 
 const FooterComp = () => {
@@ -44,7 +43,54 @@ const FooterComp = () => {
             />
           </div>
         }
-        itemsFooter={footerItems}
+        itemsFooter={[
+          {
+            title: t('firstHeader'),
+            links: [
+              {
+                underline: 'none',
+                ref: 'https://genesis.eden.eoscommunity.org/members',
+                target: '_blank',
+                text: t('community')
+              },
+              {
+                underline: 'none',
+                ref: 'https://genesis.eden.eoscommunity.org/induction',
+                target: '_blank',
+                text: t('membership')
+              },
+              {
+                underline: 'none',
+                ref: 'https://www.notion.so/Getting-an-Invite-2d38947d5be94dcb84dfa1ae48894802',
+                target: '_blank',
+                text: t('getInvite')
+              }
+            ]
+          },
+          {
+            title: t('secondHeader'),
+            links: [
+              {
+                underline: 'none',
+                ref: 'https://www.edenelections.com/',
+                target: '_blank',
+                text: t('electionProcess')
+              },
+              {
+                underline: 'none',
+                ref: 'https://github.com/edenia/Eden',
+                target: '_blank',
+                text: t('github')
+              },
+              {
+                underline: 'none',
+                ref: 'https://github.com/edenia/eden-spend-explorer/issues/new/choose',
+                target: '_blank',
+                text: t('bugFeature')
+              }
+            ]
+          }
+        ]}
       />
     </div>
   )
