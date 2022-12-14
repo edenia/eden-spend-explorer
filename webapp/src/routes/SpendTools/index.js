@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField'
 import Tooltip from '@mui/material/Tooltip'
 import InputLabel from '@mui/material/InputLabel'
 import { useTranslation } from 'react-i18next'
+import { Spinner } from '@edenia/ui-kit'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 import useSpendTools from '../../hooks/customHooks/useSpendToolsState'
@@ -18,6 +19,7 @@ import SnackbarComponent from '../../components/Snackbar'
 import TableReport from '../../components/TableReport'
 
 import styles from './styles'
+import { Divider } from '@mui/material'
 
 const useStyles = makeStyles(styles)
 
@@ -27,7 +29,7 @@ const SpendTools = () => {
   const classes = useStyles()
   const [state] = useSharedState()
   const { t } = useTranslation('spendToolsRoute')
-  const { eosRate } = state.eosTrasuryBalance
+  const { eosRate = 0 } = state.eosTrasuryBalance
   const [
     {
       currencyBalance,
@@ -39,7 +41,8 @@ const SpendTools = () => {
       formValuesModal,
       errorMessage,
       modalData,
-      openSnackbar
+      openSnackbar,
+      loadingSignTransaction
     },
     {
       handleInputChange,
@@ -95,6 +98,10 @@ const SpendTools = () => {
 
   const columns = [
     {
+      field: 'id',
+      hide: true
+    },
+    {
       field: 'txid',
       headerName: t('headerTable1'),
       cellClassName: classes.links,
@@ -130,6 +137,9 @@ const SpendTools = () => {
     {
       field: 'description',
       headerName: t('headerTable5'),
+      renderCell: param => (
+        <>{param.value.length === 0 ? 'Without memo' : param.value}</>
+      ),
       ...rowsCenter
     },
     {
@@ -234,10 +244,14 @@ const SpendTools = () => {
             </div>
             <div className={classes.buttonContainer}>
               <br />
-              <Button type="submit">
-                <span className={classes.labelButtonTransfer}>
-                  {t('appendButton')}
-                </span>
+              <Button disabled={loadingSignTransaction} type="submit">
+                {loadingSignTransaction ? (
+                  <Spinner size={30} />
+                ) : (
+                  <span className={classes.labelButtonTransfer}>
+                    {t('appendButton')}
+                  </span>
+                )}
               </Button>
             </div>
             <div className={classes.dangerText}>
@@ -333,22 +347,28 @@ const SpendTools = () => {
           </div>
         </div>
         <div className={classes.buttonContainer}>
-          <Button type="submit">
-            <span className={classes.labelButtonTransfer}>
-              {t('transferButton')}
-            </span>
+          <Button
+            disabled={loadingSignTransaction || eosRate === 0}
+            type="submit"
+          >
+            {loadingSignTransaction ? (
+              <Spinner size={30} />
+            ) : (
+              <span className={classes.labelButtonTransfer}>
+                {t('transferButton')}
+              </span>
+            )}
           </Button>
         </div>
         <div className={classes.dangerText}>
           <small>{!openModal && errorMessage}</small>
         </div>
       </form>
-      <div className={classes.divShadow}>
-        <div className={classes.tableContainer}>
-          <div className={classes.titleTable}>t(titleTable)</div>
-          <div id="id-table-container">
-            <TableReport columns={columns} dataPercent={transactionsList} />
-          </div>
+      <div className={classes.tableContainer}>
+        <Divider />
+        <div className={classes.titleTable}>t(titleTable)</div>
+        <div id="id-table-container">
+          <TableReport columns={columns} dataPercent={transactionsList} />
         </div>
       </div>
     </div>

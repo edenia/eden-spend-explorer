@@ -14,19 +14,13 @@ module.exports = {
       txid: { _eq: action.transaction_id },
       amount: { _eq: action.json?.quantity?.split(' ')[0] || 0 },
       memo: { _eq: action.json.memo },
-      id_election: { _eq: action.election.id },
       recipient: { _eq: action.json.to },
       type: { _eq: 'expense' }
     })
 
-    if (registeredTransaction) return
-
     let { category, description } = updaterUtil.memoSplit(
       action.json.memo.split(':')[1] || ''
     )
-
-    if (action.json.to === transactionConstant.RECIPIENTS.pomelo)
-      category = 'pomelo'
 
     if (action.json.to === transactionConstant.RECIPIENTS.edenia)
       category = 'infrastructure'
@@ -75,9 +69,6 @@ module.exports = {
         usd_total: amount * LASTEST_RATE_DATA_CONSULTED,
         memo: action.json.memo
       }
-      const registeredTransaction = await edenTransactionGql.get({
-        txid: { _eq: transactionData.txid }
-      })
 
       if (!registeredTransaction) await edenTransactionGql.save(transactionData)
     } catch (error) {

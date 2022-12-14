@@ -16,7 +16,6 @@ const CATEGORIES = [
   'travel'
 ]
 const RECIPIENTS = {
-  pomelo: 'app.pomelo',
   edenia: 'edenia4edens'
 }
 const RECEIVER = ['eosio.token', edenConfig.edenContract]
