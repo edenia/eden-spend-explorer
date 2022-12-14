@@ -366,7 +366,7 @@ const SpendTools = () => {
       </form>
       <div className={classes.tableContainer}>
         <Divider />
-        <div className={classes.titleTable}>Tokens Sent By Your Account</div>
+        <div className={classes.titleTable}>{t('titleTable')}</div>
         <div id="id-table-container">
           <TableReport columns={columns} dataPercent={transactionsList} />
         </div>

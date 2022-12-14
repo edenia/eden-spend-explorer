@@ -152,6 +152,14 @@
     "websiteEOSCR": "Website EOS Costa Rica"
   },
   "footer": {
+    "firstHeader": "EDEN",
+    "secondHeader": "RESOURCES",
+    "community": "The Community",
+    "membership": "Membership Dashboard",
+    "getInvite": "Get an Invite",
+    "electionProcess": "Eden Election Process",
+    "github": "EdenOS Github Repo",
+    "bugFeature": "Report a Bug / Request a Feature",
     "communityOwnedPublic": "A Community Owned Public Good.",
     "developedEdenia": "Developed by Edenia"
   }
