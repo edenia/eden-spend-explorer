@@ -102,3 +102,11 @@ export const EDIT_TRANSACTION_BY_TXID = gql`
     }
   }
 `
+
+export const SAVE_TRANSACTION = gql`
+  mutation saveTransaction($payload: eden_transaction_insert_input!) {
+    insert_eden_transaction_one(object: $payload) {
+      id
+    }
+  }
+`

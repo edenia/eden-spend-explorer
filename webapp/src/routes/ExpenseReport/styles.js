@@ -52,6 +52,9 @@ export default theme => ({
       fontWeight: 'bold',
       color: theme.palette.secondary.main
     },
+    '& .MuiDataGrid-iconSeparator': {
+      display: 'none'
+    },
     '& .MuiDataGrid-cell': {
       color: theme.palette.secondary.main
     },

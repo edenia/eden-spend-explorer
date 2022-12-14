@@ -11,7 +11,7 @@ const getActualDate = () => {
 }
 
 const useTresuryBalanceState = () => {
-  const [eosRate, setEosRate] = useState(' Loading... ')
+  const [eosRate, setEosRate] = useState()
   const [currencyBalance, setCurrencyBalance] = useState('Loading... ')
   const [nextEdenDisbursement, setNextEdenDisbursement] = useState('')
 
