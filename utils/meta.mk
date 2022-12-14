@@ -8,7 +8,7 @@ IMAGE_NAME_HAPI=eden-spending-hapi
 IMAGE_NAME_HASURA=eden-spending-hasura
 IMAGE_NAME_WALLET=eden-spending-wallet
 
-DOCKER_REGISTRY=eoscostarica506
+DOCKER_REGISTRY=ghcr.io/edenia
 SUBDIRS = webapp hapi hasura wallet
 
 MAKE_ENV += DOCKER_REGISTRY VERSION IMAGE_NAME_WEBAPP IMAGE_NAME_HAPI IMAGE_NAME_WALLET IMAGE_NAME_HASURA
