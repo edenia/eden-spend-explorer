@@ -10,3 +10,16 @@ export const GET_ELECTIONS_BY_YEAR = gql`
     }
   }
 `
+
+export const GET_ELECTIONS = gql`
+  query ($where: eden_election_bool_exp) {
+    eden_election(where: $where, order_by: { election: asc }) {
+      id
+      id_delegate
+      delegate_level
+      election
+      created_at
+      updated_at
+    }
+  }
+`

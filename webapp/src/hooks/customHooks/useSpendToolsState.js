@@ -7,26 +7,24 @@ import { sleep } from '../../utils/sleep'
 import { eosApi } from '../../utils/eosapi'
 import {
   GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
-  GET_CATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
-  GET_ACTUAL_ELECTION_QUERY,
-  EDIT_TRANSACTION_BY_TXID
+  EDIT_TRANSACTION_BY_TXID,
+  SAVE_TRANSACTION,
+  GET_ELECTIONS
 } from '../../gql'
 
 import useForm from './useForm'
 
 const useSpendTools = () => {
   const [state] = useSharedState()
+  const { eosRate = 0 } = state.eosTrasuryBalance
   const [currencyBalance, setCurrencyBalance] = useState('Loading... ')
   const [authenticatedUser, setAuthenticatedUser] = useState('')
-  const [amountCategorized, setAmountCategorized] = useState(0)
   const [transactionsList, setTransactionsList] = useState([])
-  const [currentElection, setCurrentElection] = useState(0)
   const [openSnackbar, setOpenSnackbar] = useState(false)
-  const [amountClaimed, setAmountClaimed] = useState(0)
   const [errorMessage, setErrorMessage] = useState('')
   const [openModal, setOpenModal] = useState(false)
   const [modalData, setModalData] = useState({})
-
+  const [loadingSignTransaction, setLoadingSignTransaction] = useState(false)
   const [formValues, handleInputChange, reset, errors, validateForm] = useForm({
     to: '',
     amount: '',
@@ -44,6 +42,7 @@ const useSpendTools = () => {
     newDescription: ''
   })
   const [editTransaction] = useMutation(EDIT_TRANSACTION_BY_TXID)
+  const [saveTransaction] = useMutation(SAVE_TRANSACTION)
 
   const getEosBalance = async delegate => {
     try {
@@ -55,14 +54,31 @@ const useSpendTools = () => {
 
       setCurrencyBalance(response[0] || '')
     } catch (error) {
-      console.log(error)
+      console.error(error)
       await sleep(60)
       getEosBalance()
     }
   }
 
+  const [loadUncategorizedTransactions, { data: uncategorizedTxData }] =
+    useLazyQuery(GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY, {
+      variables: {
+        account: authenticatedUser
+      }
+    })
+
+  const [loadElectionsByYear, { data: delegateElections }] = useLazyQuery(
+    GET_ELECTIONS,
+    {
+      variables: {
+        where: { eden_delegate: { account: { _eq: 'xavieredenia' } } }
+      }
+    }
+  )
+
   const executeAction = async (data, account, name) => {
     setErrorMessage('')
+    setLoadingSignTransaction(true)
 
     const transaction = {
       actions: [
@@ -81,9 +97,12 @@ const useSpendTools = () => {
     }
 
     try {
-      await state.ual.activeUser.signTransaction(transaction, {
-        broadcast: true
-      })
+      const transactionResult = await state.ual.activeUser.signTransaction(
+        transaction,
+        {
+          broadcast: true
+        }
+      )
 
       setOpenSnackbar(true)
 
@@ -98,6 +117,9 @@ const useSpendTools = () => {
           variables: {
             where: {
               txid: { _eq: modalData?.txid },
+              amount: { _eq: modalData?.amount },
+              recipient: { _eq: modalData?.recipient },
+              memo: { _eq: modalData?.memo },
               type: { _eq: 'expense' }
             },
             _set: {
@@ -121,6 +143,26 @@ const useSpendTools = () => {
 
         resetModal()
       } else {
+        if (transactionResult?.status === 'executed') {
+          saveTransaction({
+            variables: {
+              payload: {
+                amount: Number(formValues.amount.split(' ')[0]),
+                category: formValues.category,
+                date: transactionResult?.transaction.processed.block_time,
+                description: formValues.description,
+                eos_exchange: eosRate,
+                id_election: delegateElections?.eden_election.at(-1).id,
+                memo: `eden_expense:${formValues.category}/${formValues.description}`,
+                recipient: formValues.to,
+                txid: transactionResult?.transactionId,
+                type: 'expense',
+                usd_total: Number(formValues.amount.split(' ')[0]) * eosRate
+              }
+            }
+          })
+        }
+
         ReactGA.event({
           category: 'transaction',
           action: 'send tokens',
@@ -132,6 +174,7 @@ const useSpendTools = () => {
     } catch (error) {
       setErrorMessage(error.message)
     }
+    setLoadingSignTransaction(false)
   }
 
   const handleCloseModal = () => {
@@ -145,67 +188,14 @@ const useSpendTools = () => {
     setErrorMessage('')
   }
 
-  const [loadUncategorizedTransactions, { data: uncategorizedTxData }] =
-    useLazyQuery(GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY, {
-      variables: {
-        account: authenticatedUser
-      }
-    })
-
-  const [loadCategorizedAmount, { data: categorizedTxData }] = useLazyQuery(
-    GET_CATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
-    {
-      variables: {
-        account: authenticatedUser,
-        category: 'uncategorized',
-        election: currentElection
-      }
-    }
-  )
-
-  const [loadClaimedAmount, { data: claimedTxData }] = useLazyQuery(
-    GET_CATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
-    {
-      variables: {
-        account: authenticatedUser,
-        category: 'unclaimed',
-        election: currentElection
-      }
-    }
-  )
-
-  const [loadCurrentElection, { data: currentElectionData }] = useLazyQuery(
-    GET_ACTUAL_ELECTION_QUERY
-  )
-
   useEffect(() => {
     loadUncategorizedTransactions()
-    loadCategorizedAmount()
-    loadClaimedAmount()
-    loadCurrentElection()
+    loadElectionsByYear()
   }, [])
 
   useEffect(() => {
     setTransactionsList(uncategorizedTxData?.eden_transaction || [])
   }, [uncategorizedTxData])
-
-  useEffect(() => {
-    setAmountCategorized(
-      categorizedTxData?.eden_transaction_aggregate?.aggregate?.sum?.amount || 0
-    )
-  }, [categorizedTxData])
-
-  useEffect(() => {
-    setAmountClaimed(
-      claimedTxData?.eden_transaction_aggregate?.aggregate?.sum?.amount || 0
-    )
-  }, [claimedTxData])
-
-  useEffect(() => {
-    setCurrentElection(
-      currentElectionData?.eden_historic_election[0]?.election || 0
-    )
-  }, [currentElectionData])
 
   useEffect(() => {
     setAuthenticatedUser(state.user?.accountName)
@@ -222,9 +212,8 @@ const useSpendTools = () => {
       formValuesModal,
       errorMessage,
       modalData,
-      amountCategorized,
-      amountClaimed,
-      openSnackbar
+      openSnackbar,
+      loadingSignTransaction
     },
     {
       handleInputChange,

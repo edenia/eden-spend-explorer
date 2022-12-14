@@ -98,6 +98,7 @@ const sync = async () => {
 
         await runUpdaters(actions)
         await edenDelegatesGql.update(delegate.id, blockNumber)
+
         await sleepUtil(10)
       }
     } catch (error) {
