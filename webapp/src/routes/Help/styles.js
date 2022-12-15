@@ -1,4 +1,14 @@
 export default theme => ({
+  root: {
+    margin: theme.spacing(1),
+    '& #treasury-container-id': {
+      display: 'flex',
+      justifyContent: 'flex-end'
+    },
+    [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(0)
+    }
+  },
   title: {
     marginBottom: theme.spacing(1),
     fontWeight: 400

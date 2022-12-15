@@ -47,6 +47,8 @@ const IncomeReport = () => {
     }
   ] = useIncomeReportState()
 
+  // console.log({ delegatesList })
+
   useEffect(() => {
     setShowElectionRadio('allElections')
   }, [])
