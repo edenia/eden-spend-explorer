@@ -1,4 +1,9 @@
 export default theme => ({
+  sidebar: {
+    '& .heigth-image': {
+      cursor: 'pointer'
+    }
+  },
   centerSelectableItems: {
     display: 'flex',
     alignItems: 'center'
