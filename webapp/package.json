@@ -29,7 +29,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
     "@date-io/core": "^2.11.0",
     "@date-io/date-fns": "^2.11.0",
-    "@edenia/ui-kit": "^0.4.5",
+    "@edenia/ui-kit": "0.4.7",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@eoscostarica/ual-reactjs-renderer": "^0.3.1",
