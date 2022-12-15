@@ -13,7 +13,7 @@ import FooterComp from '../../components/Footer'
 
 import styles from './styles'
 
-const drawerWidth = 260
+const drawerWidth = 220
 const useStyles = makeStyles(theme => styles(theme, drawerWidth))
 
 const Dashboard = ({ children, routes }) => {
