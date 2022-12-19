@@ -10,8 +10,30 @@ export default theme => ({
     }
   },
   title: {
-    marginBottom: theme.spacing(1),
-    fontWeight: 400
+    '& h6': {
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '1px'
+      }
+    }
+  },
+  imagesContainer: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  imgBalance: {
+    [theme.breakpoints.down('sm')]: {
+      width: '60%',
+      height: '100%'
+    }
+  },
+  images: {
+    display: 'block',
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%'
+    }
   },
   boxLinks: {
     display: 'flex',
