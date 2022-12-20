@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@mui/styles'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -10,9 +10,9 @@ const useStyles = makeStyles(styles)
 
 const Help = () => {
   const classes = useStyles()
-  const [expanded, setExpanded] = React.useState(false)
+  const [expanded, setExpanded] = useState(false)
 
-  const handleChange = (panel, account) => (event, isExpanded) => {
+  const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false)
   }
   const { t, i18n } = useTranslation()
