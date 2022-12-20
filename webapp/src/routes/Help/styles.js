@@ -1,20 +1,33 @@
 export default theme => ({
   root: {
     margin: theme.spacing(1),
-    '& #treasury-container-id': {
-      display: 'flex',
-      justifyContent: 'flex-end'
-    },
     [theme.breakpoints.down('sm')]: {
       margin: theme.spacing(0)
     }
   },
+  subTitle: {
+    display: 'block'
+  },
+  text: {
+    whiteSpace: 'pre-line',
+    display: 'block',
+    marginBottom: theme.spacing(2),
+    fontSize: '16px',
+    fontWeight: 400,
+    lineHeight: 1.5,
+    letterSpacing: '0.15px'
+  },
   title: {
-    '& h6': {
-      [theme.breakpoints.down('sm')]: {
-        fontSize: '1px'
-      }
-    }
+    display: 'block',
+    fontSize: '18px',
+    fontWeight: 500,
+    lineHeight: 1.56,
+    letterSpacing: '-0.4px'
+  },
+  horizontalLine: {
+    borderBottom: '1px solid rgba(225,225,225,.99)',
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   imagesContainer: {
     display: 'flex',
