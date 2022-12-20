@@ -145,11 +145,23 @@
     "paragraph3": "Este sistema utiliza tecnologías en tendencia que se encuentran en pleno auge, una de ellas es la Web 3.0, misma que se ve involucrada dentro de Eden Spend Explorer ya que la información se encuentra almacenada dentro de una cadena de bloques. Esto se debe a que el sistema hace uso de la información que se aloja dentro del blockchain de EOSIO. Para obtener la información, se implementan diferentes arquitecturas para escuchar los eventos dentro de la blockchain y de esta manera almacenar los datos de interes que vienen dentro de la acción del evento. La información se almacena dentro de la base de datos para facilitar la búsqueda y consulta de los datos, ya que puede ser muy engorroso hacerla directamente a la blockchain, debido a que al existir tantos datos la consulta de estos no es la más eficiente. Por ese motivo se almacena la información dentro de una base de datos, para una mejor experiencia de usuario en la carga de información."
   },
   "helpRoute": {
-    "title": "Gracias por su interés!",
-    "paragraph": "Este proyecto aún está en proceso. No dude en dejar sugerencias de actualización, registrar errores o usar el código usted mismo. También puede encontrarnos en Telegram o visitar nuestro sitio web.",
-    "githubEOSCR": "GitHub EOS Costa Rica",
-    "telegramChannel": "Grupo de Telegram",
-    "websiteEOSCR": "Página web EOS Costa Rica"
+    "subtitle": "Hemos preparado estas guías para los usuarios finales. La idea es aprovechar todas las ventajas de utilizar esta dApp. Todas las imágenes aquí son sólo una representación de la información real.",
+    "userRole": "Acceso a Roles de Usuario",
+    "userRoleText": " Estas son las acciones permitidas que los dos tipos de usuarios finales pueden realizar dentro de la dApp.",
+    "chartData": "¿Cómo Visualizar y Entender los Datos?",
+    "balanceTitle": "<strong>Balance Principal</strong>",
+    "balanceText1": "Esta casilla muestra siempre la cantidad exacta de token EOS de la que dispone la DAO Génesis Eden. También tiene un tipo de cambio vinculado a ",
+    "balanceText2": " para convertir a USD el precio de EOS.  Siempre cambia en función de las transacciones de los delegados.",
+    "chartsTitle": "<strong>Gráficos de Ingreso y Gasto</strong>",
+    "barChartText": "<strong>Gráficos de barras</strong>\n\nDentro de los gráficos hay tres barras, cada barra comparte información de una elección pasada y el número de tokens EOS <strong>reclamadas/no reclamadas</strong> para Ingresos, <strong>categorizadas/no categorizadas</strong> para Gastos y el <strong>total</strong>, respectivamente.\n\nEsta información complementa la de los gráficos pastel, ayuda en la transparencia de dónde se hace uso de los tokens reclamados y también su categoría. Asimismo con los que no lo están.\n",
+    "pieChartText1": "\n<strong>Gráficos de pastel</strong>\n\nEstos indican la cantidad de token EOS en cada cuenta, por elección.\n\n<strong>Para la sección de Ingresos:</strong> Cada parte del pastel indica el monto de token EOS que le corresponde del balance total ",
+    "pieChartText2": " a una cuenta específica según esa elección específica.\n\n<strong>Para la sección de Gastos</strong>: Aquí se distingue el monto de token EOS utilizado, del total que se recibió y reclamo. Además esta información muestra la categoría que se le asigna a un gasto específico en general y por cuenta.\n\n<strong>Para la sección de Delegados:</strong> Presenta una vista personalizada, basada en los mismos datos obtenidos, para observar las dos anteriores pero según las transacciones de cada miembro.",
+    "spendTools": "¿Cómo utilizar la herramienta de gasto ? ",
+    "spendSubTitle": "La herramienta de gastos permite a los usuarios crear nuevas transferencias de fichas que ya incluyen los metadatos necesarios para que el explorador de gastos los incluya en los gráficos.",
+    "spendSubTitle2": "<strong>Función Adjuntar Memo</strong>",
+    "spendText": "Debajo de la herramienta de gastos, está el cuadro de historial de transacción de tokens y los delegados pueden utilizar la función “<strong>Adjuntar memo</strong>” para categorizar las transacciones anteriores. Está representado por el botón “+”",
+    "spendSteps1": "<strong>Pasos:</strong>\n\n1. Conectar la billetera (Soporta ",
+    "spendSteps2": ").\n2. Firma el permiso que permite conectar tu billetera a la herramienta de gastos.\n3. Podrás ver esta pantalla con el saldo actual de tu cuenta ( La de Eden).\n4. Ya estás listo para enviar tokens y categorizarlos dependiendo del memo específico.\n5. Haz clic en el botón \"Transferir EOS\"."
   },
   "footer": {
     "firstHeader": "EDEN",

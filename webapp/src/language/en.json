@@ -145,11 +145,23 @@
     "paragraph3": "This system uses trending technologies that are booming, one of them is Web 3.0, which is involved in Eden Spend Explorer because the information is stored within a blockchain. This is because the system makes use of the information that is hosted within the EOSIO blockchain. To obtain the information, different architectures are implemented to listen for events within the blockchain and thus store the data of interest that comes within the action of the event. The information is stored within the database to facilitate the search and query of the data, since it can be very cumbersome to do it directly to the blockchain, because there is so much data that the query of these is not the most efficient. For that reason the information is stored within a database, for a better user experience in loading information."
   },
   "helpRoute": {
-    "title": "Thank you for your interest!",
-    "paragraph": "This project is still work in progress. Please feel free to leave upgrade suggestions, log bugs, or use the code yourself. You can also find us on Telegram or visit our website.",
-    "githubEOSCR": "GitHub EOS Costa Rica",
-    "telegramChannel": "Telegram Channel",
-    "websiteEOSCR": "Website EOS Costa Rica"
+    "subtitle": "We have prepared these guides for end users. The idea is to take advantage of all the benefits of using this dApp. All the images here are just a representation of the real information.",
+    "userRole": "User Roles Access",
+    "userRoleText": "These are the allowed actions that the two types of end-users can perform within the dApp.",
+    "chartData": "How to view and understand the data?",
+    "balanceTitle": "<strong>Main balance</strong>",
+    "balanceText1": "This box always shows the exact amount of EOS token that Genesis Eden DAO disposes of. It has also an exchange rate linked to ",
+    "balanceText2": " to convert to USD the EOS price. It’s always changing based on the Delegates transactions.",
+    "chartsTitle": "<strong>Income & Expense Charts</strong>",
+    "barChartText": "<strong>Bar charts</strong>\n\nUsers can visualize three bars, each one shares information from a past election and the number of EOS tokens <strong>claimed/unclaimed</strong> for Income, <strong>categorized/uncategorized</strong> for Expense and the <strong>total</strong>, respectively.\n\nThis information complements the pie charts. It supports the transparency of where the claimed tokens are allocated and also their expense category. Same scenario with those that are not.\n",
+    "pieChartText1": "\n<strong>Pie Charts</strong>\n\nThese indicate the amount of EOS tokens in each account, per election.\n\n<strong>For the Income section:</strong> Each slice of the pie indicates the amount of EOS token that corresponds to the total ",
+    "pieChartText2": " balance for a specific account according to a specific election.\n\n<strong>For the Expenses section:</strong> Here the amount of EOS token used is distinguished from the total amount that was received and claimed or not. In addition, this information shows the category that is assigned to a specific expense, in general and by account.\n\n<strong>For the Delegates section:</strong> Presents a customized view, based on the same data, to observe the two previous chart information but according to each member's transactions.",
+    "spendTools": "How to use the spend-tool?",
+    "spendSubTitle": "The spend tool allows delegates to create token transfers that already include the necessary metadata for the Spend Explorer to have in the charts.",
+    "spendSubTitle2": "<strong>Append memo function</strong>",
+    "spendText": "Below the expense tool, there is the token transaction history box and delegates can use the \"<strong>Append</strong>\" function to categorize past transactions. It is represented by a “+” button.",
+    "spendSteps1": "<strong>Steps:</strong>\n\n1. Connect wallet (supports ",
+    "spendSteps2": ").\n2. Sign the permission to connect your wallet to the Spend-tool.\n3. You will be able to see this screen with the current balance of your Eden account.\n4. You’re ready to send tokens and categorize them depending on the specific memo.\n5. Click on the “Transfer EOS” button."
   },
   "footer": {
     "firstHeader": "EDEN",

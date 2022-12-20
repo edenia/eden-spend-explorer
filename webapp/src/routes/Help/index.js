@@ -1,13 +1,8 @@
-import React from 'react'
-import Typography from '@mui/material/Typography'
+import React, { useState } from 'react'
 import { makeStyles } from '@mui/styles'
-import { useTranslation } from 'react-i18next'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import Link from '@mui/material/Link'
-import HttpIcon from '@mui/icons-material/Http'
-import TelegramIcon from '@mui/icons-material/Telegram'
-import GitHubIcon from '@mui/icons-material/GitHub'
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { useTranslation, Trans } from 'react-i18next'
 
 import styles from './styles'
 
@@ -15,54 +10,204 @@ const useStyles = makeStyles(styles)
 
 const Help = () => {
   const classes = useStyles()
-  const { t } = useTranslation('helpRoute')
+  const [expanded, setExpanded] = useState(false)
+
+  const handleChange = panel => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false)
+  }
+  const { t, i18n } = useTranslation()
 
   return (
-    <Box>
-      <Grid container direction="column">
-        <Grid item xs>
-          <Grid container direction="column">
-            <Typography variant="h3" className={classes.title}>
-              {t('title')}
-            </Typography>
-            <Typography variant="body2" align="justify" paragraph>
-              {t('paragraph')}
-            </Typography>
-
-            <Box className={classes.boxLinks}>
-              <GitHubIcon />
-              <Link
-                href="https://github.com/eoscostarica"
+    <div className={classes.root}>
+      <span className={classes.subTitle}>
+        {t('subtitle', { ns: 'helpRoute' })}
+      </span>
+      <Accordion
+        expanded={expanded === 'panel'}
+        onChange={handleChange('panel')}
+      >
+        <AccordionSummary
+          aria-controls="user-roles-access"
+          id="user-roles-access"
+          expandIcon={<ExpandMoreIcon />}
+        >
+          <span className={classes.title}>
+            {t('userRole', { ns: 'helpRoute' })}
+          </span>
+        </AccordionSummary>
+        <AccordionDetails>
+          <span className={classes.subTitle}>
+            {t('userRoleText', { ns: 'helpRoute' })}
+          </span>
+          <img
+            src={
+              i18n.language === 'es'
+                ? '/images/role-access-ES.webp'
+                : '/images/role-access-EN.webp'
+            }
+            width={720}
+            height={268}
+            className={classes.images}
+          />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        expanded={expanded === 'panel1'}
+        onChange={handleChange('panel1')}
+      >
+        <AccordionSummary
+          aria-controls="understand-data"
+          id="understand-data"
+          expandIcon={<ExpandMoreIcon />}
+        >
+          <span className={classes.title}>
+            {t('chartData', { ns: 'helpRoute' })}
+          </span>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Trans>
+            <span className={classes.subTitle}>
+              {t('balanceTitle', { ns: 'helpRoute' })}
+            </span>
+          </Trans>
+          <img
+            src={
+              i18n.language === 'es'
+                ? '/images/balance-ES.webp'
+                : '/images/balance-EN.webp'
+            }
+            width={366}
+            height={136}
+            className={classes.imgBalance}
+          />
+          <div className={classes.paragraph}>
+            <span className={classes.text}>
+              {t('balanceText1', { ns: 'helpRoute' })}
+            </span>
+            <a
+              href="https://www.coingecko.com/"
+              target="_blank"
+              rel="noreferrer"
+              title="coingecko.com"
+            >
+              coingecko.com
+            </a>
+            <span className={classes.text}>
+              {t('balanceText2', { ns: 'helpRoute' })}
+            </span>
+          </div>
+          <div className={classes.horizontalLine} />
+          <Trans>
+            <span className={classes.subTitle}>
+              {t('chartsTitle', { ns: 'helpRoute' })}
+            </span>
+          </Trans>
+          <div className={classes.imagesContainer}>
+            <img
+              src={
+                i18n.language === 'es'
+                  ? '/images/charts-ES.webp'
+                  : '/images/charts-EN.webp'
+              }
+              width={1100}
+              height={396}
+              className={classes.images}
+            />
+          </div>
+          <div className={classes.paragraph}>
+            <Trans>
+              <span className={classes.text}>
+                {t('barChartText', { ns: 'helpRoute' })}
+              </span>
+            </Trans>
+            <Trans>
+              <span className={classes.text}>
+                {t('pieChartText1', { ns: 'helpRoute' })}
+              </span>
+              <a
+                href="https://bloks.io/account/genesis.eden"
                 target="_blank"
                 rel="noreferrer"
+                title="Genesis.eden"
               >
-                <Typography variant="body1">{t('githubEOSCR')}</Typography>
-              </Link>
-            </Box>
-            <Box className={classes.boxLinks}>
-              <TelegramIcon />
-              <Link
-                href="https://web.telegram.org/#/eoscr"
+                Genesis.eden
+              </a>
+              <span className={classes.text}>
+                {t('pieChartText2', { ns: 'helpRoute' })}
+              </span>
+            </Trans>
+          </div>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        expanded={expanded === 'panel2'}
+        onChange={handleChange('panel2')}
+      >
+        <AccordionSummary
+          aria-controls="spend-tools"
+          id="spend-tools"
+          expandIcon={<ExpandMoreIcon />}
+        >
+          <span className={classes.title}>
+            {t('spendTools', { ns: 'helpRoute' })}
+          </span>
+        </AccordionSummary>
+        <AccordionDetails>
+          <span className={classes.subTitle}>
+            {t('spendSubTitle', { ns: 'helpRoute' })}
+          </span>
+          <img
+            src={
+              i18n.language === 'es'
+                ? '/images/spend-tools-ES.webp'
+                : '/images/spend-tools-ES.webp'
+            }
+            width={720}
+            height={311}
+            className={classes.imgBalance}
+          />
+          <div className={classes.paragraph}>
+            <Trans>
+              <span className={classes.text}>
+                {t('spendSteps1', { ns: 'helpRoute' })}
+              </span>
+              <a
+                href="https://greymass.com/en/anchor/"
                 target="_blank"
                 rel="noreferrer"
+                title="Anchor"
               >
-                <Typography variant="body1">{t('telegramChannel')}</Typography>
-              </Link>
-            </Box>
-            <Box className={classes.boxLinks}>
-              <HttpIcon />
-              <Link
-                href="https://eoscostarica.io/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Typography variant="body1">{t('websiteEOSCR')}</Typography>
-              </Link>
-            </Box>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Box>
+                Anchor
+              </a>
+              <span className={classes.text}>
+                {t('spendSteps2', { ns: 'helpRoute' })}
+              </span>
+            </Trans>
+            <div className={classes.horizontalLine} />
+            <Trans>
+              <span className={classes.subTitle}>
+                {t('spendSubTitle2', { ns: 'helpRoute' })}
+              </span>
+              <div className={classes.paragraph}>
+                <span className={classes.text}>
+                  {t('spendText', { ns: 'helpRoute' })}
+                </span>
+              </div>
+            </Trans>
+          </div>
+          <img
+            src={
+              i18n.language === 'es'
+                ? '/images/spend-tools2-ES.webp'
+                : '/images/spend-tools2-ES.webp'
+            }
+            width={469}
+            height={341}
+            className={classes.imgBalance}
+          />
+        </AccordionDetails>
+      </Accordion>
+    </div>
   )
 }
 
