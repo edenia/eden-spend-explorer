@@ -26,6 +26,10 @@ jobs:
             build-docker-images \
             push-docker-images
         env:
+          IMAGE_NAME_WEBAPP: eden-spending-webapp-dev
+          IMAGE_NAME_HAPI: eden-spending-hapi-dev
+          IMAGE_NAME_HASURA: eden-spending-hasura-dev
+          IMAGE_NAME_WALLET: eden-spending-wallet-dev
           # webapp
           PORT: 80
           REACT_APP_TAG: ${{ github.ref }}
@@ -52,6 +56,10 @@ jobs:
           NAMESPACE: eden-spending
           INGRESS_HOST: spending.eden.edenia.cloud
           INGRESS_GRAPHQL_HOST: spending-graphql.eden.edenia.cloud
+          IMAGE_NAME_WEBAPP: eden-spending-webapp-dev
+          IMAGE_NAME_HAPI: eden-spending-hapi-dev
+          IMAGE_NAME_HASURA: eden-spending-hasura-dev
+          IMAGE_NAME_WALLET: eden-spending-wallet-dev
           # Postgres
           POSTGRES_USER: ${{ secrets.DEV_POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.DEV_POSTGRES_PASSWORD }}
