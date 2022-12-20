@@ -19,7 +19,9 @@ const Help = () => {
 
   return (
     <div className={classes.root}>
-      <span className={classes.text}>{t('subtitle', { ns: 'helpRoute' })}</span>
+      <span className={classes.subTitle}>
+        {t('subtitle', { ns: 'helpRoute' })}
+      </span>
       <Accordion
         expanded={expanded === 'panel'}
         onChange={handleChange('panel')}
@@ -34,7 +36,7 @@ const Help = () => {
           </span>
         </AccordionSummary>
         <AccordionDetails>
-          <span className={classes.text}>
+          <span className={classes.subTitle}>
             {t('userRoleText', { ns: 'helpRoute' })}
           </span>
           <img
@@ -64,7 +66,7 @@ const Help = () => {
         </AccordionSummary>
         <AccordionDetails>
           <Trans>
-            <span className={classes.text}>
+            <span className={classes.subTitle}>
               {t('balanceTitle', { ns: 'helpRoute' })}
             </span>
           </Trans>
@@ -78,12 +80,25 @@ const Help = () => {
             height={136}
             className={classes.imgBalance}
           />
-          <span className={classes.text}>
-            {t('balanceText', { ns: 'helpRoute' })}
-          </span>
+          <div className={classes.paragraph}>
+            <span className={classes.text}>
+              {t('balanceText1', { ns: 'helpRoute' })}
+            </span>
+            <a
+              href="https://www.coingecko.com/"
+              target="_blank"
+              rel="noreferrer"
+              title="coingecko.com"
+            >
+              coingecko.com
+            </a>
+            <span className={classes.text}>
+              {t('balanceText2', { ns: 'helpRoute' })}
+            </span>
+          </div>
           <div className={classes.horizontalLine} />
           <Trans>
-            <span className={classes.text}>
+            <span className={classes.subTitle}>
               {t('chartsTitle', { ns: 'helpRoute' })}
             </span>
           </Trans>
@@ -99,14 +114,29 @@ const Help = () => {
               className={classes.images}
             />
           </div>
-          <Trans>
-            <span className={classes.text}>
-              {t('barChartText', { ns: 'helpRoute' })}
-            </span>
-            <span className={classes.text}>
-              {t('pieChartText', { ns: 'helpRoute' })}
-            </span>
-          </Trans>
+          <div className={classes.paragraph}>
+            <Trans>
+              <span className={classes.text}>
+                {t('barChartText', { ns: 'helpRoute' })}
+              </span>
+            </Trans>
+            <Trans>
+              <span className={classes.text}>
+                {t('pieChartText1', { ns: 'helpRoute' })}
+              </span>
+              <a
+                href="https://bloks.io/account/genesis.eden"
+                target="_blank"
+                rel="noreferrer"
+                title="Genesis.eden"
+              >
+                Genesis.eden
+              </a>
+              <span className={classes.text}>
+                {t('pieChartText2', { ns: 'helpRoute' })}
+              </span>
+            </Trans>
+          </div>
         </AccordionDetails>
       </Accordion>
       <Accordion
@@ -123,7 +153,7 @@ const Help = () => {
           </span>
         </AccordionSummary>
         <AccordionDetails>
-          <span className={classes.text}>
+          <span className={classes.subTitle}>
             {t('spendSubTitle', { ns: 'helpRoute' })}
           </span>
           <img
@@ -136,20 +166,35 @@ const Help = () => {
             height={311}
             className={classes.imgBalance}
           />
-          <Trans>
-            <span className={classes.text}>
-              {t('spendSteps', { ns: 'helpRoute' })}
-            </span>
-          </Trans>
-          <div className={classes.horizontalLine} />
-          <Trans>
-            <span className={classes.text}>
-              {t('spendSubTitle2', { ns: 'helpRoute' })}
-            </span>
-            <span className={classes.text}>
-              {t('spendText', { ns: 'helpRoute' })}
-            </span>
-          </Trans>
+          <div className={classes.paragraph}>
+            <Trans>
+              <span className={classes.text}>
+                {t('spendSteps1', { ns: 'helpRoute' })}
+              </span>
+              <a
+                href="https://greymass.com/en/anchor/"
+                target="_blank"
+                rel="noreferrer"
+                title="Anchor"
+              >
+                Anchor
+              </a>
+              <span className={classes.text}>
+                {t('spendSteps2', { ns: 'helpRoute' })}
+              </span>
+            </Trans>
+            <div className={classes.horizontalLine} />
+            <Trans>
+              <span className={classes.subTitle}>
+                {t('spendSubTitle2', { ns: 'helpRoute' })}
+              </span>
+              <div className={classes.paragraph}>
+                <span className={classes.text}>
+                  {t('spendText', { ns: 'helpRoute' })}
+                </span>
+              </div>
+            </Trans>
+          </div>
           <img
             src={
               i18n.language === 'es'

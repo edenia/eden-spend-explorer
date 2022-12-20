@@ -6,12 +6,21 @@ export default theme => ({
     }
   },
   subTitle: {
-    display: 'block'
+    display: 'block',
+    marginBottom: theme.spacing(2),
+    whiteSpace: 'pre-line',
+    fontSize: '16px',
+    fontWeight: 400,
+    lineHeight: 1.5,
+    letterSpacing: '0.15px'
+  },
+  paragraph: {
+    display: 'block',
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   text: {
     whiteSpace: 'pre-line',
-    display: 'block',
-    marginBottom: theme.spacing(2),
     fontSize: '16px',
     fontWeight: 400,
     lineHeight: 1.5,
@@ -34,6 +43,9 @@ export default theme => ({
     alignItems: 'center'
   },
   imgBalance: {
+    display: 'block',
+    marginRight: 'auto',
+    marginLeft: 'auto',
     [theme.breakpoints.down('sm')]: {
       width: '60%',
       height: '100%'
