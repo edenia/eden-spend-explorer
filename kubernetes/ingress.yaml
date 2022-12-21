@@ -28,7 +28,7 @@ spec:
           name: webapp
           port: 80
   tls:
-    secretName: tls-secret
+    certResolver: myresolver
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
