@@ -44,20 +44,6 @@ export const newDataFormatPercentAllElections = (
   }))
 }
 
-export const newDataFormatPercentByElection = (
-  percentByElectionData,
-  category
-) => {
-  const uppercaseCategory = category.toUpperCase()
-
-  return percentByElectionData.map(data => ({
-    name: data?.delegate_payer || data?.recipient,
-    [`EOS_${uppercaseCategory}_PERCENT`]: Number(data[`eos_${category}`]) * 100,
-    [`EOS_UN${uppercaseCategory}_PERCENT`]:
-      Number(data[`eos_un${category}`]) * 100
-  }))
-}
-
 export const newDataFormatByDelegatesIncome = transactionsList =>
   transactionsList.map(data => ({
     name: data.recipient,
@@ -65,28 +51,40 @@ export const newDataFormatByDelegatesIncome = transactionsList =>
     USD_CLAIMED: Number(data.usd_claimed),
     EOS_UNCLAIMED: Number(data.eos_unclaimed),
     USD_UNCLAIMED: Number(data.usd_unclaimed),
+    EOS_CLAIMED_PERCENT: Number(
+      (data.eos_claimed / (data.eos_claimed + data.eos_unclaimed)) * 100
+    ),
+    EOS_UNCLAIMED_PERCENT: Number(
+      (data.eos_unclaimed / (data.eos_claimed + data.eos_unclaimed)) * 100
+    ),
     color: generateColor()
   }))
 
 export const newDataFormatByCategorizedElectionsExpense = electionsList => {
+  const dataElections = electionsList?.total_by_category_and_election || []
+  const historicElections = electionsList?.eden_historic_election || []
   const elections = []
   let electionNum = 0
   let usdTotal = 0
   let eosTotal = 0
-  for (let pos = 0; pos < electionsList.length; pos++) {
-    if (electionsList[pos].election === electionNum) {
-      if (electionsList[pos].category !== 'uncategorized') {
-        usdTotal += electionsList[pos].usd_total
-        eosTotal += electionsList[pos].amount
+  for (let pos = 0; pos < dataElections.length; pos++) {
+    if (dataElections[pos].election === electionNum) {
+      if (dataElections[pos].category !== 'uncategorized') {
+        usdTotal += dataElections[pos].usd_total
+        eosTotal += dataElections[pos].amount
       } else {
+        const date = historicElections.find(
+          element => element.election === dataElections[pos].election
+        )
         const election = {
-          election: `Election ${electionsList[pos].election + 1}`,
-          EOS_TOTAL: Number(eosTotal + electionsList[pos].amount),
-          USD_TOTAL: Number(usdTotal + electionsList[pos].usd_total),
+          election: `Election ${dataElections[pos].election + 1}`,
+          date: date.date_election,
+          EOS_TOTAL: Number(eosTotal + dataElections[pos].amount),
+          USD_TOTAL: Number(usdTotal + dataElections[pos].usd_total),
           EOS_CATEGORIZED: Number(eosTotal),
           USD_CATEGORIZED: Number(usdTotal),
-          EOS_UNCATEGORIZED: Number(electionsList[pos].amount),
-          USD_UNCATEGORIZED: Number(electionsList[pos].usd_total)
+          EOS_UNCATEGORIZED: Number(dataElections[pos].amount),
+          USD_UNCATEGORIZED: Number(dataElections[pos].usd_total)
         }
         elections.push(election)
         eosTotal = 0
@@ -94,14 +92,18 @@ export const newDataFormatByCategorizedElectionsExpense = electionsList => {
         electionNum++
       }
     } else {
+      const date = historicElections.find(
+        element => element.election === dataElections[pos].election
+      )
       const election = {
-        election: `Election ${electionsList[pos].electionNum + 1}`,
-        EOS_TOTAL: Number(eosTotal + electionsList[pos].amount),
-        USD_TOTAL: Number(usdTotal + electionsList[pos].usd_total),
+        election: `Election ${dataElections[pos].electionNum + 1}`,
+        date: date.date_election,
+        EOS_TOTAL: Number(eosTotal + dataElections[pos].amount),
+        USD_TOTAL: Number(usdTotal + dataElections[pos].usd_total),
         EOS_CATEGORIZED: Number(eosTotal),
         USD_CATEGORIZED: Number(usdTotal),
-        EOS_UNCATEGORIZED: Number(electionsList[pos].amount),
-        USD_UNCATEGORIZED: Number(electionsList[pos].usd_total)
+        EOS_UNCATEGORIZED: Number(dataElections[pos].amount),
+        USD_UNCATEGORIZED: Number(dataElections[pos].usd_total)
       }
       elections.push(election)
       eosTotal = 0
@@ -126,8 +128,18 @@ export const newDataFormatByElectionAndDelegateExpense = transactionsList =>
     name: data.delegate_payer,
     EOS_CATEGORIZED: Number(data.eos_categorized),
     USD_CATEGORIZED: Number(data.usd_categorized),
-    EOS_UNCATEGORIZED: Number(data.eos_uncategorized),
+    EOS_UNCATEGORIZED: Number(
+      data.eos_claimed + data.eos_unclaimed - data.eos_categorized
+    ),
     USD_UNCATEGORIZED: Number(data.usd_uncategorized),
+    EOS_CATEGORIZED_PERCENT: Number(
+      (data.eos_categorized / (data.eos_claimed + data.eos_unclaimed)) * 100
+    ),
+    EOS_UNCATEGORIZED_PERCENT: Number(
+      ((data.eos_claimed + data.eos_unclaimed - data.eos_categorized) /
+        (data.eos_claimed + data.eos_unclaimed)) *
+        100
+    ),
     color: generateColor()
   }))
 
@@ -142,9 +154,13 @@ export const newDataFormatTotalByCategoryExpense = totalByCategory =>
 export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
   const transactions = []
   const resultUncategorizedEOS =
-    expenseList[0]?.eos_uncategorized - incomeList[0]?.eos_claimed
+    incomeList[0]?.eos_claimed +
+    incomeList[0]?.eos_unclaimed -
+    expenseList[0]?.eos_categorized
   const resultUncategorizedUSD =
-    expenseList[0]?.usd_uncategorized - incomeList[0]?.usd_claimed
+    incomeList[0]?.usd_claimed +
+    incomeList[0]?.usd_unclaimed -
+    expenseList[0]?.usd_categorized
   transactions.push(
     generateDelegateData(
       'income',
@@ -168,10 +184,23 @@ export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
   return transactions
 }
 
-export const newDataFormatByCategoryDelegate = categoryList =>
-  categoryList.map(data => ({
-    category: data.category,
-    EOS: Number(data.amount),
-    USD: Number(data.usd_total),
-    color: generateColor()
-  }))
+export const newDataFormatByCategoryDelegate = (categoryList, transaction) =>
+  categoryList.map(data =>
+    data.category !== 'uncategorized'
+      ? {
+          category: data.category,
+          EOS: Number(data.amount),
+          USD: Number(data.usd_total),
+          color: generateColor()
+        }
+      : {
+          category: data.category,
+          EOS: Number(
+            transaction[0].EOS_ + transaction[0].EOS_UN - transaction[1].EOS_
+          ),
+          USD: Number(
+            transaction[0].USD_UN + transaction[0].USD_ - transaction[1].USD_
+          ),
+          color: generateColor()
+        }
+  )

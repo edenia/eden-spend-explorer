@@ -13,7 +13,7 @@ const TrasuryBalance = () => {
   const classes = useStyles()
   const { t } = useTranslation()
   const [state] = useSharedState()
-  const { eosRate = 0, currencyBalance = '' } = state.eosTrasuryBalance
+  const { eosRate, currencyBalance = '' } = state.eosTrasuryBalance
 
   return (
     <div className={classes.eosPriceContainer}>
@@ -29,7 +29,7 @@ const TrasuryBalance = () => {
           2
         ) || 0}{' '}
         @ ${formatWithThousandSeparator(eosRate, 2)}
-        {eosRate > 0 ? '/EOS' : ''}
+        {eosRate > 0 ? '/EOS' : 'Loading...'}
       </label>
     </div>
   )

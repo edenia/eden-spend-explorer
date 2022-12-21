@@ -5,12 +5,14 @@ object_relationships:
   - name: eden_election
     using:
       foreign_key_constraint_on: id_election
-select_permissions:
+insert_permissions:
   - role: guest
     permission:
+      check: {}
       columns:
         - category
         - description
+        - memo
         - recipient
         - txid
         - type
@@ -22,5 +24,32 @@ select_permissions:
         - updated_at
         - id
         - id_election
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - amount
+        - category
+        - created_at
+        - date
+        - description
+        - eos_exchange
+        - id
+        - id_election
+        - memo
+        - recipient
+        - txid
+        - type
+        - updated_at
+        - usd_total
       filter: {}
       allow_aggregations: true
+update_permissions:
+  - role: guest
+    permission:
+      columns:
+        - category
+        - description
+        - txid
+      filter: {}
+      check: null

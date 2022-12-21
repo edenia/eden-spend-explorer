@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState, useRef } from 'react'
 import { Sidebar, MenuOption, PreviewProfile } from '@edenia/ui-kit'
-import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
 import { gql, GraphQLClient } from 'graphql-request'
 import { Link, Typography } from '@mui/material'
@@ -23,10 +23,11 @@ const useStyles = makeStyles(styles)
 
 const SidebarComp = ({ routes, openComponent, onClose }) => {
   const classes = useStyles()
+  const router = useLocation()
+  const navigate = useNavigate()
+  const anchorRef = useRef(null)
   const { t } = useTranslation('routes')
   const [state, { logout, showMessage }] = useSharedState()
-  const router = useLocation()
-  const anchorRef = useRef(null)
   const [open, setOpen] = useState(false)
   const { pathname } = router
   const [userData, setUSerData] = useState()
@@ -53,6 +54,12 @@ const SidebarComp = ({ routes, openComponent, onClose }) => {
   }
 
   const prevOpen = useRef(open)
+
+  const handleImageClick = () => {
+    navigate('/', {
+      replace: true
+    })
+  }
 
   useEffect(async () => {
     if (!state?.ual?.activeUser?.accountName) return
@@ -89,102 +96,113 @@ const SidebarComp = ({ routes, openComponent, onClose }) => {
   }, [open])
 
   return (
-    <Sidebar
-      open={openComponent}
-      close={onClose}
-      logo="/logos/eden-spend-explorer-logo.png"
-      menuOptions={
-        <div className={classes.spacinTopSidebarItems}>
-          {routes.map(data => {
-            if (!data.component) return <></>
-
-            return (
-              <div key={data.name} className={classes.marginTopItemsSidebar}>
-                <Link to={data.path} underline="none" component={RouterLink}>
-                  <MenuOption
-                    text={t(`${data.path}>sidebar`)}
-                    icon={data.icon}
-                    isSelected={pathname === data.path}
-                  />
-                </Link>
-              </div>
-            )
-          })}
-        </div>
-      }
-      profileComponent={
-        state.ual.activeUser ? (
-          <>
-            <div
-              ref={anchorRef}
-              id="composition-button"
-              aria-controls={open ? 'composition-menu' : undefined}
-              aria-expanded={open ? 'true' : undefined}
-              aria-haspopup="true"
-              onClick={handleToggle}
-              aria-hidden="true"
-              className={classes.divProfileStyle}
-            >
-              <PreviewProfile
-                name={userData?.name}
-                nameSize="14px"
-                image={`https://eden-genesis.mypinata.cloud/ipfs/${userData?.profile?.image}`}
-                nameFontWeight="600"
-                selectableItems={
-                  <div className={classes.centerSelectableItems}>
-                    <Typography variant="caption">
-                      <Link
-                        color="black"
-                        href={`https://genesis.eden.eoscommunity.org/members/${state?.ual?.activeUser?.accountName}`}
-                        rel="noreferrer"
-                        underline="none"
-                        target="_blank"
-                      >
-                        @ {state?.ual?.activeUser?.accountName}
-                      </Link>
-                    </Typography>
+    <div className={classes.sidebar}>
+      <Sidebar
+        open={openComponent}
+        close={onClose}
+        logo="/logos/eden-spend-explorer-logo.png"
+        onClick={handleImageClick}
+        menuOptions={
+          <div className={classes.spacinTopSidebarItems}>
+            {routes.map(
+              data =>
+                data.component && (
+                  <div
+                    key={data.name}
+                    className={classes.marginTopItemsSidebar}
+                  >
+                    <Link
+                      to={data.path}
+                      underline="none"
+                      component={RouterLink}
+                    >
+                      <MenuOption
+                        text={t(`${data.path}>sidebar`)}
+                        icon={data.icon}
+                        isSelected={pathname === data.path}
+                      />
+                    </Link>
                   </div>
-                }
-              />
-            </div>
-            <Popper
-              open={open}
-              anchorEl={anchorRef.current}
-              role={undefined}
-              placement="bottom-start"
-              transition
-              disablePortal
-            >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  style={{
-                    transformOrigin:
-                      placement === 'bottom-start' ? 'left top' : 'left bottom'
-                  }}
-                >
-                  <Paper>
-                    <ClickAwayListener onClickAway={handleClose}>
-                      <MenuList
-                        autoFocusItem={open}
-                        id="composition-menu"
-                        aria-labelledby="composition-button"
-                      >
-                        <MenuItem onClick={handleLogout}>
-                          {t('signOut')}
-                        </MenuItem>
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
-          </>
-        ) : (
-          <AuthButton btnLabel={t('login')} />
-        )
-      }
-    />
+                )
+            )}
+          </div>
+        }
+        profileComponent={
+          state.ual.activeUser ? (
+            <>
+              <div
+                ref={anchorRef}
+                id="composition-button"
+                aria-controls={open ? 'composition-menu' : undefined}
+                aria-expanded={open ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleToggle}
+                aria-hidden="true"
+                className={classes.divProfileStyle}
+              >
+                <PreviewProfile
+                  name={userData?.name}
+                  nameSize="14px"
+                  image={`https://eden-genesis.mypinata.cloud/ipfs/${userData?.profile?.image}`}
+                  nameFontWeight="600"
+                  selectableItems={
+                    <div className={classes.centerSelectableItems}>
+                      <Typography variant="caption">
+                        <Link
+                          color="black"
+                          href={`https://genesis.eden.eoscommunity.org/members/${state?.ual?.activeUser?.accountName}`}
+                          rel="noreferrer"
+                          underline="none"
+                          target="_blank"
+                        >
+                          @ {state?.ual?.activeUser?.accountName}
+                        </Link>
+                      </Typography>
+                    </div>
+                  }
+                />
+              </div>
+              <Popper
+                open={open}
+                anchorEl={anchorRef.current}
+                role={undefined}
+                placement="bottom-start"
+                transition
+                disablePortal
+              >
+                {({ TransitionProps, placement }) => (
+                  <Grow
+                    {...TransitionProps}
+                    style={{
+                      transformOrigin:
+                        placement === 'bottom-start'
+                          ? 'left top'
+                          : 'left bottom'
+                    }}
+                  >
+                    <Paper>
+                      <ClickAwayListener onClickAway={handleClose}>
+                        <MenuList
+                          autoFocusItem={open}
+                          id="composition-menu"
+                          aria-labelledby="composition-button"
+                        >
+                          <MenuItem onClick={handleLogout}>
+                            {t('signOut')}
+                          </MenuItem>
+                        </MenuList>
+                      </ClickAwayListener>
+                    </Paper>
+                  </Grow>
+                )}
+              </Popper>
+            </>
+          ) : (
+            <AuthButton btnLabel={t('login')} />
+          )
+        }
+      />
+    </div>
   )
 }
 

@@ -12,19 +12,6 @@ export const GET_PERCENT_ALL_ELECTIONS_EXPENSE = gql`
   }
 `
 
-export const GET_PERCENT_BY_ELECTION_EXPENSE = gql`
-  query getPercentByElections($election: Int) {
-    percent_by_delegates_expenses(where: { election: { _eq: $election } }) {
-      election
-      eos_categorized
-      eos_uncategorized
-      usd_categorized
-      usd_uncategorized
-      delegate_payer
-    }
-  }
-`
-
 export const GET_EXPENSE_BY_ELECTIONS = gql`
   query getExpenseByElections {
     total_by_category_and_election(
@@ -35,6 +22,10 @@ export const GET_EXPENSE_BY_ELECTIONS = gql`
       category
       amount
       usd_total
+    }
+    eden_historic_election {
+      election
+      date_election
     }
   }
 `
@@ -53,10 +44,10 @@ export const GET_DELEGATES_BY_ELECTION_EXPENSE = gql`
   query getDelegatesByElection($election: Int) {
     historic_expenses(where: { election: { _eq: $election } }) {
       delegate_payer
-      eos_categorized
       usd_categorized
-      eos_uncategorized
-      usd_uncategorized
+      eos_claimed
+      eos_unclaimed
+      eos_categorized
     }
   }
 `
@@ -95,6 +86,14 @@ export const EDIT_TRANSACTION_BY_TXID = gql`
       returning {
         id
       }
+    }
+  }
+`
+
+export const SAVE_TRANSACTION = gql`
+  mutation saveTransaction($payload: eden_transaction_insert_input!) {
+    insert_eden_transaction_one(object: $payload) {
+      id
     }
   }
 `

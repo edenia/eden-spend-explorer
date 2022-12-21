@@ -113,6 +113,9 @@ export default theme => ({
       fontWeight: 'bold',
       fontSize: '12px'
     },
+    '& .MuiDataGrid-iconSeparator': {
+      display: 'none'
+    },
     '& #id-table-container': {
       marginTop: theme.spacing(2),
       height: '369px',
@@ -134,6 +137,9 @@ export default theme => ({
     },
     '& .MuiButtonBase-root:hover': {
       backgroundColor: '#3866eb'
+    },
+    '& .spinnerStyle': {
+      color: 'white'
     }
   },
   links: {
@@ -152,12 +158,6 @@ export default theme => ({
     lineHeight: 1.14,
     letterSpacing: '1px',
     color: 'white'
-  },
-  divShadow: {
-    border: '1px solid rgb(0 0 0 / 2%)',
-    marginTop: theme.spacing(2),
-    boxShadow:
-      '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)'
   },
   modalDimentions: {
     width: '723px',
@@ -204,7 +204,8 @@ export default theme => ({
   dangerText: {
     display: 'flex',
     justifyContent: 'center',
-    marginTop: theme.spacing(2),
+    textAlign: 'center',
+    marginTop: theme.spacing(1),
     '& small': {
       color: 'red'
     }

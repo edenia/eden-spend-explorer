@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo } from 'react'
 import { makeStyles } from '@mui/styles'
 import {
   FormControl,
@@ -46,10 +46,6 @@ const ExpenseReport = () => {
     }
   ] = useExpenseReportState()
 
-  useEffect(() => {
-    setShowElectionRadio('allElections')
-  }, [])
-
   const tableData =
     showElectionRadio === 'allElections'
       ? expenseByElectionsList.map(firstObj => ({
@@ -58,12 +54,7 @@ const ExpenseReport = () => {
           ),
           ...firstObj
         }))
-      : delegatesList.map(firstObj => ({
-          ...percentExpenseList.find(
-            secondObj => secondObj.name === firstObj.name
-          ),
-          ...firstObj
-        }))
+      : delegatesList
 
   const columns = [
     {
@@ -160,12 +151,15 @@ const ExpenseReport = () => {
               labelSelect={t('textYearSelect', { ns: 'generalForm' })}
               values={getListElectionYears()}
               actualValue={electionYearSelect}
+              width={100}
+              size="small"
             />
             <SelectComponent
               onChangeFunction={setElectionRoundSelect}
               labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
               values={electionsByYearList.map(data => `${data.election}`)}
               actualValue={electionRoundSelect}
+              size="small"
             />
           </div>
         )}

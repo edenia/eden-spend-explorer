@@ -72,8 +72,8 @@ const LanguageSelector = () => {
           <img
             src={`${process.env.PUBLIC_URL}/images/language-icon.png`}
             alt="icon-language"
-            width="24px"
-            height="24px"
+            width="16px"
+            height="16px"
           />
         </div>
         <Typography variant="body1" className={classes.languageLabel}>

@@ -33,7 +33,6 @@ const IncomeReport = () => {
     {
       incomeByElectionsList,
       electionsByYearList,
-      percentIncomeList,
       delegatesList,
       electionRoundSelect,
       electionYearSelect,
@@ -52,31 +51,12 @@ const IncomeReport = () => {
   }, [])
 
   const tableData =
-    showElectionRadio === 'allElections'
-      ? incomeByElectionsList.map(firstObj => ({
-          ...percentIncomeList.find(
-            secondObj => secondObj.name === firstObj.election
-          ),
-          ...firstObj
-        }))
-      : delegatesList.map(firstObj => ({
-          ...percentIncomeList.find(
-            secondObj => secondObj.name === firstObj.name
-          ),
-          ...firstObj
-        }))
+    showElectionRadio === 'allElections' ? incomeByElectionsList : delegatesList
 
   const columns = [
     {
-      field: 'election',
-      hide: !tableData[0]?.election,
-      headerName: t('tableElectionHeader', { ns: 'incomeRoute' }),
-      cellClassName: classes.links,
-      ...rowsCenter
-    },
-    {
-      field: 'name',
-      hide: !tableData[0]?.color,
+      field: tableData[0]?.name ? 'name' : 'election',
+      hide: !tableData[0]?.name,
       headerName: tableData[0]?.name
         ? t('tableHeader1', { ns: 'incomeRoute' })
         : t('tableElectionHeader', { ns: 'incomeRoute' }),
@@ -162,12 +142,15 @@ const IncomeReport = () => {
                 labelSelect={t('textYearSelect', { ns: 'generalForm' })}
                 values={getListElectionYears()}
                 actualValue={electionYearSelect}
+                width={100}
+                size="small"
               />
               <SelectComponent
                 onChangeFunction={setElectionRoundSelect}
                 labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
                 values={electionsByYearList.map(data => `${data.election}`)}
                 actualValue={electionRoundSelect}
+                size="small"
               />
             </>
           )}

@@ -19,26 +19,7 @@ const getTotalIncomeByDelegate = async (getMany = false) => {
   return getMany ? getTotalIncomeByDelegate : getTotalIncomeByDelegate[0]
 }
 
-const getPercentAllElections = async (getMany = false) => {
-  const query = `
-    query getPercentAllElections {
-      percent_by_all_elections_incomes {
-        eos_claimed
-        eos_unclaimed
-        usd_claimed
-        usd_unclaimed
-        election
-      }
-    }
-  `
-
-  const { percent_by_all_elections_incomes: getPercentAllElections } =
-    await hasuraUtil.instance.request(query)
-
-  return getMany ? getPercentAllElections : getPercentAllElections[0]
-}
-
-const getIncomeByElections = async (getMany = false) => {
+const getIncomeByElections = async () => {
   const query = `
     query getIncomeByElections {
       total_by_category_and_election(
@@ -50,17 +31,19 @@ const getIncomeByElections = async (getMany = false) => {
         amount
         usd_total
       }
+      eden_historic_election {
+        election
+        date_election
+      }
     }
   `
 
-  const { total_by_category_and_election: getIncomeByElections } =
-    await hasuraUtil.instance.request(query)
+  const getIncomeByElections = await hasuraUtil.instance.request(query)
 
-  return getMany ? getIncomeByElections : getIncomeByElections[0]
+  return getIncomeByElections
 }
 
 module.exports = {
   getTotalIncomeByDelegate,
-  getPercentAllElections,
   getIncomeByElections
 }

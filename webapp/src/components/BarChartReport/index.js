@@ -74,6 +74,15 @@ const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
         payload.map((data, i) => (
           <div key={`${i}-tooltip`}>
             <div>
+              {i === 0 &&
+                data.payload?.date &&
+                `${
+                  data.payload.date ? t('date', { ns: 'generalForm' }) : ''
+                }: ${
+                  data.payload.date ? data.payload.date.split('T')[0] : ''
+                } `}
+            </div>
+            <div>
               {`${t(
                 data.payload.category
                   ? `${data.dataKey
@@ -85,15 +94,6 @@ const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
                 data.payload[data.dataKey],
                 4
               )} ${coinType}`}
-            </div>
-            <div>
-              {i === 0 &&
-                data.payload?.date &&
-                `${
-                  data.payload.date ? t('date', { ns: 'generalForm' }) : ''
-                }: ${
-                  data.payload.date ? data.payload.date.split('T')[0] : ''
-                } `}
             </div>
           </div>
         ))}
