@@ -60,4 +60,4 @@ spec:
           name: hasura
           port: 8080
   tls:
-    secretName: tls-secret
+    certResolver: myresolver
