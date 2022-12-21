@@ -54,8 +54,8 @@ jobs:
         env:
           # general
           NAMESPACE: eden-spending
-          INGRESS_HOST: spending.eden.edenia.cloud
-          INGRESS_GRAPHQL_HOST: spending-graphql.eden.edenia.cloud
+          INGRESS_HOST: spending-eden.edenia.cloud
+          INGRESS_GRAPHQL_HOST: spending-graphql-eden.edenia.cloud
           IMAGE_NAME_WEBAPP: eden-spending-webapp-dev
           IMAGE_NAME_HAPI: eden-spending-hapi-dev
           IMAGE_NAME_HASURA: eden-spending-hasura-dev
