@@ -55,29 +55,59 @@ const Home = () => {
           </Button>
         </div>
       </div>
+      <div className={classes.titleFrame}>{t('howWorksEden')}</div>
       <div className={classes.boxesContainer}>
+        <div className={classes.imageLine} />
         <div className={classes.frameContainer}>
-          <div className={classes.titleFrame}>
-            <span>{t('edenSpendExplorer')}</span>
+          <div className={classes.subtitleFrame}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/home4.png`}
+              alt="home1"
+              width="119.7px"
+              height="169px"
+            />
           </div>
           <div className={classes.bodyFrame}>
-            <span>{t('edasDescription')}</span>
+            <span>{t('paragraph1')}</span>
           </div>
         </div>
         <div className={classes.frameContainer}>
-          <div className={classes.titleFrame}>
-            <span>{t('transparent')}</span>
+          <div className={classes.subtitleFrame}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/home3.png`}
+              alt="home2"
+              width="119.7px"
+              height="169px"
+            />
           </div>
           <div className={classes.bodyFrame}>
-            <span>{t('transparentDescription')}</span>
+            <span>{t('paragraph2')}</span>
           </div>
         </div>
         <div className={classes.frameContainer}>
-          <div className={classes.titleFrame}>
-            <span>Eden</span>
+          <div className={classes.subtitleFrame}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/home2.png`}
+              alt="home3"
+              width="119.7px"
+              height="169px"
+            />
           </div>
           <div className={classes.bodyFrame}>
-            <span>{t('edenDescription')}</span>
+            <span>{t('paragraph3')}</span>
+          </div>
+        </div>
+        <div className={classes.frameContainer}>
+          <div className={classes.subtitleFrame}>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/home1.png`}
+              alt="home4"
+              width="119.7px"
+              height="169px"
+            />
+          </div>
+          <div className={classes.bodyFrame}>
+            <span>{t('paragraph4')}</span>
           </div>
         </div>
       </div>
