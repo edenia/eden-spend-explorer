@@ -1,18 +1,5 @@
 import gql from 'graphql-tag'
 
-export const GET_PERCENT_BY_ELECTIONS_INCOME = gql`
-  query getPercentByElections($election: Int) {
-    percent_by_delegates_incomes(where: { election: { _eq: $election } }) {
-      election
-      eos_claimed
-      eos_unclaimed
-      recipient
-      usd_claimed
-      usd_unclaimed
-    }
-  }
-`
-
 export const GET_GENERAL_INCOME = gql`
   query getGeneralIncome {
     incomeFrontend {

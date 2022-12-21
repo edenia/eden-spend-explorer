@@ -153,13 +153,14 @@ const useDelegateReportState = () => {
       delegate: delegateSelect
     })
 
-    const categories = newDataFormatByCategoryDelegate(
-      responseCategory.data?.expenses_by_category_and_delegate || []
-    )
-
     const transactions = newDataFormatByTypeDelegate(
       responseTransaction.data.historic_incomes || [],
       responseTransaction.data.historic_expenses || []
+    )
+
+    const categories = newDataFormatByCategoryDelegate(
+      responseCategory.data?.expenses_by_category_and_delegate || [],
+      transactions
     )
 
     dispatch({
