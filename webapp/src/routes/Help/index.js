@@ -160,7 +160,7 @@ const Help = () => {
             src={
               i18n.language === 'es'
                 ? '/images/spend-tools-ES.webp'
-                : '/images/spend-tools-ES.webp'
+                : '/images/spend-tools-EN.webp'
             }
             width={720}
             height={311}
@@ -199,7 +199,7 @@ const Help = () => {
             src={
               i18n.language === 'es'
                 ? '/images/spend-tools2-ES.webp'
-                : '/images/spend-tools2-ES.webp'
+                : '/images/spend-tools2-EN.webp'
             }
             width={469}
             height={341}
