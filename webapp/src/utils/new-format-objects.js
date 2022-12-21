@@ -199,7 +199,7 @@ export const newDataFormatByCategoryDelegate = (categoryList, transaction) =>
             transaction[0].EOS_ + transaction[0].EOS_UN - transaction[1].EOS_
           ),
           USD: Number(
-            transaction[0].USD_UN + transaction[0].USD - transaction[1].USD
+            transaction[0].USD_UN + transaction[0].USD_ - transaction[1].USD_
           ),
           color: generateColor()
         }
