@@ -3,7 +3,7 @@
 VERSION ?= $(shell git rev-parse --short HEAD)
 CURRENT_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
 
-DOCKER_REGISTRY=eoscostarica506
+DOCKER_REGISTRY = ghcr.io/edenia
 SUBDIRS = webapp hapi hasura wallet
 
 MAKE_ENV += DOCKER_REGISTRY VERSION
