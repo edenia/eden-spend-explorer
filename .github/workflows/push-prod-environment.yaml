@@ -26,8 +26,10 @@ jobs:
             build-docker-images \
             push-docker-images
         env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          IMAGE_NAME_WEBAPP: eden-spending-webapp
+          IMAGE_NAME_HAPI: eden-spending-hapi
+          IMAGE_NAME_HASURA: eden-spending-hasura
+          IMAGE_NAME_WALLET: eden-spending-wallet
           # webapp
           PORT: 80
           REACT_APP_TAG: ${{ github.ref }}
@@ -55,6 +57,10 @@ jobs:
           NAMESPACE: eden-spending
           INGRESS_HOST: spending.eden.eoscommunity.org
           INGRESS_GRAPHQL_HOST: graphql-spending.eden.eoscommunity.org
+          IMAGE_NAME_WEBAPP: eden-spending-webapp
+          IMAGE_NAME_HAPI: eden-spending-hapi
+          IMAGE_NAME_HASURA: eden-spending-hasura
+          IMAGE_NAME_WALLET: eden-spending-wallet
           # Postgres
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
@@ -98,4 +104,4 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: true
+          prerelease: false

@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react'
 
-import { GET_ELECTIONS_BY_YEAR } from '../../gql/general.gql'
 import {
-  GET_DELEGATES_BY_ELECTION_INCOME,
-  GET_PERCENT_BY_ELECTIONS_INCOME,
-  GET_GENERAL_INCOME
+  GET_GENERAL_INCOME,
+  GET_DELEGATES_BY_ELECTION_INCOME
 } from '../../gql/income.gql'
-import {
-  newDataFormatByDelegatesIncome,
-  newDataFormatPercentByElection
-} from '../../utils/new-format-objects'
+import { GET_ELECTIONS_BY_YEAR } from '../../gql/general.gql'
+import { newDataFormatByDelegatesIncome } from '../../utils/new-format-objects'
 import { useImperativeQuery } from '../../utils'
 
 const useIncomeReportState = () => {
@@ -19,7 +15,6 @@ const useIncomeReportState = () => {
   const [electionsByYearList, setElectionsByYearList] = useState([])
   const [incomeByElectionsList, setIncomeByElectionsList] = useState([])
   const [delegatesList, setDelegatesList] = useState([])
-  const [percentIncomeList, setPercentIncomeList] = useState([])
 
   const getListElectionYears = () => {
     const yearsList = ['All']
@@ -39,12 +34,7 @@ const useIncomeReportState = () => {
     GET_DELEGATES_BY_ELECTION_INCOME
   )
 
-  const loadPercentByElection = useImperativeQuery(
-    GET_PERCENT_BY_ELECTIONS_INCOME
-  )
-
   useEffect(async () => {
-    const generalIncomeData = await loadGeneralIncome()
     const electionsByYearData = await loadElectionsByYear({
       minDate: `2021-01-01`,
       maxDate: `${new Date().getFullYear()}-12-31`
@@ -56,20 +46,18 @@ const useIncomeReportState = () => {
     setElectionsByYearList(
       electionsByYearData.data?.eden_historic_election || []
     )
-
-    if (showElectionRadio === 'allElections' && generalIncomeData) {
-      setIncomeByElectionsList(generalIncomeData.data?.incomeFrontend.data[2])
-      setPercentIncomeList(generalIncomeData.data?.incomeFrontend.data[1])
-      setDelegatesList(generalIncomeData.data?.incomeFrontend.data[0])
-    }
-  }, [showElectionRadio])
+  }, [])
 
   useEffect(async () => {
-    if (showElectionRadio === 'oneElection') {
+    if (showElectionRadio === 'allElections') {
+      const generalIncomeData = await loadGeneralIncome()
+
+      setIncomeByElectionsList(generalIncomeData.data?.incomeFrontend.data[1])
+      setDelegatesList(generalIncomeData.data?.incomeFrontend.data[0])
+    } else {
+      setDelegatesList([])
+
       const delegatesByElectionData = await loadDelegatesByElection({
-        election: electionRoundSelect
-      })
-      const percentByElectionData = await loadPercentByElection({
         election: electionRoundSelect
       })
 
@@ -78,31 +66,26 @@ const useIncomeReportState = () => {
           delegatesByElectionData.data?.historic_incomes || []
         ) || []
       )
-
-      setPercentIncomeList(
-        newDataFormatPercentByElection(
-          percentByElectionData.data?.percent_by_delegates_incomes || [],
-          'claimed'
-        ) || []
-      )
     }
-  }, [electionRoundSelect, showElectionRadio])
+  }, [showElectionRadio, electionRoundSelect])
 
   useEffect(async () => {
-    let electionsByYearData
+    const electionsByYearData = await loadElectionsByYear(
+      electionYearSelect === 'All' || electionYearSelect === 'Todos'
+        ? {
+            minDate: `2021-01-01`,
+            maxDate: `${new Date().getFullYear()}-12-31`
+          }
+        : {
+            minDate: `${electionYearSelect}-01-01`,
+            maxDate: `${electionYearSelect}-12-31`
+          }
+    )
 
-    if (electionYearSelect === 'All' || electionYearSelect === 'Todos') {
-      electionsByYearData = await loadElectionsByYear({
-        minDate: `2021-01-01`,
-        maxDate: `${new Date().getFullYear()}-12-31`
-      })
-    } else if (electionYearSelect) {
-      electionsByYearData = await loadElectionsByYear({
-        minDate: `${electionYearSelect}-01-01`,
-        maxDate: `${electionYearSelect}-12-31`
-      })
-    }
-
+    setElectionsByYearList([
+      ...electionsByYearList,
+      ...electionsByYearData.data?.eden_historic_election
+    ])
     setElectionRoundSelect(
       electionsByYearData.data?.eden_historic_election[0].election
     )
@@ -115,7 +98,6 @@ const useIncomeReportState = () => {
     {
       incomeByElectionsList,
       electionsByYearList,
-      percentIncomeList,
       delegatesList,
       electionRoundSelect,
       electionYearSelect,

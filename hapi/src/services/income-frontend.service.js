@@ -32,24 +32,20 @@ const newDataFormatByElectionsIncome = electionsList => {
       ),
       USD_TOTAL: Number(
         dataElections[pos].usd_total + dataElections[pos + 1]?.usd_total
-      )
+      ),
+      EOS_CLAIMED_PERCENT:
+        (dataElections[pos].amount /
+          (dataElections[pos].usd_total + dataElections[pos + 1]?.usd_total)) *
+        100,
+      EOS_UNCLAIMED_PERCENT:
+        (dataElections[pos + 1]?.usd_total /
+          (dataElections[pos].usd_total + dataElections[pos + 1]?.usd_total)) *
+        100
     }
     elections.push(election)
   }
 
   return elections
-}
-
-const newDataFormatPercentAllElections = percentAllElectionData => {
-  const uppercaseCategory = 'claimed'.toUpperCase()
-
-  return percentAllElectionData.map(data => ({
-    name: `Election ${data.election + 1}`,
-    [`EOS_${uppercaseCategory}_PERCENT`]:
-      Number(data[`eos_${'claimed'}`]) * 100,
-    [`EOS_UN${uppercaseCategory}_PERCENT`]:
-      Number(data[`eos_un${'claimed'}`]) * 100
-  }))
 }
 
 const newDataFormatByDelegatesIncome = transactionsList =>
@@ -66,17 +62,11 @@ const getData = async () => {
   const totalIncomeByDelegate = newDataFormatByDelegatesIncome(
     await incomeFrontend.getTotalIncomeByDelegate(true)
   )
-
-  const percentAllElections = newDataFormatPercentAllElections(
-    await incomeFrontend.getPercentAllElections(true)
-  )
-
   const incomeByElection = newDataFormatByElectionsIncome(
     await incomeFrontend.getIncomeByElections(true)
   )
-
   const dataFound = {
-    data: [totalIncomeByDelegate, percentAllElections, incomeByElection]
+    data: [totalIncomeByDelegate, incomeByElection]
   }
 
   return dataFound

@@ -3,7 +3,7 @@ const {
   edenHistoricElectionGql,
   edenDelegatesGql
 } = require('../../gql')
-const { edenConfig } = require('../../config')
+const { edenConfig, dfuseConfig } = require('../../config')
 const { hasuraUtil, sleepUtil, dfuseUtil } = require('../../utils')
 
 const updaters = require('./updaters')
@@ -71,12 +71,13 @@ const getActions = async params => {
   const { data } = await dfuseUtil.client.graphql(
     dfuseUtil.getfundTransferQuery(params)
   )
-  const transactionsList = data.searchTransactionsForward.results
+  const transactionsList = data?.searchTransactionsForward.results || []
 
   return {
     hasMore: transactionsList.length === 1000,
     actions: transactionsList,
-    blockNumber: transactionsList.at(-1)?.trace.block.num
+    blockNumber:
+      transactionsList.at(-1)?.trace.block.num || dfuseConfig.firstBlock
   }
 }
 

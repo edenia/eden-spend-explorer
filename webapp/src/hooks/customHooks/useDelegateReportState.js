@@ -118,9 +118,10 @@ const useDelegateReportState = () => {
     const responseInitialData = await loadInitialData({
       election: electionRoundSelect
     })
+
     const length = responseInitialData.data?.delegateFrontend?.data.length
     const maxLevel =
-      responseInitialData.data?.delegateFrontend?.data.at(-1).delegate_level
+      responseInitialData.data?.delegateFrontend?.data.at(-1)?.delegate_level
     const selectedElectionDate =
       responseInitialData.data?.delegateFrontend?.data.at(-2)
     const delegates =
@@ -153,13 +154,14 @@ const useDelegateReportState = () => {
       delegate: delegateSelect
     })
 
-    const categories = newDataFormatByCategoryDelegate(
-      responseCategory.data?.expenses_by_category_and_delegate || []
-    )
-
     const transactions = newDataFormatByTypeDelegate(
       responseTransaction.data.historic_incomes || [],
       responseTransaction.data.historic_expenses || []
+    )
+
+    const categories = newDataFormatByCategoryDelegate(
+      responseCategory.data?.expenses_by_category_and_delegate || [],
+      transactions
     )
 
     dispatch({
