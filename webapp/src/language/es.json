@@ -4,7 +4,8 @@
     "signOut": "Salir",
     "lightMode": "Modo Claro",
     "darkMode": "Modo Oscuro",
-    "titleEosBalance": "Balance de tesorería de Eden"
+    "titleEosBalance": "Balance de tesorería de Eden",
+    "download": "Descargar"
   },
   "routes": {
     "/>title": "Eden on EOS Accounting Standard",

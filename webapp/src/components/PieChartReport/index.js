@@ -143,7 +143,7 @@ const PieChartReport = ({
           <Typography className={classes.titleChart} variant="span">
             {t(keyTranslation, { ns: pathTranslation })}
           </Typography>
-          <TooltipDownload title="Donwload">
+          <TooltipDownload title={t('download', { ns: 'common' })}>
             <IconButton onClick={handlePieDownload}>
               <DownloadOutlined />
             </IconButton>
