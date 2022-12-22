@@ -5,6 +5,7 @@ const { edenDelegatesGql } = require('../gql')
 const { edenElectionGql } = require('../gql')
 const { edenHistoricElectionGql } = require('../gql')
 const { servicesConstant } = require('../constants')
+const { dfuseConfig } = require('../config')
 
 const updateEdenTable = async () => {
   await communityUtil.saveNewElection(edenHistoricElectionGql)
@@ -25,7 +26,8 @@ const updateEdenTable = async () => {
       if (!(member[1].election_rank > 0)) continue
 
       const memberData = {
-        account: member[1].account
+        account: member[1].account,
+        last_synced_at: dfuseConfig.firstBlock
       }
       let registeredMember = await edenDelegatesGql.get({
         account: { _eq: memberData.account }
