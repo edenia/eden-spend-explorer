@@ -149,7 +149,7 @@ const BarChartReport = ({
           <Typography variant="span">
             {t(keyTranslation, { ns: pathTranslation })}
           </Typography>
-          <TooltipDownload title="Download">
+          <TooltipDownload title={t('download', { ns: 'common' })}>
             <IconButton onClick={handleBarDownload}>
               <DownloadOutlined />
             </IconButton>

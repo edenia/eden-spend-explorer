@@ -63,10 +63,7 @@ const renderActiveShape = props => {
         fontSize="12px"
         fontWeight={500}
       >
-        {payload.EOS_CLAIMED
-          ? formatWithThousandSeparator(payload.EOS_CLAIMED, 2)
-          : formatWithThousandSeparator(value, 2)}{' '}
-        {coin}
+        {formatWithThousandSeparator(value, 2)} {coin}
       </text>
       <text
         x={cx}
@@ -129,9 +126,9 @@ const PieChartReport = ({
 
   useEffect(() => {
     if (typeData === 'income') {
-      setCategory('Claimed')
+      setCategory('CLAIMED')
     } else {
-      setCategory('Categorized')
+      setCategory('CATEGORIZED')
     }
   }, [typeData])
 
@@ -146,7 +143,7 @@ const PieChartReport = ({
           <Typography className={classes.titleChart} variant="span">
             {t(keyTranslation, { ns: pathTranslation })}
           </Typography>
-          <TooltipDownload title="Donwload">
+          <TooltipDownload title={t('download', { ns: 'common' })}>
             <IconButton onClick={handlePieDownload}>
               <DownloadOutlined />
             </IconButton>
@@ -162,7 +159,7 @@ const PieChartReport = ({
           </FormGroup>
         </div>
       </div>
-      {typeData === 'expese' && <Divider variant="middle" />}
+      {typeData === 'expense' && <Divider variant="middle" />}
       <ResponsiveContainer width="100%" height={350}>
         <PieChart ref={pieRef}>
           <Pie
