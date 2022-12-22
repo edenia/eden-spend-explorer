@@ -15,36 +15,34 @@ const DelegateDetails = ({ categoryList, transactionList }) => {
   const classes = useStyles()
 
   return (
-    <>
-      <div className={classes.chartContainer}>
-        <div className={classes.pieChartContainer}>
-          {!categoryList[0] ? (
-            <div className={classes.alertContainer}>
-              <Alert severity="error">
-                {t('noExpense', { ns: 'generalForm' })}
-              </Alert>
-            </div>
-          ) : (
-            <PieChartReport
-              data={categoryList}
-              keyTranslation={'titlePieChart'}
-              pathTranslation={'delegateRoute'}
-              typeData={'delegate'}
-              outerRadius={140}
-            />
-          )}
-        </div>
-        <div className={classes.verticalLine} />
-        <div className={classes.pieChartContainer}>
-          <StackedBarChartReport
-            data={transactionList}
-            keyTranslation={'titleBarChart'}
+    <div className={classes.chartContainer}>
+      <div className={classes.pieChartContainer}>
+        {!categoryList[0] ? (
+          <div className={classes.alertContainer}>
+            <Alert severity="error">
+              {t('noExpense', { ns: 'generalForm' })}
+            </Alert>
+          </div>
+        ) : (
+          <PieChartReport
+            data={categoryList}
+            keyTranslation={'titlePieChart'}
             pathTranslation={'delegateRoute'}
-            showLegend={true}
+            typeData={'delegate'}
+            outerRadius={140}
           />
-        </div>
+        )}
       </div>
-    </>
+      <div className={classes.verticalLine} />
+      <div className={classes.pieChartContainer}>
+        <StackedBarChartReport
+          data={transactionList}
+          keyTranslation={'titleBarChart'}
+          pathTranslation={'delegateRoute'}
+          showLegend={true}
+        />
+      </div>
+    </div>
   )
 }
 

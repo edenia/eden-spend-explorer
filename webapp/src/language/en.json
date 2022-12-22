@@ -4,7 +4,8 @@
     "signOut": "Logout",
     "lightMode": "Light Mode",
     "darkMode": "Dark Mode",
-    "titleEosBalance": "Eden Treasury Balance"
+    "titleEosBalance": "Eden Treasury Balance",
+    "download": "Download"
   },
   "routes": {
     "/>title": "Eden on EOS Accounting Standard",

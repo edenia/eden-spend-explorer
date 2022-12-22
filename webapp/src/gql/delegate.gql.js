@@ -12,9 +12,9 @@ export const GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION = gql`
       }
     ) {
       eos_categorized
-      eos_uncategorized
+      eos_claimed
       usd_categorized
-      usd_uncategorized
+      eos_unclaimed
     }
     historic_incomes(
       where: { election: { _eq: $election }, recipient: { _eq: $delegate } }

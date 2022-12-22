@@ -1,4 +1,4 @@
-const { edenConfig } = require('../config')
+const { edenConfig, dfuseConfig } = require('../config')
 const { servicesConstant } = require('../constants')
 const { eosUtil, dfuseUtil, communityUtil, sleepUtil } = require('../utils')
 const {
@@ -24,14 +24,13 @@ const getActions = async params => {
   const { data } = await dfuseUtil.client.graphql(
     dfuseUtil.getfundTransferQuery(params)
   )
+  const transactionsList = data.searchTransactionsForward.results || []
 
   return {
-    hasMore: data.searchTransactionsForward.results.length === 1000,
-    actions: data.searchTransactionsForward.results,
+    hasMore: transactionsList.length === 1000,
+    actions: transactionsList,
     blockNumber:
-      data.searchTransactionsForward.results[
-        data.searchTransactionsForward.results.length - 1
-      ].trace.block.num
+      transactionsList.at(-1)?.trace.block.num || dfuseConfig.firstBlock
   }
 }
 
@@ -44,7 +43,10 @@ const registerHistoricDelegate = async (date, account, rank) => {
   })
 
   if (!registeredMember)
-    registeredMember = await edenDelegatesGql.save({ account })
+    registeredMember = await edenDelegatesGql.save({
+      account,
+      last_synced_at: dfuseConfig.firstBlock
+    })
 
   const electionData = {
     id_delegate: registeredMember.id,
