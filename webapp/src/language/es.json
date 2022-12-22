@@ -37,10 +37,11 @@
     "edenSpendExplorer": "Explorador de Gastos Eden",
     "viewDescription": "Una forma fácil de entender y estandarizar el uso de los fondos Eden y cómo se beneficia la comunidad.",
     "button": "Iniciar",
-    "edasDescription": "El explorardor de gastos de Eden es un mecanismo de información destinado a proporcionar a la comunidad de Eden en EOS información sobre cómo se están asignando o utilizando los fondos de Eden, otorgados a distintos delegados. De esta manera, los delegados pueden hacer uso del \"Spend tools\", que permite realizar tanto el envió como justificación de transacciones realizadas a lo largo de cada elección.",
-    "transparent": "Transparencia",
-    "transparentDescription": "Los delegados electos pueden adherirse a la norma y notificar fácilmente sus gastos de Eden utilizando un formato específico para el campo memo de la acción de transferencia de tokens EOS, de esta manera, se tiene mas transparencia al mantener al tanto a la comunidad de diferentes gastos que se están realizando. Por ende, facilita el seguimiento de proyectos en los que se está trabajando en beneficio de la comunidad.",
-    "edenDescription": "Eden on EOS es un proceso de gobierno único que reúne el conocimiento de sus miembros para identificar a los más destacados que representarán a la comunidad, evitando caer en el manejo partidista, competencias de popularidad o uso de ventajas de sus miembros. Eden trata maximizar el poder y la independencia de sus miembros y así asegurar la vida, la libertad, la propiedad y la justicia para todos."
+    "howWorksEden": "¿Cómo funciona el explorador de gastos Edén?",
+    "paragraph1": "EOS Spend Explorer proporciona una visualización y categorización de datos fiable a partir de los fondos asignados en la comunidad Eden.",
+    "paragraph2": "La App puede configurar una lista de cuentas de EOS para obtener automáticamente datos de ingresos de las transacciones en la cadena.",
+    "paragraph3": "Los miembros de Eden pueden iniciar sesión en la App para categorizar y describir sus gastos de EOS utilizando un formato de memo específico.",
+    "paragraph4": "EOS Spend Explorer proporciona automáticamente visualización e informes de los gastos incluidos en los campos memo."
   },
   "generalForm": {
     "textRadioButton1": "Por un delegado",
