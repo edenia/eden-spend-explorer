@@ -35,6 +35,7 @@ build-docker: ./Dockerfile
 		--build-arg react_app_hasura_url="$(REACT_APP_HASURA_URL)" \
 		--build-arg react_app_rate_history="$(REACT_APP_RATE_HISTORY)" \
 		--build-arg react_app_eden_contract="$(REACT_APP_EDEN_CONTRACT)" \
+		--build-arg react_app_url_endpoint="$(REACT_APP_URL_ENDPOINT)" \
 		.
 
 pull-image: ##@devops Pull the latest image from registry for caching

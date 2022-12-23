@@ -45,6 +45,7 @@ jobs:
           REACT_APP_HASURA_URL: ${{ secrets.REACT_APP_HASURA_URL }}
           REACT_APP_RATE_HISTORY: ${{ secrets.REACT_APP_RATE_HISTORY }}
           REACT_APP_EDEN_CONTRACT: 'genesis.eden'
+          REACT_APP_URL_ENDPOINT: 'https://eden-api-dev.edenia.cloud'
 
       - name: Build kubernetes files
         id: build_kubernetes_files
@@ -79,7 +80,7 @@ jobs:
           HAPI_EDEN_ELECTION_INTERVAL: 7889400
           HAPI_EDEN_HISTORIC_ELECTION: ${{secrets.HAPI_EDEN_HISTORIC_ELECTION}}
           HAPI_EDEN_CONTRACT: genesis.eden
-          HAPI_DFUSE_API_KEY: 
+          HAPI_DFUSE_API_KEY:
           HAPI_DFUSE_API: jungle4.dfuse.eosnation.io
           HAPI_DFUSE_FIRST_BLOCK: ${{secrets.HAPI_DFUSE_FIRST_BLOCK}}
           # hasura

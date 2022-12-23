@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from 'react'
 import { gql, GraphQLClient } from 'graphql-request'
 
+import { mainConfig } from '../../config'
 import {
   GET_ELECTIONS_BY_YEAR,
   GET_MEMBERS_DATA,
@@ -27,7 +28,7 @@ const INIT_REDUCER_DATA = {
   maxLevel: 0,
   searchValue: ''
 }
-const client = new GraphQLClient('https://eden-api.edenia.cloud/v1/graphql', {
+const client = new GraphQLClient(`${mainConfig.urlEndpoint}/v1/graphql`, {
   headers: {}
 })
 
