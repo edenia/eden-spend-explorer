@@ -80,7 +80,7 @@ jobs:
           HAPI_EDEN_ELECTION_INTERVAL: 7889400
           HAPI_EDEN_HISTORIC_ELECTION: ${{secrets.HAPI_EDEN_HISTORIC_ELECTION}}
           HAPI_EDEN_CONTRACT: genesis.eden
-          HAPI_DFUSE_API_KEY:
+          HAPI_DFUSE_API_KEY: ${{secrets.HAPI_DFUSE_API_KEY}}
           HAPI_DFUSE_API: jungle4.dfuse.eosnation.io
           HAPI_DFUSE_FIRST_BLOCK: ${{secrets.HAPI_DFUSE_FIRST_BLOCK}}
           # hasura
