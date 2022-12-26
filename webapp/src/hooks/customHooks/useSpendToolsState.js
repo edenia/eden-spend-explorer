@@ -71,7 +71,7 @@ const useSpendTools = () => {
     GET_ELECTIONS,
     {
       variables: {
-        where: { eden_delegate: { account: { _eq: 'xavieredenia' } } }
+        where: { eden_delegate: { account: { _eq: state.user?.accountName } } }
       }
     }
   )
@@ -143,22 +143,27 @@ const useSpendTools = () => {
 
         resetModal()
       } else {
-        if (transactionResult?.status === 'executed') {
+        if (
+          transactionResult?.status === 'executed' &&
+          delegateElections?.eden_election.at(-1)?.id
+        ) {
+          const payload = {
+            amount: Number(formValues.amount.split(' ')[0]),
+            category: formValues.category,
+            date: transactionResult?.transaction.processed.block_time,
+            description: formValues.description,
+            eos_exchange: eosRate,
+            id_election: delegateElections?.eden_election.at(-1).id,
+            memo: `eden_expense:${formValues.category}/${formValues.description}`,
+            recipient: formValues.to,
+            txid: transactionResult?.transactionId,
+            type: 'expense',
+            usd_total: Number(formValues.amount.split(' ')[0]) * eosRate
+          }
+
           saveTransaction({
             variables: {
-              payload: {
-                amount: Number(formValues.amount.split(' ')[0]),
-                category: formValues.category,
-                date: transactionResult?.transaction.processed.block_time,
-                description: formValues.description,
-                eos_exchange: eosRate,
-                id_election: delegateElections?.eden_election.at(-1).id,
-                memo: `eden_expense:${formValues.category}/${formValues.description}`,
-                recipient: formValues.to,
-                txid: transactionResult?.transactionId,
-                type: 'expense',
-                usd_total: Number(formValues.amount.split(' ')[0]) * eosRate
-              }
+              payload
             }
           })
         }

@@ -25,6 +25,8 @@ const runUpdaters = async actions => {
             item.type === `${matchingAction.account}:${matchingAction.name}`
         )
 
+        if (!updater) continue
+
         if (matchingAction.name === 'categorize') {
           await updater.apply({
             json: matchingAction.json

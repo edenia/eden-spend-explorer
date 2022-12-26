@@ -64,7 +64,7 @@ export const newDataFormatByCategorizedElectionsExpense = electionsList => {
   const dataElections = electionsList?.total_by_category_and_election || []
   const historicElections = electionsList?.eden_historic_election || []
   const elections = []
-  let electionNum = 0
+  let electionNum = dataElections[0].election
   let usdTotal = 0
   let eosTotal = 0
   for (let pos = 0; pos < dataElections.length; pos++) {

@@ -56,7 +56,6 @@ const IncomeReport = () => {
   const columns = [
     {
       field: tableData[0]?.name ? 'name' : 'election',
-      hide: !tableData[0]?.name,
       headerName: tableData[0]?.name
         ? t('tableHeader1', { ns: 'incomeRoute' })
         : t('tableElectionHeader', { ns: 'incomeRoute' }),
