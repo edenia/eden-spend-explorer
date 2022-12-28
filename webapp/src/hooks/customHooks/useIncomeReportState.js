@@ -9,22 +9,11 @@ import { newDataFormatByDelegatesIncome } from '../../utils/new-format-objects'
 import { useImperativeQuery } from '../../utils'
 
 const useIncomeReportState = () => {
-  const [electionYearSelect, setElectionYearSelect] = useState('All')
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
   const [showElectionRadio, setShowElectionRadio] = useState('')
   const [electionsByYearList, setElectionsByYearList] = useState([])
   const [incomeByElectionsList, setIncomeByElectionsList] = useState([])
   const [delegatesList, setDelegatesList] = useState([])
-
-  const getListElectionYears = () => {
-    const yearsList = ['All']
-    const yearCurrent = new Date().getFullYear()
-    for (let index = 2021; index <= yearCurrent; index++) {
-      yearsList.push(index)
-    }
-
-    return yearsList
-  }
 
   const loadGeneralIncome = useImperativeQuery(GET_GENERAL_INCOME)
 
@@ -70,17 +59,10 @@ const useIncomeReportState = () => {
   }, [showElectionRadio, electionRoundSelect])
 
   useEffect(async () => {
-    const electionsByYearData = await loadElectionsByYear(
-      electionYearSelect === 'All' || electionYearSelect === 'Todos'
-        ? {
-            minDate: `2021-01-01`,
-            maxDate: `${new Date().getFullYear()}-12-31`
-          }
-        : {
-            minDate: `${electionYearSelect}-01-01`,
-            maxDate: `${electionYearSelect}-12-31`
-          }
-    )
+    const electionsByYearData = await loadElectionsByYear({
+      minDate: `2021-01-01`,
+      maxDate: `${new Date().getFullYear()}-12-31`
+    })
 
     setElectionsByYearList([
       ...electionsByYearList,
@@ -92,7 +74,24 @@ const useIncomeReportState = () => {
     setElectionsByYearList(
       electionsByYearData.data?.eden_historic_election || []
     )
-  }, [electionYearSelect])
+  }, [])
+
+  useEffect(() => {
+    const rounds = []
+    for (let pos = 0; pos < incomeByElectionsList.length; pos++) {
+      const election = Number(
+        incomeByElectionsList[pos].election.charAt(
+          incomeByElectionsList[pos].election.length - 1
+        )
+      )
+      const newElections = electionsByYearList.filter(
+        elec => elec.election === election - 1
+      )
+      rounds.push(newElections[0])
+    }
+    setElectionsByYearList(rounds)
+    setElectionRoundSelect(rounds[0]?.election)
+  }, [incomeByElectionsList])
 
   return [
     {
@@ -100,13 +99,10 @@ const useIncomeReportState = () => {
       electionsByYearList,
       delegatesList,
       electionRoundSelect,
-      electionYearSelect,
       showElectionRadio
     },
     {
       setElectionRoundSelect,
-      setElectionYearSelect,
-      getListElectionYears,
       setShowElectionRadio
     }
   ]

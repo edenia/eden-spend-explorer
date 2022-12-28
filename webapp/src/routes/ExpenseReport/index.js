@@ -35,15 +35,9 @@ const ExpenseReport = () => {
       delegatesList,
       categoryList,
       electionRoundSelect,
-      electionYearSelect,
       showElectionRadio
     },
-    {
-      setElectionRoundSelect,
-      setElectionYearSelect,
-      getListElectionYears,
-      setShowElectionRadio
-    }
+    { setElectionRoundSelect, setShowElectionRadio }
   ] = useExpenseReportState()
 
   const tableData =
@@ -146,14 +140,6 @@ const ExpenseReport = () => {
         </div>
         {showElectionRadio === 'oneElection' && (
           <div id="id-radio-election-container">
-            <SelectComponent
-              onChangeFunction={setElectionYearSelect}
-              labelSelect={t('textYearSelect', { ns: 'generalForm' })}
-              values={getListElectionYears()}
-              actualValue={electionYearSelect}
-              width={100}
-              size="small"
-            />
             <SelectComponent
               onChangeFunction={setElectionRoundSelect}
               labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
