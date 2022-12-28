@@ -35,15 +35,9 @@ const IncomeReport = () => {
       electionsByYearList,
       delegatesList,
       electionRoundSelect,
-      electionYearSelect,
       showElectionRadio
     },
-    {
-      setElectionRoundSelect,
-      setElectionYearSelect,
-      getListElectionYears,
-      setShowElectionRadio
-    }
+    { setElectionRoundSelect, setShowElectionRadio }
   ] = useIncomeReportState()
 
   useEffect(() => {
@@ -136,14 +130,6 @@ const IncomeReport = () => {
         <div id="id-radio-election-container">
           {showElectionRadio === 'oneElection' && (
             <>
-              <SelectComponent
-                onChangeFunction={setElectionYearSelect}
-                labelSelect={t('textYearSelect', { ns: 'generalForm' })}
-                values={getListElectionYears()}
-                actualValue={electionYearSelect}
-                width={100}
-                size="small"
-              />
               <SelectComponent
                 onChangeFunction={setElectionRoundSelect}
                 labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
