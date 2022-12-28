@@ -23,3 +23,11 @@ export const GET_ELECTIONS = gql`
     }
   }
 `
+
+export const GET_DELEGATES = gql`
+  query MyQuery($delegate: String) {
+    eden_delegates(where: { account: { _eq: $delegate } }) {
+      account
+    }
+  }
+`
