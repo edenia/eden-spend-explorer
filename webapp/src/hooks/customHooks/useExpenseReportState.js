@@ -50,18 +50,35 @@ const useExpenseReportState = () => {
       maxDate: `${new Date().getFullYear()}-12-31`
     })
 
-    setExpenseByElectionsList(
-      newDataFormatByCategorizedElectionsExpense(expenseByElections.data || [])
-    )
-    setElectionsByYearList([
-      ...electionsByYear?.data?.eden_historic_election,
-      electionsByYearList
-    ])
+    // setElectionsByYearList([
+    //   ...electionsByYear?.data?.eden_historic_election,
+    //   electionsByYearList
+    // ])
     setElectionRoundSelect(
       electionsByYear?.data?.eden_historic_election[0]?.election
     )
     setElectionsByYearList(electionsByYear?.data?.eden_historic_election || [])
+    setExpenseByElectionsList(
+      newDataFormatByCategorizedElectionsExpense(expenseByElections.data || [])
+    )
   }, [])
+
+  useEffect(() => {
+    const rounds = []
+    for (let pos = 0; pos < expenseByElectionsList.length; pos++) {
+      const election = Number(
+        expenseByElectionsList[pos].election.charAt(
+          expenseByElectionsList[pos].election.length - 1
+        )
+      )
+      const newElections = electionsByYearList.filter(
+        elec => elec.election === election - 1
+      )
+      rounds.push(newElections[0])
+    }
+    setElectionsByYearList(rounds)
+    setElectionRoundSelect(rounds[0]?.election)
+  }, [expenseByElectionsList])
 
   useEffect(async () => {
     if (showElectionRadio === 'allElections') {
