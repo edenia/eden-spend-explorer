@@ -19,7 +19,6 @@ import {
 import { useImperativeQuery } from '../../utils'
 
 const useExpenseReportState = () => {
-  const [electionYearSelect, setElectionYearSelect] = useState('All')
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
   const [showElectionRadio, setShowElectionRadio] = useState('allElections')
   const [electionsByYearList, setElectionsByYearList] = useState([])
@@ -27,16 +26,6 @@ const useExpenseReportState = () => {
   const [delegatesList, setDelegatesList] = useState([])
   const [categoryList, setCategoryList] = useState([])
   const [percentExpenseList, setPercentExpenseList] = useState([])
-
-  const getListElectionYears = () => {
-    const yearsList = ['All']
-    const yearCurrent = new Date().getFullYear()
-    for (let index = 2021; index <= yearCurrent; index++) {
-      yearsList.push(index)
-    }
-
-    return yearsList
-  }
 
   const loadExpenseByElections = useImperativeQuery(GET_EXPENSE_BY_ELECTIONS)
   const loadTotalExpenseByDelegate = useImperativeQuery(
@@ -56,17 +45,10 @@ const useExpenseReportState = () => {
 
   useEffect(async () => {
     const expenseByElections = await loadExpenseByElections()
-    const electionsByYear = await loadElectionsByYear(
-      electionYearSelect === 'All' || electionYearSelect === 'Todos'
-        ? {
-            minDate: `2021-01-01`,
-            maxDate: `${new Date().getFullYear()}-12-31`
-          }
-        : {
-            minDate: `${electionYearSelect}-01-01`,
-            maxDate: `${electionYearSelect}-12-31`
-          }
-    )
+    const electionsByYear = await loadElectionsByYear({
+      minDate: `2021-01-01`,
+      maxDate: `${new Date().getFullYear()}-12-31`
+    })
 
     setExpenseByElectionsList(
       newDataFormatByCategorizedElectionsExpense(expenseByElections.data || [])
@@ -137,13 +119,10 @@ const useExpenseReportState = () => {
       delegatesList,
       categoryList,
       electionRoundSelect,
-      electionYearSelect,
       showElectionRadio
     },
     {
       setElectionRoundSelect,
-      setElectionYearSelect,
-      getListElectionYears,
       setShowElectionRadio
     }
   ]
