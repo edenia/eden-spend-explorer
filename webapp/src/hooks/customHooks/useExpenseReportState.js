@@ -50,10 +50,6 @@ const useExpenseReportState = () => {
       maxDate: `${new Date().getFullYear()}-12-31`
     })
 
-    // setElectionsByYearList([
-    //   ...electionsByYear?.data?.eden_historic_election,
-    //   electionsByYearList
-    // ])
     setElectionRoundSelect(
       electionsByYear?.data?.eden_historic_election[0]?.election
     )

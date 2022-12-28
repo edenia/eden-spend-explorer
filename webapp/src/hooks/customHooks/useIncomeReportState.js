@@ -76,6 +76,23 @@ const useIncomeReportState = () => {
     )
   }, [])
 
+  useEffect(() => {
+    const rounds = []
+    for (let pos = 0; pos < incomeByElectionsList.length; pos++) {
+      const election = Number(
+        incomeByElectionsList[pos].election.charAt(
+          incomeByElectionsList[pos].election.length - 1
+        )
+      )
+      const newElections = electionsByYearList.filter(
+        elec => elec.election === election - 1
+      )
+      rounds.push(newElections[0])
+    }
+    setElectionsByYearList(rounds)
+    setElectionRoundSelect(rounds[0]?.election)
+  }, [incomeByElectionsList])
+
   return [
     {
       incomeByElectionsList,
