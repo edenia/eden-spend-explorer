@@ -77,6 +77,12 @@ const useDelegateReportState = () => {
 
   const setElectionRoundSelect = electionRoundSelect => {
     dispatch({ type: 'SET_ROUND_SELECT', payload: electionRoundSelect })
+    dispatch({
+      type: 'SET_GENERAL_DATA',
+      payload: {
+        profilesList: []
+      }
+    })
   }
 
   const setSearchValue = searchValue => {
