@@ -23,11 +23,11 @@ module.exports = {
         description: { _eq: `distribution funds rank ${rank}` }
       })
 
+      const txDate = moment(action.timestamp).format('DD-MM-YYYY')
+
       if (!existTx) {
         if (LASTEST_RATE_DATE_CONSULTED !== txDate) {
           try {
-            const txDate = moment(action.timestamp).format('DD-MM-YYYY')
-
             const data = await communityUtil.getExchangeRateByDate(txDate)
 
             LASTEST_RATE_DATA_CONSULTED = data.market_data.current_price.usd
