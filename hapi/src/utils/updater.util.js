@@ -23,37 +23,43 @@ const getElectionWithoutExpense = async (
   edenElectionGql,
   edenTransactionGql
 ) => {
-  const elections = await edenElectionGql.get(
-    {
+  try {
+    const electionsQuery = {
       eden_delegate: { account: { _eq: delegateAccount } }
-    },
-    true
-  )
+    }
+    const elections = await edenElectionGql.get(electionsQuery, true)
 
-  for (let index = 0; index < elections.length; index++) {
-    const { id, election } = elections[index]
-    const income = await edenTransactionGql.getAggregate({
-      eden_election: {
-        eden_delegate: { account: { _eq: delegateAccount } },
-        election: { _eq: election }
-      },
-      type: { _eq: 'income' }
-    })
-    const expense = await edenTransactionGql.getAggregate({
-      eden_election: {
-        eden_delegate: { account: { _eq: delegateAccount } },
-        election: { _eq: election }
-      },
-      type: { _eq: 'expense' },
-      category: { _eq: 'claimed' }
-    })
+    for (const { id, election } of elections) {
+      const incomeQuery = {
+        eden_election: {
+          eden_delegate: { account: { _eq: delegateAccount } },
+          election: { _eq: election }
+        },
+        type: { _eq: 'income' }
+      }
+      const income = (await edenTransactionGql.getAggregate(incomeQuery)) || 0
 
-    if (expense + amount <= income) return { election, idElection: id }
-  }
+      const expenseQuery = {
+        eden_election: {
+          eden_delegate: { account: { _eq: delegateAccount } },
+          election: { _eq: election }
+        },
+        type: { _eq: 'expense' },
+        category: { _neq: 'uncategorized' }
+      }
+      const expense = (await edenTransactionGql.getAggregate(expenseQuery)) || 0
 
-  return {
-    election: elections.at(-1).election,
-    idElection: elections.at(-1).id
+      if (expense + amount <= income) {
+        return { election, idElection: id }
+      }
+    }
+
+    return {
+      election: elections[elections.length - 1].election,
+      idElection: elections[elections.length - 1].id
+    }
+  } catch (error) {
+    console.error('An error occurred in getElectionWithoutExpense: ', error)
   }
 }
 

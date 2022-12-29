@@ -11,21 +11,24 @@ module.exports = {
   type: `${edenConfig.edenContract}:fundtransfer`,
   apply: async action => {
     try {
-      const amount = Number(action.json.amount.split(' ')[0])
+      const { amount: quantity, from, distribution_time, rank } = action.json
+      const amount = Number(quantity.split(' ')[0])
       const existTx = await edenTransactionGql.get({
-        date: { _eq: action.json.distribution_time },
+        date: { _eq: distribution_time },
         amount: { _eq: amount },
         eden_election: {
-          eden_delegate: { account: { _eq: action.json.from } }
-        }
+          eden_delegate: { account: { _eq: from } }
+        },
+        description: { _eq: `distribution funds rank ${rank}` }
       })
 
       if (!existTx) {
-        const txDate = moment(action.timestamp).format('DD-MM-YYYY')
-
         if (LASTEST_RATE_DATE_CONSULTED !== txDate) {
           try {
+            const txDate = moment(action.timestamp).format('DD-MM-YYYY')
+
             const data = await communityUtil.getExchangeRateByDate(txDate)
+
             LASTEST_RATE_DATA_CONSULTED = data.market_data.current_price.usd
             LASTEST_RATE_DATE_CONSULTED = txDate
           } catch (error) {
@@ -43,16 +46,44 @@ module.exports = {
           txid: action.transaction_id,
           amount,
           category: 'claimed',
-          date: action.json.distribution_time,
-          description: action.json.memo,
+          date: distribution_time,
+          description: `distribution funds rank ${rank}`,
           id_election: action.election.id,
-          recipient: action.json.from,
+          recipient: from,
           type: 'income',
           eos_exchange: LASTEST_RATE_DATA_CONSULTED,
           usd_total: amount * LASTEST_RATE_DATA_CONSULTED
         }
 
         await edenTransactionGql.save(transactionData)
+
+        const existUnclaimedTx = await edenTransactionGql.get({
+          date: { _eq: distribution_time },
+          eden_election: {
+            eden_delegate: { account: { _eq: from } }
+          },
+          description: { _eq: `distribution funds rank ${rank}` },
+          type: { _eq: 'unclaimed' }
+        })
+
+        if (!existUnclaimedTx) return
+
+        const newAmount = existUnclaimedTx.amount - amount
+
+        if (newAmount <= 0) {
+          await deleteTx({
+            where: {
+              id: { _eq: existUnclaimedTx.id }
+            }
+          })
+        } else {
+          await update({
+            where: {
+              id: { _eq: existUnclaimedTx.id }
+            },
+            _set: { amount: newAmount }
+          })
+        }
       } else {
         await edenTransactionGql.update({
           where: {
