@@ -39,7 +39,7 @@ const App = () => {
     }
   })
 
-  const userRoutes = useMemo(() => routes(role), [state?.user])
+  const userRoutes = useMemo(() => routes(role), [role])
 
   const renderRoute = ({ component: Component, ...route }, index) => (
     <Route
