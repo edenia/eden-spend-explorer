@@ -13,6 +13,7 @@ module.exports = {
     try {
       const { amount: quantity, from, distribution_time, rank } = action.json
       const amount = Number(quantity.split(' ')[0])
+
       const existTx = await edenTransactionGql.get({
         date: { _eq: distribution_time },
         amount: { _eq: amount },

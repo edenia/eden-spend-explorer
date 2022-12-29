@@ -37,8 +37,6 @@ const getElectionWithoutExpense = async (
         },
         type: { _eq: 'income' }
       }
-      const income = (await edenTransactionGql.getAggregate(incomeQuery)) || 0
-
       const expenseQuery = {
         eden_election: {
           eden_delegate: { account: { _eq: delegateAccount } },
@@ -47,6 +45,9 @@ const getElectionWithoutExpense = async (
         type: { _eq: 'expense' },
         category: { _neq: 'uncategorized' }
       }
+
+      const income = (await edenTransactionGql.getAggregate(incomeQuery)) || 0
+
       const expense = (await edenTransactionGql.getAggregate(expenseQuery)) || 0
 
       if (expense + amount <= income) {
