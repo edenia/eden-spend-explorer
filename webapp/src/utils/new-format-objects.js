@@ -60,59 +60,73 @@ export const newDataFormatByDelegatesIncome = transactionsList =>
     color: generateColor()
   }))
 
-export const newDataFormatByCategorizedElectionsExpense = electionsList => {
-  const dataElections = electionsList?.total_by_category_and_election || []
-  const historicElections = electionsList?.eden_historic_election || []
-  const elections = []
-  let electionNum = dataElections[0].election
-  let usdTotal = 0
-  let eosTotal = 0
-  for (let pos = 0; pos < dataElections.length; pos++) {
-    if (dataElections[pos].election === electionNum) {
-      if (dataElections[pos].category !== 'uncategorized') {
-        usdTotal += dataElections[pos].usd_total
-        eosTotal += dataElections[pos].amount
-      } else {
-        const date = historicElections.find(
-          element => element.election === dataElections[pos].election
-        )
-        const election = {
-          election: `Election ${dataElections[pos].election + 1}`,
-          date: date.date_election,
-          EOS_TOTAL: Number(eosTotal + dataElections[pos].amount),
-          USD_TOTAL: Number(usdTotal + dataElections[pos].usd_total),
-          EOS_CATEGORIZED: Number(eosTotal),
-          USD_CATEGORIZED: Number(usdTotal),
-          EOS_UNCATEGORIZED: Number(dataElections[pos].amount),
-          USD_UNCATEGORIZED: Number(dataElections[pos].usd_total)
-        }
-        elections.push(election)
-        eosTotal = 0
-        usdTotal = 0
-        electionNum++
-      }
-    } else {
-      const date = historicElections.find(
-        element => element.election === dataElections[pos].election
-      )
-      const election = {
-        election: `Election ${dataElections[pos].electionNum + 1}`,
-        date: date.date_election,
-        EOS_TOTAL: Number(eosTotal + dataElections[pos].amount),
-        USD_TOTAL: Number(usdTotal + dataElections[pos].usd_total),
-        EOS_CATEGORIZED: Number(eosTotal),
-        USD_CATEGORIZED: Number(usdTotal),
-        EOS_UNCATEGORIZED: Number(dataElections[pos].amount),
-        USD_UNCATEGORIZED: Number(dataElections[pos].usd_total)
-      }
-      elections.push(election)
-      eosTotal = 0
-      usdTotal = 0
-      electionNum++
-      pos--
-    }
+const createElection = (
+  newElection,
+  newDate,
+  eosCategorized,
+  eosUncategorized,
+  usdCategorized,
+  usdUncategorized
+) => {
+  const election = {
+    election: `Election ${newElection + 1}`,
+    date: newDate,
+    EOS_CATEGORIZED: Number(eosCategorized),
+    EOS_UNCATEGORIZED: Number(eosUncategorized),
+    USD_CATEGORIZED: Number(usdCategorized),
+    USD_UNCATEGORIZED: Number(usdUncategorized),
+    EOS_TOTAL: Number(eosCategorized + eosUncategorized),
+    USD_TOTAL: Number(usdCategorized + usdUncategorized)
   }
-  return elections
+  return election
+}
+
+export const newDataFormatByCategorizedElectionsExpense = electionsList => {
+  const dataElections = electionsList.total_by_category_and_election
+  const historicElections = electionsList.eden_historic_election
+  console.log(dataElections)
+  const electionsByNumber = dataElections.reduce(
+    (acc, { election, category, amount, usd_total: usdTotal }) => {
+      if (!acc[election]) {
+        acc[election] = {
+          election,
+          date: historicElections.find(({ election: e }) => e === election)
+            .date_election,
+          eosCategorized: 0,
+          eosUncategorized: 0,
+          usdCategorized: 0,
+          usdUncategorized: 0
+        }
+      }
+      acc[election][
+        category !== 'Uncategorized' ? 'eosCategorized' : 'eosUncategorized'
+      ] += amount
+      acc[election][
+        category !== 'Uncategorized' ? 'usdCategorized' : 'usdUncategorized'
+      ] += usdTotal
+      return acc
+    },
+    {}
+  )
+
+  return Object.values(electionsByNumber).map(
+    ({
+      election,
+      date,
+      eosCategorized,
+      eosUncategorized,
+      usdCategorized,
+      usdUncategorized
+    }) =>
+      createElection(
+        election,
+        date,
+        eosCategorized,
+        eosUncategorized,
+        usdCategorized,
+        usdUncategorized
+      )
+  )
 }
 
 export const newDataFormatByAllDelegatesExpense = transactionsList =>
