@@ -152,18 +152,19 @@ export const generateDelegateData = (
 }
 
 export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
+  console.log(incomeList)
+  console.log(expenseList)
+
   const transactions = []
 
   const resultUncategorizedEOS =
-    incomeList[0]?.eos_claimed ||
-    0 + incomeList[0]?.eos_unclaimed ||
-    0 - expenseList[0]?.eos_categorized ||
-    0
+    (incomeList[0]?.eos_claimed || 0) +
+    (incomeList[0]?.eos_unclaimed || 0) -
+    (expenseList[0]?.eos_categorized || 0)
   const resultUncategorizedUSD =
-    incomeList[0]?.usd_claimed ||
-    0 + incomeList[0]?.usd_unclaimed ||
-    0 - expenseList[0]?.usd_categorized ||
-    0
+    (incomeList[0]?.usd_claimed || 0) +
+    (incomeList[0]?.usd_unclaimed || 0) -
+    (expenseList[0]?.usd_categorized || 0)
 
   transactions.push(
     generateDelegateData(
@@ -182,8 +183,8 @@ export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
       'Categorized',
       expenseList[0]?.eos_categorized || 0,
       expenseList[0]?.usd_categorized || 0,
-      resultUncategorizedEOS,
-      resultUncategorizedUSD
+      resultUncategorizedEOS || 0,
+      resultUncategorizedUSD || 0
     )
   )
 
