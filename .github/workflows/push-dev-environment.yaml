@@ -61,7 +61,7 @@ jobs:
           IMAGE_NAME_HAPI: eden-spending-hapi-dev
           IMAGE_NAME_HASURA: eden-spending-hasura-dev
           IMAGE_NAME_WALLET: eden-spending-wallet-dev
-          # Postgres
+          # Postgres-0
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
