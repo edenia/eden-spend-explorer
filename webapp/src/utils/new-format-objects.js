@@ -152,9 +152,6 @@ export const generateDelegateData = (
 }
 
 export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
-  console.log(incomeList)
-  console.log(expenseList)
-
   const transactions = []
 
   const resultUncategorizedEOS =
