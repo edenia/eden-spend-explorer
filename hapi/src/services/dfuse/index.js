@@ -45,10 +45,19 @@ const runUpdaters = async actions => {
 
         if (!electionNumber) continue
 
-        const edenElectionId = await edenElectionGql.get({
-          eden_delegate: { account: { _eq: matchingAction.json.from } },
-          election: { _eq: electionNumber.election }
-        })
+        const edenElectionId =
+          (await edenElectionGql.get({
+            eden_delegate: { account: { _eq: matchingAction.json.from } },
+            election: { _eq: electionNumber.election }
+          })) ||
+          (
+            await edenElectionGql.get(
+              {
+                eden_delegate: { account: { _eq: matchingAction.json.from } }
+              },
+              true
+            )
+          ).find(round => round.election <= electionNumber.election)
 
         if (!edenElectionId) continue
 
