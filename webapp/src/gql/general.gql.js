@@ -31,3 +31,15 @@ export const GET_DELEGATES = gql`
     }
   }
 `
+
+export const GET_AGGREGATE_TRANSACTION = gql`
+  query ($where: eden_transaction_bool_exp) {
+    eden_transaction_aggregate(where: $where) {
+      aggregate {
+        sum {
+          amount
+        }
+      }
+    }
+  }
+`

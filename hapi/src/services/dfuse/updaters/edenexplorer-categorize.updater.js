@@ -16,23 +16,12 @@ module.exports = {
         type: { _eq: 'expense' },
         eden_election: { eden_delegate: { account: { _eq: account } } }
       }
-      const editedTransactionQuery = {
-        txid: { _eq: tx_id },
-        type: { _eq: 'expense' },
-        category: { _eq: category },
-        description: { _eq: description },
-        eden_election: { eden_delegate: { account: { _eq: account } } }
-      }
 
       const transactionToEdit = await edenTransactionGql.get(
         transactionToEditQuery
       )
 
-      const editedTransaction = await edenTransactionGql.get(
-        editedTransactionQuery
-      )
-
-      if (!transactionToEdit || editedTransaction) return
+      if (!transactionToEdit) return
 
       const { idElection: id_election } =
         await updaterUtil.getElectionWithoutExpense(

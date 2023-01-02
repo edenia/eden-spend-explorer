@@ -65,7 +65,6 @@ const createElection = (
 export const newDataFormatByCategorizedElectionsExpense = electionsList => {
   const dataElections = electionsList.total_by_category_and_election
   const historicElections = electionsList.eden_historic_election
-  console.log(dataElections)
   const electionsByNumber = dataElections.reduce(
     (acc, { election, category, amount, usd_total: usdTotal }) => {
       if (!acc[election]) {
