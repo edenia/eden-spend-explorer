@@ -29,7 +29,7 @@ const generateClassName = createGenerateClassName({
 const App = () => {
   const [state, { setEOSTrasuryBalance }] = useSharedState()
   const [role, setRole] = useState('guest')
-  const [{ eosRate, currencyBalance, nextEdenDisbursement }] =
+  const [{ eosRate, currencyBalance, nextEdenDisbursement, delegateBalance }] =
     useTresuryBalanceState()
   const theme = useMemo(() => getTheme(state.useDarkMode), [state.useDarkMode])
 
@@ -62,9 +62,10 @@ const App = () => {
     setEOSTrasuryBalance({
       eosRate,
       currencyBalance,
-      nextEdenDisbursement
+      nextEdenDisbursement,
+      delegateBalance
     })
-  }, [eosRate, currencyBalance, nextEdenDisbursement])
+  }, [eosRate, currencyBalance, nextEdenDisbursement, delegateBalance])
 
   return (
     <BrowserRouter>
