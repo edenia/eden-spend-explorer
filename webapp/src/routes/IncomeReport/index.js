@@ -32,7 +32,7 @@ const IncomeReport = () => {
   const [
     {
       incomeByElectionsList,
-      electionsByYearList,
+      electionsList,
       delegatesList,
       electionRoundSelect,
       showElectionRadio
@@ -133,7 +133,7 @@ const IncomeReport = () => {
               <SelectComponent
                 onChangeFunction={setElectionRoundSelect}
                 labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
-                values={electionsByYearList.map(data => `${data.election}`)}
+                values={electionsList.map(data => `${data.election}`)}
                 actualValue={electionRoundSelect}
                 size="small"
               />

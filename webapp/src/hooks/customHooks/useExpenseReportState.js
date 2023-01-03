@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 
-import { GET_ELECTIONS_BY_YEAR } from '../../gql/general.gql'
 import {
+  GET_ELECTIONS,
   GET_PERCENT_ALL_ELECTIONS_EXPENSE,
   GET_EXPENSE_BY_ELECTIONS,
   GET_TOTAL_EXPENSE_BY_DELEGATE,
   GET_DELEGATES_BY_ELECTION_EXPENSE,
   GET_TOTAL_BY_CATEGORY_AND_ELECTION_EXPENSE,
   GET_TOTAL_BY_CATEGORY_EXPENSE
-} from '../../gql/expense.gql'
+} from '../../gql'
 import {
   newDataFormatByCategorizedElectionsExpense,
   newDataFormatByAllDelegatesExpense,
@@ -21,7 +21,7 @@ import { useImperativeQuery } from '../../utils'
 const useExpenseReportState = () => {
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
   const [showElectionRadio, setShowElectionRadio] = useState('allElections')
-  const [electionsByYearList, setElectionsByYearList] = useState([])
+  const [electionsList, setelectionsList] = useState([])
   const [expenseByElectionsList, setExpenseByElectionsList] = useState([])
   const [delegatesList, setDelegatesList] = useState([])
   const [categoryList, setCategoryList] = useState([])
@@ -31,7 +31,7 @@ const useExpenseReportState = () => {
   const loadTotalExpenseByDelegate = useImperativeQuery(
     GET_TOTAL_EXPENSE_BY_DELEGATE
   )
-  const loadElectionsByYear = useImperativeQuery(GET_ELECTIONS_BY_YEAR)
+  const loadElectionsByYear = useImperativeQuery(GET_ELECTIONS)
   const loadDelegatesExpenseByElections = useImperativeQuery(
     GET_DELEGATES_BY_ELECTION_EXPENSE
   )
@@ -45,36 +45,14 @@ const useExpenseReportState = () => {
 
   useEffect(async () => {
     const expenseByElections = await loadExpenseByElections()
-    const electionsByYear = await loadElectionsByYear({
-      minDate: `2021-01-01`,
-      maxDate: `${new Date().getFullYear()}-12-31`
-    })
+    const { data: electionsData } = await loadElectionsByYear()
 
-    setElectionRoundSelect(
-      electionsByYear?.data?.eden_historic_election[0]?.election
-    )
-    setElectionsByYearList(electionsByYear?.data?.eden_historic_election || [])
+    setElectionRoundSelect(electionsData.eden_election[0]?.election)
+    setelectionsList(electionsData.eden_election || [])
     setExpenseByElectionsList(
       newDataFormatByCategorizedElectionsExpense(expenseByElections.data || [])
     )
   }, [])
-
-  useEffect(() => {
-    const rounds = []
-    for (let pos = 0; pos < expenseByElectionsList.length; pos++) {
-      const election = Number(
-        expenseByElectionsList[pos].election.charAt(
-          expenseByElectionsList[pos].election.length - 1
-        )
-      )
-      const newElections = electionsByYearList.filter(
-        elec => elec.election === election - 1
-      )
-      rounds.push(newElections[0])
-    }
-    setElectionsByYearList(rounds)
-    setElectionRoundSelect(rounds[0]?.election)
-  }, [expenseByElectionsList])
 
   useEffect(async () => {
     if (showElectionRadio === 'allElections') {
@@ -127,7 +105,7 @@ const useExpenseReportState = () => {
   return [
     {
       expenseByElectionsList,
-      electionsByYearList,
+      electionsList,
       percentExpenseList,
       delegatesList,
       categoryList,
