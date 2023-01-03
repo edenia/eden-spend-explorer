@@ -1,13 +1,27 @@
 import React, { memo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { DataGrid, esES, enUS } from '@mui/x-data-grid'
+import {
+  DataGrid,
+  esES,
+  enUS,
+  GridToolbarContainer,
+  GridToolbarExport
+} from '@mui/x-data-grid'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { makeStyles } from '@mui/styles'
 
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
+
+const CustomToolbar = () => {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  )
+}
 
 const TableReport = ({ columns, dataPercent }) => {
   const classes = useStyles()
@@ -26,6 +40,7 @@ const TableReport = ({ columns, dataPercent }) => {
           onPageSizeChange={newPageSize => setPagePaginationSize(newPageSize)}
           rowsPerPageOptions={[5, 10, 20]}
           pagination
+          components={{ Toolbar: CustomToolbar }}
           getRowId={row =>
             `${row.name}-${row.id}-${row.color}-${row.EOS}-${row.election}`
           }
