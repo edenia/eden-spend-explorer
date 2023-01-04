@@ -1,17 +1,5 @@
 import gql from 'graphql-tag'
 
-export const GET_PERCENT_ALL_ELECTIONS_EXPENSE = gql`
-  query getPercentAllElections {
-    percent_by_all_elections_expenses {
-      election
-      eos_categorized
-      eos_uncategorized
-      usd_categorized
-      usd_uncategorized
-    }
-  }
-`
-
 export const GET_TOTAL_EXPENSE_BY_ALL_ELECTIONS = gql`
   query get_total_expense_by_all_election {
     total_expense_by_all_election {
@@ -77,6 +65,7 @@ export const GET_TOTAL_BY_CATEGORY_EXPENSE = gql`
     }
   }
 `
+
 export const EDIT_TRANSACTION_BY_TXID = gql`
   mutation update(
     $where: eden_transaction_bool_exp!

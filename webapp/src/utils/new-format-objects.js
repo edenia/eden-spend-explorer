@@ -11,20 +11,6 @@ export const generateColor = () => {
   return color
 }
 
-export const newDataFormatPercentAllElections = (
-  percentAllElectionData,
-  category
-) => {
-  const uppercaseCategory = category.toUpperCase()
-
-  return percentAllElectionData.map(data => ({
-    name: `Election ${data.election + 1}`,
-    [`EOS_${uppercaseCategory}_PERCENT`]: Number(data[`eos_${category}`]) * 100,
-    [`EOS_UN${uppercaseCategory}_PERCENT`]:
-      Number(data[`eos_un${category}`]) * 100
-  }))
-}
-
 export const newDataFormatByDelegatesIncome = transactionsList =>
   transactionsList.map(data => ({
     name: data.recipient,
@@ -41,11 +27,11 @@ export const newDataFormatByDelegatesIncome = transactionsList =>
     color: generateColor()
   }))
 
-export const newDataFormatByCategorizedElectionsExpense = ({
+export const newDataExpenseFormatByAllElections = ({
   eden_historic_election: electionsList = [],
   total_expense_by_all_election: expensesList = []
-}) => {
-  return expensesList.map(data => ({
+}) =>
+  expensesList.map(data => ({
     election: `Election ${data.election + 1}`,
     date: electionsList[data.election]?.date_election,
     EOS_CATEGORIZED: Number(data.eos_categorized),
@@ -53,9 +39,27 @@ export const newDataFormatByCategorizedElectionsExpense = ({
     USD_CATEGORIZED: Number(data.usd_categorized),
     USD_UNCATEGORIZED: Number(data.usd_uncategorized),
     EOS_TOTAL: Number(data.eos_categorized + data.eos_uncategorized),
-    USD_TOTAL: Number(data.usd_categorized + data.usd_uncategorized)
+    USD_TOTAL: Number(data.usd_categorized + data.usd_uncategorized),
+    EOS_CATEGORIZED_PERCENT: data.percent_categorized,
+    EOS_UNCATEGORIZED_PERCENT: data.percent_uncategorized
   }))
-}
+
+export const newDataIncomeFormatByAllElections = ({
+  eden_historic_election: electionsList = [],
+  total_income_by_all_elections: incomesList = []
+}) =>
+  incomesList.map(data => ({
+    election: `Election ${data.election + 1}`,
+    date: electionsList[data.election]?.date_election,
+    EOS_CLAIMED: Number(data.eos_claimed),
+    EOS_UNCLAIMED: Number(data.eos_unclaimed),
+    USD_CLAIMED: Number(data.usd_claimed),
+    USD_UNCLAIMED: Number(data.usd_unclaimed),
+    EOS_TOTAL: Number(data.eos_claimed + data.eos_unclaimed),
+    USD_TOTAL: Number(data.usd_claimed + data.usd_unclaimed),
+    EOS_CLAIMED_PERCENT: data.percent_claimed,
+    EOS_UNCLAIMED_PERCENT: data.percent_unclaimed
+  }))
 
 export const newDataFormatByAllDelegatesExpense = transactionsList =>
   transactionsList.map(data => ({

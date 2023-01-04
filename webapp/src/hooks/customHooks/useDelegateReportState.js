@@ -3,16 +3,16 @@ import { gql, GraphQLClient } from 'graphql-request'
 
 import { mainConfig } from '../../config'
 import {
-  GET_ELECTIONS_BY_YEAR,
+  newDataFormatByTypeDelegate,
+  newDataFormatByCategoryDelegate
+} from '../../utils/new-format-objects'
+import {
+  GET_ELECTIONS,
   GET_MEMBERS_DATA,
   GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION,
   GET_EXPENSE_BY_CATEGORY,
   GET_INITIAL_DELEGATE_DATA
 } from '../../gql'
-import {
-  newDataFormatByTypeDelegate,
-  newDataFormatByCategoryDelegate
-} from '../../utils/new-format-objects'
 import { useImperativeQuery, classifyMemberRank } from '../../utils'
 
 const INIT_REDUCER_DATA = {
@@ -89,30 +89,28 @@ const useDelegateReportState = () => {
     dispatch({ type: 'SET_SEARCH_VALUE', payload: searchValue })
   }
 
+  const loadInitialData = useImperativeQuery(GET_INITIAL_DELEGATE_DATA)
+  const loadCategoryList = useImperativeQuery(GET_EXPENSE_BY_CATEGORY)
+  const loadElections = useImperativeQuery(GET_ELECTIONS)
   const loadTransactions = useImperativeQuery(
     GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION
   )
-  const loadInitialData = useImperativeQuery(GET_INITIAL_DELEGATE_DATA)
-  const loadCategoryList = useImperativeQuery(GET_EXPENSE_BY_CATEGORY)
-  const loadElectionsByYear = useImperativeQuery(GET_ELECTIONS_BY_YEAR)
 
   useEffect(async () => {
-    const responseElectionByYear = await loadElectionsByYear({
-      minDate: `2021-01-01`,
-      maxDate: `${new Date().getFullYear()}-12-31`
-    })
-    const currentElection =
-      responseElectionByYear.data?.eden_historic_election.at(-1).election
+    const { data: electionsData } = await loadElections()
+    const currentElection = electionsData.eden_election.at(-1).election
     const responseInitialData = await loadInitialData({
       election: currentElection
     })
     const maxLevel =
       responseInitialData.data?.delegateFrontend?.data.at(-1).delegate_level
 
+    console.log(responseInitialData)
+
     dispatch({
       type: 'SET_GENERAL_DATA',
       payload: {
-        electionRoundList: responseElectionByYear.data?.eden_historic_election,
+        electionRoundList: electionsData.eden_election,
         electionRoundSelect: currentElection,
         maxLevel
       }

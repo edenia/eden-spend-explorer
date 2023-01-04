@@ -1,16 +1,37 @@
 import gql from 'graphql-tag'
 
-export const GET_GENERAL_INCOME = gql`
-  query getGeneralIncome {
-    incomeFrontend {
-      data
+export const GET_TOTAL_INCOME_BY_ALL_ELECTIONS = gql`
+  query get_total_expense_by_all_election {
+    total_income_by_all_elections {
+      election
+      eos_claimed
+      eos_unclaimed
+      percent_claimed
+      percent_unclaimed
+      usd_claimed
+      usd_unclaimed
+    }
+    eden_historic_election {
+      election
+      date_election
     }
   }
 `
 
-export const GET_DELEGATES_BY_ELECTION_INCOME = gql`
-  query getIncomesClaimedAndUnclaimedByElection($election: Int) {
-    historic_incomes(where: { election: { _eq: $election } }) {
+export const GET_TOTAL_DELEGATE_INCOME_BY_ELECTION = gql`
+  query getTotalImeByElection($where: historic_incomes_bool_exp) {
+    historic_incomes(where: $where) {
+      recipient
+      eos_claimed
+      usd_claimed
+      eos_unclaimed
+      usd_unclaimed
+    }
+  }
+`
+export const GET_TOTAL_INCOME_BY_DELEGATE = gql`
+  query getTotalIncomeByDelegate {
+    incomes_by_delegate {
       recipient
       eos_claimed
       usd_claimed

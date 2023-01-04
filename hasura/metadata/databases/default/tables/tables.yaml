@@ -12,4 +12,5 @@
 - "!include public_total_by_category_and_election.yaml"
 - "!include public_total_by_election.yaml"
 - "!include public_total_expense_by_all_election.yaml"
+- "!include public_total_income_by_all_elections.yaml"
 - "!include public_transaction_by_category_and_election.yaml"

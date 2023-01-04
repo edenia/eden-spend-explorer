@@ -1,19 +1,12 @@
 import gql from 'graphql-tag'
 
-export const GET_ELECTIONS_BY_YEAR = gql`
-  query getElectionsBydate($minDate: timestamptz!, $maxDate: timestamptz!) {
-    eden_historic_election(
-      where: { date_election: { _gte: $minDate, _lt: $maxDate } }
-      distinct_on: election
-    ) {
-      election
-    }
-  }
-`
-
 export const GET_ELECTIONS = gql`
   query ($where: eden_election_bool_exp) {
-    eden_election(where: $where, order_by: { election: asc }) {
+    eden_election(
+      order_by: { election: asc }
+      distinct_on: election
+      where: $where
+    ) {
       id
       id_delegate
       delegate_level

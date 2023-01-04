@@ -129,7 +129,7 @@ const SidebarComp = ({ routes, openComponent, onClose }) => {
           </div>
         }
         profileComponent={
-          state.ual.activeUser ? (
+          state?.ual?.activeUser ? (
             <>
               <div
                 ref={anchorRef}

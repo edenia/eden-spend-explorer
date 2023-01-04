@@ -15,7 +15,7 @@ const AuthButton = ({ btnLabel }) => {
 
   const handleLogin = async () => {
     setLoader(true)
-    await login('anchor')
+    login('anchor')
   }
 
   useEffect(() => {

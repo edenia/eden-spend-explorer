@@ -32,7 +32,6 @@
     "@edenia/ui-kit": "0.4.7",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
-    "@eoscostarica/ual-reactjs-renderer": "^0.3.1",
     "@mui/icons-material": "^5.3.1",
     "@mui/lab": "^5.0.0-alpha.66",
     "@mui/material": "^5.3.1",
@@ -68,7 +67,8 @@
     "recharts-to-png": "^2.2.0",
     "subscriptions-transport-ws": "^0.11.0",
     "ual-anchor": "1.1.6",
-    "ual-token-pocket": "^0.3.0"
+    "ual-token-pocket": "^0.3.0",
+    "universal-authenticator-library": "^0.3.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.5",
