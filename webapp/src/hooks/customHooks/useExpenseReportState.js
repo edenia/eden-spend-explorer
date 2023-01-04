@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react'
 import { GET_ELECTIONS_BY_YEAR } from '../../gql/general.gql'
 import {
   GET_PERCENT_ALL_ELECTIONS_EXPENSE,
-  GET_EXPENSE_BY_ELECTIONS,
   GET_TOTAL_EXPENSE_BY_DELEGATE,
   GET_DELEGATES_BY_ELECTION_EXPENSE,
   GET_TOTAL_BY_CATEGORY_AND_ELECTION_EXPENSE,
-  GET_TOTAL_BY_CATEGORY_EXPENSE
+  GET_TOTAL_BY_CATEGORY_EXPENSE,
+  GET_TOTAL_EXPENSE_BY_ALL_ELECTIONS
 } from '../../gql/expense.gql'
 import {
   newDataFormatByCategorizedElectionsExpense,
@@ -27,7 +27,9 @@ const useExpenseReportState = () => {
   const [categoryList, setCategoryList] = useState([])
   const [percentExpenseList, setPercentExpenseList] = useState([])
 
-  const loadExpenseByElections = useImperativeQuery(GET_EXPENSE_BY_ELECTIONS)
+  const loadExpenseByElections = useImperativeQuery(
+    GET_TOTAL_EXPENSE_BY_ALL_ELECTIONS
+  )
   const loadTotalExpenseByDelegate = useImperativeQuery(
     GET_TOTAL_EXPENSE_BY_DELEGATE
   )

@@ -12,16 +12,16 @@ export const GET_PERCENT_ALL_ELECTIONS_EXPENSE = gql`
   }
 `
 
-export const GET_EXPENSE_BY_ELECTIONS = gql`
-  query getExpenseByElections {
-    total_by_category_and_election(
-      where: { type: { _eq: "expense" } }
-      order_by: { election: asc, category: asc }
-    ) {
+export const GET_TOTAL_EXPENSE_BY_ALL_ELECTIONS = gql`
+  query get_total_expense_by_all_election {
+    total_expense_by_all_election {
       election
-      category
-      amount
-      usd_total
+      eos_categorized
+      eos_uncategorized
+      percent_categorized
+      percent_uncategorized
+      usd_categorized
+      usd_uncategorized
     }
     eden_historic_election {
       election

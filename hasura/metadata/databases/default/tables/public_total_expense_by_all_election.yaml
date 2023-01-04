@@ -1,0 +1,15 @@
+table:
+  name: total_expense_by_all_election
+  schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - election
+        - eos_categorized
+        - eos_uncategorized
+        - percent_categorized
+        - percent_uncategorized
+        - usd_categorized
+        - usd_uncategorized
+      filter: {}
