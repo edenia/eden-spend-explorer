@@ -15,6 +15,7 @@ import PropTypes from 'prop-types'
 
 import { useSharedState } from '../../context/state.context'
 import { GET_MEMBERS_DATA } from '../../gql'
+import { mainConfig } from '../../config'
 import AuthButton from '../AuthButton'
 
 import styles from './styles'
@@ -31,7 +32,7 @@ const SidebarComp = ({ routes, openComponent, onClose }) => {
   const [open, setOpen] = useState(false)
   const { pathname } = router
   const [userData, setUSerData] = useState()
-  const client = new GraphQLClient('https://eden-api.edenia.cloud/v1/graphql', {
+  const client = new GraphQLClient(`${mainConfig.urlEndpoint}/v1/graphql`, {
     headers: {}
   })
 
@@ -128,7 +129,7 @@ const SidebarComp = ({ routes, openComponent, onClose }) => {
           </div>
         }
         profileComponent={
-          state.ual.activeUser ? (
+          state?.ual?.activeUser ? (
             <>
               <div
                 ref={anchorRef}

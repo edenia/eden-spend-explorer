@@ -4,7 +4,8 @@
     "signOut": "Logout",
     "lightMode": "Light Mode",
     "darkMode": "Dark Mode",
-    "titleEosBalance": "Eden Treasury Balance"
+    "titleEosBalance": "Eden Treasury Balance",
+    "download": "Download"
   },
   "routes": {
     "/>title": "Eden on EOS Accounting Standard",
@@ -36,10 +37,11 @@
     "edenSpendExplorer": "Eden Spend Explorer",
     "viewDescription": "An easy way to understand and standarize the use of Eden funds and how the community benefits from it.",
     "button": "Start",
-    "edasDescription": "Eden Spend Explorer is a reporting mechanism intended to provide the Eden community in EOS with information on how Eden funds, awarded to various delegates, are being allocated or used. In this way, delegates can make use of the \"Spend tools\", which allows for both the submission and justification of transactions made throughout each election.",
-    "transparent": "Transparent",
-    "transparentDescription": "Elected delegates can adhere to the standard and easily report their Eden expenditures using a specific format for the memo field of the EOS token transfer action, thus providing more transparency by keeping the community aware of different expenditures being made. Therefore, it makes it easier to track projects that are being worked on for the benefit of the community.",
-    "edenDescription": "Eden on EOS is a unique governance process that brings together the knowledge of its members to identify the most outstanding members who will represent the community, avoiding partisan management, popularity contests or use of member advantages. Eden seeks to maximize the power and independence of its members to ensure life, liberty, property and justice for all."
+    "howWorksEden": "How Does The Eden Spend Explorer Work?",
+    "paragraph1": "EOS Spend Explorer provides reliable data visualization and categorization from the allocated funds in the Eden community.",
+    "paragraph2": "The App can configure a list of EOS accounts to automatically source income data from on-chain transactions.",
+    "paragraph3": "Eden members can log in to the App to categorize and describe their EOS expenses using a specific memo format.",
+    "paragraph4": "EOS Spend Explorer automatically provides visualization and reporting of the expenses included in memo fields."
   },
   "generalForm": {
     "textRadioButton1": "By one delegate",

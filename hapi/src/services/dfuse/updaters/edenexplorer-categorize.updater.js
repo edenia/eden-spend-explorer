@@ -5,31 +5,41 @@ module.exports = {
   type: 'edenexplorer:categorize',
   apply: async action => {
     try {
-      const { category, description } = updaterUtil.memoSplit(
-        action.json.new_memo.split(':')[1] || ''
+      const { new_memo, tx_id, account } = action.json
+      const [, memo] = new_memo?.split(':') || ''
+
+      if (!memo) return
+
+      const { category, description } = updaterUtil.memoSplit(memo)
+      const transactionToEditQuery = {
+        txid: { _eq: tx_id },
+        type: { _eq: 'expense' },
+        eden_election: { eden_delegate: { account: { _eq: account } } }
+      }
+
+      const transactionToEdit = await edenTransactionGql.get(
+        transactionToEditQuery
       )
-      const transactionToEdit = edenTransactionGql.get({
-        txid: { _eq: action.json.tx_id },
-        type: { _eq: 'expense' }
-      })
 
       if (!transactionToEdit) return
 
       const { idElection: id_election } =
         await updaterUtil.getElectionWithoutExpense(
-          action.json.account,
+          account,
           transactionToEdit.amount,
           edenElectionGql,
           edenTransactionGql
         )
 
-      await edenTransactionGql.update({
+      const updateQuery = {
         where: {
-          txid: { _eq: action.json.tx_id },
+          id: { _eq: transactionToEdit.id },
           type: { _eq: 'expense' }
         },
         _set: { category, description, id_election }
-      })
+      }
+
+      await edenTransactionGql.update(updateQuery)
     } catch (error) {
       console.error(`categorize updater sync error: ${error.message}`)
     }

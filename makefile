@@ -80,7 +80,7 @@ clean:
 docker-clean:
 	@docker-compose stop
 	@docker rm eden-spending-postgres eden-spending-wallet eden-spending-hasura eden-spending-hapi
-	@docker volume rm eosio-spend-explorer_postgres_data
+	@docker volume rm eden-spend-explorer_postgres_data
 
 build-kubernetes: ##@devops Generate proper k8s files based on the templates
 build-kubernetes: ./kubernetes
@@ -94,12 +94,6 @@ build-kubernetes: ./kubernetes
 deploy-kubernetes: ##@devops Publish the build k8s files
 deploy-kubernetes: $(K8S_BUILD_DIR)
 	@kubectl create ns $(NAMESPACE) || echo "Namespace '$(NAMESPACE)' already exists.";
-	@echo "Creating SSL certificates..."
-	@kubectl create secret tls \
-		tls-secret \
-		--key ./ssl/eosio.cr.priv.key \
-		--cert ./ssl/eosio.cr.crt \
-		-n $(NAMESPACE)  || echo "SSL cert already configured.";
 	@echo "Creating configmaps..."
 	@kubectl create configmap -n $(NAMESPACE) \
 	wallet-config \
@@ -118,9 +112,6 @@ build-docker-images:
 
 push-docker-images: ##@devops Publish docker images
 push-docker-images:
-	@echo $(DOCKER_PASSWORD) | docker login \
-		--username $(DOCKER_USERNAME) \
-		--password-stdin
 	for dir in $(SUBDIRS); do \
 		$(MAKE) push-image -C $$dir; \
 	done

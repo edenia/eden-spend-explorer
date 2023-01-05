@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo } from 'react'
 import { makeStyles } from '@mui/styles'
 import {
   FormControl,
@@ -11,8 +11,8 @@ import {
 import { useTranslation } from 'react-i18next'
 
 import useExpenseReportState from '../../hooks/customHooks/useExpenseReportState'
-import BarChartReport from '../../components/BarChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
+import BarChartReport from '../../components/BarChartReport'
 import PieChartReport from '../../components/PieChartReport'
 import { formatWithThousandSeparator } from '../../utils'
 import TableReport from '../../components/TableReport'
@@ -30,25 +30,15 @@ const ExpenseReport = () => {
   const [
     {
       expenseByElectionsList,
-      electionsByYearList,
+      electionsList,
       percentExpenseList,
       delegatesList,
       categoryList,
       electionRoundSelect,
-      electionYearSelect,
       showElectionRadio
     },
-    {
-      setElectionRoundSelect,
-      setElectionYearSelect,
-      getListElectionYears,
-      setShowElectionRadio
-    }
+    { setElectionRoundSelect, setShowElectionRadio }
   ] = useExpenseReportState()
-
-  useEffect(() => {
-    setShowElectionRadio('allElections')
-  }, [])
 
   const tableData =
     showElectionRadio === 'allElections'
@@ -58,12 +48,7 @@ const ExpenseReport = () => {
           ),
           ...firstObj
         }))
-      : delegatesList.map(firstObj => ({
-          ...percentExpenseList.find(
-            secondObj => secondObj.name === firstObj.name
-          ),
-          ...firstObj
-        }))
+      : delegatesList
 
   const columns = [
     {
@@ -156,17 +141,9 @@ const ExpenseReport = () => {
         {showElectionRadio === 'oneElection' && (
           <div id="id-radio-election-container">
             <SelectComponent
-              onChangeFunction={setElectionYearSelect}
-              labelSelect={t('textYearSelect', { ns: 'generalForm' })}
-              values={getListElectionYears()}
-              actualValue={electionYearSelect}
-              width={100}
-              size="small"
-            />
-            <SelectComponent
               onChangeFunction={setElectionRoundSelect}
               labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
-              values={electionsByYearList.map(data => `${data.election}`)}
+              values={electionsList.map(data => `${data.election}`)}
               actualValue={electionRoundSelect}
               size="small"
             />

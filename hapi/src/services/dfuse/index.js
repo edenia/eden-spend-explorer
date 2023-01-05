@@ -3,7 +3,7 @@ const {
   edenHistoricElectionGql,
   edenDelegatesGql
 } = require('../../gql')
-const { edenConfig } = require('../../config')
+const { edenConfig, dfuseConfig } = require('../../config')
 const { hasuraUtil, sleepUtil, dfuseUtil } = require('../../utils')
 
 const updaters = require('./updaters')
@@ -25,6 +25,8 @@ const runUpdaters = async actions => {
             item.type === `${matchingAction.account}:${matchingAction.name}`
         )
 
+        if (!updater) continue
+
         if (matchingAction.name === 'categorize') {
           await updater.apply({
             json: matchingAction.json
@@ -43,10 +45,19 @@ const runUpdaters = async actions => {
 
         if (!electionNumber) continue
 
-        const edenElectionId = await edenElectionGql.get({
-          eden_delegate: { account: { _eq: matchingAction.json.from } },
-          election: { _eq: electionNumber.election }
-        })
+        const edenElectionId =
+          (await edenElectionGql.get({
+            eden_delegate: { account: { _eq: matchingAction.json.from } },
+            election: { _eq: electionNumber.election }
+          })) ||
+          (
+            await edenElectionGql.get(
+              {
+                eden_delegate: { account: { _eq: matchingAction.json.from } }
+              },
+              true
+            )
+          ).find(round => round.election <= electionNumber.election)
 
         if (!edenElectionId) continue
 
@@ -71,12 +82,13 @@ const getActions = async params => {
   const { data } = await dfuseUtil.client.graphql(
     dfuseUtil.getfundTransferQuery(params)
   )
-  const transactionsList = data.searchTransactionsForward.results
+  const transactionsList = data?.searchTransactionsForward.results || []
 
   return {
     hasMore: transactionsList.length === 1000,
     actions: transactionsList,
-    blockNumber: transactionsList.at(-1)?.trace.block.num
+    blockNumber:
+      transactionsList.at(-1)?.trace.block.num || dfuseConfig.firstBlock
   }
 }
 

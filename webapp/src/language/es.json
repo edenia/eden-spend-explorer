@@ -4,7 +4,8 @@
     "signOut": "Salir",
     "lightMode": "Modo Claro",
     "darkMode": "Modo Oscuro",
-    "titleEosBalance": "Balance de tesorería de Eden"
+    "titleEosBalance": "Balance de tesorería de Eden",
+    "download": "Descargar"
   },
   "routes": {
     "/>title": "Eden on EOS Accounting Standard",
@@ -36,10 +37,11 @@
     "edenSpendExplorer": "Explorador de Gastos Eden",
     "viewDescription": "Una forma fácil de entender y estandarizar el uso de los fondos Eden y cómo se beneficia la comunidad.",
     "button": "Iniciar",
-    "edasDescription": "El explorardor de gastos de Eden es un mecanismo de información destinado a proporcionar a la comunidad de Eden en EOS información sobre cómo se están asignando o utilizando los fondos de Eden, otorgados a distintos delegados. De esta manera, los delegados pueden hacer uso del \"Spend tools\", que permite realizar tanto el envió como justificación de transacciones realizadas a lo largo de cada elección.",
-    "transparent": "Transparencia",
-    "transparentDescription": "Los delegados electos pueden adherirse a la norma y notificar fácilmente sus gastos de Eden utilizando un formato específico para el campo memo de la acción de transferencia de tokens EOS, de esta manera, se tiene mas transparencia al mantener al tanto a la comunidad de diferentes gastos que se están realizando. Por ende, facilita el seguimiento de proyectos en los que se está trabajando en beneficio de la comunidad.",
-    "edenDescription": "Eden on EOS es un proceso de gobierno único que reúne el conocimiento de sus miembros para identificar a los más destacados que representarán a la comunidad, evitando caer en el manejo partidista, competencias de popularidad o uso de ventajas de sus miembros. Eden trata maximizar el poder y la independencia de sus miembros y así asegurar la vida, la libertad, la propiedad y la justicia para todos."
+    "howWorksEden": "¿Cómo funciona el explorador de gastos Edén?",
+    "paragraph1": "EOS Spend Explorer proporciona una visualización y categorización de datos fiable a partir de los fondos asignados en la comunidad Eden.",
+    "paragraph2": "La App puede configurar una lista de cuentas de EOS para obtener automáticamente datos de ingresos de las transacciones en la cadena.",
+    "paragraph3": "Los miembros de Eden pueden iniciar sesión en la App para categorizar y describir sus gastos de EOS utilizando un formato de memo específico.",
+    "paragraph4": "EOS Spend Explorer proporciona automáticamente visualización e informes de los gastos incluidos en los campos memo."
   },
   "generalForm": {
     "textRadioButton1": "Por un delegado",
@@ -153,7 +155,7 @@
     "balanceText1": "Esta casilla muestra siempre la cantidad exacta de token EOS de la que dispone la DAO Génesis Eden. También tiene un tipo de cambio vinculado a ",
     "balanceText2": " para convertir a USD el precio de EOS.  Siempre cambia en función de las transacciones de los delegados.",
     "chartsTitle": "<strong>Gráficos de Ingreso y Gasto</strong>",
-    "barChartText": "<strong>Gráficos de barras</strong>\n\nDentro de los gráficos hay tres barras, cada barra comparte información de una elección pasada y el número de tokens EOS <strong>reclamadas/no reclamadas</strong> para Ingresos, <strong>categorizadas/no categorizadas</strong> para Gastos y el <strong>total</strong>, respectivamente.\n\nEsta información complementa la de los gráficos pastel, ayuda en la transparencia de dónde se hace uso de los tokens reclamados y también su categoría. Asimismo con los que no lo están.\n",
+    "barChartText": "<strong>Gráficos de barras</strong>\n\nDentro de los gráficos hay tres barras, cada barra comparte información de una elección pasada y el número de tokens EOS <strong>reclamados/no reclamados</strong> para Ingresos, <strong>categorizados/no categorizados</strong> para Gastos y el <strong>total</strong>, respectivamente.\n\nEsta información complementa la de los gráficos pastel, ayuda en la transparencia de dónde se hace uso de los tokens reclamados y también su categoría. Asimismo con los que no lo están.\n",
     "pieChartText1": "\n<strong>Gráficos de pastel</strong>\n\nEstos indican la cantidad de token EOS en cada cuenta, por elección.\n\n<strong>Para la sección de Ingresos:</strong> Cada parte del pastel indica el monto de token EOS que le corresponde del balance total ",
     "pieChartText2": " a una cuenta específica según esa elección específica.\n\n<strong>Para la sección de Gastos</strong>: Aquí se distingue el monto de token EOS utilizado, del total que se recibió y reclamo. Además esta información muestra la categoría que se le asigna a un gasto específico en general y por cuenta.\n\n<strong>Para la sección de Delegados:</strong> Presenta una vista personalizada, basada en los mismos datos obtenidos, para observar las dos anteriores pero según las transacciones de cada miembro.",
     "spendTools": "¿Cómo utilizar la herramienta de gasto ? ",

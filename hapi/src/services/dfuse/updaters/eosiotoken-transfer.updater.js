@@ -10,33 +10,38 @@ let LASTEST_RATE_DATA_CONSULTED = null
 module.exports = {
   type: `eosio.token:transfer`,
   apply: async action => {
+    const { quantity, memo, to, from } = action.json
+    const amount = Number(quantity.split(' ')[0] || 0)
+
     const registeredTransaction = await edenTransactionGql.get({
       txid: { _eq: action.transaction_id },
-      amount: { _eq: action.json?.quantity?.split(' ')[0] || 0 },
-      memo: { _eq: action.json.memo },
-      recipient: { _eq: action.json.to },
+      amount: { _eq: amount },
+      memo: { _eq: memo },
+      recipient: { _eq: to },
       type: { _eq: 'expense' }
     })
 
+    if (registeredTransaction) return
+
     let { category, description } = updaterUtil.memoSplit(
-      action.json.memo.split(':')[1] || ''
+      memo.split(':')[1] || ''
     )
 
-    if (action.json.to === transactionConstant.RECIPIENTS.edenia)
+    if (to === transactionConstant.RECIPIENTS.edenia)
       category = 'infrastructure'
 
-    if (!updaterUtil.isEdenExpense(action.json.memo)) {
-      description = action.json.memo
+    if (!updaterUtil.isEdenExpense(memo)) {
+      description = memo
     }
 
     try {
-      const amount = Number(action.json.quantity.split(' ')[0])
       const { idElection } = await updaterUtil.getElectionWithoutExpense(
-        action.json.from,
+        from,
         amount,
         edenElectionGql,
         edenTransactionGql
       )
+
       const txDate = moment(action.timestamp).format('DD-MM-YYYY')
 
       if (LASTEST_RATE_DATE_CONSULTED !== txDate) {
@@ -63,14 +68,14 @@ module.exports = {
         description,
         id_election:
           category === 'uncategorized' ? action.election.id : idElection,
-        recipient: action.json.to,
+        recipient: to,
         type: 'expense',
         eos_exchange: LASTEST_RATE_DATA_CONSULTED,
         usd_total: amount * LASTEST_RATE_DATA_CONSULTED,
-        memo: action.json.memo
+        memo: memo
       }
 
-      if (!registeredTransaction) await edenTransactionGql.save(transactionData)
+      await edenTransactionGql.save(transactionData)
     } catch (error) {
       console.error(`transfer sync error ${action.action}: ${error.message}`)
     }

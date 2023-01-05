@@ -1,8 +1,9 @@
 import { useEffect, useReducer } from 'react'
 import { gql, GraphQLClient } from 'graphql-request'
 
+import { mainConfig } from '../../config'
 import {
-  GET_ELECTIONS_BY_YEAR,
+  GET_ELECTIONS,
   GET_MEMBERS_DATA,
   GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION,
   GET_EXPENSE_BY_CATEGORY,
@@ -27,7 +28,7 @@ const INIT_REDUCER_DATA = {
   maxLevel: 0,
   searchValue: ''
 }
-const client = new GraphQLClient('https://eden-api.edenia.cloud/v1/graphql', {
+const client = new GraphQLClient(`${mainConfig.urlEndpoint}/v1/graphql`, {
   headers: {}
 })
 
@@ -76,6 +77,12 @@ const useDelegateReportState = () => {
 
   const setElectionRoundSelect = electionRoundSelect => {
     dispatch({ type: 'SET_ROUND_SELECT', payload: electionRoundSelect })
+    dispatch({
+      type: 'SET_GENERAL_DATA',
+      payload: {
+        profilesList: []
+      }
+    })
   }
 
   const setSearchValue = searchValue => {
@@ -87,15 +94,11 @@ const useDelegateReportState = () => {
   )
   const loadInitialData = useImperativeQuery(GET_INITIAL_DELEGATE_DATA)
   const loadCategoryList = useImperativeQuery(GET_EXPENSE_BY_CATEGORY)
-  const loadElectionsByYear = useImperativeQuery(GET_ELECTIONS_BY_YEAR)
+  const loadElections = useImperativeQuery(GET_ELECTIONS)
 
   useEffect(async () => {
-    const responseElectionByYear = await loadElectionsByYear({
-      minDate: `2021-01-01`,
-      maxDate: `${new Date().getFullYear()}-12-31`
-    })
-    const currentElection =
-      responseElectionByYear.data?.eden_historic_election.at(-1).election
+    const { data: electionsData } = await loadElections()
+    const currentElection = electionsData.eden_election.at(-1).election
     const responseInitialData = await loadInitialData({
       election: currentElection
     })
@@ -105,7 +108,7 @@ const useDelegateReportState = () => {
     dispatch({
       type: 'SET_GENERAL_DATA',
       payload: {
-        electionRoundList: responseElectionByYear.data?.eden_historic_election,
+        electionRoundList: electionsData.eden_election,
         electionRoundSelect: currentElection,
         maxLevel
       }
@@ -118,9 +121,10 @@ const useDelegateReportState = () => {
     const responseInitialData = await loadInitialData({
       election: electionRoundSelect
     })
+
     const length = responseInitialData.data?.delegateFrontend?.data.length
     const maxLevel =
-      responseInitialData.data?.delegateFrontend?.data.at(-1).delegate_level
+      responseInitialData.data?.delegateFrontend?.data.at(-1)?.delegate_level
     const selectedElectionDate =
       responseInitialData.data?.delegateFrontend?.data.at(-2)
     const delegates =
@@ -153,13 +157,14 @@ const useDelegateReportState = () => {
       delegate: delegateSelect
     })
 
-    const categories = newDataFormatByCategoryDelegate(
-      responseCategory.data?.expenses_by_category_and_delegate || []
-    )
-
     const transactions = newDataFormatByTypeDelegate(
       responseTransaction.data.historic_incomes || [],
       responseTransaction.data.historic_expenses || []
+    )
+
+    const categories = newDataFormatByCategoryDelegate(
+      responseCategory.data?.expenses_by_category_and_delegate || [],
+      transactions
     )
 
     dispatch({

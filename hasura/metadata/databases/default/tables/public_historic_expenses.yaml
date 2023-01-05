@@ -8,9 +8,8 @@ select_permissions:
         - delegate_payer
         - election
         - eos_categorized
-        - eos_uncategorized
+        - eos_claimed
+        - eos_unclaimed
         - exchange_rate
         - usd_categorized
-        - usd_uncategorized
       filter: {}
-      allow_aggregations: true

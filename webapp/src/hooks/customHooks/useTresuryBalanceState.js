@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import { mainConfig } from '../../config'
+import { useSharedState } from '../../context/state.context'
 import { eosApi } from '../../utils/eosapi'
 import { sleep } from '../../utils/sleep'
+import { mainConfig } from '../../config'
 
 const getActualDate = () => {
   const date = new Date()
@@ -11,23 +12,25 @@ const getActualDate = () => {
 }
 
 const useTresuryBalanceState = () => {
+  const [state] = useSharedState()
   const [eosRate, setEosRate] = useState()
   const [currencyBalance, setCurrencyBalance] = useState('Loading... ')
   const [nextEdenDisbursement, setNextEdenDisbursement] = useState('')
+  const [delegateBalance, setDelegateBalance] = useState('Loading...')
 
-  const getEosBalance = async () => {
+  const getEosBalance = async account => {
     try {
       const response = await eosApi.getCurrencyBalance(
         'eosio.token',
-        mainConfig.edenContract,
+        account,
         'EOS'
       )
 
-      setCurrencyBalance(response[0] || '')
+      return response[0]
     } catch (error) {
       console.log(error)
       await sleep(60)
-      getEosBalance()
+      getEosBalance(account)
     }
   }
 
@@ -72,13 +75,18 @@ const useTresuryBalanceState = () => {
     }
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     getEosRate()
-    getEosBalance()
+    setCurrencyBalance((await getEosBalance(mainConfig.edenContract)) || '')
     getNextEdenDisbursement()
   }, [])
 
-  return [{ eosRate, currencyBalance, nextEdenDisbursement }]
+  useEffect(async () => {
+    if (state?.user?.accountName)
+      setDelegateBalance((await getEosBalance(state?.user?.accountName)) || '')
+  }, [state?.user?.accountName])
+
+  return [{ eosRate, currencyBalance, nextEdenDisbursement, delegateBalance }]
 }
 
 export default useTresuryBalanceState

@@ -3,7 +3,7 @@ name: Build images from latest dev branch
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
   create-dev-image:
@@ -26,8 +26,10 @@ jobs:
             build-docker-images \
             push-docker-images
         env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          IMAGE_NAME_WEBAPP: eden-spending-webapp-dev
+          IMAGE_NAME_HAPI: eden-spending-hapi-dev
+          IMAGE_NAME_HASURA: eden-spending-hasura-dev
+          IMAGE_NAME_WALLET: eden-spending-wallet-dev
           # webapp
           PORT: 80
           REACT_APP_TAG: ${{ github.ref }}
@@ -37,12 +39,13 @@ jobs:
           REACT_APP_FOOTER_LINKS: '[]'
           REACT_APP_UAL_APP_NAME: 'EOS Reports'
           REACT_APP_UAL_API_PROTOCOL: 'https'
-          REACT_APP_UAL_API_HOST: 'eos.greymass.com'
+          REACT_APP_UAL_API_HOST: 'jungle4.api.eosnation.io'
           REACT_APP_UAL_API_PORT: '443'
-          REACT_APP_UAL_CHAIN_ID: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+          REACT_APP_UAL_CHAIN_ID: '73e4385a2708e6d7048834fbc1079f2fabb17b3c125b146af438971e90716c4d'
           REACT_APP_HASURA_URL: ${{ secrets.REACT_APP_HASURA_URL }}
           REACT_APP_RATE_HISTORY: ${{ secrets.REACT_APP_RATE_HISTORY }}
           REACT_APP_EDEN_CONTRACT: 'genesis.eden'
+          REACT_APP_URL_ENDPOINT: 'https://eden-api-dev.edenia.cloud'
 
       - name: Build kubernetes files
         id: build_kubernetes_files
@@ -52,9 +55,13 @@ jobs:
         env:
           # general
           NAMESPACE: eden-spending
-          INGRESS_HOST: spending.eden.eoscommunity.org
-          INGRESS_GRAPHQL_HOST: graphql-spending.eden.eoscommunity.org
-          # Postgres
+          INGRESS_HOST: spending-eden.edenia.cloud
+          INGRESS_GRAPHQL_HOST: graphql-spending-eden.edenia.cloud
+          IMAGE_NAME_WEBAPP: eden-spending-webapp-dev
+          IMAGE_NAME_HAPI: eden-spending-hapi-dev
+          IMAGE_NAME_HASURA: eden-spending-hasura-dev
+          IMAGE_NAME_WALLET: eden-spending-wallet-dev
+          # Postgres-0
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
@@ -62,8 +69,8 @@ jobs:
           # hapi
           HAPI_SERVER_PORT: 9090
           HAPI_SERVER_ADDRESS: 0.0.0.0
-          HAPI_NETWORK_API: 'https://eos.edenia.cloud'
-          HAPI_NETWORK_CHAIN_ID: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+          HAPI_NETWORK_API: 'https://jungle4.api.eosnation.io'
+          HAPI_NETWORK_CHAIN_ID: '73e4385a2708e6d7048834fbc1079f2fabb17b3c125b146af438971e90716c4d'
           HAPI_NETWORK_BASE_ACCOUNT: ${{ secrets.HAPI_NETWORK_BASE_ACCOUNT }}
           HAPI_NETWORK_BASE_PASSWORD: ${{ secrets.HAPI_NETWORK_BASE_PASSWORD }}
           HAPI_NETWORK_WALLET_URL: ${{ secrets.HAPI_NETWORK_WALLET }}
@@ -74,7 +81,7 @@ jobs:
           HAPI_EDEN_HISTORIC_ELECTION: ${{secrets.HAPI_EDEN_HISTORIC_ELECTION}}
           HAPI_EDEN_CONTRACT: genesis.eden
           HAPI_DFUSE_API_KEY: ${{secrets.HAPI_DFUSE_API_KEY}}
-          HAPI_DFUSE_API: eos.dfuse.eosnation.io
+          HAPI_DFUSE_API: jungle4.dfuse.eosnation.io
           HAPI_DFUSE_FIRST_BLOCK: ${{secrets.HAPI_DFUSE_FIRST_BLOCK}}
           # hasura
           HASURA_GRAPHQL_ENABLE_CONSOLE: true

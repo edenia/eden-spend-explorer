@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { useLazyQuery, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import ReactGA from 'react-ga'
 
 import { useSharedState } from '../../context/state.context'
-import { sleep } from '../../utils/sleep'
-import { eosApi } from '../../utils/eosapi'
+import { useImperativeQuery } from '../../utils'
 import {
   GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
+  GET_AGGREGATE_TRANSACTION,
   EDIT_TRANSACTION_BY_TXID,
   SAVE_TRANSACTION,
   GET_ELECTIONS
@@ -16,8 +16,7 @@ import useForm from './useForm'
 
 const useSpendTools = () => {
   const [state] = useSharedState()
-  const { eosRate = 0 } = state.eosTrasuryBalance
-  const [currencyBalance, setCurrencyBalance] = useState('Loading... ')
+  const { eosRate = 0, delegateBalance } = state.eosTrasuryBalance
   const [authenticatedUser, setAuthenticatedUser] = useState('')
   const [transactionsList, setTransactionsList] = useState([])
   const [openSnackbar, setOpenSnackbar] = useState(false)
@@ -43,38 +42,50 @@ const useSpendTools = () => {
   })
   const [editTransaction] = useMutation(EDIT_TRANSACTION_BY_TXID)
   const [saveTransaction] = useMutation(SAVE_TRANSACTION)
+  const getAggregateTransaction = useImperativeQuery(GET_AGGREGATE_TRANSACTION)
+  const getElections = useImperativeQuery(GET_ELECTIONS)
+  const getTransactions = useImperativeQuery(
+    GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY
+  )
 
-  const getEosBalance = async delegate => {
-    try {
-      const response = await eosApi.getCurrencyBalance(
-        'eosio.token',
-        delegate,
-        'EOS'
-      )
-
-      setCurrencyBalance(response[0] || '')
-    } catch (error) {
-      console.error(error)
-      await sleep(60)
-      getEosBalance()
-    }
-  }
-
-  const [loadUncategorizedTransactions, { data: uncategorizedTxData }] =
-    useLazyQuery(GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY, {
-      variables: {
-        account: authenticatedUser
-      }
+  const getElectionWithLessExpense = async amount => {
+    const { data: elections } = await getElections({
+      where: { eden_delegate: { account: { _eq: authenticatedUser } } }
     })
 
-  const [loadElectionsByYear, { data: delegateElections }] = useLazyQuery(
-    GET_ELECTIONS,
-    {
-      variables: {
-        where: { eden_delegate: { account: { _eq: 'xavieredenia' } } }
+    for (const { election, id } of elections?.eden_election) {
+      const { data: income } = await getAggregateTransaction({
+        where: {
+          eden_election: {
+            eden_delegate: { account: { _eq: authenticatedUser } },
+            election: { _eq: election }
+          },
+          type: { _eq: 'income' }
+        }
+      })
+
+      const { data: expense } = await getAggregateTransaction({
+        where: {
+          eden_election: {
+            eden_delegate: { account: { _eq: authenticatedUser } },
+            election: { _eq: election }
+          },
+          type: { _eq: 'expense' },
+          category: { _neq: 'uncategorized' }
+        }
+      })
+
+      if (
+        expense?.eden_transaction_aggregate.aggregate.sum.amount + amount <=
+        income?.eden_transaction_aggregate.aggregate.sum.amount
+      ) {
+        return { idElection: id }
       }
     }
-  )
+    return {
+      idElection: elections.at(-1).id
+    }
+  }
 
   const executeAction = async (data, account, name) => {
     setErrorMessage('')
@@ -85,7 +96,7 @@ const useSpendTools = () => {
         {
           authorization: [
             {
-              actor: state.user?.accountName,
+              actor: authenticatedUser,
               permission: 'active'
             }
           ],
@@ -106,7 +117,7 @@ const useSpendTools = () => {
 
       setOpenSnackbar(true)
 
-      if (openModal) {
+      if (openModal && transactionResult?.status === 'executed') {
         ReactGA.event({
           category: 'transaction',
           action: 'update transaction',
@@ -141,32 +152,43 @@ const useSpendTools = () => {
           )
         )
 
+        setOpenModal(false)
         resetModal()
       } else {
         if (transactionResult?.status === 'executed') {
-          saveTransaction({
+          const amount = Number(formValues.amount.split(' ')[0])
+          const { idElection } = await getElectionWithLessExpense(amount)
+          const payload = {
+            amount,
+            category: formValues.category,
+            date: transactionResult?.transaction.processed.block_time,
+            description: formValues.description,
+            eos_exchange: eosRate,
+            id_election: idElection,
+            memo: `eden_expense:${formValues.category}/${formValues.description}`,
+            recipient: formValues.to,
+            txid: transactionResult?.transactionId,
+            type: 'expense',
+            usd_total: amount * eosRate
+          }
+
+          await saveTransaction({
             variables: {
-              payload: {
-                amount: Number(formValues.amount.split(' ')[0]),
-                category: formValues.category,
-                date: transactionResult?.transaction.processed.block_time,
-                description: formValues.description,
-                eos_exchange: eosRate,
-                id_election: delegateElections?.eden_election.at(-1).id,
-                memo: `eden_expense:${formValues.category}/${formValues.description}`,
-                recipient: formValues.to,
-                txid: transactionResult?.transactionId,
-                type: 'expense',
-                usd_total: Number(formValues.amount.split(' ')[0]) * eosRate
-              }
+              payload
             }
           })
+
+          const { data: transactions } = await getTransactions({
+            account: state.user?.accountName
+          })
+
+          setTransactionsList(transactions?.eden_transaction || [])
         }
 
         ReactGA.event({
           category: 'transaction',
           action: 'send tokens',
-          label: `from: ${formValues.to}, to: ${state.user?.accountName}`,
+          label: `from: ${formValues.to}, to: ${authenticatedUser}`,
           value: Number(formValues.amount)
         })
         reset()
@@ -188,22 +210,19 @@ const useSpendTools = () => {
     setErrorMessage('')
   }
 
-  useEffect(() => {
-    loadUncategorizedTransactions()
-    loadElectionsByYear()
-  }, [])
-
-  useEffect(() => {
-    setTransactionsList(uncategorizedTxData?.eden_transaction || [])
-  }, [uncategorizedTxData])
-
-  useEffect(() => {
+  useEffect(async () => {
     setAuthenticatedUser(state.user?.accountName)
+
+    const { data: transactions } = await getTransactions({
+      account: state.user?.accountName
+    })
+
+    setTransactionsList(transactions?.eden_transaction || [])
   }, [state.user?.accountName])
 
   return [
     {
-      currencyBalance,
+      delegateBalance,
       transactionsList,
       formValues,
       errors,
@@ -225,8 +244,7 @@ const useSpendTools = () => {
       handleCloseModal,
       handleOpenModal,
       executeAction,
-      setOpenSnackbar,
-      getEosBalance
+      setOpenSnackbar
     }
   ]
 }
