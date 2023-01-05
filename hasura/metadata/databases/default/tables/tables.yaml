@@ -7,7 +7,6 @@
 - "!include public_historic_expenses.yaml"
 - "!include public_historic_incomes.yaml"
 - "!include public_incomes_by_delegate.yaml"
-- "!include public_percent_by_all_elections_expenses.yaml"
 - "!include public_total_by_category.yaml"
 - "!include public_total_by_category_and_election.yaml"
 - "!include public_total_by_election.yaml"

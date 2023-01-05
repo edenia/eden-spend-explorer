@@ -5,7 +5,7 @@ import ReactGA from 'react-ga'
 import { useSharedState } from '../../context/state.context'
 import { useImperativeQuery } from '../../utils'
 import {
-  GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY,
+  GET_EXPENSES_BY_ACCOUNT,
   GET_AGGREGATE_TRANSACTION,
   EDIT_TRANSACTION_BY_TXID,
   SAVE_TRANSACTION,
@@ -44,9 +44,7 @@ const useSpendTools = () => {
   const [saveTransaction] = useMutation(SAVE_TRANSACTION)
   const getAggregateTransaction = useImperativeQuery(GET_AGGREGATE_TRANSACTION)
   const getElections = useImperativeQuery(GET_ELECTIONS)
-  const getTransactions = useImperativeQuery(
-    GET_UNCATEGORIZED_TRANSACTIONS_BY_ACCOUNT_QUERY
-  )
+  const getTransactions = useImperativeQuery(GET_EXPENSES_BY_ACCOUNT)
 
   const getElectionWithLessExpense = async amount => {
     const { data: elections } = await getElections({
@@ -118,6 +116,10 @@ const useSpendTools = () => {
       setOpenSnackbar(true)
 
       if (openModal && transactionResult?.status === 'executed') {
+        const { idElection } = await getElectionWithLessExpense(
+          modalData?.amount
+        )
+
         ReactGA.event({
           category: 'transaction',
           action: 'update transaction',
@@ -135,7 +137,8 @@ const useSpendTools = () => {
             },
             _set: {
               category: formValuesModal.newCategory,
-              description: formValuesModal.newDescription
+              description: formValuesModal.newDescription,
+              id_election: idElection
             }
           }
         })

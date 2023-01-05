@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 import {
   GET_ELECTIONS,
   GET_TOTAL_EXPENSE_BY_DELEGATE,
-  GET_DELEGATES_BY_ELECTION_EXPENSE,
-  GET_TOTAL_BY_CATEGORY_AND_ELECTION_EXPENSE,
-  GET_TOTAL_BY_CATEGORY_EXPENSE,
+  GET_DELEGATES_EXPENSE_BY_ELECTION,
+  GET_TOTAL_EXPENSE_BY_CATEGORY_AND_ELECTION,
+  GET_TOTAL_EXPENSE_BY_CATEGORY,
   GET_TOTAL_EXPENSE_BY_ALL_ELECTIONS
 } from '../../gql'
 import {
@@ -17,15 +17,15 @@ import {
 import { useImperativeQuery } from '../../utils'
 
 const useExpenseReportState = () => {
-  const [electionRoundSelect, setElectionRoundSelect] = useState(0)
   const [showElectionRadio, setShowElectionRadio] = useState('allElections')
-  const [electionsList, setelectionsList] = useState([])
   const [expenseByElectionsList, setExpenseByElectionsList] = useState([])
+  const [electionRoundSelect, setElectionRoundSelect] = useState(0)
+  const [electionsList, setelectionsList] = useState([])
   const [delegatesList, setDelegatesList] = useState([])
   const [categoryList, setCategoryList] = useState([])
 
   const loadElections = useImperativeQuery(GET_ELECTIONS)
-  const loadTotalByCategory = useImperativeQuery(GET_TOTAL_BY_CATEGORY_EXPENSE)
+  const loadTotalByCategory = useImperativeQuery(GET_TOTAL_EXPENSE_BY_CATEGORY)
   const loadExpenseByElections = useImperativeQuery(
     GET_TOTAL_EXPENSE_BY_ALL_ELECTIONS
   )
@@ -33,14 +33,15 @@ const useExpenseReportState = () => {
     GET_TOTAL_EXPENSE_BY_DELEGATE
   )
   const loadDelegatesExpenseByElections = useImperativeQuery(
-    GET_DELEGATES_BY_ELECTION_EXPENSE
+    GET_DELEGATES_EXPENSE_BY_ELECTION
   )
   const loadTotalByCategoryAndElection = useImperativeQuery(
-    GET_TOTAL_BY_CATEGORY_AND_ELECTION_EXPENSE
+    GET_TOTAL_EXPENSE_BY_CATEGORY_AND_ELECTION
   )
 
   useEffect(async () => {
     const expenseByElections = await loadExpenseByElections()
+
     const { data: electionsData } = await loadElections()
 
     setElectionRoundSelect(electionsData.eden_election[0]?.election)
@@ -55,6 +56,7 @@ const useExpenseReportState = () => {
   useEffect(async () => {
     if (showElectionRadio === 'allElections') {
       const totalExpenseByDelegate = await loadTotalExpenseByDelegate()
+
       const totalByCategory = await loadTotalByCategory()
 
       setCategoryList(
@@ -77,6 +79,7 @@ const useExpenseReportState = () => {
           election: electionRoundSelect
         }
       )
+
       const totalByCategoryAndElection = await loadTotalByCategoryAndElection({
         election: electionRoundSelect
       })

@@ -19,13 +19,15 @@ export const GET_TOTAL_INCOME_BY_ALL_ELECTIONS = gql`
 `
 
 export const GET_TOTAL_DELEGATE_INCOME_BY_ELECTION = gql`
-  query getTotalImeByElection($where: historic_incomes_bool_exp) {
+  query getTotalDelegateIncomeByElection($where: historic_incomes_bool_exp) {
     historic_incomes(where: $where) {
       recipient
       eos_claimed
       usd_claimed
       eos_unclaimed
       usd_unclaimed
+      election
+      delegate_level
     }
   }
 `

@@ -61,9 +61,7 @@ const DelegateReport = () => {
         <div className={classes.filtersContainer}>
           <div id="combo-box-id">
             <Autocomplete
-              options={delegateList.map(
-                data => data.account || data.delegate_payer
-              )}
+              options={delegateList.map(data => data.account || data.recipient)}
               onInputChange={(event, newInputValue) => {
                 setSearchValue(newInputValue)
               }}

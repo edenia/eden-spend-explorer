@@ -15,26 +15,28 @@ import {
 const useIncomeReportState = () => {
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
   const [showElectionRadio, setShowElectionRadio] = useState('allElections')
-  const [electionsList, setelectionsList] = useState([])
   const [incomeByElectionsList, setIncomeByElectionsList] = useState([])
+  const [electionsList, setelectionsList] = useState([])
   const [delegatesList, setDelegatesList] = useState([])
 
+  const loadIncomesByDelegate = useImperativeQuery(GET_TOTAL_INCOME_BY_DELEGATE)
+  const loadElections = useImperativeQuery(GET_ELECTIONS)
   const loadIncomeByElections = useImperativeQuery(
     GET_TOTAL_INCOME_BY_ALL_ELECTIONS
   )
-  // TODO: DELETE THIS const loadGeneralIncome = useImperativeQuery(GET_GENERAL_INCOME)
-  const loadElections = useImperativeQuery(GET_ELECTIONS)
   const loadDelegateIncomesByElection = useImperativeQuery(
     GET_TOTAL_DELEGATE_INCOME_BY_ELECTION
   )
-  const loadIncomesByDelegate = useImperativeQuery(GET_TOTAL_INCOME_BY_DELEGATE)
 
   useEffect(async () => {
     const incomeByElections = await loadIncomeByElections()
+
     const { data: electionsData } = await loadElections()
 
     setElectionRoundSelect(electionsData.eden_election[0]?.election)
+
     setelectionsList(electionsData.eden_election || [])
+
     setIncomeByElectionsList(
       newDataIncomeFormatByAllElections(incomeByElections.data || [])
     )

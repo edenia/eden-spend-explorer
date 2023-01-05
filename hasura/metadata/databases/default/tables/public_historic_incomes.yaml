@@ -6,11 +6,11 @@ select_permissions:
     permission:
       columns:
         - recipient
+        - delegate_level
         - election
         - eos_claimed
         - eos_unclaimed
+        - exchange_rate
         - usd_claimed
         - usd_unclaimed
-        - exchange_rate
       filter: {}
-      allow_aggregations: true
