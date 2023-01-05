@@ -92,6 +92,7 @@ const DelegateReport = () => {
           categoryList={categoryList}
           setDelegateSelect={setDelegateSelect}
           searchValue={searchValue}
+          electionRoundSelect={electionRoundSelect}
         />
       )}
     </div>
