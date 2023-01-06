@@ -174,7 +174,8 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
             <Line
               type="monotone"
               dataKey={dataKey}
-              stroke="#8884d8"
+              stroke="#3866eb"
+              strokeWidth={2}
               activeDot={{ r: 8 }}
             />
           </LineChart>
