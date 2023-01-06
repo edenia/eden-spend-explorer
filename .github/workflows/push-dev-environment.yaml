@@ -83,6 +83,7 @@ jobs:
           HAPI_DFUSE_API_KEY: ${{secrets.HAPI_DFUSE_API_KEY}}
           HAPI_DFUSE_API: jungle4.dfuse.eosnation.io
           HAPI_DFUSE_FIRST_BLOCK: ${{secrets.HAPI_DFUSE_FIRST_BLOCK}}
+          HAPI_DFUSE_FIRST_TREASURY_BLOCK: ${{secrets.HAPI_DFUSE_FIRST_TREASURY_BLOCK}}
           # hasura
           HASURA_GRAPHQL_ENABLE_CONSOLE: true
           HASURA_GRAPHQL_DATABASE_URL: ${{ secrets.HASURA_GRAPHQL_DATABASE_URL }}

@@ -1,7 +1,8 @@
 const {
   edenElectionGql,
   edenHistoricElectionGql,
-  edenDelegatesGql
+  edenDelegatesGql,
+  edenTreasury
 } = require('../../gql')
 const { edenConfig, dfuseConfig } = require('../../config')
 const { hasuraUtil, sleepUtil, dfuseUtil } = require('../../utils')
@@ -78,21 +79,62 @@ const runUpdaters = async actions => {
   }
 }
 
-const getActions = async params => {
+const updateTreasury = async (actions, balance) => {
+  for (let index = 0; index < actions.length; index++) {
+    const action = actions[index]
+    try {
+      const { matchingActions, id, block } = action?.trace
+      const matchingAction = matchingActions[0]
+
+      const amount = Number(matchingAction.json.quantity.split(' ')[0] || 0)
+      const blockNum = block.num
+      const date = block.timestamp
+      const type =
+        matchingAction.json.from === edenConfig.edenContract
+          ? 'Send'
+          : 'Receive'
+
+      type === 'Send' ? (balance -= amount) : (balance += amount)
+      const updater = updaters.find(
+        element => element.type === 'edentreasury:transfer'
+      )
+      updater.apply({
+        id,
+        amount,
+        balance,
+        blockNum,
+        date,
+        type,
+        updater
+      })
+    } catch (error) {
+      console.error(
+        `error to sync updateTreasury ${action.trace.matchingAction}: ${error.message}`
+      )
+    }
+  }
+  return balance
+}
+
+const getActions = async (params, type = 'delegates') => {
   const { data } = await dfuseUtil.client.graphql(
     dfuseUtil.getfundTransferQuery(params)
   )
   const transactionsList = data?.searchTransactionsForward.results || []
 
+  const firstBlock =
+    type === 'treasury'
+      ? dfuseConfig.firstTreasuryBlock
+      : dfuseConfig.firstBlock
+
   return {
     hasMore: transactionsList.length === 1000,
     actions: transactionsList,
-    blockNumber:
-      transactionsList.at(-1)?.trace.block.num || dfuseConfig.firstBlock
+    blockNumber: transactionsList.at(-1)?.trace.block.num || firstBlock
   }
 }
 
-const sync = async () => {
+const getDelegateData = async () => {
   await hasuraUtil.hasuraAssembled()
   const delegatesList = await edenDelegatesGql.get({}, true)
 
@@ -118,9 +160,46 @@ const sync = async () => {
   }
 
   await sleepUtil(10)
+}
+
+const getTreasuryData = async () => {
+  const treasuryList = await edenTreasury.get({}, true)
+
+  let blockNumber = dfuseConfig.firstTreasuryBlock
+  let balance = 0
+
+  if (treasuryList.length > 0) {
+    blockNumber = treasuryList[treasuryList.length - 1].last_synced_at
+    balance = treasuryList[treasuryList.length - 1].balance
+  }
+
+  let hasMore = true
+  let actions = []
+  try {
+    while (hasMore) {
+      ;({ hasMore, actions, blockNumber } = await getActions(
+        {
+          query: `receiver:eosio.token action:transfer (data.from:${edenConfig.edenContract} OR data.to:${edenConfig.edenContract})`,
+          lowBlockNum: blockNumber
+        },
+        'treasury'
+      ))
+
+      balance = await updateTreasury(actions, balance)
+      await sleepUtil(10)
+    }
+  } catch (error) {
+    console.error('dfuse error', error.message)
+  }
+}
+
+const sync = async () => {
+  await getTreasuryData()
+  await getDelegateData()
 
   return sync()
 }
+
 const syncWorker = () => {
   return {
     name: 'SYNC ACTIONS',
