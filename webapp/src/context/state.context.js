@@ -1,12 +1,16 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 
+import { ualConfig } from '../config'
+import useLightUAL from '../hooks/useUAL'
+
 const SharedStateContext = React.createContext()
 
 const initialValue = {
   useDarkMode: false,
   user: null,
-  eosTrasuryBalance: {}
+  eosTrasuryBalance: {},
+  elemRef: null
 }
 
 const sharedStateReducer = (state, action) => {
@@ -42,11 +46,6 @@ const sharedStateReducer = (state, action) => {
         message: null
       }
 
-    case 'login':
-      state.ual.showModal()
-
-      return state
-
     case 'logout':
       state.ual.logout()
 
@@ -64,21 +63,28 @@ const sharedStateReducer = (state, action) => {
   }
 }
 
-export const SharedStateProvider = ({ children, ual, ...props }) => {
+export const SharedStateProvider = ({ children, ...props }) => {
+  const ualState = useLightUAL({
+    appName: ualConfig.appName,
+    chains: ualConfig.network,
+    authenticators: ualConfig.authenticators
+  })
   const [state, dispatch] = React.useReducer(sharedStateReducer, {
-    ...initialValue,
-    ual
+    ...initialValue
   })
   const value = React.useMemo(() => [state, dispatch], [state])
 
   useEffect(() => {
     const load = async () => {
-      dispatch({ type: 'userChange', user: ual.activeUser })
-      dispatch({ type: 'ual', ual })
+      dispatch({ type: 'ual', ual: ualState })
+
+      if (!ualState?.activeUser) return
+
+      dispatch({ type: 'userChange', user: ualState.activeUser })
     }
 
     load()
-  }, [ual?.activeUser])
+  }, [ualState?.activeUser])
 
   return (
     <SharedStateContext.Provider value={value} {...props}>
@@ -98,7 +104,9 @@ export const useSharedState = () => {
   const setState = payload => dispatch({ type: 'set', payload })
   const showMessage = payload => dispatch({ type: 'showMessage', payload })
   const hideMessage = () => dispatch({ type: 'hideMessage' })
-  const login = () => dispatch({ type: 'login' })
+  const login = type => {
+    state.ual.login(type)
+  }
   const logout = () => dispatch({ type: 'logout' })
   const setEOSTrasuryBalance = payload =>
     dispatch({ type: 'setEosTresuryBalance', payload })
@@ -109,6 +117,13 @@ export const useSharedState = () => {
 
   return [
     state,
-    { setState, showMessage, hideMessage, login, logout, setEOSTrasuryBalance }
+    {
+      setState,
+      showMessage,
+      hideMessage,
+      login,
+      logout,
+      setEOSTrasuryBalance
+    }
   ]
 }

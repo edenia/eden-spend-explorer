@@ -11,8 +11,8 @@ import {
 import { useTranslation } from 'react-i18next'
 
 import useExpenseReportState from '../../hooks/customHooks/useExpenseReportState'
-import BarChartReport from '../../components/BarChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
+import BarChartReport from '../../components/BarChartReport'
 import PieChartReport from '../../components/PieChartReport'
 import { formatWithThousandSeparator } from '../../utils'
 import TableReport from '../../components/TableReport'
@@ -30,8 +30,7 @@ const ExpenseReport = () => {
   const [
     {
       expenseByElectionsList,
-      electionsByYearList,
-      percentExpenseList,
+      electionsList,
       delegatesList,
       categoryList,
       electionRoundSelect,
@@ -42,12 +41,7 @@ const ExpenseReport = () => {
 
   const tableData =
     showElectionRadio === 'allElections'
-      ? expenseByElectionsList.map(firstObj => ({
-          ...percentExpenseList.find(
-            secondObj => secondObj.name === firstObj.election
-          ),
-          ...firstObj
-        }))
+      ? expenseByElectionsList
       : delegatesList
 
   const columns = [
@@ -143,7 +137,7 @@ const ExpenseReport = () => {
             <SelectComponent
               onChangeFunction={setElectionRoundSelect}
               labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
-              values={electionsByYearList.map(data => `${data.election}`)}
+              values={electionsList.map(data => `${data.election}`)}
               actualValue={electionRoundSelect}
               size="small"
             />

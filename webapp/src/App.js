@@ -16,7 +16,7 @@ import DashboardLayout from './layouts/Dashboard'
 import { useSharedState } from './context/state.context'
 import getTheme from './theme'
 import './i18n'
-import { GET_DELEGATES } from '../src/gql/general.gql'
+import { GET_DELEGATES } from '../src/gql'
 
 const TRACKING_ID = 'G-3MY19MHQWY'
 
@@ -29,7 +29,7 @@ const generateClassName = createGenerateClassName({
 const App = () => {
   const [state, { setEOSTrasuryBalance }] = useSharedState()
   const [role, setRole] = useState('guest')
-  const [{ eosRate, currencyBalance, nextEdenDisbursement }] =
+  const [{ eosRate, currencyBalance, nextEdenDisbursement, delegateBalance }] =
     useTresuryBalanceState()
   const theme = useMemo(() => getTheme(state.useDarkMode), [state.useDarkMode])
 
@@ -62,9 +62,10 @@ const App = () => {
     setEOSTrasuryBalance({
       eosRate,
       currencyBalance,
-      nextEdenDisbursement
+      nextEdenDisbursement,
+      delegateBalance
     })
-  }, [eosRate, currencyBalance, nextEdenDisbursement])
+  }, [eosRate, currencyBalance, nextEdenDisbursement, delegateBalance])
 
   return (
     <BrowserRouter>

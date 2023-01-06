@@ -1,151 +1,84 @@
-import { useEffect, useReducer } from 'react'
-import { gql, GraphQLClient } from 'graphql-request'
+import { useEffect, useState } from 'react'
 
-import { mainConfig } from '../../config'
-import {
-  GET_ELECTIONS_BY_YEAR,
-  GET_MEMBERS_DATA,
-  GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION,
-  GET_EXPENSE_BY_CATEGORY,
-  GET_INITIAL_DELEGATE_DATA
-} from '../../gql'
 import {
   newDataFormatByTypeDelegate,
   newDataFormatByCategoryDelegate
 } from '../../utils/new-format-objects'
-import { useImperativeQuery, classifyMemberRank } from '../../utils'
-
-const INIT_REDUCER_DATA = {
-  electionRoundSelect: null,
-  delegateSelect: '',
-  electionRoundList: [],
-  delegateList: [],
-  transactionList: [],
-  categoryList: [],
-  accordionList: [],
-  profilesList: [],
-  loader: false,
-  maxLevel: 0,
-  searchValue: ''
-}
-const client = new GraphQLClient(`${mainConfig.urlEndpoint}/v1/graphql`, {
-  headers: {}
-})
-
-const delegateReportStateReducer = (state, action) => {
-  switch (action.type) {
-    case 'SET_GENERAL_DATA':
-      return { ...state, ...action.payload }
-
-    case 'SET_DELEGATE_SELECT':
-      return { ...state, delegateSelect: action.payload }
-
-    case 'SET_ROUND_SELECT':
-      return { ...state, electionRoundSelect: action.payload }
-
-    case 'SET_SEARCH_VALUE':
-      return { ...state, searchValue: action.payload }
-
-    default:
-      break
-  }
-}
+import {
+  GET_ELECTIONS,
+  GET_MAX_DELEGATE_LEVEL,
+  GET_HISTORIC_ELECTIONS,
+  GET_EXPENSE_BY_CATEGORY,
+  GET_TOTAL_DELEGATE_INCOME_BY_ELECTION,
+  GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION
+} from '../../gql'
+import { useImperativeQuery, getDelegatesProfileInformation } from '../../utils'
 
 const useDelegateReportState = () => {
-  const [state, dispatch] = useReducer(
-    delegateReportStateReducer,
-    INIT_REDUCER_DATA
-  )
-  const {
-    electionRoundSelect,
-    delegateSelect,
-    electionRoundList,
-    delegateList,
-    transactionList,
-    categoryList,
-    maxLevel,
-    dateElection,
-    loader,
-    accordionList,
-    searchValue,
-    profilesList
-  } = state
+  const [electionRoundSelect, setElectionRoundSelect] = useState()
+  const [electionRoundList, setElectionRoundList] = useState([])
+  const [transactionList, setTransactionList] = useState([])
+  const [delegateSelect, setDelegateSelect] = useState('')
+  const [accordionList, setAccordionList] = useState([])
+  const [delegateList, setDelegateList] = useState([])
+  const [categoryList, setCategoryList] = useState([])
+  const [profilesList, setProfilesList] = useState([])
+  const [dateElection, setDateElection] = useState('')
+  const [searchValue, setSearchValue] = useState('')
+  const [loader, setLoader] = useState(false)
 
-  const setDelegateSelect = delegateSelect => {
-    dispatch({ type: 'SET_DELEGATE_SELECT', payload: delegateSelect })
-  }
-
-  const setElectionRoundSelect = electionRoundSelect => {
-    dispatch({ type: 'SET_ROUND_SELECT', payload: electionRoundSelect })
-    dispatch({
-      type: 'SET_GENERAL_DATA',
-      payload: {
-        profilesList: []
-      }
-    })
-  }
-
-  const setSearchValue = searchValue => {
-    dispatch({ type: 'SET_SEARCH_VALUE', payload: searchValue })
-  }
-
+  const loadHistoricElection = useImperativeQuery(GET_HISTORIC_ELECTIONS)
+  const loadCategoryList = useImperativeQuery(GET_EXPENSE_BY_CATEGORY)
+  const loadElections = useImperativeQuery(GET_ELECTIONS)
+  const loadMaxDelegateLevel = useImperativeQuery(GET_MAX_DELEGATE_LEVEL)
   const loadTransactions = useImperativeQuery(
     GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION
   )
-  const loadInitialData = useImperativeQuery(GET_INITIAL_DELEGATE_DATA)
-  const loadCategoryList = useImperativeQuery(GET_EXPENSE_BY_CATEGORY)
-  const loadElectionsByYear = useImperativeQuery(GET_ELECTIONS_BY_YEAR)
+  const loadDelegatesByElection = useImperativeQuery(
+    GET_TOTAL_DELEGATE_INCOME_BY_ELECTION
+  )
 
   useEffect(async () => {
-    const responseElectionByYear = await loadElectionsByYear({
-      minDate: `2021-01-01`,
-      maxDate: `${new Date().getFullYear()}-12-31`
-    })
-    const currentElection =
-      responseElectionByYear.data?.eden_historic_election.at(-1).election
-    const responseInitialData = await loadInitialData({
-      election: currentElection
-    })
-    const maxLevel =
-      responseInitialData.data?.delegateFrontend?.data.at(-1).delegate_level
+    const { data: electionsData } = await loadElections()
 
-    dispatch({
-      type: 'SET_GENERAL_DATA',
-      payload: {
-        electionRoundList: responseElectionByYear.data?.eden_historic_election,
-        electionRoundSelect: currentElection,
-        maxLevel
-      }
-    })
+    const currentElection = electionsData.eden_election.at(-1).election
+
+    setElectionRoundSelect(currentElection)
+
+    setElectionRoundList(electionsData.eden_election)
   }, [])
 
   useEffect(async () => {
-    if (electionRoundSelect == null) return
+    if (!electionRoundSelect) return
 
-    const responseInitialData = await loadInitialData({
+    const { data: maxDelegateLevelData } = await loadMaxDelegateLevel({
       election: electionRoundSelect
     })
 
-    const length = responseInitialData.data?.delegateFrontend?.data.length
-    const maxLevel =
-      responseInitialData.data?.delegateFrontend?.data.at(-1)?.delegate_level
-    const selectedElectionDate =
-      responseInitialData.data?.delegateFrontend?.data.at(-2)
-    const delegates =
-      responseInitialData.data.delegateFrontend?.data.slice(0, length - 2) || []
-
-    if (delegates.length > 0) {
-      getProfiles(delegates)
-    }
-
-    dispatch({
-      type: 'SET_GENERAL_DATA',
-      payload: {
-        maxLevel,
-        dateElection: selectedElectionDate.date_election,
-        delegateList: delegates
-      }
+    const { data: delegatesData } = await loadDelegatesByElection({
+      where: { election: { _eq: electionRoundSelect } }
     })
+
+    const { data: historicElectionData } = await loadHistoricElection({
+      where: { election: { _eq: electionRoundSelect } }
+    })
+
+    const delegates = delegatesData.historic_incomes || []
+    const maxLevel = maxDelegateLevelData.eden_election[0]?.delegate_level || 0
+
+    setLoader(true)
+
+    setProfilesList(
+      (await getDelegatesProfileInformation(delegates, maxLevel)) || []
+    )
+
+    setLoader(false)
+
+    setDelegateList(delegates)
+
+    setDateElection(
+      historicElectionData.eden_historic_election[0].date_election
+    )
   }, [electionRoundSelect])
 
   useEffect(async () => {
@@ -165,74 +98,19 @@ const useDelegateReportState = () => {
       responseTransaction.data.historic_incomes || [],
       responseTransaction.data.historic_expenses || []
     )
-
     const categories = newDataFormatByCategoryDelegate(
       responseCategory.data?.expenses_by_category_and_delegate || [],
       transactions
     )
 
-    dispatch({
-      type: 'SET_GENERAL_DATA',
-      payload: {
-        transactionList: transactions || [],
-        categoryList: categories || []
-      }
-    })
+    setCategoryList(categories)
+    setTransactionList(transactions)
   }, [delegateSelect])
 
-  const getProfiles = async delegates => {
-    if (delegates[0].delegate_payer) {
-      dispatch({ type: 'SET_GENERAL_DATA', payload: { loader: true } })
-      const variables = {
-        value: delegates.reduce((reduceList, delegate) => {
-          return [...reduceList, delegate.delegate_payer]
-        }, []),
-        orderBy: {
-          election_rank: 'desc'
-        },
-        limit: 50
-      }
-      const response = await client.request(
-        gql`
-          ${GET_MEMBERS_DATA}
-        `,
-        variables
-      )
-
-      dispatch({
-        type: 'SET_GENERAL_DATA',
-        payload: {
-          loader: false,
-          profilesList: response.members.map(member => {
-            const posDelegate = delegates.find(
-              delegate => delegate.delegate_payer === member.account
-            )
-
-            if (posDelegate) {
-              const rank = classifyMemberRank(
-                posDelegate.delegate_level,
-                maxLevel
-              )
-
-              return { ...member, rank, totalRewarded: posDelegate.totalIncome }
-            }
-
-            return member
-          })
-        }
-      })
-    }
-  }
-
   useEffect(() => {
-    dispatch({
-      type: 'SET_GENERAL_DATA',
-      payload: {
-        accordionList: profilesList.filter(delegate =>
-          delegate?.account?.includes(searchValue)
-        )
-      }
-    })
+    setAccordionList(
+      profilesList.filter(delegate => delegate?.account?.includes(searchValue))
+    )
   }, [profilesList, searchValue])
 
   accordionList.sort((d1, d2) => {

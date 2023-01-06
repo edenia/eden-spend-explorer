@@ -1,3 +1,47 @@
+import { gql, GraphQLClient } from 'graphql-request'
+
+import { mainConfig } from '../../src/config'
+import { GET_MEMBERS_DATA } from '../gql'
+
+const client = new GraphQLClient(`${mainConfig.urlEndpoint}/v1/graphql`, {
+  headers: {}
+})
+
+export const getDelegatesProfileInformation = async (delegates, maxLevel) => {
+  const variables = {
+    value: delegates.map(delegate => delegate.recipient),
+    orderBy: {
+      election_rank: 'desc'
+    },
+    limit: 50
+  }
+
+  const { members } = await client.request(
+    gql`
+      ${GET_MEMBERS_DATA}
+    `,
+    variables
+  )
+
+  return members.map(member => {
+    const posDelegate = delegates.find(
+      delegate => delegate.recipient === member.account
+    )
+
+    if (posDelegate) {
+      const rank = classifyMemberRank(posDelegate.delegate_level, maxLevel)
+
+      return {
+        ...member,
+        rank,
+        totalRewarded: posDelegate.eos_claimed + posDelegate.eos_unclaimed
+      }
+    }
+
+    return member
+  })
+}
+
 const RankType = {
   Member: 0,
   N: 1,

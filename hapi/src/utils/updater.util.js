@@ -56,8 +56,8 @@ const getElectionWithoutExpense = async (
     }
 
     return {
-      election: elections[elections.length - 1].election,
-      idElection: elections[elections.length - 1].id
+      election: elections.at(-1).election,
+      idElection: elections.at(-1).id
     }
   } catch (error) {
     console.error('An error occurred in getElectionWithoutExpense: ', error)

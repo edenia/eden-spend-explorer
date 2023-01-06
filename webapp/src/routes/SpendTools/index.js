@@ -32,7 +32,7 @@ const SpendTools = () => {
   const { eosRate = 0 } = state.eosTrasuryBalance
   const [
     {
-      currencyBalance,
+      delegateBalance,
       transactionsList,
       formValues,
       errors,
@@ -52,12 +52,9 @@ const SpendTools = () => {
       handleCloseModal,
       handleOpenModal,
       executeAction,
-      setOpenSnackbar,
-      getEosBalance
+      setOpenSnackbar
     }
   ] = useSpendTools()
-
-  getEosBalance(state.user?.accountName)
 
   const { to, amount, category, description } = formValues
   const { newCategory, newDescription } = formValuesModal
@@ -284,7 +281,7 @@ const SpendTools = () => {
                 <label id="amount-id">{t('amountLabel')}</label>
                 <label id="available-id">
                   {t('availableLabel')}:{' '}
-                  {formatWithThousandSeparator(currencyBalance)}
+                  {formatWithThousandSeparator(delegateBalance)}
                 </label>
               </div>
               <TextField

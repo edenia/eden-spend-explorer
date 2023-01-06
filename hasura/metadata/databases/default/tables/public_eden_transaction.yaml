@@ -50,6 +50,7 @@ update_permissions:
       columns:
         - category
         - description
+        - id_election
         - txid
       filter: {}
       check: null

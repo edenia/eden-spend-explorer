@@ -1,17 +1,4 @@
-actions:
-  - name: delegateFrontend
-    definition:
-      kind: ""
-      handler: '{{HASURA_GRAPHQL_ACTION_BASE_URL}}/get-delegates'
-    permissions:
-      - role: guest
-    comment: Get delegate data for delegate view
-  - name: incomeFrontend
-    definition:
-      kind: ""
-      handler: '{{HASURA_GRAPHQL_ACTION_BASE_URL}}/get-income'
-    permissions:
-      - role: guest
+actions: []
 custom_types:
   enums: []
   input_objects:
