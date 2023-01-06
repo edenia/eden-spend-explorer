@@ -59,36 +59,22 @@ RenderChartLegend.propTypes = {
 const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
   const { t } = useTranslation()
   label = label + ''
-  const arrayLabel = label.split(' ')
 
   return (
     <div>
-      <strong>
-        {`${t(arrayLabel[0].toLocaleLowerCase(), { ns: 'generalForm' })} ${
-          arrayLabel[1]
-        }`}
-      </strong>
       {payload &&
         payload.map((data, i) => (
           <div key={`${i}-tooltip`}>
             <div>
               {i === 0 &&
-                data.payload?.date &&
-                `${
-                  data.payload.date ? t('date', { ns: 'generalForm' }) : ''
-                }: ${
-                  data.payload.date ? data.payload.date.split('T')[0] : ''
+                `${t('date', { ns: 'generalForm' })}: ${
+                  data.payload.date.split('T')[0]
                 } `}
             </div>
             <div>
-              {`${t(
-                data.payload.category
-                  ? `${data.dataKey
-                      .split('_')[1]
-                      .toLocaleLowerCase()}${data.payload.category.toLocaleLowerCase()}`
-                  : data.dataKey.split('_')[1].toLocaleLowerCase(),
-                { ns: 'generalForm' }
-              )}: ${formatWithThousandSeparator(
+              {`${t('balance', {
+                ns: 'incomeRoute'
+              })}: ${formatWithThousandSeparator(
                 data.payload[data.dataKey],
                 4
               )} ${coinType}`}
@@ -105,18 +91,14 @@ CustomTooltip.propTypes = {
   coinType: PropTypes.string
 }
 
-const LineChartReport = ({
-  data,
-  keyTranslation,
-  pathTranslation,
-  showLegend
-}) => {
+const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
   console.log(data)
   const classes = useStyles()
   const [getBarPng, { ref: lineRef }] = useCurrentPng()
   const { t } = useTranslation()
   const [selectedUSD, setSelected] = useState(false)
   const [coinType, setCoinType] = useState('EOS')
+  const [dataKey, setDataKey] = useState('balance')
 
   const handleChange = event => {
     setSelected(event.target.checked)
@@ -131,7 +113,13 @@ const LineChartReport = ({
   }, [getBarPng])
 
   useEffect(() => {
-    selectedUSD ? setCoinType('USD') : setCoinType('EOS')
+    if (selectedUSD) {
+      setCoinType('USD')
+      setDataKey('usd_total')
+    } else {
+      setDataKey('balance')
+      setCoinType('EOS')
+    }
   }, [selectedUSD])
 
   return (
@@ -185,7 +173,7 @@ const LineChartReport = ({
 
             <Line
               type="monotone"
-              dataKey="eos_exchange"
+              dataKey={dataKey}
               stroke="#8884d8"
               activeDot={{ r: 8 }}
             />
@@ -199,8 +187,7 @@ const LineChartReport = ({
 LineChartReport.propTypes = {
   data: PropTypes.array,
   keyTranslation: PropTypes.string,
-  pathTranslation: PropTypes.string,
-  showLegend: PropTypes.bool
+  pathTranslation: PropTypes.string
 }
 
 export default memo(LineChartReport)

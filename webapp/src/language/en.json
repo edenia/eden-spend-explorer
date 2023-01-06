@@ -69,6 +69,7 @@
   "incomeRoute": {
     "titleBarChart": "Income per Election",
     "titlePieChart": "Delegate Income",
+    "titleLineChart": "Treasury Balance Over Time",
     "titleTable": "Amounts Claimed and Unclaimed by Election",
     "titleTable2": "Amounts Claimed and Unclaimed by all Elections",
     "tableElectionHeader": "Term",
@@ -81,7 +82,8 @@
     "tableHeader7": "Claimed %",
     "tableHeader8": "Unclaimed %",
     "claimedCategory": "Claimed",
-    "unclaimedCategory": "Unclaimed"
+    "unclaimedCategory": "Unclaimed",
+    "balance": "Treasury Balance"
   },
   "expenseRoute": {
     "titleBarChart": "Expense per Election",
