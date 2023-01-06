@@ -16,11 +16,11 @@ export const GET_ELECTIONS = gql`
     }
   }
 `
-
-export const GET_DELEGATES = gql`
-  query MyQuery($delegate: String) {
-    eden_delegates(where: { account: { _eq: $delegate } }) {
-      account
+export const GET_HISTORIC_ELECTIONS = gql`
+  query ($where: eden_historic_election_bool_exp) {
+    eden_historic_election(where: $where) {
+      date_election
+      election
     }
   }
 `

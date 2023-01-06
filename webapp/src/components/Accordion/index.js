@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Accordion from '@mui/material/Accordion'
 import { makeStyles } from '@mui/styles'
@@ -21,7 +21,8 @@ const AccordionComp = ({
   transactionList,
   categoryList,
   setDelegateSelect,
-  searchValue
+  searchValue,
+  electionRoundSelect
 }) => {
   const [expanded, setExpanded] = React.useState(false)
   const classes = useStyles()
@@ -31,6 +32,11 @@ const AccordionComp = ({
     isExpanded ? setDelegateSelect(account) : setDelegateSelect('')
     setExpanded(isExpanded ? panel : false)
   }
+
+  useEffect(() => {
+    setDelegateSelect('')
+    setExpanded(false)
+  }, [electionRoundSelect])
 
   return (
     <div className={classes.accordionContainer}>
@@ -95,7 +101,8 @@ AccordionComp.propTypes = {
   transactionList: PropTypes.array,
   categoryList: PropTypes.array,
   setDelegateSelect: PropTypes.func,
-  searchValue: PropTypes.string
+  searchValue: PropTypes.string,
+  electionRoundSelect: PropTypes.number
 }
 
 export default memo(AccordionComp)
