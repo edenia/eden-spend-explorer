@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import {
+  GET_TREASURY,
   GET_ELECTIONS,
   GET_TOTAL_INCOME_BY_DELEGATE,
   GET_TOTAL_INCOME_BY_ALL_ELECTIONS,
@@ -18,8 +19,10 @@ const useIncomeReportState = () => {
   const [incomeByElectionsList, setIncomeByElectionsList] = useState([])
   const [electionsList, setelectionsList] = useState([])
   const [delegatesList, setDelegatesList] = useState([])
+  const [treasuryList, setTreasuryList] = useState([])
 
   const loadIncomesByDelegate = useImperativeQuery(GET_TOTAL_INCOME_BY_DELEGATE)
+  const loadTreasuryBalance = useImperativeQuery(GET_TREASURY)
   const loadElections = useImperativeQuery(GET_ELECTIONS)
   const loadIncomeByElections = useImperativeQuery(
     GET_TOTAL_INCOME_BY_ALL_ELECTIONS
@@ -32,6 +35,10 @@ const useIncomeReportState = () => {
     const incomeByElections = await loadIncomeByElections()
 
     const { data: electionsData } = await loadElections()
+
+    const { data: treasuryData } = await loadTreasuryBalance()
+
+    setTreasuryList(treasuryData.eden_treasury)
 
     setElectionRoundSelect(electionsData.eden_election[0]?.election)
 
@@ -71,6 +78,7 @@ const useIncomeReportState = () => {
       incomeByElectionsList,
       electionsList,
       delegatesList,
+      treasuryList,
       electionRoundSelect,
       showElectionRadio
     },
