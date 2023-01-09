@@ -16,7 +16,7 @@ import DashboardLayout from './layouts/Dashboard'
 import { useSharedState } from './context/state.context'
 import getTheme from './theme'
 import './i18n'
-import { GET_DELEGATES } from '../src/gql/general.gql'
+import { GET_DELEGATES } from '../src/gql'
 
 const TRACKING_ID = 'G-3MY19MHQWY'
 

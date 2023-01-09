@@ -1,3 +1,23 @@
+import gql from 'graphql-tag'
+
+export const GET_DELEGATES = gql`
+  query MyQuery($delegate: String) {
+    eden_delegates(where: { account: { _eq: $delegate } }) {
+      account
+    }
+  }
+`
+export const GET_MAX_DELEGATE_LEVEL = gql`
+  query getMaxDelegateLevel($election: Int) {
+    eden_election(
+      where: { election: { _eq: $election } }
+      order_by: { delegate_level: desc }
+      limit: 1
+    ) {
+      delegate_level
+    }
+  }
+`
 export const GET_MEMBERS_DATA = `
   query getMembers($value: [String], $orderBy: [member_order_by!], $limit: Int) {
     memberPag: member_aggregate(

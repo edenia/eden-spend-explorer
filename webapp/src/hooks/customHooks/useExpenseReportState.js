@@ -2,62 +2,61 @@ import { useEffect, useState } from 'react'
 
 import {
   GET_ELECTIONS,
-  GET_PERCENT_ALL_ELECTIONS_EXPENSE,
-  GET_EXPENSE_BY_ELECTIONS,
   GET_TOTAL_EXPENSE_BY_DELEGATE,
-  GET_DELEGATES_BY_ELECTION_EXPENSE,
-  GET_TOTAL_BY_CATEGORY_AND_ELECTION_EXPENSE,
-  GET_TOTAL_BY_CATEGORY_EXPENSE
+  GET_DELEGATES_EXPENSE_BY_ELECTION,
+  GET_TOTAL_EXPENSE_BY_CATEGORY_AND_ELECTION,
+  GET_TOTAL_EXPENSE_BY_CATEGORY,
+  GET_TOTAL_EXPENSE_BY_ALL_ELECTIONS
 } from '../../gql'
 import {
-  newDataFormatByCategorizedElectionsExpense,
+  newDataExpenseFormatByAllElections,
   newDataFormatByAllDelegatesExpense,
   newDataFormatByElectionAndDelegateExpense,
-  newDataFormatPercentAllElections,
   newDataFormatTotalByCategoryExpense
 } from '../../utils/new-format-objects'
 import { useImperativeQuery } from '../../utils'
 
 const useExpenseReportState = () => {
-  const [electionRoundSelect, setElectionRoundSelect] = useState(0)
   const [showElectionRadio, setShowElectionRadio] = useState('allElections')
-  const [electionsList, setelectionsList] = useState([])
   const [expenseByElectionsList, setExpenseByElectionsList] = useState([])
+  const [electionRoundSelect, setElectionRoundSelect] = useState(0)
+  const [electionsList, setelectionsList] = useState([])
   const [delegatesList, setDelegatesList] = useState([])
   const [categoryList, setCategoryList] = useState([])
-  const [percentExpenseList, setPercentExpenseList] = useState([])
 
-  const loadExpenseByElections = useImperativeQuery(GET_EXPENSE_BY_ELECTIONS)
+  const loadElections = useImperativeQuery(GET_ELECTIONS)
+  const loadTotalByCategory = useImperativeQuery(GET_TOTAL_EXPENSE_BY_CATEGORY)
+  const loadExpenseByElections = useImperativeQuery(
+    GET_TOTAL_EXPENSE_BY_ALL_ELECTIONS
+  )
   const loadTotalExpenseByDelegate = useImperativeQuery(
     GET_TOTAL_EXPENSE_BY_DELEGATE
   )
-  const loadElectionsByYear = useImperativeQuery(GET_ELECTIONS)
   const loadDelegatesExpenseByElections = useImperativeQuery(
-    GET_DELEGATES_BY_ELECTION_EXPENSE
+    GET_DELEGATES_EXPENSE_BY_ELECTION
   )
-  const loadPercentAllElections = useImperativeQuery(
-    GET_PERCENT_ALL_ELECTIONS_EXPENSE
-  )
-  const loadTotalByCategory = useImperativeQuery(GET_TOTAL_BY_CATEGORY_EXPENSE)
   const loadTotalByCategoryAndElection = useImperativeQuery(
-    GET_TOTAL_BY_CATEGORY_AND_ELECTION_EXPENSE
+    GET_TOTAL_EXPENSE_BY_CATEGORY_AND_ELECTION
   )
 
   useEffect(async () => {
     const expenseByElections = await loadExpenseByElections()
-    const { data: electionsData } = await loadElectionsByYear()
+
+    const { data: electionsData } = await loadElections()
 
     setElectionRoundSelect(electionsData.eden_election[0]?.election)
+
     setelectionsList(electionsData.eden_election || [])
+
     setExpenseByElectionsList(
-      newDataFormatByCategorizedElectionsExpense(expenseByElections.data || [])
+      newDataExpenseFormatByAllElections(expenseByElections.data || [])
     )
   }, [])
 
   useEffect(async () => {
     if (showElectionRadio === 'allElections') {
       const totalExpenseByDelegate = await loadTotalExpenseByDelegate()
-      const percentAllElections = await loadPercentAllElections()
+
       const totalByCategory = await loadTotalByCategory()
 
       setCategoryList(
@@ -65,12 +64,7 @@ const useExpenseReportState = () => {
           totalByCategory?.data?.total_by_category || []
         )
       )
-      setPercentExpenseList(
-        newDataFormatPercentAllElections(
-          percentAllElections?.data?.percent_by_all_elections_expenses || [],
-          'categorized'
-        )
-      )
+
       setDelegatesList(
         newDataFormatByAllDelegatesExpense(
           totalExpenseByDelegate?.data?.expenses_by_delegate || []
@@ -85,6 +79,7 @@ const useExpenseReportState = () => {
           election: electionRoundSelect
         }
       )
+
       const totalByCategoryAndElection = await loadTotalByCategoryAndElection({
         election: electionRoundSelect
       })
@@ -94,6 +89,7 @@ const useExpenseReportState = () => {
           delegatesExpenseByElections?.data?.historic_expenses || []
         )
       )
+
       setCategoryList(
         newDataFormatTotalByCategoryExpense(
           totalByCategoryAndElection?.data?.total_by_category_and_election || []
@@ -106,7 +102,6 @@ const useExpenseReportState = () => {
     {
       expenseByElectionsList,
       electionsList,
-      percentExpenseList,
       delegatesList,
       categoryList,
       electionRoundSelect,

@@ -31,7 +31,6 @@ const ExpenseReport = () => {
     {
       expenseByElectionsList,
       electionsList,
-      percentExpenseList,
       delegatesList,
       categoryList,
       electionRoundSelect,
@@ -42,12 +41,7 @@ const ExpenseReport = () => {
 
   const tableData =
     showElectionRadio === 'allElections'
-      ? expenseByElectionsList.map(firstObj => ({
-          ...percentExpenseList.find(
-            secondObj => secondObj.name === firstObj.election
-          ),
-          ...firstObj
-        }))
+      ? expenseByElectionsList
       : delegatesList
 
   const columns = [
