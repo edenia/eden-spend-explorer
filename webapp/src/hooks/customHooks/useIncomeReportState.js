@@ -10,7 +10,8 @@ import {
 import {
   useImperativeQuery,
   newDataFormatByDelegatesIncome,
-  newDataIncomeFormatByAllElections
+  newDataIncomeFormatByAllElections,
+  newDataFormatByTreasuryList
 } from '../../utils'
 
 const useIncomeReportState = () => {
@@ -38,7 +39,7 @@ const useIncomeReportState = () => {
 
     const { data: treasuryData } = await loadTreasuryBalance()
 
-    setTreasuryList(treasuryData.eden_treasury)
+    setTreasuryList(newDataFormatByTreasuryList(treasuryData.eden_treasury))
 
     setElectionRoundSelect(electionsData.eden_election[0]?.election)
 
