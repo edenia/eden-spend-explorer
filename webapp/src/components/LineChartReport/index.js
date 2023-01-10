@@ -21,7 +21,8 @@ import {
   Tooltip,
   ResponsiveContainer,
   LineChart,
-  Line
+  Line,
+  Brush
 } from 'recharts'
 
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
@@ -92,13 +93,13 @@ CustomTooltip.propTypes = {
 }
 
 const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
-  console.log(data)
   const classes = useStyles()
   const [getBarPng, { ref: lineRef }] = useCurrentPng()
   const { t } = useTranslation()
   const [selectedUSD, setSelected] = useState(false)
   const [coinType, setCoinType] = useState('EOS')
   const [dataKey, setDataKey] = useState('balance')
+  const width = window.innerWidth
 
   const handleChange = event => {
     setSelected(event.target.checked)
@@ -167,16 +168,18 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
               }}
               content={<CustomTooltip coinType={coinType} />}
             />
-            {/* {showLegend && (
-              <Legend content={<RenderChartLegend data={category} />} />
-            )} */}
-
             <Line
               type="monotone"
               dataKey={dataKey}
               stroke="#3866eb"
               strokeWidth={2}
               activeDot={{ r: 8 }}
+            />
+            <Brush
+              dataKey={'date'}
+              width={width > 600 ? width * 0.4 : 200}
+              height={20}
+              x={width > 600 ? width * 0.2 : 225}
             />
           </LineChart>
         </ResponsiveContainer>
