@@ -81,7 +81,15 @@
     "tableHeader7": "Claimed %",
     "tableHeader8": "Unclaimed %",
     "claimedCategory": "Claimed",
-    "unclaimedCategory": "Unclaimed"
+    "unclaimedCategory": "Unclaimed",
+    "titleDisbursement": "Monthly disbursements",
+    "paragraph1Disbursement": "Eden delegate disbursements occur monthly and are claimed by the delegate from the contract to their personal EOS accounts.",
+    "paragraph2Disbursement": "The overall disbursement is equal to 11% of the Eden treasury at at the time of disbursement. The amount is then divided equally among the representative levels. At each level, the amount is further divided equally among that level's representatives.",
+    "paragraph3Disbursement": "Next disbursement date",
+    "paragraph4Disbursement": "Projected next disbursement amount:",
+    "perLevel": "Per Level 1 Delegate",
+    "perChief": "Per Chief Delegate",
+    "trasury": "Eden Treasury Balance"
   },
   "expenseRoute": {
     "titleBarChart": "Expense per Election",
