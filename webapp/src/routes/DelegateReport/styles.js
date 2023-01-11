@@ -3,7 +3,10 @@ export default theme => ({
     margin: theme.spacing(1),
     '& #treasury-container-id': {
       display: 'flex',
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
+      [theme.breakpoints.down('sm')]: {
+        justifyContent: 'center'
+      }
     },
     [theme.breakpoints.down('sm')]: {
       margin: theme.spacing(0)

@@ -15,7 +15,7 @@ import DownloadOutlined from '@mui/icons-material/DownloadOutlined'
 import { useTranslation } from 'react-i18next'
 import { useCurrentPng } from 'recharts-to-png'
 import {
-  // XAxis,
+  XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
@@ -147,16 +147,18 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
         </div>
       </div>
       <div className={classes.chartContainer}>
-        <ResponsiveContainer
-          minWidth={600}
-          width="100%"
-          height={300}
-          marginTop="16px"
-        >
+        <ResponsiveContainer width="100%" height={300} marginTop="16px">
           <LineChart height={300} data={data} ref={lineRef}>
             <CartesianGrid stroke="#f0f0f0" />
+            <XAxis
+              tick={{ fontSize: 10, stroke: '#000', strokeWidth: 0.5 }}
+              dataKey="date"
+              scale="auto"
+              interval={data.length >= 100 ? 10 : 5}
+            />
             <YAxis
               tick={{ fontSize: '10px', stroke: '#000', strokeWidth: 0.1 }}
+              scale="linear"
             />
             <Tooltip
               wrapperStyle={{
@@ -177,9 +179,9 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
             />
             <Brush
               dataKey={'date'}
-              width={width > 600 ? width * 0.4 : 200}
+              width={width > 600 ? width * 0.4 : 100}
               height={20}
-              x={width > 600 ? width * 0.2 : 225}
+              x={width > 600 ? width * 0.2 : 150}
             />
           </LineChart>
         </ResponsiveContainer>
