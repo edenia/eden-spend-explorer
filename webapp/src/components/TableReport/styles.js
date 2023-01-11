@@ -5,7 +5,7 @@ export default theme => ({
     height: '100%',
     '& .MuiDataGrid-root': {
       border: 'none',
-      minWidth: '600px'
+      minWidth: '500px'
     }
   }
 })

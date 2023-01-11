@@ -120,6 +120,7 @@ const BarChartReport = ({
   const { t } = useTranslation()
   const [selectedUSD, setSelected] = useState(false)
   const [coinType, setCoinType] = useState('EOS')
+  const width = window.innerWidth
 
   const handleChange = event => {
     setSelected(event.target.checked)
@@ -166,12 +167,7 @@ const BarChartReport = ({
         </div>
       </div>
       <div className={classes.chartContainer}>
-        <ResponsiveContainer
-          minWidth={600}
-          width="100%"
-          height={300}
-          marginTop="16px"
-        >
+        <ResponsiveContainer width="100%" height={300} marginTop="16px">
           <ComposedChart height={300} data={data} ref={barRef}>
             <CartesianGrid stroke="#f0f0f0" />
             <XAxis
@@ -197,7 +193,7 @@ const BarChartReport = ({
             )}
             <Bar
               dataKey={`${coinType}_UN${category.toLocaleUpperCase()}`}
-              barSize={35}
+              barSize={width > 600 ? 35 : 15}
               fill="#f4d35e"
             >
               {data.map(({ election }) => (
@@ -206,14 +202,18 @@ const BarChartReport = ({
             </Bar>
             <Bar
               dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
-              barSize={35}
+              barSize={width > 600 ? 35 : 15}
               fill="#ee964b"
             >
               {data.map(({ election }) => (
                 <Cell key={`cell-${election}`} />
               ))}
             </Bar>
-            <Bar dataKey={`${coinType}_TOTAL`} barSize={35} fill="#19647e">
+            <Bar
+              dataKey={`${coinType}_TOTAL`}
+              barSize={width > 600 ? 35 : 15}
+              fill="#19647e"
+            >
               {data.map(({ election }) => (
                 <Cell key={`cell-${election}`} />
               ))}
