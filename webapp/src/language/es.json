@@ -69,6 +69,7 @@
   "incomeRoute": {
     "titleBarChart": "Ingresos por Elección",
     "titlePieChart": "Ingresos de los Delegados",
+    "titleLineChart": "Saldo de tesorería en el tiempo",
     "titleTable": "Montos Reclamados y No Reclamados por Elección",
     "titleTable2": "Montos Reclamados y No Reclamados de Todas las Elecciones",
     "tableElectionHeader": "Periodo",
@@ -81,7 +82,8 @@
     "tableHeader7": "% Reclamado",
     "tableHeader8": "% No reclamado",
     "claimedCategory": "Reclamado",
-    "unclaimedCategory": "No reclamado"
+    "unclaimedCategory": "No reclamado",
+    "balance": "Saldo de Tesorería"
   },
   "expenseRoute": {
     "titleBarChart": "Gasto por Elección",

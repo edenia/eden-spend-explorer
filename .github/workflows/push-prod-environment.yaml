@@ -83,7 +83,8 @@ jobs:
           HAPI_EDEN_CONTRACT: genesis.eden
           HAPI_DFUSE_API_KEY: ${{secrets.HAPI_DFUSE_API_KEY}}
           HAPI_DFUSE_API: eos.dfuse.eosnation.io
-          HAPI_DFUSE_FIRST_BLOCK: ${{secrets.HAPI_DFUSE_FIRST_BLOCK}}
+          HAPI_DFUSE_FIRST_BLOCK: 209174091
+          HAPI_DFUSE_FIRST_TREASURY_BLOCK: 183728436
           # hasura
           HASURA_GRAPHQL_ENABLE_CONSOLE: true
           HASURA_GRAPHQL_DATABASE_URL: ${{ secrets.HASURA_GRAPHQL_DATABASE_URL }}

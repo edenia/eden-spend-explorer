@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import {
+  GET_TREASURY,
   GET_ELECTIONS,
   GET_RANKS_BY_ELECTION,
   GET_TOTAL_INCOME_BY_DELEGATE,
@@ -11,7 +12,8 @@ import {
 import {
   useImperativeQuery,
   newDataFormatByDelegatesIncome,
-  newDataIncomeFormatByAllElections
+  newDataIncomeFormatByAllElections,
+  newDataFormatByTreasuryList
 } from '../../utils'
 
 const useIncomeReportState = () => {
@@ -20,6 +22,7 @@ const useIncomeReportState = () => {
   const [incomeByElectionsList, setIncomeByElectionsList] = useState([])
   const [electionsList, setelectionsList] = useState([])
   const [delegatesList, setDelegatesList] = useState([])
+  const [treasuryList, setTreasuryList] = useState([])
   const [ranksList, setRanksList] = useState([])
   const [delegatesActualElectionList, setDelegatesActualElectionList] =
     useState([])
@@ -27,6 +30,7 @@ const useIncomeReportState = () => {
   const loadIncomesByDelegate = useImperativeQuery(GET_TOTAL_INCOME_BY_DELEGATE)
   const loadRankLevelActualElection = useImperativeQuery(GET_RANK_LEVELS)
   const loadRanksActualElection = useImperativeQuery(GET_RANKS_BY_ELECTION)
+  const loadTreasuryBalance = useImperativeQuery(GET_TREASURY)
   const loadElections = useImperativeQuery(GET_ELECTIONS)
   const loadIncomeByElections = useImperativeQuery(
     GET_TOTAL_INCOME_BY_ALL_ELECTIONS
@@ -59,6 +63,10 @@ const useIncomeReportState = () => {
     )
 
     setRanksList(ranksLevelElectionData.eden_election)
+
+    const { data: treasuryData } = await loadTreasuryBalance()
+
+    setTreasuryList(newDataFormatByTreasuryList(treasuryData.eden_treasury))
 
     setElectionRoundSelect(electionsData.eden_election[0]?.election)
 
@@ -98,6 +106,7 @@ const useIncomeReportState = () => {
       incomeByElectionsList,
       electionsList,
       delegatesList,
+      treasuryList,
       electionRoundSelect,
       showElectionRadio,
       delegatesActualElectionList,

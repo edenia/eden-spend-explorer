@@ -35,13 +35,13 @@
   },
   "homeRoute": {
     "edenSpendExplorer": "Eden Spend Explorer",
-    "viewDescription": "An easy way to understand and standarize the use of Eden funds and how the community benefits from it.",
+    "viewDescription": "An easy way to understand and standardize the use of Eden funds and how the community benefits from it.",
     "button": "Start",
     "howWorksEden": "How Does The Eden Spend Explorer Work?",
-    "paragraph1": "EOS Spend Explorer provides reliable data visualization and categorization from the allocated funds in the Eden community.",
-    "paragraph2": "The App can configure a list of EOS accounts to automatically source income data from on-chain transactions.",
-    "paragraph3": "Eden members can log in to the App to categorize and describe their EOS expenses using a specific memo format.",
-    "paragraph4": "EOS Spend Explorer automatically provides visualization and reporting of the expenses included in memo fields."
+    "paragraph1": "The Eden Spend Explorer provides reliable data visualizations and reports on how elected Eden delegate's funds are allocated.",
+    "paragraph2": "The application obtains the list of delegate's EOS accounts to automatically source income data from treasury withdrawals.",
+    "paragraph3": "Delegates can describe their Eden expenses by using a specific memo format for any token transfer or log in to and manually categorize past transfers.",
+    "paragraph4": "The EOS Spend Explorer automatically provides data visualizations and reports of the expenses for each delegate and the totals for the community."
   },
   "generalForm": {
     "textRadioButton1": "By one delegate",
@@ -69,6 +69,7 @@
   "incomeRoute": {
     "titleBarChart": "Income per Election",
     "titlePieChart": "Delegate Income",
+    "titleLineChart": "Treasury Balance Over Time",
     "titleTable": "Amounts Claimed and Unclaimed by Election",
     "titleTable2": "Amounts Claimed and Unclaimed by all Elections",
     "tableElectionHeader": "Term",
@@ -90,6 +91,7 @@
     "perLevel": "Per Level 1 Delegate",
     "perChief": "Per Chief Delegate",
     "trasury": "Eden Treasury Balance"
+    "balance": "Treasury Balance"
   },
   "expenseRoute": {
     "titleBarChart": "Expense per Election",
@@ -140,19 +142,19 @@
     "quantity": "Quantity:",
     "appendButton": "Append Memo",
     "memo": "The transaction does not have memo",
-    "snackbarMessage": "Transaction succesful!",
-    "snackbarButton": "I understand",
+    "snackbarMessage": "Transaction successful!",
+    "snackbarButton": "OK",
     "categoryInput": "Select category",
     "toInput": "Enter account name...",
     "descriptionInput": "Add a description"
   },
   "aboutRoute": {
     "subtitle1": "What is Eden Spend Explorer?",
-    "paragraph1": "Eden Spend Explorer is a reporting mechanism intended to provide the Eden community in EOS with information on how Eden funds are allocated. Elected delegates can adhere to the standard and easily report their Eden expenditures using a format specific to the EOS token transfer action memo field. This is made possible by the \"Spend Tool\", which allows expenses to be accounted for by either making a transaction that can be immediately categorized through the Spend Tool, or also, there is the possibility to categorize or recategorize one of the previously made transactions.",
+    "paragraph1": "Eden Spend Explorer is a reporting mechanism intended to provide the Eden community in EOS with information on how Eden funds are allocated. Elected delegates can adhere to the standard and easily report their Eden expenditures using a format specific to the EOS token transfer action memo field. This is made possible by the \"Spend Tool\", which allows expenses to be accounted for by either making a transaction that can be immediately categorized through the Spend Tool, or also, there is the possibility to categorize or re-categorize one of the previously made transactions.",
     "subtitle2": "Why is it important?",
     "paragraph2": "Eden Spend Explorer is of great importance as it offers the possibility to the elected delegates of the Eden community to justify the funds granted to them for the realization of new projects and ideas for the benefit of the community. The system listens to the events of the blockchain network and records the information that is of interest to generate reports on the funds of the network, what their destination is and how they are used. It also provides information on how the funds allocated to the different elected representatives in EOS are being used to execute projects for the benefit of the community.",
     "subtitle3": "Where does the data come from?",
-    "paragraph3": "This system uses trending technologies that are booming, one of them is Web 3.0, which is involved in Eden Spend Explorer because the information is stored within a blockchain. This is because the system makes use of the information that is hosted within the EOSIO blockchain. To obtain the information, different architectures are implemented to listen for events within the blockchain and thus store the data of interest that comes within the action of the event. The information is stored within the database to facilitate the search and query of the data, since it can be very cumbersome to do it directly to the blockchain, because there is so much data that the query of these is not the most efficient. For that reason the information is stored within a database, for a better user experience in loading information."
+    "paragraph3": "This system uses trending technologies that are booming, one of them is Web 3.0, which is involved in Eden Spend Explorer because the information is stored within a blockchain. This is because the system makes use of the information that is hosted within the Antelope blockchain. To obtain the information, different architectures are implemented to listen for events within the blockchain and thus store the data of interest that comes within the action of the event. The information is stored within the database to facilitate the search and query of the data, since it can be very cumbersome to do it directly to the blockchain, because there is so much data that the query of these is not the most efficient. For that reason the information is stored within a database, for a better user experience in loading information."
   },
   "helpRoute": {
     "subtitle": "We have prepared these guides for end users. The idea is to take advantage of all the benefits of using this dApp. All the images here are just a representation of the real information.",

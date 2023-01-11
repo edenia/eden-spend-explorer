@@ -72,6 +72,7 @@ export const GET_EXPENSES_BY_ACCOUNT = gql`
         type: { _eq: "expense" }
         eden_election: { eden_delegate: { account: { _eq: $account } } }
       }
+      order_by: { date: desc }
     ) {
       id
       amount

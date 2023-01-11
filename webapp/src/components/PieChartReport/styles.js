@@ -1,6 +1,6 @@
 export default theme => ({
   chartContainer: {
-    margin: theme.spacing(2, 0, 2, 0)
+    margin: theme.spacing(6, 6, 6, 6)
   },
   title: {
     '& span': {
