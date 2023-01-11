@@ -154,7 +154,8 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
               tick={{ fontSize: 10, stroke: '#000', strokeWidth: 0.5 }}
               dataKey="date"
               scale="auto"
-              interval={data.length >= 100 ? 10 : 5}
+              interval={data.length >= 200 ? 20 : 10}
+              allowDataOverflow={false}
             />
             <YAxis
               tick={{ fontSize: '10px', stroke: '#000', strokeWidth: 0.1 }}
