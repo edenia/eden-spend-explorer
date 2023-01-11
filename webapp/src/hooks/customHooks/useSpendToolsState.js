@@ -81,7 +81,7 @@ const useSpendTools = () => {
       }
     }
     return {
-      idElection: elections.at(-1).id
+      idElection: elections?.at(-1).id
     }
   }
 
