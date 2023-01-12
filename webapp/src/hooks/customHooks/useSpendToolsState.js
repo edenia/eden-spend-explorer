@@ -214,10 +214,10 @@ const useSpendTools = () => {
   }
 
   useEffect(async () => {
-    setAuthenticatedUser(state.user?.accountName)
+    setAuthenticatedUser('xavieredenia')
 
     const { data: transactions } = await getTransactions({
-      account: state.user?.accountName
+      account: 'xavieredenia'
     })
 
     setTransactionsList(transactions?.eden_transaction || [])

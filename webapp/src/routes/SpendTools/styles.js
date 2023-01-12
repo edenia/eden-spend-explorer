@@ -118,7 +118,7 @@ export default theme => ({
     },
     '& #id-table-container': {
       marginTop: theme.spacing(2),
-      height: '369px',
+      height: '403px',
       [theme.breakpoints.down('sm')]: {
         height: '400px'
       }
