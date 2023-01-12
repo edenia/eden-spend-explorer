@@ -27,6 +27,23 @@ export const newDataFormatByDelegatesIncome = transactionsList =>
     color: generateColor()
   }))
 
+export const newDataFormatByTreasuryList = treasuryList => {
+  const newTreasuryList = []
+
+  for (let index = 0; index < treasuryList.length; index++) {
+    const curDate = treasuryList[index].date.split('T')[0]
+    if (
+      !newTreasuryList.find(element => element.date.split('T')[0] === curDate)
+    )
+      newTreasuryList.push({
+        balance: treasuryList[index].balance,
+        usd_total: treasuryList[index].usd_total,
+        date: treasuryList[index].date.split('T')[0]
+      })
+  }
+  return newTreasuryList
+}
+
 export const newDataExpenseFormatByAllElections = ({
   eden_historic_election: electionsList = [],
   total_expense_by_all_election: expensesList = []

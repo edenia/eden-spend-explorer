@@ -69,6 +69,7 @@
   "incomeRoute": {
     "titleBarChart": "Ingresos por Elección",
     "titlePieChart": "Ingresos de los Delegados",
+    "titleLineChart": "Saldo de tesorería en el tiempo",
     "titleTable": "Montos Reclamados y No Reclamados por Elección",
     "titleTable2": "Montos Reclamados y No Reclamados de Todas las Elecciones",
     "tableElectionHeader": "Periodo",
@@ -86,7 +87,8 @@
     "perChief": "Por Chief",
     "perHeadChief": "Por Head Chief",
     "trasury": "Balance de tesorería proyectado",
-    "delegate": "Delegate"
+    "delegate": "Delegate",
+    "balance": "Saldo de Tesorería"
   },
   "expenseRoute": {
     "titleBarChart": "Gasto por Elección",

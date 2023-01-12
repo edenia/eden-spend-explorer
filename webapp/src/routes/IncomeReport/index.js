@@ -12,6 +12,7 @@ import {
 
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
 import BarChartReport from '../../components/BarChartReport'
+import LineChartReport from '../../components/LineChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import PieChartReport from '../../components/PieChartReport'
 import { formatWithThousandSeparator } from '../../utils'
@@ -35,6 +36,7 @@ const IncomeReport = () => {
       incomeByElectionsList,
       electionsList,
       delegatesList,
+      treasuryList,
       electionRoundSelect,
       showElectionRadio,
       delegatesActualElectionList,
@@ -103,6 +105,11 @@ const IncomeReport = () => {
       <TreasuryDisbursementsInfo
         delegatesActualElectionList={delegatesActualElectionList}
         ranksList={ranksList}
+      />
+      <LineChartReport
+        data={treasuryList}
+        keyTranslation={'titleLineChart'}
+        pathTranslation={'incomeRoute'}
       />
       <BarChartReport
         data={incomeByElectionsList}

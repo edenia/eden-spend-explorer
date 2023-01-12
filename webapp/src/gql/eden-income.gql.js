@@ -18,6 +18,16 @@ export const GET_TOTAL_INCOME_BY_ALL_ELECTIONS = gql`
   }
 `
 
+export const GET_TREASURY = gql`
+  query getTreasury {
+    eden_treasury(order_by: { date: asc }) {
+      balance
+      usd_total
+      date
+    }
+  }
+`
+
 export const GET_TOTAL_DELEGATE_INCOME_BY_ELECTION = gql`
   query getTotalDelegateIncomeByElection($where: historic_incomes_bool_exp) {
     historic_incomes(where: $where) {

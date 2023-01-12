@@ -7,8 +7,7 @@ export default theme => ({
   },
   subTitle: {
     display: 'block',
-    marginBottom: theme.spacing(2),
-    whiteSpace: 'pre-line',
+    margin: theme.spacing(2, 0, 2, 0),
     fontSize: '16px',
     fontWeight: 400,
     lineHeight: 1.5,
@@ -27,37 +26,26 @@ export default theme => ({
     letterSpacing: '0.15px'
   },
   title: {
-    display: 'block',
     fontSize: '18px',
     fontWeight: 500,
     lineHeight: 1.56,
     letterSpacing: '-0.4px'
   },
-  horizontalLine: {
-    borderBottom: '1px solid rgba(225,225,225,.99)',
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2)
-  },
   imagesContainer: {
     display: 'flex',
-    alignItems: 'center'
-  },
-  imgBalance: {
-    display: 'block',
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    [theme.breakpoints.down('sm')]: {
-      width: '60%',
-      height: '100%'
-    }
-  },
-  images: {
-    display: 'block',
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    [theme.breakpoints.down('sm')]: {
+    justifyContent: 'center',
+    '& img': {
       width: '100%',
-      height: '100%'
+      maxWidth: '1100px'
+    },
+    '& #balance': {
+      maxWidth: '366px'
+    },
+    '& #spendTool': {
+      maxWidth: '720px'
+    },
+    '& #categorizedSpend': {
+      maxWidth: '470px'
     }
   },
   boxLinks: {
