@@ -162,8 +162,8 @@ export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
       'Categorized',
       expenseList[0]?.eos_categorized || 0,
       expenseList[0]?.usd_categorized || 0,
-      resultUncategorizedEOS || 0,
-      resultUncategorizedUSD || 0
+      resultUncategorizedEOS >= 0 ? resultUncategorizedEOS : 0 || 0,
+      resultUncategorizedUSD >= 0 ? resultUncategorizedUSD : 0 || 0
     )
   )
 
