@@ -81,7 +81,12 @@
     "tableHeader7": "% Reclamado",
     "tableHeader8": "% No reclamado",
     "claimedCategory": "Reclamado",
-    "unclaimedCategory": "No reclamado"
+    "unclaimedCategory": "No reclamado",
+    "perLevel": "Por Level",
+    "perChief": "Por Chief",
+    "perHeadChief": "Por Head Chief",
+    "trasury": "Balance de tesorería proyectado",
+    "delegate": "Delegate"
   },
   "expenseRoute": {
     "titleBarChart": "Gasto por Elección",

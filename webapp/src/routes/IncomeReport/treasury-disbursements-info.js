@@ -11,24 +11,18 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 
 const RankLabel = {
-  NumberedLevel: 'N',
-  Chief: 'Chief',
-  HeadChief: 'Head Chief'
+  NumberedLevel: 'perLevel',
+  Chief: 'perChief',
+  HeadChief: 'perHeadChief'
 }
 
-export const RankLevelDistribution = ({
-  label,
-  EOSamount,
-  usdAmount,
-  level
-}) => {
-  const labelText = label === RankLabel.NumberedLevel ? `Level ${level}` : label
+export const RankLevelDistribution = ({ label, EOSamount, usdAmount }) => {
   const classes = useStyles()
 
   return (
     <div className={classes.rankLevelBox}>
       {' '}
-      <strong>{labelText}</strong>
+      <strong>{label}</strong>
       <p>
         {formatWithThousandSeparator(EOSamount, 2) || 0} EOS
         <br />
@@ -40,8 +34,7 @@ export const RankLevelDistribution = ({
 RankLevelDistribution.propTypes = {
   label: PropTypes.string,
   EOSamount: PropTypes.number,
-  usdAmount: PropTypes.number,
-  level: PropTypes.number
+  usdAmount: PropTypes.number
 }
 
 const TreasuryDisbursementsInfo = ({
@@ -82,15 +75,14 @@ const TreasuryDisbursementsInfo = ({
 
     const label =
       currentRank === ranksList.at(-1)?.delegate_level
-        ? RankLabel.HeadChief
+        ? `${t(RankLabel.HeadChief)} ${t('delegate')}`
         : currentRank === ranksList.at(-1)?.delegate_level - 1
-        ? RankLabel.Chief
-        : RankLabel.NumberedLevel
+        ? `${t(RankLabel.Chief)} ${t('delegate')}`
+        : `${t(RankLabel.NumberedLevel)} ${currentRank} ${t('delegate')}`
 
     return (
       <RankLevelDistribution
         label={label}
-        level={currentRank}
         EOSamount={rankAmount}
         usdAmount={rankAmount * eosRate}
         key={`rank-level-${label}${index}`}
@@ -110,7 +102,7 @@ const TreasuryDisbursementsInfo = ({
       <p>{t('paragraph4Disbursement')}</p>
       <div className={classes.disbursementsContainer}>
         {electedRanks.map(calculateAndRenderRankLevelComponent)}
-        <div>
+        <div className={classes.disbursementBox}>
           {' '}
           <strong>{t('trasury')}</strong>
           <p>
