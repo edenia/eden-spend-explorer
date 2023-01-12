@@ -45,8 +45,7 @@ export default theme => ({
       color: theme.palette.secondary.main
     },
     '& #id-table-container': {
-      marginTop: theme.spacing(2),
-      height: 368
+      marginTop: theme.spacing(2)
     }
   },
   links: {

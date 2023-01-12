@@ -98,6 +98,8 @@ const useExpenseReportState = () => {
     }
   }, [showElectionRadio, electionRoundSelect])
 
+  console.log(delegatesList)
+
   return [
     {
       expenseByElectionsList,

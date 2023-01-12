@@ -19,10 +19,10 @@ export const newDataFormatByDelegatesIncome = transactionsList =>
     EOS_UNCLAIMED: Number(data.eos_unclaimed),
     USD_UNCLAIMED: Number(data.usd_unclaimed),
     EOS_CLAIMED_PERCENT: Number(
-      (data.eos_claimed / (data.eos_claimed + data.eos_unclaimed)) * 100
+      (data.eos_claimed / (data.eos_claimed + data.eos_unclaimed || 1)) * 100
     ),
     EOS_UNCLAIMED_PERCENT: Number(
-      (data.eos_unclaimed / (data.eos_claimed + data.eos_unclaimed)) * 100
+      (data.eos_unclaimed / (data.eos_claimed + data.eos_unclaimed || 1)) * 100
     ),
     color: generateColor()
   }))
@@ -96,12 +96,12 @@ export const newDataFormatByElectionAndDelegateExpense = transactionsList =>
     ),
     USD_UNCATEGORIZED: Number(data.usd_uncategorized),
     EOS_CATEGORIZED_PERCENT: Number(
-      (data.eos_categorized / (data.eos_claimed + data.eos_unclaimed)) * 100
+      (data.eos_categorized / (data.eos_claimed + data.eos_unclaimed || 1)) *
+        100
     ),
     EOS_UNCATEGORIZED_PERCENT: Number(
       ((data.eos_claimed + data.eos_unclaimed - data.eos_categorized) /
-        (data.eos_claimed + data.eos_unclaimed)) *
-        100
+        (data.eos_claimed + data.eos_unclaimed) || 1) * 100
     ),
     color: generateColor()
   }))
