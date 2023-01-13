@@ -28,7 +28,7 @@ module.exports = {
     if (registeredTxWithoutDigest) {
       await edenTransactionGql.update({
         where: {
-          id: { _eq: existTx.id }
+          id: { _eq: registeredTxWithoutDigest.id }
         },
         _set: { digest: action.action.receipt.digest }
       })
