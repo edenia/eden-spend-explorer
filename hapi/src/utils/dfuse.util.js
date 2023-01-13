@@ -18,6 +18,9 @@ const getfundTransferQuery = ({ query, lowBlockNum }) => {
         }
         id
         matchingActions {
+          receipt {
+            digest
+          }
           account
           name
           json

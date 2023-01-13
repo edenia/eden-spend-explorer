@@ -64,10 +64,9 @@ const runUpdaters = async actions => {
 
         await updater.apply({
           transaction_id: id,
-          json: matchingAction.json,
           timestamp,
-          ation: matchingAction.name,
           election: edenElectionId,
+          action: matchingAction,
           updater
         })
       }

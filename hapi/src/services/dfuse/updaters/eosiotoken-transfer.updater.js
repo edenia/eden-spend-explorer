@@ -10,18 +10,30 @@ let LASTEST_RATE_DATA_CONSULTED = null
 module.exports = {
   type: `eosio.token:transfer`,
   apply: async action => {
-    const { quantity, memo, to, from } = action.json
+    const { quantity, memo, to, from } = action.action.json
     const amount = Number(quantity.split(' ')[0] || 0)
 
     const registeredTransaction = await edenTransactionGql.get({
       txid: { _eq: action.transaction_id },
-      amount: { _eq: amount },
-      memo: { _eq: memo },
-      recipient: { _eq: to },
-      type: { _eq: 'expense' }
+      digest: { _eq: action.action.receipt.digest }
     })
 
     if (registeredTransaction) return
+
+    const registeredTxWithoutDigest = await edenTransactionGql.get({
+      txid: { _eq: action.transaction_id },
+      digest: { _eq: action.transaction_id }
+    })
+
+    if (registeredTxWithoutDigest) {
+      await edenTransactionGql.update({
+        where: {
+          id: { _eq: existTx.id }
+        },
+        _set: { digest: action.action.receipt.digest }
+      })
+      return
+    }
 
     let { category, description } = updaterUtil.memoSplit(
       memo.split(':')[1] || ''
@@ -72,12 +84,14 @@ module.exports = {
         type: 'expense',
         eos_exchange: LASTEST_RATE_DATA_CONSULTED,
         usd_total: amount * LASTEST_RATE_DATA_CONSULTED,
-        memo: memo
+        digest: action.action.receipt.digest
       }
 
       await edenTransactionGql.save(transactionData)
     } catch (error) {
-      console.error(`transfer sync error ${action.action}: ${error.message}`)
+      console.error(
+        `transfer sync error ${action.action.name}: ${error.message}`
+      )
     }
   }
 }

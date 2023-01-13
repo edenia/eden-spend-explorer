@@ -128,7 +128,7 @@
     "headerTable3": "MONTO",
     "headerTable4": "ENVIADO A",
     "headerTable5": "MEMO",
-    "headerTable6": "CATEGORIZADO",
+    "headerTable6": "CATEGORIA",
     "headerTable7": "CATEGORIZAR",
     "modalTitle": "Adjuntar Memo",
     "modalAbout": "Aquí puede agregar o cambiar la categoría y descripción de transacciones anteriores. Primero, seleccione el motivo de su gasto en la selección, luego ingrese su descripción o motivo.",

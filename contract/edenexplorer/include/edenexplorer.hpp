@@ -23,7 +23,8 @@ namespace eden {
 
     void categorize( eosio::name  account,
                      std::string &new_memo,
-                     std::string &tx_id );
+                     std::string &tx_id,
+                     std::string &digest );
 
     bool parse_memo( std::string &memo );
 
@@ -35,6 +36,6 @@ namespace eden {
 
   EOSIO_ACTIONS( edenexplorer_contract,
                  "edenexplorer"_n,
-                 action( categorize, account, new_memo, tx_id ) )
+                 action( categorize, account, new_memo, tx_id, digest ) )
 
 } // namespace eden
