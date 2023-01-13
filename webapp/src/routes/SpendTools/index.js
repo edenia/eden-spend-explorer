@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
 import Select from '@mui/material/Select'
 import Button from '@mui/material/Button'
@@ -55,7 +55,17 @@ const SpendTools = () => {
   ] = useSpendTools()
 
   const { to, amount, category, description } = formValues
-  const { newCategory, newDescription } = formValuesModal
+  let { newCategory, newDescription } = formValuesModal
+
+  useEffect(() => {
+    if (!openModal) firstConcat = true
+    formValuesModal.newDescription = ''
+  }, [openModal])
+
+  if (firstConcat && modalData?.description) {
+    newDescription = newDescription.concat(modalData?.description)
+    firstConcat = false
+  }
 
   const handleEosTransfer = async e => {
     e.preventDefault()

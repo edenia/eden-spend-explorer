@@ -67,5 +67,18 @@ export default theme => ({
   disableLink: {
     pointerEvents: 'none',
     cursor: 'pointer'
+  },
+  disbursementsContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: theme.spacing(3)
+  },
+  disbursementBox: {
+    margin: theme.spacing(0, 2, 0, 2)
+  },
+  rankLevelBox: {
+    margin: theme.spacing(0, 2, 0, 2),
+    borderRight: '1px solid rgba(0, 0, 0, 0.12)',
+    paddingRight: theme.spacing(3)
   }
 })
