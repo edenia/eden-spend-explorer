@@ -130,10 +130,7 @@ const useSpendTools = () => {
           variables: {
             where: {
               txid: { _eq: modalData?.txid },
-              amount: { _eq: modalData?.amount },
-              recipient: { _eq: modalData?.recipient },
-              memo: { _eq: modalData?.memo },
-              type: { _eq: 'expense' }
+              digest: { _eq: modalData?.digest }
             },
             _set: {
               category: formValuesModal.newCategory,
@@ -168,11 +165,11 @@ const useSpendTools = () => {
             description: formValues.description,
             eos_exchange: eosRate,
             id_election: idElection,
-            memo: `eden_expense:${formValues.category}/${formValues.description}`,
             recipient: formValues.to,
             txid: transactionResult?.transactionId,
             type: 'expense',
-            usd_total: amount * eosRate
+            usd_total: amount * eosRate,
+            digest: transactionResult?.transactionId
           }
 
           await saveTransaction({
@@ -214,10 +211,10 @@ const useSpendTools = () => {
   }
 
   useEffect(async () => {
-    setAuthenticatedUser('xavieredenia')
+    setAuthenticatedUser(state.user?.accountName)
 
     const { data: transactions } = await getTransactions({
-      account: 'xavieredenia'
+      account: state.user?.accountName
     })
 
     setTransactionsList(transactions?.eden_transaction || [])

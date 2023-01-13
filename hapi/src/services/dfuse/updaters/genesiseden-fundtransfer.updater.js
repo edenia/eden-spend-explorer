@@ -11,7 +11,12 @@ module.exports = {
   type: `${edenConfig.edenContract}:fundtransfer`,
   apply: async action => {
     try {
-      const { amount: quantity, from, distribution_time, rank } = action.json
+      const {
+        amount: quantity,
+        from,
+        distribution_time,
+        rank
+      } = action.action.json
       const amount = Number(quantity.split(' ')[0])
 
       const existTx = await edenTransactionGql.get({
@@ -72,13 +77,13 @@ module.exports = {
         const newAmount = existUnclaimedTx.amount - amount
 
         if (newAmount <= 0) {
-          await deleteTx({
+          await edenTransactionGql.deleteTx({
             where: {
               id: { _eq: existUnclaimedTx.id }
             }
           })
         } else {
-          await update({
+          await edenTransactionGql.update({
             where: {
               id: { _eq: existUnclaimedTx.id }
             },
@@ -95,7 +100,7 @@ module.exports = {
       }
     } catch (error) {
       console.error(
-        `fundtransfer sync error ${action.action}: ${error.message}`
+        `fundtransfer sync error ${action.action.action.name}: ${error.message}`
       )
     }
   }

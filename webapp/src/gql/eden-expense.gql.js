@@ -81,10 +81,10 @@ export const GET_EXPENSES_BY_ACCOUNT = gql`
       recipient
       txid
       category
-      memo
       eden_election {
         election
       }
+      digest
     }
   }
 `

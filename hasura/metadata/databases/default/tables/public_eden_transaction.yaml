@@ -10,20 +10,20 @@ insert_permissions:
     permission:
       check: {}
       columns:
+        - amount
         - category
+        - created_at
+        - date
         - description
-        - memo
+        - digest
+        - eos_exchange
+        - id
+        - id_election
         - recipient
         - txid
         - type
-        - amount
-        - eos_exchange
-        - usd_total
-        - created_at
-        - date
         - updated_at
-        - id
-        - id_election
+        - usd_total
 select_permissions:
   - role: guest
     permission:
@@ -33,10 +33,10 @@ select_permissions:
         - created_at
         - date
         - description
+        - digest
         - eos_exchange
         - id
         - id_election
-        - memo
         - recipient
         - txid
         - type

@@ -123,7 +123,7 @@
     "headerTable3": "AMOUNT",
     "headerTable4": "SENT TO",
     "headerTable5": "MEMO",
-    "headerTable6": "CATEGORIZED",
+    "headerTable6": "CATEGORY",
     "headerTable7": "APPEND",
     "modalTitle": "Append Memo",
     "modalAbout": "Here you can add or change the category and description of previous transactions. First, select the reason for your expense in the selection, then enter your description or reason.",
