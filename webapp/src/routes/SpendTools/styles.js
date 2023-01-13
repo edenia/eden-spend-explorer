@@ -118,11 +118,7 @@ export default theme => ({
       display: 'none'
     },
     '& #id-table-container': {
-      marginTop: theme.spacing(2),
-      height: '369px',
-      [theme.breakpoints.down('sm')]: {
-        height: '400px'
-      }
+      marginTop: theme.spacing(2)
     }
   },
   buttonContainer: {

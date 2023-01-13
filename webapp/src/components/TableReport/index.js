@@ -26,19 +26,20 @@ const CustomToolbar = () => {
 const TableReport = ({ columns, dataPercent }) => {
   const classes = useStyles()
   const { t } = useTranslation('generalForm')
-  const [pagePaginationSize, setPagePaginationSize] = useState(5)
+  const [pagePaginationSize, setPagePaginationSize] = useState(10)
   const theme = createTheme(t('date') === 'Date' ? enUS : esES)
 
   return (
     <div className={classes.tableContainer}>
       <ThemeProvider theme={theme}>
         <DataGrid
+          autoHeight
           rows={dataPercent}
           loading={!dataPercent[0]}
           columns={columns}
           pageSize={pagePaginationSize}
           onPageSizeChange={newPageSize => setPagePaginationSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 20]}
+          rowsPerPageOptions={[10, 25, 50]}
           pagination
           components={{ Toolbar: CustomToolbar }}
           getRowId={row =>
