@@ -21,6 +21,7 @@ import styles from './styles'
 import SpendToolTableRerport from './spendTool-table-report'
 
 const useStyles = makeStyles(styles)
+let firstConcat = true
 
 const SpendTools = () => {
   const classes = useStyles()
