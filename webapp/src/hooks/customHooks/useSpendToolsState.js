@@ -244,7 +244,8 @@ const useSpendTools = () => {
       handleCloseModal,
       handleOpenModal,
       executeAction,
-      setOpenSnackbar
+      setOpenSnackbar,
+      setErrorMessage
     }
   ]
 }

@@ -59,9 +59,12 @@ const SpendTools = () => {
   let { newCategory, newDescription } = formValuesModal
 
   useEffect(() => {
-    if (!openModal) firstConcat = true
-    formValuesModal.newDescription = ''
-  }, [openModal])
+    if (newCategory) {
+      handleInputChangeModal({
+        target: { name: 'newDescription', value: modalData?.description }
+      })
+    }
+  }, [newCategory])
 
   if (firstConcat && modalData?.description) {
     newDescription = newDescription.concat(modalData?.description)
@@ -77,7 +80,8 @@ const SpendTools = () => {
       const dataAction = {
         account: state.user?.accountName,
         new_memo: `eden_expense:${newCategory}/${newDescription}`,
-        tx_id: modalData?.txid
+        tx_id: modalData?.txid,
+        digest: modalData?.digest
       }
 
       if (modalData?.digest === modalData?.txid) {
