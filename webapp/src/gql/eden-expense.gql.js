@@ -43,7 +43,11 @@ export const GET_DELEGATES_EXPENSE_BY_ELECTION = gql`
 export const GET_TOTAL_EXPENSE_BY_CATEGORY_AND_ELECTION = gql`
   query getTotalClaimedAndUnclaimedByElection($election: Int) {
     total_by_category_and_election(
-      where: { election: { _eq: $election }, type: { _eq: "expense" } }
+      where: {
+        election: { _eq: $election }
+        category: { _neq: "uncategorized" }
+        type: { _eq: "expense" }
+      }
     ) {
       amount
       category
