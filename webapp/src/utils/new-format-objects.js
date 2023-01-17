@@ -27,20 +27,45 @@ export const newDataFormatByDelegatesIncome = transactionsList =>
     color: generateColor()
   }))
 
-export const newDataFormatByTreasuryList = treasuryList => {
+export const newDataFormatByTreasuryList = (
+  treasuryList,
+  nextEdenDisbursement,
+  estimatedTreasury,
+  usdEstimatedTreasury
+) => {
   const newTreasuryList = []
 
-  for (let index = 0; index < treasuryList.length; index++) {
+  for (let index = 0; index < treasuryList.length - 1; index++) {
     const curDate = treasuryList[index].date.split('T')[0]
     if (
       !newTreasuryList.find(element => element.date.split('T')[0] === curDate)
     )
       newTreasuryList.push({
-        balance: treasuryList[index].balance,
-        usd_total: treasuryList[index].usd_total,
-        date: treasuryList[index].date.split('T')[0]
+        EOS_BALANCE: treasuryList[index].balance,
+        USD_BALANCE: treasuryList[index].usd_total,
+        date: treasuryList[index].date.split('T')[0],
+        isValued: false
       })
   }
+  const curDate = treasuryList.at(-1).date.split('T')[0]
+  if (!newTreasuryList.find(element => element.date.split('T')[0] === curDate))
+    newTreasuryList.push({
+      EOS_BALANCE: treasuryList.at(-1).balance,
+      USD_BALANCE: treasuryList.at(-1).usd_total,
+      EOS_VALUED: treasuryList.at(-1).balance,
+      USD_VALUED: treasuryList.at(-1).usd_total,
+      date: treasuryList.at(-1).date.split('T')[0],
+      isValued: false
+    })
+
+  const dateFormat = new Date(nextEdenDisbursement)?.toISOString()
+  newTreasuryList.push({
+    EOS_VALUED: estimatedTreasury,
+    date: dateFormat,
+    USD_VALUED: usdEstimatedTreasury,
+    isValued: true
+  })
+
   return newTreasuryList
 }
 

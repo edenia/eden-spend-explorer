@@ -60,28 +60,29 @@ RenderChartLegend.propTypes = {
 const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
   const { t } = useTranslation()
   label = label + ''
+  let textBalance = ''
+
+  if (payload !== null)
+    textBalance = payload[0]?.payload?.isValued ? 'estimated' : 'balance'
 
   return (
     <div>
-      {payload &&
-        payload.map((data, i) => (
-          <div key={`${i}-tooltip`}>
-            <div>
-              {i === 0 &&
-                `${t('date', { ns: 'generalForm' })}: ${
-                  data.payload.date.split('T')[0]
-                } `}
-            </div>
-            <div>
-              {`${t('balance', {
-                ns: 'incomeRoute'
-              })}: ${formatWithThousandSeparator(
-                data.payload[data.dataKey],
-                4
-              )} ${coinType}`}
-            </div>
+      {payload && (
+        <div key={`${payload[0]}-tooltip`}>
+          <div>
+            {t('date', { ns: 'generalForm' })}:
+            {payload[0]?.payload.date.split('T')[0]}
           </div>
-        ))}
+          <div>
+            {`${t(textBalance, {
+              ns: 'incomeRoute'
+            })}: ${formatWithThousandSeparator(
+              payload[0]?.payload[payload[0]?.dataKey],
+              4
+            )} ${coinType}`}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -98,7 +99,6 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
   const { t } = useTranslation()
   const [selectedUSD, setSelected] = useState(false)
   const [coinType, setCoinType] = useState('EOS')
-  const [dataKey, setDataKey] = useState('balance')
   const width = window.innerWidth
 
   const handleChange = event => {
@@ -116,9 +116,7 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
   useEffect(() => {
     if (selectedUSD) {
       setCoinType('USD')
-      setDataKey('usd_total')
     } else {
-      setDataKey('balance')
       setCoinType('EOS')
     }
   }, [selectedUSD])
@@ -173,10 +171,18 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
             />
             <Line
               type="monotone"
-              dataKey={dataKey}
+              dataKey={`${coinType}_BALANCE`}
               stroke="#3866eb"
               strokeWidth={2}
               activeDot={{ r: 8 }}
+            />
+            <Line
+              type="monotone"
+              dataKey={`${coinType}_VALUED`}
+              stroke="#3866eb"
+              strokeWidth={2}
+              activeDot={{ r: 8 }}
+              strokeDasharray={5}
             />
             <Brush
               dataKey={'date'}
