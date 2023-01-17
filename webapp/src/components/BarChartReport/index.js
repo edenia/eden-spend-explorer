@@ -14,7 +14,7 @@ import {
   FormGroup
 } from '@mui/material'
 
-import CustomBarchart from './custom-barchart'
+import CustomBarChart from './custom-barChart'
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
@@ -67,11 +67,12 @@ const BarChartReport = ({
         </div>
       </div>
       <div className={classes.chartContainer}>
-        <CustomBarchart
+        <CustomBarChart
           barRef={barRef}
           showLegend={showLegend}
           data={data}
           typeData={typeData}
+          selectedUSD={selectedUSD}
         />
       </div>
     </div>
