@@ -49,7 +49,9 @@ const useDelegateReportState = () => {
   }, [])
 
   useEffect(async () => {
-    if (!electionRoundSelect) return
+    if (electionRoundSelect === undefined) return
+
+    setLoader(true)
 
     const { data: maxDelegateLevelData } = await loadMaxDelegateLevel({
       election: electionRoundSelect
@@ -65,8 +67,6 @@ const useDelegateReportState = () => {
 
     const delegates = delegatesData.historic_incomes || []
     const maxLevel = maxDelegateLevelData.eden_election[0]?.delegate_level || 0
-
-    setLoader(true)
 
     setProfilesList(
       (await getDelegatesProfileInformation(delegates, maxLevel)) || []

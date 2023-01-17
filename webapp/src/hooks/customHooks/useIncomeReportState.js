@@ -3,9 +3,11 @@ import { useEffect, useState } from 'react'
 import {
   GET_TREASURY,
   GET_ELECTIONS,
+  GET_RANKS_BY_ELECTION,
   GET_TOTAL_INCOME_BY_DELEGATE,
   GET_TOTAL_INCOME_BY_ALL_ELECTIONS,
-  GET_TOTAL_DELEGATE_INCOME_BY_ELECTION
+  GET_TOTAL_DELEGATE_INCOME_BY_ELECTION,
+  GET_RANK_LEVELS
 } from '../../gql'
 import {
   useImperativeQuery,
@@ -21,8 +23,13 @@ const useIncomeReportState = () => {
   const [electionsList, setelectionsList] = useState([])
   const [delegatesList, setDelegatesList] = useState([])
   const [treasuryList, setTreasuryList] = useState([])
+  const [ranksList, setRanksList] = useState([])
+  const [delegatesActualElectionList, setDelegatesActualElectionList] =
+    useState([])
 
   const loadIncomesByDelegate = useImperativeQuery(GET_TOTAL_INCOME_BY_DELEGATE)
+  const loadRankLevelActualElection = useImperativeQuery(GET_RANK_LEVELS)
+  const loadRanksActualElection = useImperativeQuery(GET_RANKS_BY_ELECTION)
   const loadTreasuryBalance = useImperativeQuery(GET_TREASURY)
   const loadElections = useImperativeQuery(GET_ELECTIONS)
   const loadIncomeByElections = useImperativeQuery(
@@ -36,6 +43,26 @@ const useIncomeReportState = () => {
     const incomeByElections = await loadIncomeByElections()
 
     const { data: electionsData } = await loadElections()
+
+    const { data: actualElectionDelegatesData } = await loadRanksActualElection(
+      {
+        where: {
+          election: { _eq: electionsData.eden_election.at(-1)?.election }
+        }
+      }
+    )
+
+    const { data: ranksLevelElectionData } = await loadRankLevelActualElection({
+      where: {
+        election: { _eq: electionsData.eden_election.at(-1)?.election }
+      }
+    })
+
+    setDelegatesActualElectionList(
+      actualElectionDelegatesData?.eden_election || []
+    )
+
+    setRanksList(ranksLevelElectionData.eden_election)
 
     const { data: treasuryData } = await loadTreasuryBalance()
 
@@ -81,7 +108,9 @@ const useIncomeReportState = () => {
       delegatesList,
       treasuryList,
       electionRoundSelect,
-      showElectionRadio
+      showElectionRadio,
+      delegatesActualElectionList,
+      ranksList
     },
     {
       setElectionRoundSelect,

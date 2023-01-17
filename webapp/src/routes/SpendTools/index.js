@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import { makeStyles } from '@mui/styles'
 import Select from '@mui/material/Select'
 import Button from '@mui/material/Button'
@@ -16,14 +16,12 @@ import useSpendTools from '../../hooks/customHooks/useSpendToolsState'
 import { CATEGORIES } from '../../constants/income.constants'
 import { useSharedState } from '../../context/state.context'
 import SnackbarComponent from '../../components/Snackbar'
-import TableReport from '../../components/TableReport'
 
 import styles from './styles'
-import { Divider } from '@mui/material'
+import SpendToolTableRerport from './spendTool-table-report'
 
 const useStyles = makeStyles(styles)
-
-const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
+let firstConcat = true
 
 const SpendTools = () => {
   const classes = useStyles()
@@ -33,7 +31,6 @@ const SpendTools = () => {
   const [
     {
       delegateBalance,
-      transactionsList,
       formValues,
       errors,
       errorsModal,
@@ -42,7 +39,8 @@ const SpendTools = () => {
       errorMessage,
       modalData,
       openSnackbar,
-      loadingSignTransaction
+      loadingSignTransaction,
+      transactionsList
     },
     {
       handleInputChange,
@@ -52,12 +50,26 @@ const SpendTools = () => {
       handleCloseModal,
       handleOpenModal,
       executeAction,
-      setOpenSnackbar
+      setOpenSnackbar,
+      setErrorMessage
     }
   ] = useSpendTools()
 
   const { to, amount, category, description } = formValues
-  const { newCategory, newDescription } = formValuesModal
+  let { newCategory, newDescription } = formValuesModal
+
+  useEffect(() => {
+    if (newCategory) {
+      handleInputChangeModal({
+        target: { name: 'newDescription', value: modalData?.description }
+      })
+    }
+  }, [newCategory])
+
+  if (firstConcat && modalData?.description) {
+    newDescription = newDescription.concat(modalData?.description)
+    firstConcat = false
+  }
 
   const handleEosTransfer = async e => {
     e.preventDefault()
@@ -68,7 +80,14 @@ const SpendTools = () => {
       const dataAction = {
         account: state.user?.accountName,
         new_memo: `eden_expense:${newCategory}/${newDescription}`,
-        tx_id: modalData?.txid
+        tx_id: modalData?.txid,
+        digest: modalData?.digest
+      }
+
+      if (modalData?.digest === modalData?.txid) {
+        setErrorMessage(
+          'You must wait because the transaction continues without digest'
+        )
       }
 
       await executeAction(dataAction, 'edenexplorer', 'categorize')
@@ -92,80 +111,6 @@ const SpendTools = () => {
         ? 0
         : (Number(amount.split(' ')[0]) * eosRate).toFixed(4)
     } @ $${eosRate.toFixed(2)}/EOS`
-
-  const columns = [
-    {
-      field: 'id',
-      hide: true
-    },
-    {
-      field: 'txid',
-      headerName: t('headerTable1'),
-      cellClassName: classes.links,
-      renderCell: param => (
-        <Tooltip title={param.value}>
-          <a href={`https://bloks.io/transaction/${param.value}`}>
-            {param.value.slice(0, 8)}
-          </a>
-        </Tooltip>
-      ),
-      ...rowsCenter
-    },
-    {
-      field: 'date',
-      headerName: t('headerTable2'),
-      renderCell: param => (
-        <>{new Date(param.value.split('T')[0]).toLocaleDateString()}</>
-      ),
-      ...rowsCenter
-    },
-    {
-      field: 'amount',
-      headerName: t('headerTable3'),
-      type: 'number',
-      renderCell: param => <>{formatWithThousandSeparator(param.value, 4)}</>,
-      ...rowsCenter
-    },
-    {
-      field: 'recipient',
-      headerName: t('headerTable4'),
-      ...rowsCenter
-    },
-    {
-      field: 'description',
-      headerName: t('headerTable5'),
-      renderCell: param => (
-        <>{param.value.length === 0 ? 'Without memo' : param.value}</>
-      ),
-      ...rowsCenter
-    },
-    {
-      field: 'category',
-      headerName: t('headerTable6'),
-      renderCell: param => (
-        <>{param.value === 'uncategorized' ? 'No' : 'Yes'}</>
-      ),
-      ...rowsCenter
-    },
-    {
-      field: 'action',
-      headerName: t('headerTable7'),
-      sortable: false,
-      renderCell: params => {
-        const onClick = () => {
-          handleOpenModal(params)
-        }
-        return (
-          <Tooltip title="Add category">
-            <IconButton onClick={onClick}>
-              <img src={`${process.env.PUBLIC_URL}/icons/add_circle.svg`} />
-            </IconButton>
-          </Tooltip>
-        )
-      },
-      ...rowsCenter
-    }
-  ]
 
   return (
     <div className={classes.root}>
@@ -361,13 +306,10 @@ const SpendTools = () => {
           <small>{!openModal && errorMessage}</small>
         </div>
       </form>
-      <div className={classes.tableContainer}>
-        <Divider />
-        <div className={classes.titleTable}>{t('titleTable')}</div>
-        <div id="id-table-container">
-          <TableReport columns={columns} dataPercent={transactionsList} />
-        </div>
-      </div>
+      <SpendToolTableRerport
+        handleOpenModal={handleOpenModal}
+        transactionsList={transactionsList}
+      />
     </div>
   )
 }

@@ -7,7 +7,8 @@ namespace eden {
 
   void edenexplorer_contract::categorize( eosio::name  account,
                                           std::string &new_memo,
-                                          std::string &tx_id ) {
+                                          std::string &tx_id,
+                                          std::string &digest ) {
     require_auth( account );
 
     eosio::action{ { get_self(), "active"_n },
@@ -20,6 +21,7 @@ namespace eden {
                   "Incorrect format or category, use: 'eden_expense: "
                   "<category>/<description>'" );
     eosio::check( tx_id.length() == 64, "Incorrect length transaction id" );
+    eosio::check( digest.length() == 64, "Incorrect length digest id" );
   }
 
   bool edenexplorer_contract::exist_category( std::string &category_name ) {

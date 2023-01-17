@@ -5,7 +5,7 @@ module.exports = {
   type: 'edenexplorer:categorize',
   apply: async action => {
     try {
-      const { new_memo, tx_id, account } = action.json
+      const { new_memo, tx_id, account, digest = undefined } = action.json
       const [, memo] = new_memo?.split(':') || ''
 
       if (!memo) return
@@ -13,8 +13,7 @@ module.exports = {
       const { category, description } = updaterUtil.memoSplit(memo)
       const transactionToEditQuery = {
         txid: { _eq: tx_id },
-        type: { _eq: 'expense' },
-        eden_election: { eden_delegate: { account: { _eq: account } } }
+        ...(digest && { digest: { _eq: digest } })
       }
 
       const transactionToEdit = await edenTransactionGql.get(
@@ -34,7 +33,7 @@ module.exports = {
       const updateQuery = {
         where: {
           id: { _eq: transactionToEdit.id },
-          type: { _eq: 'expense' }
+          ...(digest && { digest: { _eq: digest } })
         },
         _set: { category, description, id_election }
       }

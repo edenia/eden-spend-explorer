@@ -3,7 +3,10 @@ export default theme => ({
     margin: theme.spacing(1),
     '& #treasury-container-id': {
       display: 'flex',
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
+      [theme.breakpoints.down('sm')]: {
+        justifyContent: 'center'
+      }
     },
     [theme.breakpoints.down('sm')]: {
       margin: theme.spacing(0)
@@ -45,8 +48,7 @@ export default theme => ({
       color: theme.palette.secondary.main
     },
     '& #id-table-container': {
-      marginTop: theme.spacing(2),
-      height: 368
+      marginTop: theme.spacing(2)
     }
   },
   links: {
@@ -64,5 +66,18 @@ export default theme => ({
   disableLink: {
     pointerEvents: 'none',
     cursor: 'pointer'
+  },
+  disbursementsContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: theme.spacing(3)
+  },
+  disbursementBox: {
+    margin: theme.spacing(0, 2, 0, 2)
+  },
+  rankLevelBox: {
+    margin: theme.spacing(0, 2, 0, 2),
+    borderRight: '1px solid rgba(0, 0, 0, 0.12)',
+    paddingRight: theme.spacing(3)
   }
 })

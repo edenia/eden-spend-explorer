@@ -19,6 +19,7 @@ import { formatWithThousandSeparator } from '../../utils'
 import TableReport from '../../components/TableReport'
 import SelectComponent from '../../components/Select'
 
+import TreasuryDisbursementsInfo from './treasury-disbursements-info'
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
@@ -37,7 +38,9 @@ const IncomeReport = () => {
       delegatesList,
       treasuryList,
       electionRoundSelect,
-      showElectionRadio
+      showElectionRadio,
+      delegatesActualElectionList,
+      ranksList
     },
     { setElectionRoundSelect, setShowElectionRadio }
   ] = useIncomeReportState()
@@ -99,6 +102,10 @@ const IncomeReport = () => {
       <div id="treasury-container-id">
         <TreasuryBalance />
       </div>
+      <TreasuryDisbursementsInfo
+        delegatesActualElectionList={delegatesActualElectionList}
+        ranksList={ranksList}
+      />
       <LineChartReport
         data={treasuryList}
         keyTranslation={'titleLineChart'}

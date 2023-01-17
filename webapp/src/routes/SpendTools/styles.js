@@ -108,6 +108,7 @@ export default theme => ({
     }
   },
   tableContainer: {
+    minWidth: '920px',
     marginTop: theme.spacing(2),
     '& .MuiDataGrid-columnHeaderTitle': {
       fontWeight: 'bold',
@@ -117,11 +118,7 @@ export default theme => ({
       display: 'none'
     },
     '& #id-table-container': {
-      marginTop: theme.spacing(2),
-      height: '369px',
-      [theme.breakpoints.down('sm')]: {
-        height: '400px'
-      }
+      marginTop: theme.spacing(2)
     }
   },
   buttonContainer: {
@@ -151,7 +148,7 @@ export default theme => ({
       marginTop: '2px'
     },
     '& a:hover': {
-      color: theme.palette.secondary.main
+      color: theme.palette.primary.main
     }
   },
   labelButtonTransfer: {
@@ -194,7 +191,6 @@ export default theme => ({
     marginTop: '32px'
   },
   titleTable: {
-    marginLeft: '5%',
     marginTop: theme.spacing(3),
     fontSize: '18px',
     fontWeight: '500',
