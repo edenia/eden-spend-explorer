@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from 'react'
-import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
+import { makeStyles } from '@mui/styles'
 import {
   FormControl,
   FormControlLabel,
@@ -10,15 +10,15 @@ import {
 } from '@mui/material'
 
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
-import BarChartReport from '../../components/BarChartReport'
 import LineChartReport from '../../components/LineChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
+import BarChartReport from '../../components/BarChartReport'
 import PieChartReport from '../../components/PieChartReport'
 import SelectComponent from '../../components/Select'
 
 import TreasuryDisbursementsInfo from './treasury-disbursements-info'
-import styles from './styles'
 import IncomeTableReport from './income-table-report'
+import styles from './styles'
 
 const useStyles = makeStyles(styles)
 
