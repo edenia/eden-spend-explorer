@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@mui/styles'
 import {
@@ -40,10 +40,6 @@ const IncomeReport = () => {
     },
     { setElectionRoundSelect, setShowElectionRadio }
   ] = useIncomeReportState()
-
-  useEffect(() => {
-    setShowElectionRadio('allElections')
-  }, [])
 
   const tableData =
     showElectionRadio === 'allElections' ? incomeByElectionsList : delegatesList

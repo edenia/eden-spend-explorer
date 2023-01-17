@@ -173,7 +173,7 @@ const CustomBarChart = ({
 
 CustomBarChart.propTypes = {
   typeData: PropTypes.string,
-  selectedUSD: PropTypes.string,
+  selectedUSD: PropTypes.any,
   data: PropTypes.array,
   barRef: PropTypes.object,
   showLegend: PropTypes.bool
