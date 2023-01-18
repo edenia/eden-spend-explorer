@@ -94,7 +94,8 @@
     "perHeadChief": "Por Head Chief",
     "trasury": "Balance de tesorería proyectado",
     "delegate": "Delegate",
-    "balance": "Saldo de Tesorería"
+    "balance": "Saldo de Tesorería",
+    "estimated": "Balance de Tesorería Estimado"
   },
   "expenseRoute": {
     "titleBarChart": "Gasto por Elección",
