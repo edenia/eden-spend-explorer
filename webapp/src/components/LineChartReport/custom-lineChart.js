@@ -67,7 +67,7 @@ const CustomLineChart = ({ selectedUSD, data, lineRef }) => {
 
   return (
     <ResponsiveContainer width="100%" height={300} marginTop="16px">
-      <LineChart height={300} data={data} ref={lineRef}>
+      <LineChart margin={{ left: -16 }} height={300} data={data} ref={lineRef}>
         <CartesianGrid stroke="#f0f0f0" />
         <XAxis
           tick={{ fontSize: 10, stroke: '#000', strokeWidth: 0.5 }}

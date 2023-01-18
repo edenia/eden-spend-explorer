@@ -61,7 +61,12 @@ const CustomBarChart = ({ typeData, selectedUSD, data, barRef }) => {
 
   return (
     <ResponsiveContainer width="100%" height={300} marginTop="16px">
-      <ComposedChart height={300} data={data} ref={barRef}>
+      <ComposedChart
+        margin={{ left: -16 }}
+        height={300}
+        data={data}
+        ref={barRef}
+      >
         <CartesianGrid stroke="#f0f0f0" />
         <XAxis
           tick={{ fontSize: 10, stroke: '#000', strokeWidth: 0.5 }}
