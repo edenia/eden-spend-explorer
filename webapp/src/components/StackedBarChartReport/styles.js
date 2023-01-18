@@ -1,6 +1,7 @@
 export default theme => ({
   chartContainer: {
-    margin: theme.spacing(2, 0, 2, 0)
+    marginTop: theme.spacing(2),
+    width: '100%'
   },
   title: {
     '& span': {
@@ -24,6 +25,7 @@ export default theme => ({
     alignItems: 'center'
   },
   chartLegent: {
+    marginLeft: theme.spacing(3),
     display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap',

@@ -53,6 +53,7 @@ const IncomeReport = () => {
         keyTranslation={'titleLineChart'}
         pathTranslation={'incomeRoute'}
       />
+      <Divider variant="middle" />
       <BarChartReport
         data={incomeByElectionsList}
         keyTranslation={'titleBarChart'}
@@ -72,19 +73,17 @@ const IncomeReport = () => {
             defaultValue={showElectionRadio}
           />
         </div>
-        <div id="id-radio-election-container">
-          {showElectionRadio === 'oneElection' && (
-            <>
-              <SelectComponent
-                onChangeFunction={setElectionRoundSelect}
-                labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
-                values={electionsList.map(data => `${data.election}`)}
-                actualValue={electionRoundSelect}
-                size="small"
-              />
-            </>
-          )}
-        </div>
+        {showElectionRadio === 'oneElection' && (
+          <div id="id-radio-election-container">
+            <SelectComponent
+              onChangeFunction={setElectionRoundSelect}
+              labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
+              values={electionsList.map(data => `${data.election}`)}
+              actualValue={electionRoundSelect}
+              size="small"
+            />
+          </div>
+        )}
       </div>
 
       <PieChartReport

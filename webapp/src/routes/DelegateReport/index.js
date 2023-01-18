@@ -1,9 +1,9 @@
 import React, { memo } from 'react'
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
+import { useTranslation } from 'react-i18next'
 import { Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import { useTranslation } from 'react-i18next'
 import { Spinner } from '@edenia/ui-kit'
 
 import useDelegateReportState from '../../hooks/customHooks/useDelegateReportState'

@@ -93,7 +93,7 @@ export default theme => ({
   },
   chartContainer: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     [theme.breakpoints.down('md')]: {
       justifyContent: 'center',
       flexDirection: 'column'

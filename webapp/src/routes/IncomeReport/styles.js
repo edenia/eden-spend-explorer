@@ -24,9 +24,12 @@ export default theme => ({
     marginTop: theme.spacing(2),
     '& #id-radio-election-container': {
       display: 'flex',
-      marginLeft: theme.spacing(2),
       justifyContent: 'end',
       alignItems: 'center'
+    },
+    '& .MuiFormControlLabel-root': {
+      marginRight: 0,
+      marginLeft: theme.spacing(2)
     },
     '& span': {
       fontSize: '12px',

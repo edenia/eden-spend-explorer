@@ -98,7 +98,7 @@ const CustomPieChart = ({
   }, [typeData])
 
   return (
-    <ResponsiveContainer width="100%" height={350}>
+    <ResponsiveContainer width="100%" height={400}>
       <PieChart ref={pieRef}>
         <Pie
           activeIndex={activeIndex}

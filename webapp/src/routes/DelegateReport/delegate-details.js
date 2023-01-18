@@ -1,11 +1,12 @@
 import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import { Alert } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@mui/styles'
+import { Alert } from '@mui/material'
+import PropTypes from 'prop-types'
 
 import StackedBarChartReport from '../../components/StackedBarChartReport'
 import PieChartReport from '../../components/PieChartReport'
+
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
