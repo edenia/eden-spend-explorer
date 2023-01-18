@@ -44,8 +44,6 @@ RenderChartLegend.propTypes = {
   data: PropTypes.string
 }
 
-const width = window.innerWidth
-
 const CustomBarChart = ({ typeData, selectedUSD, data, barRef }) => {
   const [category, setCategory] = useState('')
   const [coinType, setCoinType] = useState('EOS')
@@ -93,7 +91,7 @@ const CustomBarChart = ({ typeData, selectedUSD, data, barRef }) => {
             dataKey={`${coinType}_${label.toLocaleUpperCase()}${
               label === 'total' ? '' : category.toLocaleUpperCase()
             }`}
-            barSize={width > 600 ? 35 : 15}
+            barSize={35}
             fill={color}
           />
         ))}

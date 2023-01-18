@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 
 import { formatWithThousandSeparator } from '../../utils'
 
-const CustomTooltipBarChart = ({ payload = [], label, coinType, category }) => {
+const CustomTooltipBarChart = ({ payload, label, coinType, category }) => {
   const { t } = useTranslation('generalForm')
   label = label + ''
   const arrayLabel = label.split(' ')
 
-  if (!payload[0]) return null
+  if (!payload) return null
 
   return (
     <>

@@ -4,16 +4,12 @@ import { useTranslation } from 'react-i18next'
 
 import { formatWithThousandSeparator } from '../../utils'
 
-const CustomTooltipStakedBarChart = ({
-  payload = [],
-  label = '',
-  coinType = ''
-}) => {
+const CustomTooltipStakedBarChart = ({ payload, label, coinType }) => {
   const { t } = useTranslation('generalForm')
   label = label + ''
   const arrayLabel = label.split(' ')
 
-  if (!payload[0]) return null
+  if (!payload) return null
 
   return (
     <>

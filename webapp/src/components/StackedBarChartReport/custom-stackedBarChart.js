@@ -80,7 +80,7 @@ const CustomStackedBarChart = ({ data, barRef, coinType, showLegend }) => {
             />
           ))}
         </Bar>
-        <Bar dataKey={`${coinType}_UN`} barSize={88} stackId="a">
+        <Bar dataKey={`${coinType}_UN`} barSize={35} stackId="a">
           {data.map(({ type }) => (
             <Cell
               key={`cell-${type}`}
