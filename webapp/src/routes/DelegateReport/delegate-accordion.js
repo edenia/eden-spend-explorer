@@ -1,22 +1,22 @@
 import React, { memo, useEffect } from 'react'
-import PropTypes from 'prop-types'
-import Accordion from '@mui/material/Accordion'
-import { makeStyles } from '@mui/styles'
 import AccordionDetails from '@mui/material/AccordionDetails'
-import { Alert, Divider, Typography } from '@mui/material'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { DelegateItem } from '@edenia/ui-kit'
+import { Alert, Divider, Typography } from '@mui/material'
+import Accordion from '@mui/material/Accordion'
 import { useTranslation } from 'react-i18next'
+import { DelegateItem } from '@edenia/ui-kit'
+import { makeStyles } from '@mui/styles'
+import PropTypes from 'prop-types'
 
 import { formatWithThousandSeparator } from '../../utils'
-import DelegateDetails from '../DelegateDetails'
 
 import styles from './styles'
+import DelegateDetails from './delegate-details'
 
 const useStyles = makeStyles(styles)
 
-const AccordionComp = ({
+const DelegateAccordion = ({
   accordionList,
   transactionList,
   categoryList,
@@ -41,7 +41,7 @@ const AccordionComp = ({
   return (
     <div className={classes.accordionContainer}>
       {accordionList.length < 1 && searchValue.length > 0 ? (
-        <div className={classes.alertContainer}>
+        <div className={classes.alertAccordionContainer}>
           <Alert severity="error">
             {t('invalidEdenMember', { ns: 'routes' })}
           </Alert>
@@ -96,13 +96,13 @@ const AccordionComp = ({
   )
 }
 
-AccordionComp.propTypes = {
+DelegateAccordion.propTypes = {
   accordionList: PropTypes.array,
   transactionList: PropTypes.array,
   categoryList: PropTypes.array,
   setDelegateSelect: PropTypes.func,
   searchValue: PropTypes.string,
-  electionRoundSelect: PropTypes.number
+  electionRoundSelect: PropTypes.any
 }
 
-export default memo(AccordionComp)
+export default memo(DelegateAccordion)

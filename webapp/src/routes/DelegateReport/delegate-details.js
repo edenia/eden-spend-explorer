@@ -18,7 +18,7 @@ const DelegateDetails = ({ categoryList, transactionList }) => {
     <div className={classes.chartContainer}>
       <div className={classes.pieChartContainer}>
         {!categoryList[0] ? (
-          <div className={classes.alertContainer}>
+          <div className={classes.alertDetailContainer}>
             <Alert severity="error">
               {t('noExpense', { ns: 'generalForm' })}
             </Alert>

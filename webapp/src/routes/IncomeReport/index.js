@@ -1,19 +1,14 @@
 import React, { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@mui/styles'
-import {
-  FormControl,
-  FormControlLabel,
-  RadioGroup,
-  Radio,
-  Divider
-} from '@mui/material'
+import { Divider } from '@mui/material'
 
 import useIncomeReportState from '../../hooks/customHooks/useIncomeReportState'
 import LineChartReport from '../../components/LineChartReport'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import BarChartReport from '../../components/BarChartReport'
 import PieChartReport from '../../components/PieChartReport'
+import RadioFilter from '../../components/RadioFilter'
 import SelectComponent from '../../components/Select'
 
 import TreasuryDisbursementsInfo from './treasury-disbursements-info'
@@ -68,25 +63,14 @@ const IncomeReport = () => {
       <Divider variant="middle" />
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
-          <FormControl>
-            <RadioGroup
-              name="election-radio-buttons-group"
-              row
-              onChange={({ target }) => setShowElectionRadio(target.value)}
-              value={showElectionRadio}
-            >
-              <FormControlLabel
-                control={<Radio size="small" />}
-                label={t('textRadioButton4', { ns: 'generalForm' })}
-                value="allElections"
-              />
-              <FormControlLabel
-                control={<Radio size="small" />}
-                label={t('textRadioButton3', { ns: 'generalForm' })}
-                value="oneElection"
-              />
-            </RadioGroup>
-          </FormControl>
+          <RadioFilter
+            setValue={setShowElectionRadio}
+            label1={t('textRadioButton4', { ns: 'generalForm' })}
+            value1="allElections"
+            label2={t('textRadioButton3', { ns: 'generalForm' })}
+            value2="oneElection"
+            defaultValue={showElectionRadio}
+          />
         </div>
         <div id="id-radio-election-container">
           {showElectionRadio === 'oneElection' && (

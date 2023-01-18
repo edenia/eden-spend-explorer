@@ -1,13 +1,13 @@
 import React, { memo } from 'react'
 import PropTypes from 'prop-types'
-import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@mui/styles'
+import { Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
+import TableReport from '../../components/TableReport'
 import { formatWithThousandSeparator } from '../../utils'
 
 import styles from './styles'
-import { Typography } from '@mui/material'
-import TableReport from '../../components/TableReport'
 
 const useStyles = makeStyles(styles)
 const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
