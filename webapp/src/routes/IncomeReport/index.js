@@ -58,7 +58,6 @@ const IncomeReport = () => {
         data={incomeByElectionsList}
         keyTranslation={'titleBarChart'}
         pathTranslation={'incomeRoute'}
-        showLegend={true}
         typeData={'income'}
       />
       <Divider variant="middle" />

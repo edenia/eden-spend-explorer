@@ -11,7 +11,7 @@ export const GET_TOTAL_EXPENSE_BY_ALL_ELECTIONS = gql`
       usd_categorized
       usd_uncategorized
     }
-    eden_historic_election {
+    eden_historic_election(order_by: { election: asc }) {
       election
       date_election
     }

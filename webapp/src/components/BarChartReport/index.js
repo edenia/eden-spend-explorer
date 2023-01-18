@@ -23,7 +23,6 @@ const BarChartReport = ({
   data,
   keyTranslation,
   pathTranslation,
-  showLegend,
   typeData
 }) => {
   const classes = useStyles()
@@ -69,7 +68,6 @@ const BarChartReport = ({
       <div className={classes.chartContainer}>
         <CustomBarChart
           barRef={barRef}
-          showLegend={showLegend}
           data={data}
           typeData={typeData}
           selectedUSD={selectedUSD}
@@ -83,7 +81,6 @@ BarChartReport.propTypes = {
   data: PropTypes.array,
   keyTranslation: PropTypes.string,
   pathTranslation: PropTypes.string,
-  showLegend: PropTypes.bool,
   typeData: PropTypes.string
 }
 

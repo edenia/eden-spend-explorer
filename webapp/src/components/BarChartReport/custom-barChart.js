@@ -11,33 +11,31 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
-  Cell
+  ResponsiveContainer
 } from 'recharts'
 
+import CustomTooltipBarChart from './custom-tooltip-barChart'
 import styles from './styles'
-import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 
 const useStyles = makeStyles(styles)
+const legentsList = [
+  { color: '#f4d35e', label: 'un' },
+  { color: '#ee964b', label: '' },
+  { color: '#19647e', label: 'total' }
+]
 
 const RenderChartLegend = ({ data }) => {
   const classes = useStyles()
-  const { t } = useTranslation()
+  const { t } = useTranslation('generalForm')
 
   return (
     <div className={classes.chartLegent}>
-      <a key={`key-Un${data.toLocaleLowerCase()}-link-chart`}>
-        <Box className={classes.legentCircle} bgcolor="#f4d35e" />
-        {t(`un${data.toLocaleLowerCase()}`, { ns: 'generalForm' })}
-      </a>
-      <a key={`key-${data}-link-chart`}>
-        <Box className={classes.legentCircle} bgcolor="#ee964b" />
-        {t(`${data.toLocaleLowerCase()}`, { ns: 'generalForm' })}
-      </a>
-      <a key={`key-total-link-chart`}>
-        <Box className={classes.legentCircle} bgcolor="#19647e" />
-        {t('total', { ns: 'generalForm' })}
-      </a>
+      {legentsList.map(({ color, label }) => (
+        <a key={`key-${label + data.toLocaleLowerCase()}-link-chart`}>
+          <Box className={classes.legentCircle} bgcolor={color} />
+          {t(`${label === 'total' ? label : label + data.toLocaleLowerCase()}`)}
+        </a>
+      ))}
     </div>
   )
 }
@@ -46,70 +44,15 @@ RenderChartLegend.propTypes = {
   data: PropTypes.string
 }
 
-const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
-  const { t } = useTranslation()
-  label = label + ''
-  const arrayLabel = label.split(' ')
-
-  return (
-    <div>
-      <strong>
-        {`${t(arrayLabel[0].toLocaleLowerCase(), { ns: 'generalForm' })} ${
-          arrayLabel[1]
-        }`}
-      </strong>
-      {payload &&
-        payload.map((data, i) => (
-          <div key={`${i}-tooltip`}>
-            <div>
-              {i === 0 &&
-                data.payload?.date &&
-                `${
-                  data.payload.date ? t('date', { ns: 'generalForm' }) : ''
-                }: ${
-                  data.payload.date ? data.payload.date.split('T')[0] : ''
-                } `}
-            </div>
-            <div>
-              {`${t(
-                data.payload.category
-                  ? `${data.dataKey
-                      .split('_')[1]
-                      .toLocaleLowerCase()}${data.payload.category.toLocaleLowerCase()}`
-                  : data.dataKey.split('_')[1].toLocaleLowerCase(),
-                { ns: 'generalForm' }
-              )}: ${formatWithThousandSeparator(
-                data.payload[data.dataKey],
-                4
-              )} ${coinType}`}
-            </div>
-          </div>
-        ))}
-    </div>
-  )
-}
-
-CustomTooltip.propTypes = {
-  payload: PropTypes.array,
-  label: PropTypes.any,
-  coinType: PropTypes.string
-}
-
 const width = window.innerWidth
 
-const CustomBarChart = ({
-  typeData,
-  selectedUSD,
-  data,
-  barRef,
-  showLegend
-}) => {
+const CustomBarChart = ({ typeData, selectedUSD, data, barRef }) => {
   const [category, setCategory] = useState('')
   const [coinType, setCoinType] = useState('EOS')
 
   useEffect(() => {
-    if (typeData === 'income') setCategory('Claimed')
-    else setCategory('Categorized')
+    if (typeData === 'income') setCategory('claimed')
+    else setCategory('categorized')
   }, [typeData])
 
   useEffect(() => {
@@ -134,38 +77,21 @@ const CustomBarChart = ({
             fontSize: '14px',
             padding: '8px'
           }}
-          content={<CustomTooltip coinType={coinType} />}
+          content={
+            <CustomTooltipBarChart coinType={coinType} category={category} />
+          }
         />
-        {showLegend && (
-          <Legend content={<RenderChartLegend data={category} />} />
-        )}
-        <Bar
-          dataKey={`${coinType}_UN${category.toLocaleUpperCase()}`}
-          barSize={width > 600 ? 35 : 15}
-          fill="#f4d35e"
-        >
-          {data.map(({ election }) => (
-            <Cell key={`cell-${election}`} />
-          ))}
-        </Bar>
-        <Bar
-          dataKey={`${coinType}_${category.toLocaleUpperCase()}`}
-          barSize={width > 600 ? 35 : 15}
-          fill="#ee964b"
-        >
-          {data.map(({ election }) => (
-            <Cell key={`cell-${election}`} />
-          ))}
-        </Bar>
-        <Bar
-          dataKey={`${coinType}_TOTAL`}
-          barSize={width > 600 ? 35 : 15}
-          fill="#19647e"
-        >
-          {data.map(({ election }) => (
-            <Cell key={`cell-${election}`} />
-          ))}
-        </Bar>
+        <Legend content={<RenderChartLegend data={category} />} />
+        {legentsList.map(({ color, label }) => (
+          <Bar
+            key={`key-${label + category}-bar`}
+            dataKey={`${coinType}_${label.toLocaleUpperCase()}${
+              label === 'total' ? '' : category.toLocaleUpperCase()
+            }`}
+            barSize={width > 600 ? 35 : 15}
+            fill={color}
+          />
+        ))}
       </ComposedChart>
     </ResponsiveContainer>
   )
@@ -175,8 +101,7 @@ CustomBarChart.propTypes = {
   typeData: PropTypes.string,
   selectedUSD: PropTypes.any,
   data: PropTypes.array,
-  barRef: PropTypes.object,
-  showLegend: PropTypes.bool
+  barRef: PropTypes.object
 }
 
 export default memo(CustomBarChart)

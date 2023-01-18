@@ -45,7 +45,6 @@ const ExpenseReport = () => {
         data={expenseByElectionsList}
         keyTranslation={'titleBarChart'}
         pathTranslation={'expenseRoute'}
-        showLegend={true}
         typeData={'expense'}
       />
       <Divider variant="middle" />
