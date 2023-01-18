@@ -15,9 +15,8 @@ import {
   Cell
 } from 'recharts'
 
-import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
-
 import styles from './styles'
+import CustomTooltipStackedBarChart from './custom-tooltip-stackedBarChart'
 
 const useStyles = makeStyles(styles)
 const legendsList = [
@@ -41,41 +40,6 @@ const RenderChartLegend = () => {
       ))}
     </div>
   )
-}
-
-const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
-  const { t } = useTranslation('generalForm')
-  label = label + ''
-  const arrayLabel = label.split(' ')
-
-  return (
-    <div>
-      <strong>{t(arrayLabel[0].toLocaleLowerCase())}</strong>
-      {payload &&
-        payload.map((data, i) => (
-          <div key={`${i}-tooltip`}>
-            {`${
-              data.payload.category
-                ? t(
-                    (
-                      data.dataKey.split('_')[1] + data.payload.category
-                    ).toLocaleLowerCase()
-                  )
-                : t(data.dataKey.split('_')[1].toLocaleLowerCase())
-            }: ${formatWithThousandSeparator(
-              data.payload[data.dataKey],
-              4
-            )} ${coinType}`}
-          </div>
-        ))}
-    </div>
-  )
-}
-
-CustomTooltip.propTypes = {
-  payload: PropTypes.array,
-  label: PropTypes.any,
-  coinType: PropTypes.string
 }
 
 const CustomStackedBarChart = ({ data, barRef, coinType, showLegend }) => {
@@ -105,7 +69,7 @@ const CustomStackedBarChart = ({ data, barRef, coinType, showLegend }) => {
             fontSize: '14px',
             padding: '8px'
           }}
-          content={<CustomTooltip coinType={coinType} />}
+          content={<CustomTooltipStackedBarChart coinType={coinType} />}
         />
         {showLegend && <Legend content={<RenderChartLegend />} />}
         <Bar dataKey={`${coinType}_`} barSize={88} stackId="a">
