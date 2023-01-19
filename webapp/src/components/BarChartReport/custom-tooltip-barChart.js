@@ -7,9 +7,10 @@ import { formatWithThousandSeparator } from '../../utils'
 const CustomTooltipBarChart = ({ payload, label, coinType, category }) => {
   const { t } = useTranslation('generalForm')
   label = label + ''
-  const arrayLabel = label.split(' ')
 
   if (!payload) return null
+
+  const arrayLabel = label.split(' ')
 
   return (
     <>

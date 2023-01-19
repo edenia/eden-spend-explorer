@@ -1,6 +1,5 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo } from 'react'
 import PropTypes from 'prop-types'
-import { useTranslation } from 'react-i18next'
 import {
   XAxis,
   YAxis,
@@ -12,62 +11,19 @@ import {
   Brush
 } from 'recharts'
 
-import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
+import CustomTooltipLineChart from './custom-tooltip-lineChart'
 
 const width = window.innerWidth
 
-const CustomTooltip = ({ payload = [], label = '', coinType = '' }) => {
-  const { t } = useTranslation()
-  label = label + ''
-
-  return (
-    <div>
-      {payload &&
-        payload.map((data, i) => (
-          <div key={`${i}-tooltip`}>
-            <div>
-              {i === 0 &&
-                `${t('date', { ns: 'generalForm' })}: ${
-                  data.payload.date.split('T')[0]
-                } `}
-            </div>
-            <div>
-              {`${t('balance', {
-                ns: 'incomeRoute'
-              })}: ${formatWithThousandSeparator(
-                data.payload[data.dataKey],
-                4
-              )} ${coinType}`}
-            </div>
-          </div>
-        ))}
-    </div>
-  )
-}
-
-CustomTooltip.propTypes = {
-  payload: PropTypes.array,
-  label: PropTypes.any,
-  coinType: PropTypes.string
-}
-
-const CustomLineChart = ({ selectedUSD, data, lineRef }) => {
-  const [coinType, setCoinType] = useState('EOS')
-  const [dataKey, setDataKey] = useState('balance')
-
-  useEffect(() => {
-    if (selectedUSD) {
-      setCoinType('USD')
-      setDataKey('usd_total')
-    } else {
-      setDataKey('balance')
-      setCoinType('EOS')
-    }
-  }, [selectedUSD])
-
+const CustomLineChart = ({ coinType, data, lineRef }) => {
   return (
     <ResponsiveContainer width="100%" height={300} marginTop="16px">
-      <LineChart margin={{ left: -16 }} height={300} data={data} ref={lineRef}>
+      <LineChart
+        margin={{ left: -16, top: 8 }}
+        height={300}
+        data={data}
+        ref={lineRef}
+      >
         <CartesianGrid stroke="#f0f0f0" />
         <XAxis
           tick={{ fontSize: 10, stroke: '#000', strokeWidth: 0.5 }}
@@ -88,14 +44,22 @@ const CustomLineChart = ({ selectedUSD, data, lineRef }) => {
             fontSize: '14px',
             padding: '8px'
           }}
-          content={<CustomTooltip coinType={coinType} />}
+          content={<CustomTooltipLineChart coinType={coinType} />}
         />
         <Line
           type="monotone"
-          dataKey={dataKey}
+          dataKey={`${coinType}_BALANCE`}
           stroke="#3866eb"
           strokeWidth={2}
           activeDot={{ r: 8 }}
+        />
+        <Line
+          type="monotone"
+          dataKey={`${coinType}_VALUED`}
+          stroke="#3866eb"
+          strokeWidth={2}
+          activeDot={{ r: 8 }}
+          strokeDasharray={5}
         />
         <Brush
           dataKey={'date'}
@@ -109,7 +73,7 @@ const CustomLineChart = ({ selectedUSD, data, lineRef }) => {
 }
 
 CustomLineChart.propTypes = {
-  selectedUSD: PropTypes.bool,
+  coinType: PropTypes.string,
   data: PropTypes.array,
   lineRef: PropTypes.object
 }

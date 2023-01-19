@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import FileSaver from 'file-saver'
 import { makeStyles } from '@mui/styles'
@@ -24,6 +24,7 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
   const [getBarPng, { ref: lineRef }] = useCurrentPng()
   const { t } = useTranslation()
   const [selectedUSD, setSelected] = useState(false)
+  const [coinType, setCoinType] = useState('EOS')
 
   const handleChange = event => {
     setSelected(event.target.checked)
@@ -36,6 +37,14 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
       FileSaver.saveAs(png, 'line-chart.png')
     }
   }, [getBarPng])
+
+  useEffect(() => {
+    if (selectedUSD) {
+      setCoinType('USD')
+    } else {
+      setCoinType('EOS')
+    }
+  }, [selectedUSD])
 
   return (
     <div className={classes.root}>
@@ -61,11 +70,7 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
         </div>
       </div>
       <div className={classes.chartContainer}>
-        <CustomLineChart
-          selectedUSD={selectedUSD}
-          data={data}
-          lineRef={lineRef}
-        />
+        <CustomLineChart coinType={coinType} data={data} lineRef={lineRef} />
       </div>
     </div>
   )

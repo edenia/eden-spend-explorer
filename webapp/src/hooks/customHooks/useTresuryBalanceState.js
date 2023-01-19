@@ -63,9 +63,7 @@ const useTresuryBalanceState = () => {
         scope: 0,
         table: 'distribution'
       })
-      const date = new Date(
-        response?.rows[0][1]?.distribution_time
-      ).toLocaleDateString()
+      const date = new Date(response?.rows[0][1]?.distribution_time)
 
       setNextEdenDisbursement(date)
     } catch (error) {

@@ -93,7 +93,8 @@
     "perHeadChief": "Per Head Chief",
     "trasury": "Projected Treasury Balance",
     "delegate": "Delegate",
-    "balance": "Treasury Balance"
+    "balance": "Treasury Balance",
+    "estimated": "Estimated Treasury Balance"
   },
   "expenseRoute": {
     "titleBarChart": "Expense per Election",

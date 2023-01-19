@@ -83,12 +83,19 @@
     "tableHeader8": "% No reclamado",
     "claimedCategory": "Reclamado",
     "unclaimedCategory": "No reclamado",
+    "titleDisbursement": "Distribución mensual",
+    "paragraph1Disbursement": "Los desembolsos del delegado Eden se producen mensualmente y son reclamados por el delegado del contrato a sus cuentas personales del EOS.",
+    "paragraph2Disbursement": "El desembolso global equivale al 11% de la tesorería de Edén en el momento del desembolso. El importe se divide a partes iguales entre los niveles representativos. En cada nivel, la cantidad se divide a partes iguales entre los representantes de ese nivel.",
+    "paragraph3Disbursement": "Fecha de la siguiente distribución:",
+    "paragraph4Disbursement": "Monto proyectado para la siguiente distribución:",
+
     "perLevel": "Por Level",
     "perChief": "Por Chief",
     "perHeadChief": "Por Head Chief",
     "trasury": "Balance de tesorería proyectado",
     "delegate": "Delegate",
-    "balance": "Saldo de Tesorería"
+    "balance": "Saldo de Tesorería",
+    "estimated": "Balance de Tesorería Estimado"
   },
   "expenseRoute": {
     "titleBarChart": "Gasto por Elección",
