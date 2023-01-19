@@ -93,13 +93,22 @@ CustomTooltip.propTypes = {
   coinType: PropTypes.string
 }
 
-const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
+const LineChartReport = ({
+  data,
+  historicElections,
+  keyTranslation,
+  pathTranslation
+}) => {
   const classes = useStyles()
   const [getBarPng, { ref: lineRef }] = useCurrentPng()
   const { t } = useTranslation()
+  const width = window.innerWidth
   const [selectedUSD, setSelected] = useState(false)
   const [coinType, setCoinType] = useState('EOS')
-  const width = window.innerWidth
+  const [countData, setCountData] = useState(data.length)
+  const [xAxisData, setXAxisData] = useState(width > 600 ? 40 : 80)
+
+  console.log(historicElections)
 
   const handleChange = event => {
     setSelected(event.target.checked)
@@ -120,6 +129,18 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
       setCoinType('EOS')
     }
   }, [selectedUSD])
+
+  const handleBrushChange = data => {
+    const count = data.endIndex - data.startIndex
+    setCountData(count + 1)
+  }
+
+  useEffect(() => {
+    if (countData === 0) return
+    setXAxisData(width > 600 ? 40 : 80)
+    if (countData > 200) setXAxisData(Math.round(countData * 0.25))
+    else setXAxisData(Math.round(countData * 0.1))
+  }, [countData])
 
   return (
     <div className={classes.root}>
@@ -152,7 +173,7 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
               tick={{ fontSize: 10, stroke: '#000', strokeWidth: 0.5 }}
               dataKey="date"
               scale="auto"
-              interval={width > 600 ? 40 : 80}
+              interval={xAxisData}
               allowDataOverflow={false}
             />
             <YAxis
@@ -189,6 +210,7 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
               width={width > 600 ? width * 0.4 : 100}
               height={20}
               x={width > 600 ? width * 0.2 : 150}
+              onChange={handleBrushChange}
             />
           </LineChart>
         </ResponsiveContainer>
@@ -199,6 +221,7 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
 
 LineChartReport.propTypes = {
   data: PropTypes.array,
+  historicElections: PropTypes.array,
   keyTranslation: PropTypes.string,
   pathTranslation: PropTypes.string
 }
