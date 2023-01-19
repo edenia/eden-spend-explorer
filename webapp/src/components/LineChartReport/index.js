@@ -93,6 +93,21 @@ CustomTooltip.propTypes = {
   coinType: PropTypes.string
 }
 
+const renderTraveller = props => {
+  const { x, y, width, height } = props
+
+  return (
+    <path
+      d={`M ${x}, ${y + height}
+        m -${width * 5}, 0
+        a ${width * 5},${width * 5} 0 1,0 ${width * 10},0
+        a ${width * 5},${width * 5} 0 1,0 ${-width * 10},0`}
+      fill={'#3866eb'}
+      stroke={'#3866eb'}
+    />
+  )
+}
+
 const LineChartReport = ({
   data,
   historicElections,
@@ -107,8 +122,8 @@ const LineChartReport = ({
   const [coinType, setCoinType] = useState('EOS')
   const [countData, setCountData] = useState(data.length)
   const [xAxisData, setXAxisData] = useState(width > 600 ? 40 : 80)
-
-  console.log(historicElections)
+  const [viewSelected, setViewSelect] = useState('')
+  const [dataChart, setDataChart] = useState(data)
 
   const handleChange = event => {
     setSelected(event.target.checked)
@@ -130,6 +145,14 @@ const LineChartReport = ({
     }
   }, [selectedUSD])
 
+  useEffect(() => {
+    if (data === []) return
+
+    setDataChart(data)
+
+    if (data.length > 0) setViewSelect('all')
+  }, [data])
+
   const handleBrushChange = data => {
     const count = data.endIndex - data.startIndex
     setCountData(count + 1)
@@ -141,6 +164,28 @@ const LineChartReport = ({
     if (countData > 200) setXAxisData(Math.round(countData * 0.25))
     else setXAxisData(Math.round(countData * 0.1))
   }, [countData])
+
+  const handleSelectElection = e => {
+    setViewSelect(e.target.value)
+  }
+
+  useEffect(() => {
+    if (viewSelected === 'last') {
+      const date = historicElections?.at(-1)?.date_election.split('T')[0]
+      const subData = data?.filter(obj => obj.date >= date)
+      setDataChart(subData)
+      setCountData(subData.length)
+    } else if (viewSelected === 'last-three') {
+      const count = historicElections.length - 3 || 0
+      const date = historicElections?.at(count)?.date_election.split('T')[0]
+      const subData = data?.filter(obj => obj.date >= date)
+      setDataChart(subData)
+      setCountData(subData.length)
+    } else {
+      setDataChart(data)
+      setCountData(data.length)
+    }
+  }, [viewSelected])
 
   return (
     <div className={classes.root}>
@@ -156,6 +201,15 @@ const LineChartReport = ({
           </TooltipDownload>
         </div>
         <div className={classes.filter}>
+          <button onClick={handleSelectElection} value="all">
+            all
+          </button>
+          <button onClick={handleSelectElection} value="last-three">
+            last three election
+          </button>
+          <button onClick={handleSelectElection} value="last">
+            last election
+          </button>
           <FormGroup>
             <FormControlLabel
               control={<Switch checked={selectedUSD} onChange={handleChange} />}
@@ -167,7 +221,7 @@ const LineChartReport = ({
       </div>
       <div className={classes.chartContainer}>
         <ResponsiveContainer width="100%" height={300} marginTop="16px">
-          <LineChart height={300} data={data} ref={lineRef}>
+          <LineChart height={300} data={dataChart} ref={lineRef}>
             <CartesianGrid stroke="#f0f0f0" />
             <XAxis
               tick={{ fontSize: 10, stroke: '#000', strokeWidth: 0.5 }}
@@ -208,10 +262,30 @@ const LineChartReport = ({
             <Brush
               dataKey={'date'}
               width={width > 600 ? width * 0.4 : 100}
-              height={20}
               x={width > 600 ? width * 0.2 : 150}
+              stroke={'#C2E0FF'}
+              traveller={renderTraveller}
+              travellerWidth={1}
               onChange={handleBrushChange}
-            />
+            >
+              <LineChart data={dataChart}>
+                <Line
+                  type="monotone"
+                  dataKey={`${coinType}_BALANCE`}
+                  stroke="#3866eb"
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <Line
+                  type="monotone"
+                  dataKey={`${coinType}_VALUED`}
+                  stroke="#3866eb"
+                  strokeWidth={2}
+                  dot={false}
+                  strokeDasharray={5}
+                />
+              </LineChart>
+            </Brush>
           </LineChart>
         </ResponsiveContainer>
       </div>
