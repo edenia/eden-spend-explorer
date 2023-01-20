@@ -1,9 +1,7 @@
 export default theme => ({
   chartContainer: {
-    margin: theme.spacing(6, 6, 6, 6),
-    [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing(6, 1, 6, 1)
-    }
+    width: '100%',
+    marginTop: theme.spacing(2)
   },
   title: {
     '& span': {

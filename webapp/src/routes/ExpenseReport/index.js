@@ -1,27 +1,19 @@
 import React, { memo } from 'react'
+import { Divider } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import {
-  FormControl,
-  FormControlLabel,
-  RadioGroup,
-  Radio,
-  Divider,
-  Typography
-} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
 import useExpenseReportState from '../../hooks/customHooks/useExpenseReportState'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import BarChartReport from '../../components/BarChartReport'
 import PieChartReport from '../../components/PieChartReport'
-import { formatWithThousandSeparator } from '../../utils'
-import TableReport from '../../components/TableReport'
+import RadioFilter from '../../components/RadioFilter'
 import SelectComponent from '../../components/Select'
 
 import styles from './styles'
+import ExpenseTableReport from './expense-table-report'
 
 const useStyles = makeStyles(styles)
-const rowsCenter = { flex: 1, align: 'center', headerAlign: 'center' }
 
 const ExpenseReport = () => {
   const classes = useStyles()
@@ -44,59 +36,6 @@ const ExpenseReport = () => {
       ? expenseByElectionsList
       : delegatesList
 
-  const columns = [
-    {
-      field: 'election',
-      hide: !tableData[0]?.election,
-      headerName: t('tableElectionHeader', { ns: 'expenseRoute' }),
-      cellClassName: classes.links,
-      ...rowsCenter
-    },
-    {
-      field: 'name',
-      hide: !tableData[0]?.color,
-      headerName: tableData[0]?.name
-        ? t('tableHeader1', { ns: 'expenseRoute' })
-        : t('tableElectionHeader', { ns: 'expenseRoute' }),
-      cellClassName: classes.links,
-      renderCell: param => (
-        <a
-          className={tableData[0]?.name ? '' : classes.disableLink}
-          href={`https://eosdetective.io/network/transfers?accounts=${param.value}&time_min=1661975129190&time_max=1669751129190&excludedAccounts=&excludedCategories=system`}
-        >
-          {param.value}
-        </a>
-      ),
-      ...rowsCenter
-    },
-    {
-      field: tableData[0]?.election ? 'EOS_TOTAL' : 'EOS_CATEGORIZED',
-      headerName: 'EOS',
-      renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
-      type: 'number',
-      ...rowsCenter
-    },
-    {
-      field: tableData[0]?.election ? 'USD_TOTAL' : 'USD_CATEGORIZED',
-      headerName: 'USD',
-      renderCell: param => <>{formatWithThousandSeparator(param.value, 2)}</>,
-      type: 'number',
-      ...rowsCenter
-    },
-    {
-      field: 'EOS_CATEGORIZED_PERCENT',
-      headerName: t('tableHeader7', { ns: 'expenseRoute' }),
-      type: 'number',
-      ...rowsCenter
-    },
-    {
-      field: 'EOS_UNCATEGORIZED_PERCENT',
-      headerName: t('tableHeader8', { ns: 'expenseRoute' }),
-      type: 'number',
-      ...rowsCenter
-    }
-  ]
-
   return (
     <div className={classes.root}>
       <div id="treasury-container-id">
@@ -106,31 +45,19 @@ const ExpenseReport = () => {
         data={expenseByElectionsList}
         keyTranslation={'titleBarChart'}
         pathTranslation={'expenseRoute'}
-        showLegend={true}
         typeData={'expense'}
       />
       <Divider variant="middle" />
       <div className={classes.filtersContainer}>
         <div id="id-radio-election-container">
-          <FormControl>
-            <RadioGroup
-              name="election-radio-buttons-group"
-              row
-              onChange={({ target }) => setShowElectionRadio(target.value)}
-              value={showElectionRadio}
-            >
-              <FormControlLabel
-                control={<Radio size="small" />}
-                label={t('textRadioButton4', { ns: 'generalForm' })}
-                value="allElections"
-              />
-              <FormControlLabel
-                control={<Radio size="small" />}
-                label={t('textRadioButton3', { ns: 'generalForm' })}
-                value="oneElection"
-              />
-            </RadioGroup>
-          </FormControl>
+          <RadioFilter
+            setValue={setShowElectionRadio}
+            label1={t('textRadioButton4', { ns: 'generalForm' })}
+            value1="allElections"
+            label2={t('textRadioButton3', { ns: 'generalForm' })}
+            value2="oneElection"
+            defaultValue={showElectionRadio}
+          />
         </div>
         {showElectionRadio === 'oneElection' && (
           <div id="id-radio-election-container">
@@ -164,18 +91,10 @@ const ExpenseReport = () => {
         </div>
       </div>
       <Divider variant="middle" />
-      <div className={classes.tableContainer}>
-        <div className={classes.title}>
-          <Typography variant="span">
-            {showElectionRadio === 'allElections'
-              ? t('titleTable2', { ns: 'expenseRoute' })
-              : t('titleTable', { ns: 'expenseRoute' })}
-          </Typography>
-          <div id="id-table-container">
-            <TableReport columns={columns} dataPercent={tableData} />
-          </div>
-        </div>
-      </div>
+      <ExpenseTableReport
+        tableData={tableData}
+        showElectionRadio={showElectionRadio}
+      />
     </div>
   )
 }

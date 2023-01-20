@@ -24,9 +24,12 @@ export default theme => ({
     marginTop: theme.spacing(2),
     '& #id-radio-election-container': {
       display: 'flex',
-      marginLeft: theme.spacing(2),
       justifyContent: 'end',
       alignItems: 'center'
+    },
+    '& .MuiFormControlLabel-root': {
+      marginRight: 0,
+      marginLeft: theme.spacing(2)
     },
     '& span': {
       fontSize: '12px',
@@ -70,14 +73,30 @@ export default theme => ({
   disbursementsContainer: {
     display: 'flex',
     justifyContent: 'center',
-    marginBottom: theme.spacing(3)
+    marginBottom: theme.spacing(3),
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: 'center'
+    }
   },
   disbursementBox: {
-    margin: theme.spacing(0, 2, 0, 2)
+    margin: theme.spacing(0, 2, 0, 2),
+    textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: theme.spacing(2)
+    }
   },
   rankLevelBox: {
     margin: theme.spacing(0, 2, 0, 2),
     borderRight: '1px solid rgba(0, 0, 0, 0.12)',
-    paddingRight: theme.spacing(3)
+    paddingRight: theme.spacing(3),
+    textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+      borderRight: 'none',
+      paddingRight: 0,
+      paddingTop: theme.spacing(2)
+    }
   }
 })
