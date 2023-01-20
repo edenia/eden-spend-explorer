@@ -160,9 +160,13 @@ const LineChartReport = ({
 
   useEffect(() => {
     if (countData === 0) return
-    setXAxisData(width > 600 ? 40 : 80)
-    if (countData > 200) setXAxisData(Math.round(countData * 0.25))
-    else setXAxisData(Math.round(countData * 0.1))
+    if (width > 600) {
+      if (countData > 200) setXAxisData(Math.round(countData * 0.25))
+      else setXAxisData(Math.round(countData * 0.1))
+    } else {
+      if (countData > 200) setXAxisData(Math.round(countData * 0.25))
+      else setXAxisData(Math.round(countData * 0.25))
+    }
   }, [countData])
 
   const handleSelectElection = e => {
