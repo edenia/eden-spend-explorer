@@ -51,5 +51,16 @@ export default theme => ({
     marginTop: theme.spacing(0.4),
     marginRight: theme.spacing(1),
     borderRadius: 5
+  },
+  buttonFilter: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'end',
+    '& button': {
+      margin: 8,
+      borderRadius: 0,
+      boxShadow: 'none',
+      backgroundColor: '#2563eb'
+    }
   }
 })

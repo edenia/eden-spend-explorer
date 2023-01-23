@@ -33,7 +33,6 @@ export default theme => ({
     margin: theme.spacing(2),
     textAlign: 'center',
     [theme.breakpoints.down('sm')]: {
-      // height: '278px',
       margin: theme.spacing(0)
     }
   },

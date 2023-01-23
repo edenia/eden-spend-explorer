@@ -58,7 +58,7 @@ export const newDataFormatByTreasuryList = (
       isValued: false
     })
 
-  const dateFormat = new Date(nextEdenDisbursement)?.toISOString()
+  const dateFormat = new Date(nextEdenDisbursement)?.toISOString().split('T')[0]
   newTreasuryList.push({
     EOS_VALUED: estimatedTreasury,
     date: dateFormat,

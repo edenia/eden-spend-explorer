@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   XAxis,
@@ -13,13 +13,68 @@ import {
 
 import CustomTooltipLineChart from './custom-tooltip-lineChart'
 
-const width = window.innerWidth
+const renderTraveller = props => {
+  const { x, y, width } = props
+
+  return (
+    <path
+      d={`M ${x}, ${y + 15}
+        m -${width * 5}, 0
+        a ${width * 5},${width * 5} 0 1,0 ${width * 10},0
+        a ${width * 5},${width * 5} 0 1,0 ${-width * 10},0`}
+      fill={'#3866eb'}
+      stroke={'#3866eb'}
+    />
+  )
+}
 
 const CustomLineChart = ({ coinType, data, lineRef }) => {
+  const widthRef = useRef(null)
+  const [width, setWidth] = useState(window.innerWidth)
+  const [countData, setCountData] = useState(data.length)
+  const [xAxisData, setXAxisData] = useState(width > 600 ? 40 : 80)
+
+  const handleBrushChange = data => {
+    const count = data.endIndex - data.startIndex
+    setCountData(count + 1)
+  }
+
+  useEffect(() => {
+    setCountData(data.length)
+  }, [data])
+
+  useEffect(() => {
+    if (countData === 0) return
+    if (countData > 200) setXAxisData(Math.round(countData * 0.25))
+    if (width > 600) {
+      if (countData < 200) setXAxisData(Math.round(countData * 0.1))
+    } else {
+      if (countData < 200) setXAxisData(Math.round(countData * 0.25))
+    }
+  }, [countData, width])
+
+  useEffect(() => {
+    setWidth(widthRef.current.current.clientWidth)
+    const handleResize = () => {
+      setWidth(widthRef.current.current.clientWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  })
+
   return (
-    <ResponsiveContainer width="100%" height={300} marginTop="16px">
+    <ResponsiveContainer
+      ref={widthRef}
+      width="100%"
+      height={300}
+      marginTop="16px"
+    >
       <LineChart
-        margin={{ left: -16, top: 8 }}
+        margin={{ left: -16, top: 8, bottom: 8 }}
         height={300}
         data={data}
         ref={lineRef}
@@ -29,7 +84,7 @@ const CustomLineChart = ({ coinType, data, lineRef }) => {
           tick={{ fontSize: 10, stroke: '#000', strokeWidth: 0.5 }}
           dataKey="date"
           scale="auto"
-          interval={width > 600 ? 40 : 80}
+          interval={xAxisData}
           allowDataOverflow={false}
         />
         <YAxis
@@ -63,10 +118,31 @@ const CustomLineChart = ({ coinType, data, lineRef }) => {
         />
         <Brush
           dataKey={'date'}
-          width={width > 600 ? width * 0.4 : 100}
-          height={20}
-          x={width > 600 ? width * 0.2 : 150}
-        />
+          width={width * 0.7}
+          height={30}
+          x={width / 6.2}
+          traveller={renderTraveller}
+          travellerWidth={1}
+          onChange={handleBrushChange}
+        >
+          <LineChart data={data}>
+            <Line
+              type="monotone"
+              dataKey={`${coinType}_BALANCE`}
+              stroke="#87cefa"
+              strokeWidth={2}
+              dot={false}
+            />
+            <Line
+              type="monotone"
+              dataKey={`${coinType}_VALUED`}
+              stroke="#87cefa"
+              strokeWidth={2}
+              dot={false}
+              strokeDasharray={5}
+            />
+          </LineChart>
+        </Brush>
       </LineChart>
     </ResponsiveContainer>
   )

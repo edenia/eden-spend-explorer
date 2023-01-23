@@ -72,15 +72,24 @@ const SidebarComp = ({ routes, openComponent, onClose }) => {
       },
       limit: 50
     }
-    const response = await client.request(
-      gql`
-        ${GET_MEMBERS_DATA}
-      `,
-      variables
-    )
+    try {
+      const response = await client.request(
+        gql`
+          ${GET_MEMBERS_DATA}
+        `,
+        variables
+      )
 
-    if (response?.members.length > 0) setUSerData(response?.members[0])
-    else {
+      if (response?.members.length > 0) setUSerData(response?.members[0])
+      else {
+        showMessage({
+          type: 'warning',
+          content: t('invalidEdenMember')
+        })
+        logout()
+      }
+    } catch (error) {
+      console.log(error)
       showMessage({
         type: 'warning',
         content: t('invalidEdenMember')
