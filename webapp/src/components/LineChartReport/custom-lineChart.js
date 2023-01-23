@@ -74,7 +74,7 @@ const CustomLineChart = ({ coinType, data, lineRef }) => {
       marginTop="16px"
     >
       <LineChart
-        margin={{ top: 8, bottom: 24 }}
+        margin={{ top: 8, bottom: 24, right: 16 }}
         height={300}
         data={data}
         ref={lineRef}
