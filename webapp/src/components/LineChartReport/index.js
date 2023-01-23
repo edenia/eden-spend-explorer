@@ -11,20 +11,31 @@ import {
   Typography,
   FormControlLabel,
   Switch,
-  FormGroup
+  FormGroup,
+  Button
 } from '@mui/material'
+
+import Select from '../Select'
 
 import styles from './styles'
 import CustomLineChart from './custom-lineChart'
 
 const useStyles = makeStyles(styles)
 
-const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
+const LineChartReport = ({
+  data,
+  keyTranslation,
+  pathTranslation,
+  historicElections
+}) => {
   const classes = useStyles()
   const [getBarPng, { ref: lineRef }] = useCurrentPng()
   const { t } = useTranslation()
   const [selectedUSD, setSelected] = useState(false)
   const [coinType, setCoinType] = useState('EOS')
+  const [viewSelected, setViewSelect] = useState('')
+  const [dataChart, setDataChart] = useState([])
+  const [electionRoundSelect, setElectionRoundSelect] = useState('')
 
   const handleChange = event => {
     setSelected(event.target.checked)
@@ -38,6 +49,14 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
     }
   }, [getBarPng])
 
+  const handleSelectElection = e => {
+    setViewSelect(e.target.value)
+  }
+
+  useEffect(() => {
+    setDataChart(data)
+  }, [data])
+
   useEffect(() => {
     if (selectedUSD) {
       setCoinType('USD')
@@ -45,6 +64,31 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
       setCoinType('EOS')
     }
   }, [selectedUSD])
+
+  useEffect(() => {
+    if (viewSelected === 'last') {
+      const count = historicElections.length - 2 || 0
+      const date = historicElections?.at(count)?.date_election.split('T')[0]
+      const subData = data?.filter(obj => obj.date >= date)
+      setDataChart(subData)
+    }
+    if (viewSelected === 'all') setDataChart(data)
+  }, [viewSelected])
+
+  useEffect(() => {
+    if (!electionRoundSelect) return
+    const index = historicElections.findIndex(
+      election => Number(election.election) === Number(electionRoundSelect)
+    )
+    const subData = data?.filter(
+      objt =>
+        objt.date >= historicElections[index].date_election &&
+        objt.date <= historicElections[index + 1]?.date_election
+    )
+    setViewSelect(electionRoundSelect)
+
+    setDataChart(subData)
+  }, [electionRoundSelect])
 
   return (
     <div className={classes.root}>
@@ -69,8 +113,41 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
           </FormGroup>
         </div>
       </div>
+      <div className={classes.buttonFilter}>
+        <div>
+          <Button
+            size="small"
+            variant="contained"
+            onClick={handleSelectElection}
+            value="all"
+          >
+            all
+          </Button>
+
+          <Button
+            size="small"
+            variant="contained"
+            onClick={handleSelectElection}
+            value="last"
+          >
+            Estimated treasury
+          </Button>
+        </div>
+        <Select
+          onChangeFunction={setElectionRoundSelect}
+          labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
+          values={historicElections.map(data => `${data.election}`)}
+          actualValue={electionRoundSelect}
+          width={110}
+          size="small"
+        />
+      </div>
       <div className={classes.chartContainer}>
-        <CustomLineChart coinType={coinType} data={data} lineRef={lineRef} />
+        <CustomLineChart
+          coinType={coinType}
+          data={dataChart}
+          lineRef={lineRef}
+        />
       </div>
     </div>
   )
@@ -79,7 +156,8 @@ const LineChartReport = ({ data, keyTranslation, pathTranslation }) => {
 LineChartReport.propTypes = {
   data: PropTypes.array,
   keyTranslation: PropTypes.string,
-  pathTranslation: PropTypes.string
+  pathTranslation: PropTypes.string,
+  historicElections: PropTypes.array
 }
 
 export default memo(LineChartReport)

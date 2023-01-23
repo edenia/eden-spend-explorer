@@ -47,6 +47,7 @@ const useIncomeReportState = () => {
   const [delegatesList, setDelegatesList] = useState([])
   const [treasuryList, setTreasuryList] = useState([])
   const [ranksList, setRanksList] = useState([])
+  const [historicElections, setHistoricElections] = useState([])
   const [delegatesActualElectionList, setDelegatesActualElectionList] =
     useState([])
 
@@ -90,6 +91,8 @@ const useIncomeReportState = () => {
     setElectionRoundSelect(electionsData.eden_election[0]?.election)
 
     setelectionsList(electionsData.eden_election || [])
+
+    setHistoricElections(incomeByElections.data.eden_historic_election || [])
 
     setIncomeByElectionsList(
       newDataIncomeFormatByAllElections(incomeByElections.data || [])
@@ -154,7 +157,8 @@ const useIncomeReportState = () => {
       electionRoundSelect,
       showElectionRadio,
       delegatesActualElectionList,
-      ranksList
+      ranksList,
+      historicElections
     },
     {
       setElectionRoundSelect,

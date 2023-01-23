@@ -31,7 +31,8 @@ const IncomeReport = () => {
       electionRoundSelect,
       showElectionRadio,
       delegatesActualElectionList,
-      ranksList
+      ranksList,
+      historicElections
     },
     { setElectionRoundSelect, setShowElectionRadio }
   ] = useIncomeReportState()
@@ -50,6 +51,7 @@ const IncomeReport = () => {
       />
       <LineChartReport
         data={treasuryList}
+        historicElections={historicElections}
         keyTranslation={'titleLineChart'}
         pathTranslation={'incomeRoute'}
       />
