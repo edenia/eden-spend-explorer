@@ -7,6 +7,10 @@ export default theme => ({
     overflowY: 'hidden',
     [theme.breakpoints.down('sm')]: {
       overflowX: 'hidden'
+    },
+    '& .recharts-brush-texts': {
+      fontSize: 10,
+      fontWeight: 600
     }
   },
   title: {
@@ -15,6 +19,9 @@ export default theme => ({
       fontWeight: 500,
       lineHeight: 1.56,
       letterSpacing: '-0.4px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
     }
   },
   filter: {
@@ -23,12 +30,18 @@ export default theme => ({
       fontWeight: 300,
       lineHeight: 1.33,
       letterSpacing: '-0.26px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
     }
   },
   titleContainer: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column'
+    }
   },
   chartLegent: {
     display: 'flex',

@@ -74,7 +74,7 @@ const CustomLineChart = ({ coinType, data, lineRef }) => {
       marginTop="16px"
     >
       <LineChart
-        margin={{ left: -16, top: 8, bottom: 8 }}
+        margin={{ top: 8, bottom: 24 }}
         height={300}
         data={data}
         ref={lineRef}
@@ -121,9 +121,11 @@ const CustomLineChart = ({ coinType, data, lineRef }) => {
           width={width * 0.7}
           height={30}
           x={width / 6.2}
+          y={260}
           traveller={renderTraveller}
           travellerWidth={1}
           onChange={handleBrushChange}
+          alwaysShowText
         >
           <LineChart data={data}>
             <Line
