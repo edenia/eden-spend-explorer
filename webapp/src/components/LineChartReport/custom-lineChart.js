@@ -125,7 +125,6 @@ const CustomLineChart = ({ coinType, data, lineRef }) => {
           traveller={renderTraveller}
           travellerWidth={1}
           onChange={handleBrushChange}
-          alwaysShowText
         >
           <LineChart data={data}>
             <Line
@@ -141,7 +140,6 @@ const CustomLineChart = ({ coinType, data, lineRef }) => {
               stroke="#87cefa"
               strokeWidth={2}
               dot={false}
-              strokeDasharray={5}
             />
           </LineChart>
         </Brush>
