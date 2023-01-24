@@ -94,7 +94,7 @@
     "trasury": "Projected Treasury Balance",
     "delegate": "Delegate",
     "balance": "Treasury Balance",
-    "estimated": "Estimated Treasury Balance"
+    "estimated": "Estimated Balance"
   },
   "expenseRoute": {
     "titleBarChart": "Expense per Election",

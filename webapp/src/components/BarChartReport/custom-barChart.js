@@ -60,7 +60,7 @@ const CustomBarChart = ({ typeData, selectedUSD, data, barRef }) => {
   return (
     <ResponsiveContainer width="100%" height={300} marginTop="16px">
       <ComposedChart
-        margin={{ left: -16, top: 8 }}
+        margin={{ top: 8, right: 16 }}
         height={300}
         data={data}
         ref={barRef}
