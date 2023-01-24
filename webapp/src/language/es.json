@@ -177,7 +177,11 @@
     "spendSubTitle2": "<strong>Función Adjuntar Memo</strong>",
     "spendText": "Debajo de la herramienta de gastos, está el cuadro de historial de transacción de tokens y los delegados pueden utilizar la función “<strong>Adjuntar memo</strong>” para categorizar las transacciones anteriores. Está representado por el botón “+”",
     "spendSteps1": "<strong>Pasos:</strong>\n\n1. Conectar la billetera (Soporta ",
-    "spendSteps2": ").\n2. Firma el permiso que permite conectar tu billetera a la herramienta de gastos.\n3. Podrás ver esta pantalla con el saldo actual de tu cuenta ( La de Eden).\n4. Ya estás listo para enviar tokens y categorizarlos dependiendo del memo específico.\n5. Haz clic en el botón \"Transferir EOS\"."
+    "spendSteps2": ").\n2. Firma el permiso que permite conectar tu billetera a la herramienta de gastos.\n3. Podrás ver esta pantalla con el saldo actual de tu cuenta ( La de Eden).\n4. Ya estás listo para enviar tokens y categorizarlos dependiendo del memo específico.\n5. Haz clic en el botón \"Transferir EOS\".",
+    "treasuryTitle": "<strong> Gráfico de Tesorería </strong>",
+    "lineChartText1": "\n<strong>Gráfico de Líneas</strong>\n\n Este gráfico refleja los cambios que ha tenido el saldo de la tesorería de Eden a lo largo del tiempo, tanto en USD como en EOS. Cada punto del gráfico representa una fecha en la que se produjo un ingreso o un gasto del saldo de tesorería. En el último punto refleja el monto de tesorería estimado para el mes siguiente, este punto se muestra mediante una línea discontinua.\n",
+    "lineChartText2": "\n<strong>Filtro por Elección:</strong> Con esta opción se muestran los cambios de la tesorería por cada elección. Además, puede ver la tesorería estimada para el próximo mes pulsando sobre el botón de \"Balance estimado\", pulsando sobre el botón \"Todo\" volverá a mostrarse todos los movimientos realizados dentro de la cuenta de Eden.\n",
+    "lineChartText3": "\n<strong>Filtro por Fechas:</strong> Debajo del gráfico de lineas hay una barra donde se puede deslizar dos puntos azules localizados a cada lado de la barra, al realizar esta acción dentro del gráfico hay un aumento o zoom, mismo que permite ver algún punto en especifico por medio de las fechas seleccionadas.\n"
   },
   "footer": {
     "firstHeader": "EDEN",

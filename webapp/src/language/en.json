@@ -176,7 +176,11 @@
     "spendSubTitle2": "<strong>Append memo function</strong>",
     "spendText": "Below the expense tool, there is the token transaction history box and delegates can use the \"<strong>Append</strong>\" function to categorize past transactions. It is represented by a “+” button.",
     "spendSteps1": "<strong>Steps:</strong>\n\n1. Connect wallet (supports ",
-    "spendSteps2": ").\n2. Sign the permission to connect your wallet to the Spend-tool.\n3. You will be able to see this screen with the current balance of your Eden account.\n4. You’re ready to send tokens and categorize them depending on the specific memo.\n5. Click on the “Transfer EOS” button."
+    "spendSteps2": ").\n2. Sign the permission to connect your wallet to the Spend-tool.\n3. You will be able to see this screen with the current balance of your Eden account.\n4. You’re ready to send tokens and categorize them depending on the specific memo.\n5. Click on the “Transfer EOS” button.",
+    "treasuryTitle": "<strong> Treasury Chart </strong>",
+    "lineChartText1": "\n<strong>Line Chart</strong>\n\n This graph reflects changes in Eden's cash balance over time, both in USD and EOS. Each point on the graph represents a date on which an inflow or outflow of cash balance occurred. The last point reflects the estimated amount of cash for the next month, shown as a dashed line.\n",
+    "lineChartText2": "\n<strong>Filter by Election:</strong> With this option the changes of the treasury for each election are shown. In addition, you can view the estimated cash flow for the next month by clicking on the \"Estimated balance\" button, clicking on the \"All\" button will redisplay all the movements made within the Eden account.\n",
+    "lineChartText3": "\n<strong>Filter by dates:</strong> Below the line graph there is a bar where you can slide two blue dots located on each side of the bar, by doing this action inside the graph there is a zoom in or zoom out, which allows you to see a specific point by means of the selected dates.\n"
   },
   "footer": {
     "firstHeader": "EDEN",
