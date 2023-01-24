@@ -95,10 +95,10 @@ const TreasuryDisbursementsInfo = ({
       <h3>{t('titleDisbursement')}</h3>
       <p>{t('paragraph1Disbursement')}</p>
       <p>{t('paragraph2Disbursement')}</p>
+      <Divider variant="middle" />
       <p>
         {t('paragraph3Disbursement')} <strong>{dateFormat}</strong>
       </p>
-      <Divider variant="middle" />
       <p>{t('paragraph4Disbursement')}</p>
       <div className={classes.disbursementsContainer}>
         {electedRanks.map(calculateAndRenderRankLevelComponent)}

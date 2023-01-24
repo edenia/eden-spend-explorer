@@ -1,15 +1,16 @@
 export default theme => ({
   root: {
-    margin: theme.spacing(6, 6, 6, 6),
-    [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing(6, 1, 6, 1)
-    }
+    margin: theme.spacing(3, 0, 3, 0)
   },
   chartContainer: {
     whiteSpace: 'nowrap',
     overflowY: 'hidden',
     [theme.breakpoints.down('sm')]: {
       overflowX: 'hidden'
+    },
+    '& .recharts-brush-texts': {
+      fontSize: 10,
+      fontWeight: 600
     }
   },
   title: {
@@ -18,6 +19,9 @@ export default theme => ({
       fontWeight: 500,
       lineHeight: 1.56,
       letterSpacing: '-0.4px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
     }
   },
   filter: {
@@ -26,12 +30,18 @@ export default theme => ({
       fontWeight: 300,
       lineHeight: 1.33,
       letterSpacing: '-0.26px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
     }
   },
   titleContainer: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column'
+    }
   },
   chartLegent: {
     display: 'flex',
@@ -54,5 +64,16 @@ export default theme => ({
     marginTop: theme.spacing(0.4),
     marginRight: theme.spacing(1),
     borderRadius: 5
+  },
+  buttonFilter: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'end',
+    '& button': {
+      margin: 8,
+      borderRadius: 0,
+      boxShadow: 'none',
+      backgroundColor: '#2563eb'
+    }
   }
 })

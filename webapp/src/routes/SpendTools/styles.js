@@ -108,7 +108,6 @@ export default theme => ({
     }
   },
   tableContainer: {
-    minWidth: '920px',
     marginTop: theme.spacing(2),
     '& .MuiDataGrid-columnHeaderTitle': {
       fontWeight: 'bold',
@@ -158,7 +157,7 @@ export default theme => ({
   },
   modalDimentions: {
     width: '723px',
-    height: '605px',
+    height: 'auto',
     padding: '20px 32px',
     borderRadius: '7px',
     border: 'solid 1px #667080',

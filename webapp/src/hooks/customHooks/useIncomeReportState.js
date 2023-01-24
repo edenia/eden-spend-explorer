@@ -13,10 +13,33 @@ import {
   useImperativeQuery,
   newDataFormatByDelegatesIncome,
   newDataIncomeFormatByAllElections,
-  newDataFormatByTreasuryList
+  newDataFormatByTreasuryList,
+  eosApi,
+  sleep
 } from '../../utils'
+import { mainConfig } from '../../config'
+import { useSharedState } from '../../context/state.context'
+
+const getNextEdenDisbursement = async () => {
+  try {
+    const response = await eosApi.getTableRows({
+      json: true,
+      code: mainConfig.edenContract,
+      scope: 0,
+      table: 'distribution'
+    })
+    const date = new Date(response?.rows[0][1]?.distribution_time)
+
+    return date
+  } catch (error) {
+    console.log(error)
+    await sleep(10)
+    getNextEdenDisbursement()
+  }
+}
 
 const useIncomeReportState = () => {
+  const [state] = useSharedState()
   const [electionRoundSelect, setElectionRoundSelect] = useState(0)
   const [showElectionRadio, setShowElectionRadio] = useState('allElections')
   const [incomeByElectionsList, setIncomeByElectionsList] = useState([])
@@ -24,6 +47,7 @@ const useIncomeReportState = () => {
   const [delegatesList, setDelegatesList] = useState([])
   const [treasuryList, setTreasuryList] = useState([])
   const [ranksList, setRanksList] = useState([])
+  const [historicElections, setHistoricElections] = useState([])
   const [delegatesActualElectionList, setDelegatesActualElectionList] =
     useState([])
 
@@ -64,18 +88,41 @@ const useIncomeReportState = () => {
 
     setRanksList(ranksLevelElectionData.eden_election)
 
-    const { data: treasuryData } = await loadTreasuryBalance()
-
-    setTreasuryList(newDataFormatByTreasuryList(treasuryData.eden_treasury))
-
     setElectionRoundSelect(electionsData.eden_election[0]?.election)
 
     setelectionsList(electionsData.eden_election || [])
+
+    setHistoricElections(incomeByElections.data.eden_historic_election || [])
 
     setIncomeByElectionsList(
       newDataIncomeFormatByAllElections(incomeByElections.data || [])
     )
   }, [])
+
+  useEffect(async () => {
+    const { data: treasuryData } = await loadTreasuryBalance()
+
+    const nextEdenDisbursement = await getNextEdenDisbursement()
+
+    const { eosRate } = state.eosTrasuryBalance
+    const treasuryBalance = Number(
+      state?.eosTrasuryBalance?.currencyBalance.split(' ')[0]
+    )
+    const totalNextMonthDistribution = treasuryBalance * 0.11 || 0
+    const estimatedTreasury = treasuryBalance - totalNextMonthDistribution
+
+    const usdEstimatedTreasury =
+      (treasuryBalance - totalNextMonthDistribution) * eosRate
+
+    setTreasuryList(
+      newDataFormatByTreasuryList(
+        treasuryData.eden_treasury,
+        nextEdenDisbursement,
+        estimatedTreasury,
+        usdEstimatedTreasury
+      )
+    )
+  }, [state.eosTrasuryBalance.currencyBalance])
 
   useEffect(async () => {
     if (showElectionRadio === 'allElections') {
@@ -110,7 +157,8 @@ const useIncomeReportState = () => {
       electionRoundSelect,
       showElectionRadio,
       delegatesActualElectionList,
-      ranksList
+      ranksList,
+      historicElections
     },
     {
       setElectionRoundSelect,

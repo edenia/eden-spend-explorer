@@ -1,9 +1,6 @@
 export default theme => ({
   root: {
-    margin: theme.spacing(6, 6, 6, 6),
-    [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing(6, 1, 6, 1)
-    }
+    margin: theme.spacing(3, 0, 3, 0)
   },
   chartContainer: {
     whiteSpace: 'nowrap',

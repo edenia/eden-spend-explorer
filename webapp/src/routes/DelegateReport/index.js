@@ -1,16 +1,16 @@
 import React, { memo } from 'react'
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
+import { useTranslation } from 'react-i18next'
 import { Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import { useTranslation } from 'react-i18next'
 import { Spinner } from '@edenia/ui-kit'
 
 import useDelegateReportState from '../../hooks/customHooks/useDelegateReportState'
-import AccordionComp from '../../components/Accordion'
 import TreasuryBalance from '../../components/TreasuryBalance'
 import SelectComponent from '../../components/Select'
 
+import DelegateAccordion from './delegate-accordion'
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
@@ -20,6 +20,7 @@ const DelegateReport = () => {
   const { t } = useTranslation()
   const { i18n } = useTranslation('translations')
   const options = { year: 'numeric', month: 'long', day: 'numeric' }
+
   const [
     {
       electionRoundSelect,
@@ -39,10 +40,6 @@ const DelegateReport = () => {
     i18n.language,
     options
   )
-
-  const handleChangeSelectedElection = event => {
-    setElectionRoundSelect(Number(event))
-  }
 
   return (
     <div className={classes.root}>
@@ -73,7 +70,7 @@ const DelegateReport = () => {
             />
           </div>
           <SelectComponent
-            onChangeFunction={handleChangeSelectedElection}
+            onChangeFunction={setElectionRoundSelect}
             labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
             values={electionRoundList.map(data => `${data.election}`)}
             actualValue={electionRoundSelect}
@@ -86,7 +83,7 @@ const DelegateReport = () => {
           <Spinner />
         </div>
       ) : (
-        <AccordionComp
+        <DelegateAccordion
           accordionList={accordionList}
           transactionList={transactionList}
           categoryList={categoryList}
