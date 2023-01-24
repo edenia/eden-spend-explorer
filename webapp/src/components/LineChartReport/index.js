@@ -30,7 +30,7 @@ const LineChartReport = ({
 }) => {
   const classes = useStyles()
   const [getBarPng, { ref: lineRef }] = useCurrentPng()
-  const { t } = useTranslation()
+  const { t } = useTranslation('generalForm')
   const [selectedUSD, setSelected] = useState(false)
   const [coinType, setCoinType] = useState('EOS')
   const [viewSelected, setViewSelect] = useState('')
@@ -107,7 +107,7 @@ const LineChartReport = ({
           <FormGroup>
             <FormControlLabel
               control={<Switch checked={selectedUSD} onChange={handleChange} />}
-              label={t('switchInput', { ns: 'generalForm' })}
+              label={t('switchInput')}
               labelPlacement="start"
             />
           </FormGroup>
@@ -121,7 +121,7 @@ const LineChartReport = ({
             onClick={handleSelectElection}
             value="all"
           >
-            all
+            {t('AllSelectYear')}
           </Button>
 
           <Button
@@ -130,12 +130,12 @@ const LineChartReport = ({
             onClick={handleSelectElection}
             value="last"
           >
-            Estimated treasury
+            {t('estimated', { ns: 'incomeRoute' })}
           </Button>
         </div>
         <Select
           onChangeFunction={setElectionRoundSelect}
-          labelSelect={t('textElectionSelect', { ns: 'generalForm' })}
+          labelSelect={t('textElectionSelect')}
           values={historicElections.map(data => `${data.election}`)}
           actualValue={electionRoundSelect}
           width={110}

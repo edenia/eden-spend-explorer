@@ -88,14 +88,13 @@
     "paragraph2Disbursement": "El desembolso global equivale al 11% de la tesorería de Edén en el momento del desembolso. El importe se divide a partes iguales entre los niveles representativos. En cada nivel, la cantidad se divide a partes iguales entre los representantes de ese nivel.",
     "paragraph3Disbursement": "Fecha de la siguiente distribución:",
     "paragraph4Disbursement": "Monto proyectado para la siguiente distribución:",
-
     "perLevel": "Por Level",
     "perChief": "Por Chief",
     "perHeadChief": "Por Head Chief",
     "trasury": "Balance de tesorería proyectado",
     "delegate": "Delegate",
     "balance": "Saldo de Tesorería",
-    "estimated": "Balance de Tesorería Estimado"
+    "estimated": "Balance Estimado"
   },
   "expenseRoute": {
     "titleBarChart": "Gasto por Elección",
