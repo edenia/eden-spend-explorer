@@ -4,15 +4,17 @@ import { makeStyles } from '@mui/styles'
 import PropTypes from 'prop-types'
 import { Box } from '@mui/system'
 import {
-  ComposedChart,
-  Bar,
-  XAxis,
-  YAxis,
+  ResponsiveContainer,
   CartesianGrid,
+  ComposedChart,
   Tooltip,
   Legend,
-  ResponsiveContainer
+  XAxis,
+  YAxis,
+  Bar
 } from 'recharts'
+
+import Loader from '../Loader'
 
 import CustomTooltipBarChart from './custom-tooltip-barChart'
 import styles from './styles'
@@ -59,43 +61,49 @@ const CustomBarChart = ({ typeData, selectedUSD, data, barRef }) => {
 
   return (
     <ResponsiveContainer width="100%" height={300} marginTop="16px">
-      <ComposedChart
-        margin={{ top: 8, right: 16 }}
-        height={300}
-        data={data}
-        ref={barRef}
-      >
-        <CartesianGrid stroke="#f0f0f0" />
-        <XAxis
-          tick={{ fontSize: 10, stroke: '#000', strokeWidth: 0.5 }}
-          dataKey="election"
-          scale="auto"
-        />
-        <YAxis tick={{ fontSize: '10px', stroke: '#000', strokeWidth: 0.1 }} />
-        <Tooltip
-          wrapperStyle={{
-            outline: 'none',
-            borderRadius: '4px',
-            backgroundColor: '#F9F9F9',
-            fontSize: '14px',
-            padding: '8px'
-          }}
-          content={
-            <CustomTooltipBarChart coinType={coinType} category={category} />
-          }
-        />
-        <Legend content={<RenderChartLegend data={category} />} />
-        {legentsList.map(({ color, label }) => (
-          <Bar
-            key={`key-${label + category}-bar`}
-            dataKey={`${coinType}_${label.toLocaleUpperCase()}${
-              label === 'total' ? '' : category.toLocaleUpperCase()
-            }`}
-            barSize={35}
-            fill={color}
+      {data.length < 1 ? (
+        <Loader />
+      ) : (
+        <ComposedChart
+          margin={{ top: 8, right: 16 }}
+          height={300}
+          data={data}
+          ref={barRef}
+        >
+          <CartesianGrid stroke="#f0f0f0" />
+          <XAxis
+            tick={{ fontSize: 10, stroke: '#000', strokeWidth: 0.5 }}
+            dataKey="election"
+            scale="auto"
           />
-        ))}
-      </ComposedChart>
+          <YAxis
+            tick={{ fontSize: '10px', stroke: '#000', strokeWidth: 0.1 }}
+          />
+          <Tooltip
+            wrapperStyle={{
+              outline: 'none',
+              borderRadius: '4px',
+              backgroundColor: '#F9F9F9',
+              fontSize: '14px',
+              padding: '8px'
+            }}
+            content={
+              <CustomTooltipBarChart coinType={coinType} category={category} />
+            }
+          />
+          <Legend content={<RenderChartLegend data={category} />} />
+          {legentsList.map(({ color, label }) => (
+            <Bar
+              key={`key-${label + category}-bar`}
+              dataKey={`${coinType}_${label.toLocaleUpperCase()}${
+                label === 'total' ? '' : category.toLocaleUpperCase()
+              }`}
+              barSize={35}
+              fill={color}
+            />
+          ))}
+        </ComposedChart>
+      )}
     </ResponsiveContainer>
   )
 }
