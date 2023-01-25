@@ -103,6 +103,34 @@ const Help = () => {
           <Divider orientation="horizontal" variant="middle" />
           <Trans>
             <span className={classes.subTitle}>
+              {t('treasuryTitle', { ns: 'helpRoute' })}
+            </span>
+          </Trans>
+          <div className={classes.imagesContainer}>
+            <img
+              src={
+                i18n.language === 'es'
+                  ? '/images/treasury-chart-ES.webp'
+                  : '/images/treasury-chart-EN.webp'
+              }
+            />
+          </div>
+          <div className={classes.paragraph}>
+            <Trans>
+              <span className={classes.text}>
+                {t('lineChartText1', { ns: 'helpRoute' })}
+              </span>
+              <span className={classes.text}>
+                {t('lineChartText2', { ns: 'helpRoute' })}
+              </span>
+              <span className={classes.text}>
+                {t('lineChartText3', { ns: 'helpRoute' })}
+              </span>
+            </Trans>
+          </div>
+          <Divider orientation="horizontal" variant="middle" />
+          <Trans>
+            <span className={classes.subTitle}>
               {t('chartsTitle', { ns: 'helpRoute' })}
             </span>
           </Trans>
