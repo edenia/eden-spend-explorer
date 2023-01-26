@@ -18,19 +18,21 @@ const useTresuryBalanceState = () => {
   const [nextEdenDisbursement, setNextEdenDisbursement] = useState('')
   const [delegateBalance, setDelegateBalance] = useState('Loading...')
 
-  const getEosBalance = async account => {
+  const getEosBalance = async () => {
     try {
-      const response = await eosApi.getCurrencyBalance(
-        'eosio.token',
-        account,
-        'EOS'
-      )
+      const response = await eosApi.getTableRows({
+        json: true,
+        code: mainConfig.edenContract,
+        scope: 'owned',
+        table: 'account',
+        limit: 1
+      })
 
-      return response[0]
+      return response?.rows[0][1].balance
     } catch (error) {
       console.log(error)
       await sleep(60)
-      getEosBalance(account)
+      getEosBalance()
     }
   }
 
@@ -75,7 +77,7 @@ const useTresuryBalanceState = () => {
 
   useEffect(async () => {
     getEosRate()
-    setCurrencyBalance((await getEosBalance(mainConfig.edenContract)) || '')
+    setCurrencyBalance((await getEosBalance()) || '')
     getNextEdenDisbursement()
   }, [])
 

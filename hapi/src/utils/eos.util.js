@@ -4,7 +4,7 @@ const { fetch } = require('../mod.cjs')
 const { TextEncoder, TextDecoder } = require('util')
 const EosApi = require('eosjs-api')
 
-const { eosConfig } = require('../config')
+const { eosConfig, edenConfig } = require('../config')
 
 const walletUtil = require('./wallet.util')
 
@@ -169,6 +169,16 @@ const getCurrencyBalance = (code, account, symbol) =>
 
 const getTableRows = options => eosApi.getTableRows({ json: true, ...options })
 
+const getTreasuryBalance = () => {
+  eosApi.getTableRows({
+    json: true,
+    code: edenConfig.edenContract,
+    scope: 'owned',
+    table: 'account',
+    limit: 1
+  })
+}
+
 const transact = async (actions, auths) => {
   try {
     const keys = []
@@ -225,6 +235,7 @@ module.exports = {
   getAbi,
   getCodeHash,
   getCurrencyBalance,
+  getTreasuryBalance,
   getTableRows,
   transact
 }

@@ -47,7 +47,7 @@ export const newDataFormatByTreasuryList = (
         isValued: false
       })
   }
-  const curDate = treasuryList.at(-1).date.split('T')[0]
+  const curDate = treasuryList?.at(-1).date.split('T')[0]
   if (!newTreasuryList.find(element => element.date.split('T')[0] === curDate))
     newTreasuryList.push({
       EOS_BALANCE: treasuryList.at(-1).balance,

@@ -5,7 +5,7 @@ const {
   edenTreasury
 } = require('../../gql')
 const { edenConfig, dfuseConfig } = require('../../config')
-const { hasuraUtil, sleepUtil, dfuseUtil } = require('../../utils')
+const { hasuraUtil, sleepUtil, dfuseUtil, eosUtil } = require('../../utils')
 
 const updaters = require('./updaters')
 
@@ -81,23 +81,39 @@ const runUpdaters = async actions => {
 const updateTreasury = async (actions, balance) => {
   for (let index = 0; index < actions.length; index++) {
     const action = actions[index]
+    let type = ' '
+    let memo = ' '
     try {
       const { matchingActions, id, block } = action?.trace
       const matchingAction = matchingActions[0]
 
-      const amount = Number(matchingAction.json.quantity.split(' ')[0] || 0)
+      if (matchingAction.name === 'donate') {
+        type = 'Receive'
+        memo = 'donate'
+      } else {
+        memo = matchingAction?.json?.memo
+        type =
+          matchingAction.json.from === edenConfig.edenContract
+            ? 'Send'
+            : 'Receive'
+      }
+
+      const amount = Number(matchingAction?.json?.quantity?.split(' ')[0] || 0)
       const blockNum = block.num
       const date = block.timestamp
-      const type =
-        matchingAction.json.from === edenConfig.edenContract
-          ? 'Send'
-          : 'Receive'
+
+      if (type === 'Receive') {
+        if (!(memo === 'donate')) continue
+      } else {
+        if (!(memo === 'withdraw')) continue
+      }
 
       type === 'Send' ? (balance -= amount) : (balance += amount)
+
       const updater = updaters.find(
         element => element.type === 'edentreasury:transfer'
       )
-      updater.apply({
+      await updater.apply({
         id,
         amount,
         balance,
@@ -168,8 +184,8 @@ const getTreasuryData = async () => {
   let balance = 0
 
   if (treasuryList.length > 0) {
-    blockNumber = treasuryList[treasuryList.length - 1].last_synced_at
-    balance = treasuryList[treasuryList.length - 1].balance
+    blockNumber = treasuryList.at(-1).last_synced_at
+    balance = treasuryList.at(-1).balance
   }
 
   let hasMore = true
@@ -178,7 +194,7 @@ const getTreasuryData = async () => {
     while (hasMore) {
       ;({ hasMore, actions, blockNumber } = await getActions(
         {
-          query: `receiver:eosio.token action:transfer (data.from:${edenConfig.edenContract} OR data.to:${edenConfig.edenContract})`,
+          query: `receiver:${edenConfig.edenContract} (action:donate OR action:transfer)`,
           lowBlockNum: blockNumber
         },
         'treasury'
