@@ -103,7 +103,8 @@ const updateTreasury = async (actions, balance) => {
       const date = block.timestamp
 
       if (type === 'Receive') {
-        if (!(memo === 'donate')) continue
+        if (!(memo === 'donate') && !(memo === 'eden treasury funding'))
+          continue
       } else {
         if (!(memo === 'withdraw')) continue
       }
