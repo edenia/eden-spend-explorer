@@ -2,6 +2,7 @@ import React, { useEffect, useState, memo } from 'react'
 import PropTypes from 'prop-types'
 import { PieChart, Pie, Sector, ResponsiveContainer, Cell } from 'recharts'
 
+import Loader from '../Loader'
 import { formatWithThousandSeparator } from '../../utils/format-with-thousand-separator'
 
 const capitalizeFirstLetter = string => {
@@ -99,28 +100,32 @@ const CustomPieChart = ({
 
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <PieChart ref={pieRef}>
-        <Pie
-          activeIndex={activeIndex}
-          activeShape={renderActiveShape}
-          data={newData}
-          nameKey={typeData === 'delegate' ? 'category' : 'name'}
-          dataKey={
-            typeData === 'delegate'
-              ? `${coinType}`
-              : `${coinType}_${category.toLocaleUpperCase()}`
-          }
-          cx="50%"
-          cy="50%"
-          innerRadius={innerRadius}
-          outerRadius={outerRadius}
-          onMouseEnter={onPieEnter}
-        >
-          {data.map(data => (
-            <Cell key={`cell-${data.election}`} fill={data.color} />
-          ))}
-        </Pie>
-      </PieChart>
+      {data.length < 1 ? (
+        <Loader />
+      ) : (
+        <PieChart ref={pieRef}>
+          <Pie
+            activeIndex={activeIndex}
+            activeShape={renderActiveShape}
+            data={newData}
+            nameKey={typeData === 'delegate' ? 'category' : 'name'}
+            dataKey={
+              typeData === 'delegate'
+                ? `${coinType}`
+                : `${coinType}_${category.toLocaleUpperCase()}`
+            }
+            cx="50%"
+            cy="50%"
+            innerRadius={innerRadius}
+            outerRadius={outerRadius}
+            onMouseEnter={onPieEnter}
+          >
+            {data.map(data => (
+              <Cell key={`cell-${data.election}`} fill={data.color} />
+            ))}
+          </Pie>
+        </PieChart>
+      )}
     </ResponsiveContainer>
   )
 }

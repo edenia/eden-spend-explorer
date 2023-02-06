@@ -33,6 +33,10 @@ export default theme => ({
     },
     [theme.breakpoints.down('sm')]: {
       width: '100%'
+    },
+    [theme.breakpoints.down(418)]: {
+      position: 'absolute',
+      top: 42
     }
   },
   titleContainer: {
@@ -40,7 +44,8 @@ export default theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column'
+      flexDirection: 'column',
+      position: 'relative'
     }
   },
   chartLegent: {
@@ -67,10 +72,11 @@ export default theme => ({
   },
   buttonFilter: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'end',
     justifyContent: 'end',
+    marginBottom: theme.spacing(1),
     '& button': {
-      margin: 8,
+      margin: theme.spacing(1, 1, 1, 0),
       borderRadius: 0,
       boxShadow: 'none',
       backgroundColor: '#2563eb'

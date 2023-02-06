@@ -66,26 +66,29 @@ const LineChartReport = ({
   }, [selectedUSD])
 
   useEffect(() => {
-    if (viewSelected === 'last') {
-      const count = historicElections.length - 2 || 0
-      const date = historicElections?.at(count)?.date_election.split('T')[0]
-      const subData = data?.filter(obj => obj.date >= date)
-      setDataChart(subData)
-    }
+    if (!viewSelected) return
+
+    if (viewSelected === 'last') setDataChart([data.at(-2), data.at(-1)])
+
     if (viewSelected === 'all') setDataChart(data)
+
+    setElectionRoundSelect('')
   }, [viewSelected])
 
   useEffect(() => {
     if (!electionRoundSelect) return
+
     const index = historicElections.findIndex(
       election => Number(election.election) === Number(electionRoundSelect)
     )
+
     const subData = data?.filter(
       objt =>
         objt.date >= historicElections[index].date_election &&
-        objt.date <= historicElections[index + 1]?.date_election
+        objt.date <= (historicElections[index + 1]?.date_election || objt.date)
     )
-    setViewSelect(electionRoundSelect)
+
+    setViewSelect('')
 
     setDataChart(subData)
   }, [electionRoundSelect])
@@ -130,7 +133,7 @@ const LineChartReport = ({
             onClick={handleSelectElection}
             value="last"
           >
-            {t('estimated', { ns: 'incomeRoute' }).toUpperCase()}
+            {t('estimated', { ns: 'incomeRoute' })}
           </Button>
         </div>
         <Select
