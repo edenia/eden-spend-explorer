@@ -92,17 +92,17 @@ export const GET_EXPENSES_BY_ACCOUNT = gql`
     }
   }
 `
+
 export const GET_EXPENSE_BY_CATEGORY = gql`
-  query getExpenseByCategory($delegate: String, $election: Int) {
-    expenses_by_category_and_delegate(
-      where: {
-        election: { _eq: $election }
-        delegate_payer: { _eq: $delegate }
-      }
+  query getExpenseByCategory($id_election: uuid) {
+    total_expense_by_delegate_and_election(
+      where: { id_election: { _eq: $id_election } }
     ) {
       category
-      amount
-      usd_total
+      eos_amount
+      id
+      id_election
+      tx_id
     }
   }
 `

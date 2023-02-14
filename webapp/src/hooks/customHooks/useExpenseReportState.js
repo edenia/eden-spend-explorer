@@ -74,6 +74,7 @@ const useExpenseReportState = () => {
       setCategoryList([])
       setDelegatesList([])
 
+      // TODO:
       const delegatesExpenseByElections = await loadDelegatesExpenseByElections(
         {
           election: electionRoundSelect

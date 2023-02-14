@@ -1,7 +1,11 @@
 const moment = require('moment')
 
 const { sleepUtil, communityUtil, updaterUtil } = require('../../../utils')
-const { edenTransactionGql, edenElectionGql } = require('../../../gql')
+const {
+  edenTransactionGql,
+  edenElectionGql,
+  edenTotalExpenseByDelegateAndElection
+} = require('../../../gql')
 const { transactionConstant } = require('../../../constants')
 
 let LASTEST_RATE_DATE_CONSULTED = null
@@ -88,6 +92,19 @@ module.exports = {
       }
 
       await edenTransactionGql.save(transactionData)
+
+      if (category === 'uncategorized') return
+
+      await updaterUtil.saveTotalByDelegateAndElection(
+        action.transaction_id,
+        from,
+        amount,
+        LASTEST_RATE_DATA_CONSULTED,
+        category,
+        edenElectionGql,
+        edenTransactionGql,
+        edenTotalExpenseByDelegateAndElection
+      )
     } catch (error) {
       console.error(
         `transfer sync error ${action.action.name}: ${error.message}`

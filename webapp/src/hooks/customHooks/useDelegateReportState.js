@@ -9,6 +9,7 @@ import {
   GET_MAX_DELEGATE_LEVEL,
   GET_HISTORIC_ELECTIONS,
   GET_EXPENSE_BY_CATEGORY,
+  GET_TOTAL_EXPENSE_BY_ELECTION,
   GET_TOTAL_DELEGATE_INCOME_BY_ELECTION,
   GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION
 } from '../../gql'
@@ -36,6 +37,9 @@ const useDelegateReportState = () => {
   )
   const loadDelegatesByElection = useImperativeQuery(
     GET_TOTAL_DELEGATE_INCOME_BY_ELECTION
+  )
+  const getTotalExpenseByDelegate = useImperativeQuery(
+    GET_TOTAL_EXPENSE_BY_ELECTION
   )
 
   useEffect(async () => {
@@ -84,9 +88,21 @@ const useDelegateReportState = () => {
   useEffect(async () => {
     if (!delegateSelect) return
 
-    const responseCategory = await loadCategoryList({
-      election: Number(electionRoundSelect),
-      delegate: delegateSelect
+    // TODO: HERE
+    // const responseCategory = await loadCategoryList({
+    //   election: Number(electionRoundSelect),
+    //   delegate: delegateSelect
+    // })
+
+    const { data: electionId } = await loadElections({
+      where: {
+        eden_delegate: { account: { _eq: delegateSelect } },
+        election: { _eq: electionRoundSelect }
+      }
+    })
+
+    const { data: responseCategory } = await loadCategoryList({
+      id_election: electionId?.eden_election[0].id
     })
 
     const responseTransaction = await loadTransactions({
@@ -94,13 +110,18 @@ const useDelegateReportState = () => {
       delegate: delegateSelect
     })
 
+    const { data: responseTotalExpenseByElection } =
+      await getTotalExpenseByDelegate({
+        id_election: electionId?.eden_election[0].id
+      })
+
     const transactions = newDataFormatByTypeDelegate(
       responseTransaction.data.historic_incomes || [],
-      responseTransaction.data.historic_expenses || []
+      responseTotalExpenseByElection.total_expense_by_election_view || []
     )
+
     const categories = newDataFormatByCategoryDelegate(
-      responseCategory.data?.expenses_by_category_and_delegate || [],
-      transactions
+      responseCategory?.total_expense_by_delegate_and_election || []
     )
 
     setCategoryList(categories)

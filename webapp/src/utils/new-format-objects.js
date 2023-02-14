@@ -164,11 +164,11 @@ export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
   const resultUncategorizedEOS =
     (incomeList[0]?.eos_claimed || 0) +
     (incomeList[0]?.eos_unclaimed || 0) -
-    (expenseList[0]?.eos_categorized || 0)
+    (expenseList[0]?.total_eos_amount || 0)
   const resultUncategorizedUSD =
     (incomeList[0]?.usd_claimed || 0) +
     (incomeList[0]?.usd_unclaimed || 0) -
-    (expenseList[0]?.usd_categorized || 0)
+    (expenseList[0]?.total_usd_amount || 0)
 
   transactions.push(
     generateDelegateData(
@@ -185,8 +185,8 @@ export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
     generateDelegateData(
       'expense',
       'Categorized',
-      expenseList[0]?.eos_categorized || 0,
-      expenseList[0]?.usd_categorized || 0,
+      expenseList[0]?.total_eos_amount || 0,
+      expenseList[0]?.total_usd_amount || 0,
       resultUncategorizedEOS >= 0 ? resultUncategorizedEOS : 0 || 0,
       resultUncategorizedUSD >= 0 ? resultUncategorizedUSD : 0 || 0
     )
@@ -195,26 +195,10 @@ export const newDataFormatByTypeDelegate = (incomeList, expenseList) => {
   return transactions
 }
 
-export const newDataFormatByCategoryDelegate = (categoryList, transaction) => {
-  const newCategoryList = []
-
-  categoryList.forEach(data => {
-    if (data.category === 'uncategorized') return
-
-    newCategoryList.push({
-      category: data.category,
-      EOS: Number(data.amount),
-      USD: Number(data.usd_total),
-      color: generateColor()
-    })
-  })
-
-  newCategoryList.push({
-    category: 'uncategorized',
-    EOS: transaction[1].EOS_UN,
-    USD: transaction[1].USD_UN,
+export const newDataFormatByCategoryDelegate = categoryList =>
+  categoryList.map(data => ({
+    category: data.category,
+    EOS: Number(data.eos_amount),
+    USD: Number(data.usd_amount),
     color: generateColor()
-  })
-
-  return newCategoryList
-}
+  }))

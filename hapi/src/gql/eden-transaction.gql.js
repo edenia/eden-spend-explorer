@@ -28,6 +28,7 @@ const get = async (where, getMany = false) => {
       txid
       type
       updated_at
+      eos_exchange
       digest
     }
   }

@@ -13,6 +13,13 @@ array_relationships:
         table:
           name: eden_transaction
           schema: public
+  - name: total_expense_by_delegate_and_elections
+    using:
+      foreign_key_constraint_on:
+        column: id_election
+        table:
+          name: total_expense_by_delegate_and_election
+          schema: public
 select_permissions:
   - role: guest
     permission:

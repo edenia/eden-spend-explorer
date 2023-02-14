@@ -1,0 +1,35 @@
+table:
+  name: total_expense_by_delegate_and_election
+  schema: public
+object_relationships:
+  - name: eden_election
+    using:
+      foreign_key_constraint_on: id_election
+insert_permissions:
+  - role: guest
+    permission:
+      check: {}
+      columns:
+        - category
+        - election
+        - eos_amount
+        - usd_amount
+        - create_at
+        - updated_at
+        - id
+        - id_election
+        - tx_id
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - category
+        - election
+        - eos_amount
+        - usd_amount
+        - create_at
+        - updated_at
+        - id
+        - id_election
+        - tx_id
+      filter: {}

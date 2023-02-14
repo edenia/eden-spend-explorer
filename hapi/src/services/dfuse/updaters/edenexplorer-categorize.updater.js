@@ -1,4 +1,8 @@
-const { edenTransactionGql, edenElectionGql } = require('../../../gql')
+const {
+  edenTransactionGql,
+  edenElectionGql,
+  edenTotalExpenseByDelegateAndElection
+} = require('../../../gql')
 const { updaterUtil } = require('../../../utils')
 
 module.exports = {
@@ -39,6 +43,25 @@ module.exports = {
       }
 
       await edenTransactionGql.update(updateQuery)
+      if (transactionToEdit.category === 'uncategorzed') {
+        await updaterUtil.saveTotalByDelegateAndElection(
+          transactionToEdit.txid,
+          account,
+          transactionToEdit.amount,
+          transactionToEdit.eos_exchange,
+          transactionToEdit.category,
+          edenElectionGql,
+          edenTransactionGql,
+          edenTotalExpenseByDelegateAndElection
+        )
+      } else {
+        await edenTotalExpenseByDelegateAndElection.update({
+          where: {
+            tx_id: { _eq: transactionToEdit.txid }
+          },
+          _set: { category }
+        })
+      }
     } catch (error) {
       console.error(`categorize updater sync error: ${error.message}`)
     }
