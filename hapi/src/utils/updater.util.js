@@ -46,9 +46,11 @@ const getElectionWithoutExpense = async (
         category: { _neq: 'uncategorized' }
       }
 
-      const income = (await edenTransactionGql.getAggregate(incomeQuery)) || 0
+      const { amount: income } =
+        (await edenTransactionGql.getAggregate(incomeQuery)) || 0
 
-      const expense = (await edenTransactionGql.getAggregate(expenseQuery)) || 0
+      const { amount: expense } =
+        (await edenTransactionGql.getAggregate(expenseQuery)) || 0
 
       if (expense + amount <= income) {
         return { election, idElection: id }
@@ -72,7 +74,8 @@ const saveTotalByDelegateAndElection = async (
   category,
   edenElectionGql,
   edenTransactionGql,
-  edenTotalExpenseByDelegateAndElection
+  edenTotalExpenseByDelegateAndElection,
+  edenGlobalAmountGql
 ) => {
   try {
     let tempAmount = eosAmount
@@ -94,15 +97,34 @@ const saveTotalByDelegateAndElection = async (
         id_election: { _eq: id }
       }
 
-      const income = (await edenTransactionGql.getAggregate(incomeQuery)) || 0
+      const globalAmountQuery = {
+        election: { _eq: election },
+        account: { _eq: delegateAccount }
+      }
+
+      const { amount, usd_total } =
+        (await edenTransactionGql.getAggregate(incomeQuery)) || 0
 
       const totalByDelegateAndElection =
         (await edenTotalExpenseByDelegateAndElection.getAggregate(
           totalByDelegateAndElectionQuery
         )) || 0
 
-      if (totalByDelegateAndElection + tempAmount > income) {
-        const totalToSave = income - totalByDelegateAndElection
+      let globalAmount = await edenGlobalAmountGql.get(globalAmountQuery)
+
+      if (!globalAmount) {
+        globalAmount = await edenGlobalAmountGql.save({
+          account: delegateAccount,
+          election,
+          eos_income: amount,
+          usd_income: usd_total,
+          eos_expense: 0,
+          usd_expense: 0
+        })
+      }
+
+      if (totalByDelegateAndElection + tempAmount > amount) {
+        const totalToSave = amount - totalByDelegateAndElection
 
         const totalByDelegateAndElectionData = {
           eos_amount: totalToSave,
@@ -110,8 +132,21 @@ const saveTotalByDelegateAndElection = async (
           id_election: id,
           category,
           tx_id: txId,
-          election
+          election,
+          account: delegateAccount
         }
+
+        await edenGlobalAmountGql.update({
+          where: globalAmountQuery,
+          _set: {
+            eos_expense: Number(globalAmount.eos_expense + totalToSave).toFixed(
+              2
+            ),
+            usd_expense: Number(
+              globalAmount.usd_expense + totalToSave * eosRate
+            ).toFixed(2)
+          }
+        })
 
         await edenTotalExpenseByDelegateAndElection.save(
           totalByDelegateAndElectionData
@@ -125,8 +160,21 @@ const saveTotalByDelegateAndElection = async (
           id_election: id,
           category,
           tx_id: txId,
-          election
+          election,
+          account: delegateAccount
         }
+
+        await edenGlobalAmountGql.update({
+          where: globalAmountQuery,
+          _set: {
+            eos_expense: Number(globalAmount.eos_expense + tempAmount).toFixed(
+              2
+            ),
+            usd_expense: Number(
+              globalAmount.usd_expense + tempAmount * eosRate
+            ).toFixed(2)
+          }
+        })
 
         await edenTotalExpenseByDelegateAndElection.save(
           totalByDelegateAndElectionData

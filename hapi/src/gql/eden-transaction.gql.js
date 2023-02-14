@@ -81,6 +81,7 @@ const getAggregate = async where => {
       aggregate {
         sum {
           amount
+          usd_total
         }
       }
     }
@@ -91,7 +92,7 @@ const getAggregate = async where => {
       where
     })
 
-  return edenTransactionAggregate?.aggregate?.sum?.amount || 0
+  return edenTransactionAggregate?.aggregate?.sum || {}
 }
 
 module.exports = {

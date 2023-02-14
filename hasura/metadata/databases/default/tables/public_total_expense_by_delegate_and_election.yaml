@@ -10,26 +10,28 @@ insert_permissions:
     permission:
       check: {}
       columns:
+        - account
         - category
+        - create_at
         - election
         - eos_amount
-        - usd_amount
-        - create_at
-        - updated_at
         - id
         - id_election
         - tx_id
+        - updated_at
+        - usd_amount
 select_permissions:
   - role: guest
     permission:
       columns:
+        - account
         - category
+        - create_at
         - election
         - eos_amount
-        - usd_amount
-        - create_at
-        - updated_at
         - id
         - id_election
         - tx_id
+        - updated_at
+        - usd_amount
       filter: {}

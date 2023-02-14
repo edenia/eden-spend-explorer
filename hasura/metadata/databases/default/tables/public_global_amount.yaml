@@ -1,0 +1,40 @@
+table:
+  name: global_amount
+  schema: public
+insert_permissions:
+  - role: guest
+    permission:
+      check: {}
+      columns:
+        - account
+        - election
+        - eos_income
+        - usd_income
+        - eos_expense
+        - usd_expense
+        - id
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - election
+        - eos_expense
+        - eos_income
+        - usd_expense
+        - usd_income
+        - account
+        - id
+      filter: {}
+update_permissions:
+  - role: guest
+    permission:
+      columns:
+        - election
+        - eos_expense
+        - eos_income
+        - usd_expense
+        - usd_income
+        - account
+        - id
+      filter: {}
+      check: null

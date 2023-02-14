@@ -1,7 +1,8 @@
 const {
   edenTransactionGql,
   edenElectionGql,
-  edenTotalExpenseByDelegateAndElection
+  edenTotalExpenseByDelegateAndElection,
+  edenGlobalAmountGql
 } = require('../../../gql')
 const { updaterUtil } = require('../../../utils')
 
@@ -52,7 +53,8 @@ module.exports = {
           transactionToEdit.category,
           edenElectionGql,
           edenTransactionGql,
-          edenTotalExpenseByDelegateAndElection
+          edenTotalExpenseByDelegateAndElection,
+          edenGlobalAmountGql
         )
       } else {
         await edenTotalExpenseByDelegateAndElection.update({

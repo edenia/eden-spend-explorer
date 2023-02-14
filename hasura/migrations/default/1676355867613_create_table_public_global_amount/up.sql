@@ -1,0 +1,1 @@
+CREATE TABLE "public"."global_amount" ("account" text NOT NULL, "election" integer NOT NULL, "eos_income" integer NOT NULL, "usd_income" integer NOT NULL, "eos_expense" integer NOT NULL, "usd_expense" integer NOT NULL, "id" uuid NOT NULL, PRIMARY KEY ("id") );

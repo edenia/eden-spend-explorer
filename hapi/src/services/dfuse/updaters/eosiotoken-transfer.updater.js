@@ -4,7 +4,8 @@ const { sleepUtil, communityUtil, updaterUtil } = require('../../../utils')
 const {
   edenTransactionGql,
   edenElectionGql,
-  edenTotalExpenseByDelegateAndElection
+  edenTotalExpenseByDelegateAndElection,
+  edenGlobalAmountGql
 } = require('../../../gql')
 const { transactionConstant } = require('../../../constants')
 
@@ -103,7 +104,8 @@ module.exports = {
         category,
         edenElectionGql,
         edenTransactionGql,
-        edenTotalExpenseByDelegateAndElection
+        edenTotalExpenseByDelegateAndElection,
+        edenGlobalAmountGql
       )
     } catch (error) {
       console.error(

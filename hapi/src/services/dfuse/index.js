@@ -193,7 +193,7 @@ const getTreasuryData = async () => {
 }
 
 const sync = async () => {
-  await getTreasuryData()
+  //TODO: await getTreasuryData()
   await getDelegateData()
 
   return sync()
