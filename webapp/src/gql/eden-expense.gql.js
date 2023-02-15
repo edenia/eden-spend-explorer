@@ -29,30 +29,25 @@ export const GET_TOTAL_EXPENSE_BY_DELEGATE = gql`
 `
 
 export const GET_DELEGATES_EXPENSE_BY_ELECTION = gql`
-  query getDelegatesByElection($election: Int) {
-    historic_expenses(where: { election: { _eq: $election } }) {
-      delegate_payer
-      usd_categorized
-      eos_claimed
-      eos_unclaimed
-      eos_categorized
+  query getDelegatesByElection($election: numeric) {
+    global_amount(where: { election: { _eq: $election } }) {
+      account
+      election
+      eos_income
+      usd_income
+      eos_expense
+      usd_expense
     }
   }
 `
 
 export const GET_TOTAL_EXPENSE_BY_CATEGORY_AND_ELECTION = gql`
-  query getTotalClaimedAndUnclaimedByElection($election: Int) {
-    total_by_category_and_election(
-      where: {
-        election: { _eq: $election }
-        category: { _neq: "uncategorized" }
-        type: { _eq: "expense" }
-      }
-    ) {
-      amount
+  query getExpensesByCategoryAndElection($election: Int) {
+    expenses_by_category_and_election(where: { election: { _eq: $election } }) {
+      total_usd_amount
       category
+      total_eos_amount
       election
-      usd_total
     }
   }
 `
@@ -100,6 +95,7 @@ export const GET_EXPENSE_BY_CATEGORY = gql`
     ) {
       category
       eos_amount
+      usd_amount
       id
       id_election
       tx_id

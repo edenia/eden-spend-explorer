@@ -28,12 +28,7 @@ module.exports = {
       if (!transactionToEdit) return
 
       const { idElection: id_election } =
-        await updaterUtil.getElectionWithoutExpense(
-          account,
-          transactionToEdit.amount,
-          edenElectionGql,
-          edenTransactionGql
-        )
+        await updaterUtil.getElectionWithoutExpense(account, edenElectionGql)
 
       const updateQuery = {
         where: {
@@ -44,7 +39,7 @@ module.exports = {
       }
 
       await edenTransactionGql.update(updateQuery)
-      if (transactionToEdit.category === 'uncategorzed') {
+      if (transactionToEdit.category === 'uncategorized') {
         await updaterUtil.saveTotalByDelegateAndElection(
           transactionToEdit.txid,
           account,

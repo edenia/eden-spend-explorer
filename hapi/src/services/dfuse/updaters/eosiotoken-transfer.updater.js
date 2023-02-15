@@ -52,13 +52,6 @@ module.exports = {
     }
 
     try {
-      const { idElection } = await updaterUtil.getElectionWithoutExpense(
-        from,
-        amount,
-        edenElectionGql,
-        edenTransactionGql
-      )
-
       const txDate = moment(action.timestamp).format('DD-MM-YYYY')
 
       if (LASTEST_RATE_DATE_CONSULTED !== txDate) {
@@ -83,8 +76,7 @@ module.exports = {
         category,
         date: action.timestamp,
         description,
-        id_election:
-          category === 'uncategorized' ? action.election.id : idElection,
+        id_election: action.election.id,
         recipient: to,
         type: 'expense',
         eos_exchange: LASTEST_RATE_DATA_CONSULTED,

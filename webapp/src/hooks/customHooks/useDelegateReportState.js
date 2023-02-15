@@ -88,12 +88,6 @@ const useDelegateReportState = () => {
   useEffect(async () => {
     if (!delegateSelect) return
 
-    // TODO: HERE
-    // const responseCategory = await loadCategoryList({
-    //   election: Number(electionRoundSelect),
-    //   delegate: delegateSelect
-    // })
-
     const { data: electionId } = await loadElections({
       where: {
         eden_delegate: { account: { _eq: delegateSelect } },
@@ -112,12 +106,13 @@ const useDelegateReportState = () => {
 
     const { data: responseTotalExpenseByElection } =
       await getTotalExpenseByDelegate({
-        id_election: electionId?.eden_election[0].id
+        election: electionRoundSelect,
+        account: delegateSelect
       })
 
     const transactions = newDataFormatByTypeDelegate(
       responseTransaction.data.historic_incomes || [],
-      responseTotalExpenseByElection.total_expense_by_election_view || []
+      responseTotalExpenseByElection.global_amount || []
     )
 
     const categories = newDataFormatByCategoryDelegate(

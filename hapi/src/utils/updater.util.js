@@ -17,45 +17,12 @@ const memoSplit = memoString => {
   return { category, description }
 }
 
-const getElectionWithoutExpense = async (
-  delegateAccount,
-  amount,
-  edenElectionGql,
-  edenTransactionGql
-) => {
+const getElectionWithoutExpense = async (delegateAccount, edenElectionGql) => {
   try {
     const electionsQuery = {
       eden_delegate: { account: { _eq: delegateAccount } }
     }
     const elections = await edenElectionGql.get(electionsQuery, true)
-
-    for (const { id, election } of elections) {
-      const incomeQuery = {
-        eden_election: {
-          eden_delegate: { account: { _eq: delegateAccount } },
-          election: { _eq: election }
-        },
-        type: { _eq: 'income' }
-      }
-      const expenseQuery = {
-        eden_election: {
-          eden_delegate: { account: { _eq: delegateAccount } },
-          election: { _eq: election }
-        },
-        type: { _eq: 'expense' },
-        category: { _neq: 'uncategorized' }
-      }
-
-      const { amount: income } =
-        (await edenTransactionGql.getAggregate(incomeQuery)) || 0
-
-      const { amount: expense } =
-        (await edenTransactionGql.getAggregate(expenseQuery)) || 0
-
-      if (expense + amount <= income) {
-        return { election, idElection: id }
-      }
-    }
 
     return {
       election: elections.at(-1).election,
