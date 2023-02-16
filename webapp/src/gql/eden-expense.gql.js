@@ -29,7 +29,7 @@ export const GET_TOTAL_EXPENSE_BY_DELEGATE = gql`
 `
 
 export const GET_DELEGATES_EXPENSE_BY_ELECTION = gql`
-  query getDelegatesByElection($election: numeric) {
+  query getDelegatesByElection($election: Int) {
     global_amount(where: { election: { _eq: $election } }) {
       account
       election
@@ -41,6 +41,7 @@ export const GET_DELEGATES_EXPENSE_BY_ELECTION = gql`
   }
 `
 
+// TODO:
 export const GET_TOTAL_EXPENSE_BY_CATEGORY_AND_ELECTION = gql`
   query getExpensesByCategoryAndElection($election: Int) {
     expenses_by_category_and_election(where: { election: { _eq: $election } }) {
@@ -89,16 +90,15 @@ export const GET_EXPENSES_BY_ACCOUNT = gql`
 `
 
 export const GET_EXPENSE_BY_CATEGORY = gql`
-  query getExpenseByCategory($id_election: uuid) {
-    total_expense_by_delegate_and_election(
+  query getExpensesByCategoryAndElection($id_election: uuid) {
+    expenses_by_category_and_election(
       where: { id_election: { _eq: $id_election } }
     ) {
+      total_usd_amount
       category
-      eos_amount
-      usd_amount
-      id
+      total_eos_amount
+      election
       id_election
-      tx_id
     }
   }
 `

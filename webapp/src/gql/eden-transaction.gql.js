@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const GET_TOTAL_EXPENSE_BY_ELECTION = gql`
-  query getTotalExpenseByDelegateView($election: numeric, $account: String) {
+  query getTotalExpenseByDelegateView($election: Int, $account: String) {
     global_amount(
       where: { election: { _eq: $election }, account: { _eq: $account } }
     ) {

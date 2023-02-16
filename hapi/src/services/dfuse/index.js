@@ -141,16 +141,40 @@ const getDelegateData = async () => {
     const delegate = delegatesList[index]
     let hasMore = true
     let actions = []
-    let blockNumber = delegate.last_synced_at
+    let blockNumber = delegate.last_synced_income_at
     try {
+      console.log(delegate.account)
       while (hasMore) {
         ;({ hasMore, actions, blockNumber } = await getActions({
-          query: `account:${edenConfig.edenContract} data.from:${delegate.account} data.to:${delegate.account} OR account:eosio.token data.from:${delegate.account} receiver:eosio.token OR data.account:${delegate.account} receiver:edenexplorer`,
+          query: `account:${edenConfig.edenContract} data.from:${delegate.account} data.to:${delegate.account}`,
           lowBlockNum: blockNumber
         }))
 
         await runUpdaters(actions)
-        await edenDelegatesGql.update(delegate.id, blockNumber)
+
+        console.log(blockNumber)
+
+        await edenDelegatesGql.update(delegate.id, {
+          last_synced_income_at: blockNumber
+        })
+        await sleepUtil(10)
+      }
+
+      hasMore = true
+      blockNumber = delegate.last_synced_at
+
+      while (hasMore) {
+        await runUpdaters(actions)
+        ;({ hasMore, actions, blockNumber } = await getActions({
+          query: `account:eosio.token data.from:${delegate.account} receiver:eosio.token OR data.account:${delegate.account} receiver:edenexplorer`,
+          lowBlockNum: blockNumber
+        }))
+
+        await runUpdaters(actions)
+
+        await edenDelegatesGql.update(delegate.id, {
+          last_synced_at: blockNumber
+        })
         await sleepUtil(10)
       }
     } catch (error) {

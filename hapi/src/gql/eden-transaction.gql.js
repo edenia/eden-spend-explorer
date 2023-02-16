@@ -74,10 +74,32 @@ const update = async ({ where, _set }) => {
   return data.update_eden_transaction
 }
 
+const getHistoricIncome = async (where, getMany = false) => {
+  const query = `
+  query ($where: historic_incomes_bool_exp) {
+    historic_incomes(where: $where) {
+      recipient
+      eos_claimed
+      usd_claimed
+      eos_unclaimed
+      usd_unclaimed
+      election
+      delegate_level
+    }
+  }`
+
+  const { historic_incomes: historicIncomes } =
+    await hasuraUtil.instance.request(query, {
+      where
+    })
+
+  return getMany ? historicIncomes : historicIncomes[0]
+}
+
 const getAggregate = async where => {
   const query = `
   query ($where: eden_transaction_bool_exp) {
-    eden_transaction_aggregate(where: $where) {
+    eden_transaction_aggregate(where: $where, distinct_on: txid) {
       aggregate {
         sum {
           amount
@@ -100,5 +122,6 @@ module.exports = {
   get,
   deleteTx,
   update,
-  getAggregate
+  getAggregate,
+  getHistoricIncome
 }

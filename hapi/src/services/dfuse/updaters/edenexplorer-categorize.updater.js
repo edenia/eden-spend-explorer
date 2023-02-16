@@ -45,7 +45,7 @@ module.exports = {
           account,
           transactionToEdit.amount,
           transactionToEdit.eos_exchange,
-          transactionToEdit.category,
+          category,
           edenElectionGql,
           edenTransactionGql,
           edenTotalExpenseByDelegateAndElection,

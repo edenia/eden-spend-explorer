@@ -17,6 +17,7 @@ select_permissions:
         - created_at
         - id
         - last_synced_at
+        - last_synced_income_at
         - updated_at
       filter: {}
       allow_aggregations: true
@@ -25,5 +26,6 @@ update_permissions:
     permission:
       columns:
         - last_synced_at
+        - last_synced_income_at
       filter: {}
       check: null

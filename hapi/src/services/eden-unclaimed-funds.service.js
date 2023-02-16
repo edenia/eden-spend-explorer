@@ -104,7 +104,14 @@ const updateEdenUncleimedFundsWorker = () => {
     action: updateUnclaimedFunds
   }
 }
+const updateEdenUncleimedFundsWorker2 = () => {
+  return {
+    name: servicesConstant.MESSAGES.uncleimedFunds,
+    action: updateUnclaimedFunds
+  }
+}
 
 module.exports = {
-  updateEdenUncleimedFundsWorker
+  updateEdenUncleimedFundsWorker,
+  updateEdenUncleimedFundsWorker2
 }

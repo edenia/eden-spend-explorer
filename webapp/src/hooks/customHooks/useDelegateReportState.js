@@ -99,6 +99,8 @@ const useDelegateReportState = () => {
       id_election: electionId?.eden_election[0].id
     })
 
+    console.log(responseCategory)
+
     const responseTransaction = await loadTransactions({
       election: Number(electionRoundSelect),
       delegate: delegateSelect
@@ -116,7 +118,7 @@ const useDelegateReportState = () => {
     )
 
     const categories = newDataFormatByCategoryDelegate(
-      responseCategory?.total_expense_by_delegate_and_election || []
+      responseCategory?.expenses_by_category_and_election || []
     )
 
     setCategoryList(categories)

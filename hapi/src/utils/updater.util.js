@@ -52,30 +52,19 @@ const saveTotalByDelegateAndElection = async (
     const elections = await edenElectionGql.get(electionsQuery, true)
 
     for (const { id, election } of elections) {
-      const incomeQuery = {
-        eden_election: {
-          eden_delegate: { account: { _eq: delegateAccount } },
-          election: { _eq: election }
-        },
-        type: { _eq: 'income' }
-      }
-
-      const totalByDelegateAndElectionQuery = {
-        id_election: { _eq: id }
-      }
-
       const globalAmountQuery = {
         election: { _eq: election },
         account: { _eq: delegateAccount }
       }
 
-      const { amount, usd_total } =
-        (await edenTransactionGql.getAggregate(incomeQuery)) || 0
+      const { eos_claimed, eos_unclaimed, usd_claimed, usd_unclaimed } =
+        await edenTransactionGql.getHistoricIncome({
+          election: { _eq: election },
+          recipient: { _eq: delegateAccount }
+        })
 
-      const totalByDelegateAndElection =
-        (await edenTotalExpenseByDelegateAndElection.getAggregate(
-          totalByDelegateAndElectionQuery
-        )) || 0
+      const amount = eos_claimed + eos_unclaimed || 0
+      const usd_total = usd_claimed + usd_unclaimed || 0
 
       let globalAmount = await edenGlobalAmountGql.get(globalAmountQuery)
 
@@ -83,15 +72,19 @@ const saveTotalByDelegateAndElection = async (
         globalAmount = await edenGlobalAmountGql.save({
           account: delegateAccount,
           election,
-          eos_income: amount,
-          usd_income: usd_total,
+          eos_income: Number(amount).toFixed(2),
+          usd_income: Number(usd_total).toFixed(2),
           eos_expense: 0,
           usd_expense: 0
         })
       }
 
-      if (totalByDelegateAndElection + tempAmount > amount) {
-        const totalToSave = amount - totalByDelegateAndElection
+      if (globalAmount.eos_expense >= globalAmount.eos_income) continue
+
+      if (tempAmount < 0) console.log(tempAmount, 'tempAmount')
+
+      if (globalAmount.eos_expense + tempAmount > amount) {
+        const totalToSave = globalAmount.eos_income - globalAmount.eos_expense
 
         const totalByDelegateAndElectionData = {
           eos_amount: totalToSave,
@@ -120,6 +113,8 @@ const saveTotalByDelegateAndElection = async (
         )
 
         tempAmount = tempAmount - totalToSave
+
+        if (totalToSave < 0) console.log(totalToSave, 'Total To Save')
       } else {
         const totalByDelegateAndElectionData = {
           eos_amount: tempAmount,
