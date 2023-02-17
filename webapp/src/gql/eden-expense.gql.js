@@ -7,7 +7,6 @@ export const GET_TOTAL_EXPENSE_BY_ALL_ELECTIONS = gql`
       eos_categorized
       eos_uncategorized
       percent_categorized
-      percent_uncategorized
       usd_categorized
       usd_uncategorized
     }
@@ -30,18 +29,18 @@ export const GET_TOTAL_EXPENSE_BY_DELEGATE = gql`
 
 export const GET_DELEGATES_EXPENSE_BY_ELECTION = gql`
   query getDelegatesByElection($election: Int) {
-    global_amount(where: { election: { _eq: $election } }) {
+    total_by_delegate_and_election(where: { election: { _eq: $election } }) {
       account
       election
       eos_income
       usd_income
       eos_expense
       usd_expense
+      percent_claimed
     }
   }
 `
 
-// TODO:
 export const GET_TOTAL_EXPENSE_BY_CATEGORY_AND_ELECTION = gql`
   query getExpensesByCategoryAndElection($election: Int) {
     expenses_by_category_and_election(where: { election: { _eq: $election } }) {

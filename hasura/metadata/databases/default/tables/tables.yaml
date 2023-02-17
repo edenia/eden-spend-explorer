@@ -11,6 +11,7 @@
 - "!include public_incomes_by_delegate.yaml"
 - "!include public_total_by_category.yaml"
 - "!include public_total_by_category_and_election.yaml"
+- "!include public_total_by_delegate_and_election.yaml"
 - "!include public_total_by_election.yaml"
 - "!include public_total_expense_by_all_election.yaml"
 - "!include public_total_expense_by_delegate_and_election.yaml"

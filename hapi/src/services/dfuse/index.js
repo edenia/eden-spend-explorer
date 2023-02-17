@@ -143,7 +143,6 @@ const getDelegateData = async () => {
     let actions = []
     let blockNumber = delegate.last_synced_income_at
     try {
-      console.log(delegate.account)
       while (hasMore) {
         ;({ hasMore, actions, blockNumber } = await getActions({
           query: `account:${edenConfig.edenContract} data.from:${delegate.account} data.to:${delegate.account}`,
@@ -151,8 +150,6 @@ const getDelegateData = async () => {
         }))
 
         await runUpdaters(actions)
-
-        console.log(blockNumber)
 
         await edenDelegatesGql.update(delegate.id, {
           last_synced_income_at: blockNumber

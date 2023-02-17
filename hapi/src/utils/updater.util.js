@@ -10,7 +10,7 @@ const memoSplit = memoString => {
   const category = transactionConstant.CATEGORIES.includes(
     memoSplit[0].toLowerCase().trim()
   )
-    ? memoSplit[0]
+    ? memoSplit[0].toLowerCase().trim()
     : 'uncategorized'
   const description = category !== 'uncategorized' ? memoSplit[1] : memoString
 
@@ -79,9 +79,15 @@ const saveTotalByDelegateAndElection = async (
         })
       }
 
-      if (globalAmount.eos_expense >= globalAmount.eos_income) continue
+      await edenGlobalAmountGql.update({
+        where: globalAmountQuery,
+        _set: {
+          eos_income: Number(amount).toFixed(2),
+          usd_income: Number(usd_total).toFixed(2)
+        }
+      })
 
-      if (tempAmount < 0) console.log(tempAmount, 'tempAmount')
+      if (globalAmount.eos_expense >= globalAmount.eos_income) continue
 
       if (globalAmount.eos_expense + tempAmount > amount) {
         const totalToSave = globalAmount.eos_income - globalAmount.eos_expense
@@ -113,8 +119,6 @@ const saveTotalByDelegateAndElection = async (
         )
 
         tempAmount = tempAmount - totalToSave
-
-        if (totalToSave < 0) console.log(totalToSave, 'Total To Save')
       } else {
         const totalByDelegateAndElectionData = {
           eos_amount: tempAmount,

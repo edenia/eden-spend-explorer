@@ -99,8 +99,6 @@ const useDelegateReportState = () => {
       id_election: electionId?.eden_election[0].id
     })
 
-    console.log(responseCategory)
-
     const responseTransaction = await loadTransactions({
       election: Number(electionRoundSelect),
       delegate: delegateSelect

@@ -87,7 +87,7 @@ const useExpenseReportState = () => {
 
       setDelegatesList(
         newDataFormatByElectionAndDelegateExpense(
-          delegatesExpenseByElections?.global_amount || []
+          delegatesExpenseByElections?.total_by_delegate_and_election || []
         )
       )
 

@@ -83,7 +83,7 @@ export const newDataExpenseFormatByAllElections = ({
     EOS_TOTAL: Number(data.eos_categorized + data.eos_uncategorized),
     USD_TOTAL: Number(data.usd_categorized + data.usd_uncategorized),
     EOS_CATEGORIZED_PERCENT: data.percent_categorized,
-    EOS_UNCATEGORIZED_PERCENT: data.percent_uncategorized
+    EOS_UNCATEGORIZED_PERCENT: 100 - data.percent_categorized
   }))
 
 export const newDataIncomeFormatByAllElections = ({
@@ -114,16 +114,23 @@ export const newDataFormatByAllDelegatesExpense = transactionsList =>
 export const newDataFormatByElectionAndDelegateExpense = transactionsList =>
   transactionsList.map(data => ({
     name: data.account,
-    EOS_CATEGORIZED: Number(data.eos_expense),
-    USD_CATEGORIZED: Number(data.usd_expense),
+    EOS_CATEGORIZED: Number(data.eos_income),
+    USD_CATEGORIZED: Number(data.usd_income),
     EOS_UNCATEGORIZED: Number(data.eos_income - data.eos_expense),
     USD_UNCATEGORIZED: Number(data.usd_income - data.usd_expense),
-    EOS_CATEGORIZED_PERCENT: Number(
-      (data.eos_expense / (data.eos_income || 1)) * 100
-    ),
-    EOS_UNCATEGORIZED_PERCENT: Number(
-      ((data.eos_income - data.eos_expense) / data.eos_income || 1) * 100
-    ),
+    EOS_CATEGORIZED_PERCENT:
+      data.percent_claimed > 100
+        ? 100
+        : data.percent_claimed < 0
+        ? 0
+        : data.percent_claimed,
+    EOS_UNCATEGORIZED_PERCENT:
+      100 - data.percent_claimed > 100
+        ? 100
+        : 100 - data.percent_claimed < 0
+        ? 0
+        : 100 - data.percent_claimed,
+
     color: generateColor()
   }))
 
