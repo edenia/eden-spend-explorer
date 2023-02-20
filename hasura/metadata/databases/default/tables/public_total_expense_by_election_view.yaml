@@ -1,0 +1,11 @@
+table:
+  name: total_expense_by_election_view
+  schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - total_eos_amount
+        - total_usd_amount
+        - id_election
+      filter: {}

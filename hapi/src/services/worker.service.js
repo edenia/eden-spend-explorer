@@ -47,6 +47,7 @@ const run = async ({ name, action, interval }) => {
 const init = async () => {
   await hasuraUtil.hasuraAssembled()
   await run(edenHistoricDelegateService.updateHistoricDelegatesWorker())
+  await run(edenUnclaimedFundsService.updateEdenUncleimedFundsWorker2())
   run(edenDelegatesService.updateEdenTableWorker())
   run(edenUnclaimedFundsService.updateEdenUncleimedFundsWorker())
   run(dfuseService.syncWorker())
