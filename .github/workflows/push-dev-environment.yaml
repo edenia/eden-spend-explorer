@@ -84,7 +84,7 @@ jobs:
           HAPI_DFUSE_API: jungle4.dfuse.eosnation.io
           HAPI_DFUSE_FIRST_BLOCK: 35955488
           HAPI_DFUSE_FIRST_TREASURY_BLOCK: 34779185
-          # hasura dev
+          # hasura
           HASURA_GRAPHQL_ENABLE_CONSOLE: true
           HASURA_GRAPHQL_DATABASE_URL: ${{ secrets.HASURA_GRAPHQL_DATABASE_URL }}
           HASURA_GRAPHQL_ADMIN_SECRET: ${{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }}
