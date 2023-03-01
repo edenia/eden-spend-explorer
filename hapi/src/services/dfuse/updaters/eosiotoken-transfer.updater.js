@@ -37,6 +37,7 @@ module.exports = {
         },
         _set: { digest: action.action.receipt.digest }
       })
+
       return
     }
 
