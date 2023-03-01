@@ -11,7 +11,7 @@ const nextElectionDate = async () => {
     const response = await loadTableData({ next_key: null }, 'elect.curr')
     const nextElection = response.rows[0]
     const now = moment(new Date())
-    const end = moment(nextElection[1].start_time).add(1, 'day')
+    const end = moment(nextElection[1].start_time)
     const duration = moment.duration(end.diff(now)).asSeconds()
 
     return duration > 0 ? duration : servicesConstant.INTERVALS.oneHour
@@ -29,7 +29,7 @@ const nextDistributionDate = async () => {
     const nextDistribution = response.rows[0]
 
     const now = moment(new Date())
-    const end = moment(nextDistribution[1].distribution_time).add(1, 'day')
+    const end = moment(nextDistribution[1].distribution_time)
     const duration = moment.duration(end.diff(now)).asSeconds()
 
     return duration > 0 ? duration : servicesConstant.INTERVALS.oneHour
