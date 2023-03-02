@@ -114,8 +114,8 @@ export const newDataFormatByAllDelegatesExpense = transactionsList =>
 export const newDataFormatByElectionAndDelegateExpense = transactionsList =>
   transactionsList.map(data => ({
     name: data.account,
-    EOS_CATEGORIZED: Number(data.eos_income),
-    USD_CATEGORIZED: Number(data.usd_income),
+    EOS_CATEGORIZED: Number(data.eos_expense),
+    USD_CATEGORIZED: Number(data.usd_expense),
     EOS_UNCATEGORIZED: Number(data.eos_income - data.eos_expense),
     USD_UNCATEGORIZED: Number(data.usd_income - data.usd_expense),
     EOS_CATEGORIZED_PERCENT:

@@ -90,7 +90,7 @@ export const GET_EXPENSES_BY_ACCOUNT = gql`
 
 export const GET_EXPENSE_BY_CATEGORY = gql`
   query getExpensesByCategoryAndElection($id_election: uuid) {
-    expenses_by_category_and_election(
+    expenses_by_category_election_and_delegate(
       where: { id_election: { _eq: $id_election } }
     ) {
       total_usd_amount

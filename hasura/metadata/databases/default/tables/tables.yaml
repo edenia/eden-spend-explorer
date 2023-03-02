@@ -5,6 +5,7 @@
 - "!include public_eden_treasury.yaml"
 - "!include public_expenses_by_category_and_delegate.yaml"
 - "!include public_expenses_by_category_and_election.yaml"
+- "!include public_expenses_by_category_election_and_delegate.yaml"
 - "!include public_expenses_by_delegate.yaml"
 - "!include public_global_amount.yaml"
 - "!include public_historic_incomes.yaml"
