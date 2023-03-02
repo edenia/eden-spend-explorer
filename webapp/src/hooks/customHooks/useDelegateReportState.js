@@ -116,7 +116,7 @@ const useDelegateReportState = () => {
     )
 
     const categories = newDataFormatByCategoryDelegate(
-      responseCategory?.expenses_by_category_and_election || []
+      responseCategory?.expenses_by_category_election_and_delegate || []
     )
 
     setCategoryList(categories)

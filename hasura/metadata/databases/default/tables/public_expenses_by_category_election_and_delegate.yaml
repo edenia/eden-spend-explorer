@@ -1,5 +1,5 @@
 table:
-  name: expenses_by_category_and_election
+  name: expenses_by_category_election_and_delegate
   schema: public
 select_permissions:
   - role: guest
@@ -9,4 +9,5 @@ select_permissions:
         - election
         - total_eos_amount
         - total_usd_amount
+        - id_election
       filter: {}

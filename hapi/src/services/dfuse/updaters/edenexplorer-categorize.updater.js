@@ -17,6 +17,7 @@ module.exports = {
 
       const { category, description } = updaterUtil.memoSplit(memo)
       const transactionToEditQuery = {
+        type: { _eq: 'expense' },
         txid: { _eq: tx_id },
         ...(digest && { digest: { _eq: digest } })
       }
