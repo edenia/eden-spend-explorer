@@ -38,6 +38,18 @@ module.exports = {
         _set: { digest: action.action.receipt.digest }
       })
 
+      await updaterUtil.saveTotalByDelegateAndElection(
+        action.action.receipt.digest,
+        from,
+        amount,
+        registeredTxWithoutDigest.eos_exchange,
+        registeredTxWithoutDigest.category,
+        edenElectionGql,
+        edenTransactionGql,
+        edenTotalExpenseByDelegateAndElection,
+        edenGlobalAmountGql
+      )
+
       return
     }
 
@@ -90,7 +102,7 @@ module.exports = {
       if (category === 'uncategorized') return
 
       await updaterUtil.saveTotalByDelegateAndElection(
-        action.transaction_id,
+        action.action.receipt.digest,
         from,
         amount,
         LASTEST_RATE_DATA_CONSULTED,

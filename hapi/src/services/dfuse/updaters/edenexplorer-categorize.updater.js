@@ -40,9 +40,14 @@ module.exports = {
       }
 
       await edenTransactionGql.update(updateQuery)
-      if (transactionToEdit.category === 'uncategorized') {
+
+      const existExpense = await edenTotalExpenseByDelegateAndElection.get({
+        tx_id: { _eq: transactionToEdit.digest }
+      })
+
+      if (transactionToEdit.category === 'uncategorized' || !existExpense) {
         await updaterUtil.saveTotalByDelegateAndElection(
-          transactionToEdit.txid,
+          transactionToEdit.digest,
           account,
           transactionToEdit.amount,
           transactionToEdit.eos_exchange,
@@ -55,7 +60,7 @@ module.exports = {
       } else {
         await edenTotalExpenseByDelegateAndElection.update({
           where: {
-            tx_id: { _eq: transactionToEdit.txid }
+            tx_id: { _eq: transactionToEdit.digest }
           },
           _set: { category }
         })
