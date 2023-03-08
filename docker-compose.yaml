@@ -9,7 +9,7 @@ services:
       - ./tmp/wallet/:/opt/application/data/
   postgres:
     container_name: 'eden-spending-postgres'
-    image: postgres:12.12-bullseye
+    image: postgres:12.14-bullseye
     ports:
       - '5432:5432'
     volumes:
