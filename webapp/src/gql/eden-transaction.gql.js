@@ -1,21 +1,22 @@
 import gql from 'graphql-tag'
 
+export const GET_TOTAL_EXPENSE_BY_ELECTION = gql`
+  query getTotalExpenseByDelegateView($election: numeric, $account: String) {
+    global_amount(
+      where: { election: { _eq: $election }, account: { _eq: $account } }
+    ) {
+      election
+      eos_expense
+      usd_expense
+    }
+  }
+`
+
 export const GET_TRANSACTIONS_BY_DELEGATE_AND_ELECTION = gql`
   query getTransactionsByDelegateAndElection(
     $election: Int
     $delegate: String
   ) {
-    historic_expenses(
-      where: {
-        election: { _eq: $election }
-        delegate_payer: { _eq: $delegate }
-      }
-    ) {
-      eos_categorized
-      eos_claimed
-      usd_categorized
-      eos_unclaimed
-    }
     historic_incomes(
       where: { election: { _eq: $election }, recipient: { _eq: $delegate } }
     ) {

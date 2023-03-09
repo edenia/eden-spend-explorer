@@ -69,7 +69,7 @@ module.exports = {
             eden_delegate: { account: { _eq: from } }
           },
           description: { _eq: `distribution funds rank ${rank}` },
-          type: { _eq: 'unclaimed' }
+          category: { _eq: 'unclaimed' }
         })
 
         if (!existUnclaimedTx) return

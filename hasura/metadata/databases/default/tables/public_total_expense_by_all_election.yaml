@@ -7,9 +7,8 @@ select_permissions:
       columns:
         - election
         - eos_categorized
-        - eos_uncategorized
-        - percent_categorized
-        - percent_uncategorized
         - usd_categorized
+        - eos_uncategorized
         - usd_uncategorized
+        - percent_categorized
       filter: {}

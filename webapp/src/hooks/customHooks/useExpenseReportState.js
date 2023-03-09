@@ -12,6 +12,7 @@ import {
   newDataExpenseFormatByAllElections,
   newDataFormatByAllDelegatesExpense,
   newDataFormatByElectionAndDelegateExpense,
+  newDataFormatExpenseByCategoryAndElection,
   newDataFormatTotalByCategoryExpense
 } from '../../utils/new-format-objects'
 import { useImperativeQuery } from '../../utils'
@@ -74,25 +75,25 @@ const useExpenseReportState = () => {
       setCategoryList([])
       setDelegatesList([])
 
-      const delegatesExpenseByElections = await loadDelegatesExpenseByElections(
-        {
+      const { data: delegatesExpenseByElections } =
+        await loadDelegatesExpenseByElections({
           election: electionRoundSelect
-        }
-      )
+        })
 
-      const totalByCategoryAndElection = await loadTotalByCategoryAndElection({
-        election: electionRoundSelect
-      })
+      const { data: totalByCategoryAndElection } =
+        await loadTotalByCategoryAndElection({
+          election: electionRoundSelect
+        })
 
       setDelegatesList(
         newDataFormatByElectionAndDelegateExpense(
-          delegatesExpenseByElections?.data?.historic_expenses || []
+          delegatesExpenseByElections?.total_by_delegate_and_election || []
         )
       )
 
       setCategoryList(
-        newDataFormatTotalByCategoryExpense(
-          totalByCategoryAndElection?.data?.total_by_category_and_election || []
+        newDataFormatExpenseByCategoryAndElection(
+          totalByCategoryAndElection?.expenses_by_category_and_election || []
         )
       )
     }

@@ -1,0 +1,13 @@
+table:
+  name: expenses_by_category_election_and_delegate
+  schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - category
+        - election
+        - total_eos_amount
+        - total_usd_amount
+        - id_election
+      filter: {}

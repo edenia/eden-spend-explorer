@@ -1,0 +1,15 @@
+table:
+  name: total_by_delegate_and_election
+  schema: public
+select_permissions:
+  - role: guest
+    permission:
+      columns:
+        - account
+        - election
+        - eos_expense
+        - eos_income
+        - percent_claimed
+        - usd_expense
+        - usd_income
+      filter: {}

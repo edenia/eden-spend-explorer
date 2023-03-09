@@ -1,0 +1,1 @@
+Drop VIEW total_expense_by_all_election;

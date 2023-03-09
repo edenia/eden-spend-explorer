@@ -36,7 +36,7 @@ const get = async (where, getMany = false) => {
   return getMany ? edenDelegates : edenDelegates[0]
 }
 
-const update = async (id, lastSyncedAt) => {
+const update = async (id, data) => {
   const mutation = `
   mutation ($id: uuid!, $payload: eden_delegates_set_input) {
     update_eden_delegates_by_pk(pk_columns: {id: $id}, _set: $payload) {
@@ -48,9 +48,7 @@ const update = async (id, lastSyncedAt) => {
 
   await hasuraUtil.instance.request(mutation, {
     id,
-    payload: {
-      last_synced_at: lastSyncedAt
-    }
+    payload: data
   })
 }
 
