@@ -36,6 +36,6 @@ spec:
               cpu: 500m
               memory: 2G
             requests:
-              cpu: 150m
+              cpu: 250m
               memory: 1G
       restartPolicy: Always
