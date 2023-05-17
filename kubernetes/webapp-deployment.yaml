@@ -25,4 +25,11 @@ spec:
                 name: webapp-config
           ports:
             - containerPort: 80
+          resources:
+            limits:
+              cpu: 500m
+              memory: 2G
+            requests:
+              cpu: 150m
+              memory: 1G
       restartPolicy: Always
